@@ -18,10 +18,12 @@ return [
             'enableAutoLogin' => true,
         ],
 
+
     'view' => [
          'theme' => [
              'pathMap' => [
-                '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/'
+                //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/'
+                '@app/views' => '@frontend/views/adminLTE/yiisoft/yii2-app/'
              ],
          ],
     ],
