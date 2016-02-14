@@ -17,6 +17,15 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
         ],
+
+    'view' => [
+         'theme' => [
+             'pathMap' => [
+                '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/'
+             ],
+         ],
+    ],
+        
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
