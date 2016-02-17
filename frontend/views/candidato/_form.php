@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\widgets\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidato */
@@ -22,13 +23,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'egressograd', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Ano de Egresso:</b>") ?>
 
-    <div style="width: 100%; clear: both;"><p align="justify"><b>Curso de Especialização (ou Aperfeiçoamento)</b></p></div>
+    <div style="width: 100%; clear: both;"><p align="justify"><b>Curso de Especialização</b>(ou Aperfeiçoamento)</p></div>
 
     <?= $form->field($model, 'cursoesp', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])?>
 
     <?= $form->field($model, 'instituicaoesp', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'egressoesp', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true])?>
+    <?= $form->field($model, 'egressoesp', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true]) ?>
 
     
     <div style="margin-top: 100px; clear: both;"><p align="justify"><b>Curso de Pos-Gradua&#231;&#227;o Stricto-Senso</b></p></div>
@@ -46,15 +47,75 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b>") ?>
 
-    <div style="margin-top: 100px; clear: both;"><p align="justify"><b>Publicações</b></p></div>
+    <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Publicações</b></p></div>
 
-    <?= $form->field($model, 'periodicosinternacionais', ['options' => ['class' => 'col-md-6']])->textInput() ?>
+    <?= $form->field($model, 'periodicosinternacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Periódicos Internacionais:</b>") ?>
 
-    <?= $form->field($model, 'periodicosnacionais', ['options' => ['class' => 'col-md-6']])->textInput() ?>
+    <?= $form->field($model, 'periodicosnacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Periódicos Nacionais:</b>") ?>
 
-    <?= $form->field($model, 'conferenciasinternacionais', ['options' => ['class' => 'col-md-6']])->textInput() ?>
+    <?= $form->field($model, 'conferenciasinternacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Conferências Internacionais:</b>") ?>
 
-    <?= $form->field($model, 'conferenciasnacionais', ['options' => ['class' => 'col-md-6']])->textInput() ?>
+    <?= $form->field($model, 'conferenciasnacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Conferências Nacionais:</b>") ?>
+
+    <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Curriculum Vittae (no formato Lattes - http://lattes.cnpq.br):</b>") ?>
+
+    <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Idioma - Língua Inglesa - Exame de Proeficiência</b></p></div>
+
+    <?= $form->field($model, 'instituicaoingles', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'duracaoingles', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number']) ?>
+
+    <?= $form->field($model, 'nomeexame', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'notaexame', ['options' => ['class' => 'col-md-2']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'dataexame', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+        'pluginOptions' => [
+            'autoclose'=>true
+        ]
+    ]);
+    ?>
+
+    <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Experiência Profissional</b></p></div>
+
+    <?= $form->field($model, 'empresa1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'cargo1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'periodoprofissional1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'empresa2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'cargo2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'periodoprofissional2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'empresa3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'cargo3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'periodoprofissional3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+    
+    <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Experiência Acadêmica</b> (Monitoria, PIBIC, PET, Instutor, Professor)</p></div>
+
+    <?= $form->field($model, 'instituicaoacademica1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'instituicaoacademica2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'instituicaoacademica3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'atividade1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'atividade2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'atividade3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'periodoacademico1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'periodoacademico2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'periodoacademico3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
 
 
 
@@ -144,7 +205,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'proposta')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'curriculum')->textarea(['rows' => 6]) ?>
+    
 
     <?= $form->field($model, 'cartaempregador')->textarea(['rows' => 6]) ?>
 
@@ -162,51 +223,11 @@ use yii\widgets\ActiveForm;
 
 
 
-    <?= $form->field($model, 'instituicaoingles')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'duracaoingles')->textInput() ?>
 
-    <?= $form->field($model, 'nomeexame')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'dataexame')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'notaexame')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'empresa1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'empresa2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'empresa3')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cargo1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cargo2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cargo3')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodoprofissional1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodoprofissional2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodoprofissional3')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'instituicaoacademica1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'instituicaoacademica2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'instituicaoacademica3')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'atividade1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'atividade2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'atividade3')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodoacademico1')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodoacademico2')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodoacademico3')->textInput(['maxlength' => true]) ?>
+   
 
     <?= $form->field($model, 'resultado')->textInput() ?>
 

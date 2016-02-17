@@ -102,6 +102,7 @@ use Yii;
 class Candidato extends \yii\db\ActiveRecord
 {
     public $historicoFile;
+    public $curriculumFile;
 
     /**
      * @inheritdoc
@@ -119,8 +120,8 @@ class Candidato extends \yii\db\ActiveRecord
         return [
             [['senha', 'periodo', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad'], 'required'],
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
-            [['historicoFile'], 'safe'],
-            [['historicoFile'], 'file', 'extensions' => 'pdf'],
+            [['historicoFile', 'curriculumFile'], 'safe'],
+            [['historicoFile', 'curriculumFile'], 'file', 'extensions' => 'pdf'],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],
@@ -166,6 +167,39 @@ class Candidato extends \yii\db\ActiveRecord
             'tipopos' => 'Tipo',
             'mediapos' => 'Média',
             'egressopos' => 'Ano Egresso',
+
+            'historico' => 'Histórico',
+
+            'periodicosinternacionais' => 'Periódicos Internacionais',
+            'periodicosnacionais' => 'Periódicos Nacionais',
+            'conferenciasinternacionais' => 'Conferências Internacionais',
+            'conferenciasnacionais' => 'Conferências Nacionais',
+
+            'instituicaoingles' => 'Instituição',
+            'duracaoingles' => 'Anos de Estudo',
+            'nomeexame' => 'Exame de Proeficiência',
+            'dataexame' => 'Data',
+            'notaexame' => 'Nota',
+
+            'empresa1' => 'Empresa/Instituição 1',
+            'empresa2' => 'Empresa/Instituição 2',
+            'empresa3' => 'Empresa/Instituição 3',
+            'cargo1' => 'Cargo/Função',
+            'cargo2' => 'Cargo/Função',
+            'cargo3' => 'Cargo/Função',
+            'periodoprofissional1' => 'Período (De X até Y)',
+            'periodoprofissional2' => 'Período (De X até Y)',
+            'periodoprofissional3' => 'Período (De X até Y)',
+
+            'instituicaoacademica1' => 'Instituição Acadêmica 1',
+            'instituicaoacademica2' => 'Instituição Acadêmica 2',
+            'instituicaoacademica3' => 'Instituição Acadêmica 3',
+            'atividade1' => 'Atividade',
+            'atividade2' => 'Atividade',
+            'atividade3' => 'Atividade',
+            'periodoacademico1' => 'Período Acadêmico',
+            'periodoacademico2' => 'Período Acadêmico',
+            'periodoacademico3' => 'Período Acadêmico',
             
             'senha' => 'Senha',
             'inicio' => 'Inicio',
@@ -207,7 +241,7 @@ class Candidato extends \yii\db\ActiveRecord
             'linhapesquisa' => 'Linhapesquisa',
             'tituloproposta' => 'Tituloproposta',
             'diploma' => 'Diploma',
-            'historico' => 'Historico',
+            
             'motivos' => 'Motivos',
             'proposta' => 'Proposta',
             'curriculum' => 'Curriculum',
@@ -219,33 +253,10 @@ class Candidato extends \yii\db\ActiveRecord
             'dataformaturaesp' => 'Dataformaturaesp',
             
             'dataformaturapos' => 'Dataformaturapos',
-            'periodicosinternacionais' => 'Periodicosinternacionais',
-            'periodicosnacionais' => 'Periodicosnacionais',
-            'conferenciasinternacionais' => 'Conferenciasinternacionais',
-            'conferenciasnacionais' => 'Conferenciasnacionais',
-            'instituicaoingles' => 'Instituicaoingles',
-            'duracaoingles' => 'Duracaoingles',
-            'nomeexame' => 'Nomeexame',
-            'dataexame' => 'Dataexame',
-            'notaexame' => 'Notaexame',
-            'empresa1' => 'Empresa1',
-            'empresa2' => 'Empresa2',
-            'empresa3' => 'Empresa3',
-            'cargo1' => 'Cargo1',
-            'cargo2' => 'Cargo2',
-            'cargo3' => 'Cargo3',
-            'periodoprofissional1' => 'Periodoprofissional1',
-            'periodoprofissional2' => 'Periodoprofissional2',
-            'periodoprofissional3' => 'Periodoprofissional3',
-            'instituicaoacademica1' => 'Instituicaoacademica1',
-            'instituicaoacademica2' => 'Instituicaoacademica2',
-            'instituicaoacademica3' => 'Instituicaoacademica3',
-            'atividade1' => 'Atividade1',
-            'atividade2' => 'Atividade2',
-            'atividade3' => 'Atividade3',
-            'periodoacademico1' => 'Periodoacademico1',
-            'periodoacademico2' => 'Periodoacademico2',
-            'periodoacademico3' => 'Periodoacademico3',
+            
+            
+            
+
             'resultado' => 'Resultado',
             'periodo' => 'Periodo',
         ];
