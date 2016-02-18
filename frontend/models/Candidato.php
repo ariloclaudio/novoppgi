@@ -103,6 +103,7 @@ class Candidato extends \yii\db\ActiveRecord
 {
     public $historicoFile;
     public $curriculumFile;
+    public $cartaempregadorFile;
 
     /**
      * @inheritdoc
@@ -118,10 +119,10 @@ class Candidato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['senha', 'periodo', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad'], 'required'],
+            [['senha', 'periodo', 'nome', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'estadocivil', 'telresidencial', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad'], 'required'],
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
-            [['historicoFile', 'curriculumFile'], 'safe'],
-            [['historicoFile', 'curriculumFile'], 'file', 'extensions' => 'pdf'],
+            [['historicoFile', 'curriculumFile', 'cartaempregadorFile'], 'safe'],
+            [['historicoFile', 'curriculumFile', 'cartaempregadorFile'], 'file', 'extensions' => 'pdf'],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],

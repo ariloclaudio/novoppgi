@@ -29,17 +29,51 @@ class CandidatoController extends Controller
 
 
     /**
-     * Exibe passo 2 do formulario
+     * Exibe Formulário no passo 1
      */
-    public function actionFormulariopasso2()
+    public function actionPasso1()
     {
-        //$searchModel = new CandidatoSearch();
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = new Candidato();
 
-        return $this->render('inscricao2', [
-            'searchModel' => $searchModel,
-            //'dataProvider' => $dataProvider,
-        ]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create1', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Exibe Formulário no passo 2
+     */
+    public function actionPasso2()
+    {
+        $model = new Candidato();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create2', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Exibe Formulário no passo 3
+     */
+    public function actionPasso3()
+    {
+        $model = new Candidato();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create3', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
