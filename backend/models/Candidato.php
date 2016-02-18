@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "j17_candidatos".
  *
- * @property string $id
+ * @property integer $id
  * @property string $senha
  * @property string $inicio
  * @property string $fim
@@ -45,7 +45,7 @@ use Yii;
  * @property string $cargo
  * @property string $vinculoconvenio
  * @property string $convenio
- * @property string $linhapesquisa
+ * @property integer $linhapesquisa
  * @property string $tituloproposta
  * @property string $diploma
  * @property string $historico
@@ -101,10 +101,6 @@ use Yii;
  */
 class Candidato extends \yii\db\ActiveRecord
 {
-    public $historicoFile;
-    public $curriculumFile;
-    public $cartaempregadorFile;
-
     /**
      * @inheritdoc
      */
@@ -119,12 +115,9 @@ class Candidato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['senha', 'periodo', 'nome', 'datanascimento', 'nacionalidade', 'nomepai', 'nomemae', 'cursodesejado', 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'estadocivil', 'telresidencial', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad'], 'required'],
-            [['crgrad'], 'number', 'min' => 1, 'max' => 10],
-            [['historicoFile', 'curriculumFile', 'cartaempregadorFile'], 'safe'],
-            [['historicoFile', 'curriculumFile', 'cartaempregadorFile'], 'file', 'extensions' => 'pdf'],
+            [['senha', 'periodo'], 'required'],
             [['inicio', 'fim'], 'safe'],
-            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0],
+            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer'],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],
             [['senha', 'cidade'], 'string', 'max' => 40],
             [['nome', 'nomepai', 'nomemae'], 'string', 'max' => 60],
@@ -142,7 +135,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['solicitabolsa', 'vinculoemprego', 'vinculoconvenio'], 'string', 'max' => 3],
             [['tituloproposta'], 'string', 'max' => 100],
             [['cursoesp'], 'string', 'max' => 70],
-            [['periodoacademico1', 'periodoacademico2', 'periodoacademico3'], 'string', 'max' => 30]
+            [['periodoacademico1', 'periodoacademico2', 'periodoacademico3'], 'string', 'max' => 30],
         ];
     }
 
@@ -153,114 +146,94 @@ class Candidato extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-
-            'nome' => 'Nome',
-            'endereco' => 'Endereco',
-            'bairro' => 'Bairro',
-            'cidade' => 'Cidade',
-            'uf' => 'UF',
-            'cep' => 'CEP',
-            'email' => 'Email',
-            'datanascimento' => 'Data Nascimento',
-            'nacionalidade' => 'Nacionalidade',
-            'pais' => 'Pais',
-            'estadocivil' => 'Estado Civil',
-            'rg' => 'RG',
-            'orgaoexpedidor' => 'Orgao Expedidor',
-            'dataexpedicao' => 'Data Expedicao',
-            'passaporte' => 'Passaporte',
-            'cpf' => 'CPF',
-            'sexo' => 'Sexo',
-            'telresidencial' => 'Telelefone Residencial',
-            'telcomercial' => 'Telelefone Comercial',
-            'telcelular' => 'Telelefone Celular',
-            'nomepai' => 'Nome do Pai',
-            'nomemae' => 'Nome da Mae',
-            'cursodesejado' => 'Curso Desejado',
-            'regime' => 'Regime',
-            'inscricaoposcomp' => 'Inscricao PosComp',
-            'anoposcomp' => 'Ano PosComp',
-            'notaposcomp' => 'Nota PosComp',
-            'solicitabolsa' => 'Solicita Bolsa de Estudo',
-            'vinculoemprego' => 'Vinculo Emprego',
-            'empregador' => 'Empregador',
-            'cargo' => 'Cargo',
-            
-            'cursograd' => 'Curso',
-            'instituicaograd' => 'Instituição',
-            'crgrad' => 'Coeficiente de Rendimento',
-            'egressograd' => 'Ano de Egresso',
-            
-            'cursoesp' => 'Curso',
-            'instituicaoesp' => 'Instituição',
-            'egressoesp' => 'Ano de Egresso',
-
-            'cursopos' => 'Curso',
-            'instituicaopos' => 'Instituição',
-            'tipopos' => 'Tipo',
-            'mediapos' => 'Média',
-            'egressopos' => 'Ano Egresso',
-
-            'historico' => 'Histórico',
-
-            'periodicosinternacionais' => 'Periódicos Internacionais',
-            'periodicosnacionais' => 'Periódicos Nacionais',
-            'conferenciasinternacionais' => 'Conferências Internacionais',
-            'conferenciasnacionais' => 'Conferências Nacionais',
-
-            'instituicaoingles' => 'Instituição',
-            'duracaoingles' => 'Anos de Estudo',
-            'nomeexame' => 'Exame de Proeficiência',
-            'dataexame' => 'Data',
-            'notaexame' => 'Nota',
-
-            'empresa1' => 'Empresa/Instituição 1',
-            'empresa2' => 'Empresa/Instituição 2',
-            'empresa3' => 'Empresa/Instituição 3',
-            'cargo1' => 'Cargo/Função',
-            'cargo2' => 'Cargo/Função',
-            'cargo3' => 'Cargo/Função',
-            'periodoprofissional1' => 'Período (De X até Y)',
-            'periodoprofissional2' => 'Período (De X até Y)',
-            'periodoprofissional3' => 'Período (De X até Y)',
-
-            'instituicaoacademica1' => 'Instituição Acadêmica 1',
-            'instituicaoacademica2' => 'Instituição Acadêmica 2',
-            'instituicaoacademica3' => 'Instituição Acadêmica 3',
-            'atividade1' => 'Atividade',
-            'atividade2' => 'Atividade',
-            'atividade3' => 'Atividade',
-            'periodoacademico1' => 'Período Acadêmico',
-            'periodoacademico2' => 'Período Acadêmico',
-            'periodoacademico3' => 'Período Acadêmico',
-            
             'senha' => 'Senha',
             'inicio' => 'Inicio',
             'fim' => 'Fim',
             'passoatual' => 'Passoatual',
-
-            
+            'nome' => 'Nome',
+            'endereco' => 'Endereco',
+            'bairro' => 'Bairro',
+            'cidade' => 'Cidade',
+            'uf' => 'Uf',
+            'cep' => 'Cep',
+            'email' => 'Email',
+            'datanascimento' => 'Datanascimento',
+            'nacionalidade' => 'Nacionalidade',
+            'pais' => 'Pais',
+            'estadocivil' => 'Estadocivil',
+            'rg' => 'Rg',
+            'orgaoexpedidor' => 'Orgaoexpedidor',
+            'dataexpedicao' => 'Dataexpedicao',
+            'passaporte' => 'Passaporte',
+            'cpf' => 'Cpf',
+            'sexo' => 'Sexo',
+            'telresidencial' => 'Telresidencial',
+            'telcomercial' => 'Telcomercial',
+            'telcelular' => 'Telcelular',
+            'nomepai' => 'Nomepai',
+            'nomemae' => 'Nomemae',
+            'cursodesejado' => 'Cursodesejado',
+            'regime' => 'Regime',
+            'inscricaoposcomp' => 'Inscricaoposcomp',
+            'anoposcomp' => 'Anoposcomp',
+            'notaposcomp' => 'Notaposcomp',
+            'solicitabolsa' => 'Solicitabolsa',
+            'vinculoemprego' => 'Vinculoemprego',
+            'empregador' => 'Empregador',
+            'cargo' => 'Cargo',
             'vinculoconvenio' => 'Vinculoconvenio',
             'convenio' => 'Convenio',
             'linhapesquisa' => 'Linhapesquisa',
             'tituloproposta' => 'Tituloproposta',
             'diploma' => 'Diploma',
-            
+            'historico' => 'Historico',
             'motivos' => 'Motivos',
             'proposta' => 'Proposta',
             'curriculum' => 'Curriculum',
             'cartaempregador' => 'Cartaempregador',
             'comprovantepagamento' => 'Comprovantepagamento',
-            
+            'cursograd' => 'Cursograd',
+            'instituicaograd' => 'Instituicaograd',
+            'crgrad' => 'Crgrad',
+            'egressograd' => 'Egressograd',
             'dataformaturagrad' => 'Dataformaturagrad',
-
+            'cursoesp' => 'Cursoesp',
+            'instituicaoesp' => 'Instituicaoesp',
+            'egressoesp' => 'Egressoesp',
             'dataformaturaesp' => 'Dataformaturaesp',
-            
+            'cursopos' => 'Cursopos',
+            'instituicaopos' => 'Instituicaopos',
+            'tipopos' => 'Tipopos',
+            'mediapos' => 'Mediapos',
+            'egressopos' => 'Egressopos',
             'dataformaturapos' => 'Dataformaturapos',
-            
-            
-            
-
+            'periodicosinternacionais' => 'Periodicosinternacionais',
+            'periodicosnacionais' => 'Periodicosnacionais',
+            'conferenciasinternacionais' => 'Conferenciasinternacionais',
+            'conferenciasnacionais' => 'Conferenciasnacionais',
+            'instituicaoingles' => 'Instituicaoingles',
+            'duracaoingles' => 'Duracaoingles',
+            'nomeexame' => 'Nomeexame',
+            'dataexame' => 'Dataexame',
+            'notaexame' => 'Notaexame',
+            'empresa1' => 'Empresa1',
+            'empresa2' => 'Empresa2',
+            'empresa3' => 'Empresa3',
+            'cargo1' => 'Cargo1',
+            'cargo2' => 'Cargo2',
+            'cargo3' => 'Cargo3',
+            'periodoprofissional1' => 'Periodoprofissional1',
+            'periodoprofissional2' => 'Periodoprofissional2',
+            'periodoprofissional3' => 'Periodoprofissional3',
+            'instituicaoacademica1' => 'Instituicaoacademica1',
+            'instituicaoacademica2' => 'Instituicaoacademica2',
+            'instituicaoacademica3' => 'Instituicaoacademica3',
+            'atividade1' => 'Atividade1',
+            'atividade2' => 'Atividade2',
+            'atividade3' => 'Atividade3',
+            'periodoacademico1' => 'Periodoacademico1',
+            'periodoacademico2' => 'Periodoacademico2',
+            'periodoacademico3' => 'Periodoacademico3',
             'resultado' => 'Resultado',
             'periodo' => 'Periodo',
         ];
