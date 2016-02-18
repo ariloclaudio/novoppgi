@@ -111,7 +111,7 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <?= $form->field($model, 'vinculoconvenio', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Vinculado a algum Convênio?</b>")  ?>
 
-    <?= $form->field($model, 'convenio', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Quais (ex: PICTD)?</b>") ?>
+    <?= $form->field($model, 'convenio', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<b>Quais (ex: PICTD)?</b>") ?>
 
     <?= $form->field($model, 'solicitabolsa', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Solicita Bolsa de Estudo?</b>")  ?>
 
@@ -125,7 +125,7 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <?= $form->field($model, 'cargo', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cartaempregador', ['options' => ['class' => 'col-md-12']])->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
+    <?= $form->field($model, 'cartaempregador', ['options' => ['class' => 'col-md-12']])->FileInput(['accept' => '.pdf'])->label("<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
     </div>
     
 
