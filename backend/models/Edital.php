@@ -29,9 +29,9 @@ class Edital extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['numero', 'prazocarta', 'datainicio', 'datafim', 'documento'], 'required'],
+            [['numero', 'datainicio', 'datafim', 'documento'], 'required'],
             [['numero'], 'integer'],
-            [['prazocarta', 'datainicio', 'datafim'], 'safe'],
+            [['datainicio', 'datafim'], 'safe'],
             [['documento'], 'string', 'max' => 100]
         ];
     }
@@ -43,7 +43,6 @@ class Edital extends \yii\db\ActiveRecord
     {
         return [
             'numero' => 'Numero',
-            'prazocarta' => 'Prazocarta',
             'datainicio' => 'Datainicio',
             'datafim' => 'Datafim',
             'documento' => 'Documento',
