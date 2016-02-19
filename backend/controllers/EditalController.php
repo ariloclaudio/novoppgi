@@ -99,9 +99,28 @@ class EditalController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            $diainicio = explode("/", $model->datainicio);
+            $model->datainicio = $diainicio[2]."-".$diainicio[1]."-".$diainicio[0];
+
+            $diafim = explode("/", $model->datafim);
+            $model->datafim =$diafim[2]."-".$diafim[1]."-".$diafim[0];
+
+            $model->save();
             return $this->redirect(['view', 'id' => $model->numero]);
         } else {
+
+            //modelo de conversão de data
+            // este modelo de conversão, difere dos demais
+            $diainicio = explode("-", $model->datainicio);
+            $model->datainicio = $diainicio[2]."/".$diainicio[1]."/".$diainicio[0];
+
+            $diafim = explode("-", $model->datafim);
+            $model->datafim =$diafim[2]."/".$diafim[1]."/".$diafim[0];
+
+            //fim do modelo de conversão de data
+
             return $this->render('update', [
                 'model' => $model,
             ]);
