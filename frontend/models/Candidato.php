@@ -104,6 +104,16 @@ class Candidato extends \yii\db\ActiveRecord
     public $historicoFile;
     public $curriculumFile;
     public $cartaempregadorFile;
+    public $propostaFile;
+    public $comprovanteFile;
+
+    public $cartaNomeReq1;
+    public $cartaNomeReq2;
+    public $cartaEmailReq1;
+    public $cartaEmailReq2;
+
+    public $cartaNome;
+    public $cartaEmail;
 
     /**
      * @inheritdoc
@@ -119,10 +129,12 @@ class Candidato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['senha', 'periodo', 'nome', 'datanascimento', 'nacionalidade', 'nomepai', 'nomemae', 'cursodesejado', 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'estadocivil', 'telresidencial', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad'], 'required'],
+            [['senha', 'periodo', 'nome', 'datanascimento', 'nacionalidade', 'nomepai', 'nomemae', 'cursodesejado', 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'estadocivil', 'telresidencial', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad', 'linhapesquisa', 'proposta', 'cartaNomeReq2', 'cartaEmailReq2','cartaNomeReq1', 'cartaEmailReq1', 'motivos'], 'required'],
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
-            [['historicoFile', 'curriculumFile', 'cartaempregadorFile'], 'safe'],
-            [['historicoFile', 'curriculumFile', 'cartaempregadorFile'], 'file', 'extensions' => 'pdf'],
+            [['cartaNome'], 'string'],
+            [['cartaEmail'], 'email'],
+            [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'safe'],
+            [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf'],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],

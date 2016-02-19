@@ -4,10 +4,12 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\Candidato;
+use app\models\Recomendacoes;
 use app\models\CandidatoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 
 /**
  * CandidatoController implements the CRUD actions for Candidato model.
@@ -65,7 +67,7 @@ class CandidatoController extends Controller
      */
     public function actionPasso3()
     {
-        $model = new Candidato();
+        $model = new Candidato();        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -77,17 +79,35 @@ class CandidatoController extends Controller
     }
 
     /**
+     * Exibe Formulário no passo 4
+     */
+    public function actionPasso4()
+    {
+        $idCandidato = filter_input(INPUT_GET, 'idCandidato');
+        /*
+        if(!isset($idCandidato))
+            return "FALTA ID DO CANDIDATO";
+        */
+
+        $model = new Candidato();    
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('passo4', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+
+    /**
      * Lists all Candidato models.
      * @return mixed
      */
     public function actionIndex()
 
     {
-        echo "passo 1: <a href = 'http://localhost/ppgi/frontend/web/index.php?r=candidato/passo1'> http://localhost/ppgi/frontend/web/index.php?r=candidato/passo1 </a><br>";
-        echo "passo 2: <a href = 'http://localhost/ppgi/frontend/web/index.php?r=candidato/passo2'> http://localhost/ppgi/frontend/web/index.php?r=candidato/passo2 </a><br>";
-        echo "passo 3: <a href = 'http://localhost/ppgi/frontend/web/index.php?r=candidato/passo3'> http://localhost/ppgi/frontend/web/index.php?r=candidato/passo3 </a>";
-        exit();
-
         $searchModel = new CandidatoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
