@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidato */
@@ -21,7 +22,8 @@ use kartik\widgets\DatePicker;
 
     <?= $form->field($model, 'instituicaograd', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Instituição:</b>") ?>
 
-    <?= $form->field($model, 'egressograd', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Ano de Egresso:</b>") ?>
+    <?= $form->field($model, 'egressograd', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+    'mask' => '9999'])->label("<font color='#FF0000'>*</font> <b>Ano de Egresso:</b>") ?>
 
     <div style="width: 100%; clear: both;"><p align="justify"><b>Curso de Especialização</b>(ou Aperfeiçoamento)</p></div>
 
@@ -29,7 +31,8 @@ use kartik\widgets\DatePicker;
 
     <?= $form->field($model, 'instituicaoesp', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'egressoesp', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true]) ?>
+    <?= $form->field($model, 'egressoesp', ['options' => ['class' => 'col-md-2']])->widget(MaskedInput::className(), [
+    'mask' => '9999']) ?>
 
     
     <div style="margin-top: 100px; clear: both;"><p align="justify"><b>Curso de Pos-Gradua&#231;&#227;o Stricto-Senso</b></p></div>
@@ -42,7 +45,8 @@ use kartik\widgets\DatePicker;
 
     <?= $form->field($model, 'mediapos', ['options' => ['class' => 'col-md-3', 'style' => 'padding-left: 100px;']])->textInput(['type' => 'number', 'maxlength' => true]) ?>
 
-    <?= $form->field($model, 'egressopos',['options' => ['class' => 'col-md-2']] )->textInput(['type' => 'number']) ?>
+    <?= $form->field($model, 'egressopos',['options' => ['class' => 'col-md-2']] )->widget(MaskedInput::className(), [
+    'mask' => '9999']) ?>
 
 
     <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b>") ?>
@@ -69,11 +73,8 @@ use kartik\widgets\DatePicker;
 
     <?= $form->field($model, 'notaexame', ['options' => ['class' => 'col-md-2']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'dataexame', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
-        'pluginOptions' => [
-            'autoclose'=>true
-        ]
-    ]);
+    <?= $form->field($model, 'dataexame', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+    'clientOptions' => ['alias' =>  'date']])
     ?>
 
     <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Experiência Profissional</b></p></div>

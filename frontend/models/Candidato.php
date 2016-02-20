@@ -3,102 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yiibr\brvalidator\CpfValidator;
 
-/**
- * This is the model class for table "j17_candidatos".
- *
- * @property string $id
- * @property string $senha
- * @property string $inicio
- * @property string $fim
- * @property integer $passoatual
- * @property string $nome
- * @property string $endereco
- * @property string $bairro
- * @property string $cidade
- * @property string $uf
- * @property string $cep
- * @property string $email
- * @property string $datanascimento
- * @property integer $nacionalidade
- * @property string $pais
- * @property string $estadocivil
- * @property string $rg
- * @property string $orgaoexpedidor
- * @property string $dataexpedicao
- * @property string $passaporte
- * @property string $cpf
- * @property string $sexo
- * @property string $telresidencial
- * @property string $telcomercial
- * @property string $telcelular
- * @property string $nomepai
- * @property string $nomemae
- * @property integer $cursodesejado
- * @property integer $regime
- * @property string $inscricaoposcomp
- * @property integer $anoposcomp
- * @property string $notaposcomp
- * @property string $solicitabolsa
- * @property string $vinculoemprego
- * @property string $empregador
- * @property string $cargo
- * @property string $vinculoconvenio
- * @property string $convenio
- * @property string $linhapesquisa
- * @property string $tituloproposta
- * @property string $diploma
- * @property string $historico
- * @property string $motivos
- * @property string $proposta
- * @property string $curriculum
- * @property string $cartaempregador
- * @property string $comprovantepagamento
- * @property string $cursograd
- * @property string $instituicaograd
- * @property string $crgrad
- * @property integer $egressograd
- * @property string $dataformaturagrad
- * @property string $cursoesp
- * @property string $instituicaoesp
- * @property integer $egressoesp
- * @property string $dataformaturaesp
- * @property string $cursopos
- * @property string $instituicaopos
- * @property integer $tipopos
- * @property string $mediapos
- * @property integer $egressopos
- * @property string $dataformaturapos
- * @property integer $periodicosinternacionais
- * @property integer $periodicosnacionais
- * @property integer $conferenciasinternacionais
- * @property integer $conferenciasnacionais
- * @property string $instituicaoingles
- * @property integer $duracaoingles
- * @property string $nomeexame
- * @property string $dataexame
- * @property string $notaexame
- * @property string $empresa1
- * @property string $empresa2
- * @property string $empresa3
- * @property string $cargo1
- * @property string $cargo2
- * @property string $cargo3
- * @property string $periodoprofissional1
- * @property string $periodoprofissional2
- * @property string $periodoprofissional3
- * @property string $instituicaoacademica1
- * @property string $instituicaoacademica2
- * @property string $instituicaoacademica3
- * @property string $atividade1
- * @property string $atividade2
- * @property string $atividade3
- * @property string $periodoacademico1
- * @property string $periodoacademico2
- * @property string $periodoacademico3
- * @property integer $resultado
- * @property string $periodo
- */
 class Candidato extends \yii\db\ActiveRecord
 {
     public $historicoFile;
@@ -129,14 +35,16 @@ class Candidato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['senha', 'periodo', 'nome', 'datanascimento', 'nacionalidade', 'nomepai', 'nomemae', 'cursodesejado', 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'estadocivil', 'telresidencial', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad', 'linhapesquisa', 'proposta', 'cartaNomeReq2', 'cartaEmailReq2','cartaNomeReq1', 'cartaEmailReq1', 'motivos'], 'required'],
+            [['senha', 'sexo', 'periodo', 'nome', 'datanascimento', 'nacionalidade', 'nomepai', 'nomemae', 'cursodesejado', 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'estadocivil', 'telresidencial', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad', 'linhapesquisa', 'proposta', 'cartaNomeReq2', 'cartaEmailReq2','cartaNomeReq1', 'cartaEmailReq1', 'motivos'], 'required'],
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
             [['cartaNome'], 'string'],
             [['cartaEmail'], 'email'],
+
+            [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'safe'],
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf'],
             [['inicio', 'fim'], 'safe'],
-            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0],
+            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],
             [['senha', 'cidade'], 'string', 'max' => 40],
             [['nome', 'nomepai', 'nomemae'], 'string', 'max' => 60],
@@ -147,7 +55,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['datanascimento', 'rg', 'orgaoexpedidor', 'dataexpedicao', 'crgrad', 'dataformaturagrad', 'dataformaturaesp', 'mediapos', 'dataformaturapos', 'dataexame', 'notaexame', 'periodo'], 'string', 'max' => 10],
             [['pais', 'passaporte', 'inscricaoposcomp'], 'string', 'max' => 20],
             [['estadocivil', 'periodoprofissional1', 'periodoprofissional2', 'periodoprofissional3'], 'string', 'max' => 15],
-            [['cpf'], 'string', 'max' => 14],
+            [['cpf'], 'string'],
             [['sexo'], 'string', 'max' => 1],
             [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
             [['notaposcomp'], 'string', 'max' => 5],
