@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "*",
         "dmstr/yii2-adminlte-asset": "2.*",
         "kartik-v/yii2-widget-datepicker": "@dev",
-        "kartik-v/yii2-widgets": "*"
+        "kartik-v/yii2-widgets": "*",
+        "yiibr/yii2-br-validator": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
@@ -34,7 +35,7 @@
     "extra": {
         "asset-installer-paths": {
             "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
+	    "bower-asset-library": "vendor/bower/"
         }
     }
 }
