@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use yii\widgets\MaskedInput;
 
 $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "CE" => "CE", "DF" => "DF",
 "ES" => "ES", "GO" => "GO", "MA" => "MA", "MG" => "MG", "MS" => "MS", "MT" => "MT", "PA" => "PA",
@@ -39,7 +40,8 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
     </div>
     <div class="col-md-12">
     <div class ="row">
-        <?= $form->field($model, 'cep', ['options' => ['class' => 'col-md-4', 'style' => 'padding-left: 0px;']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>CEP:</b>") ?>
+        <?= $form->field($model, 'cep', ['options' => ['class' => 'col-md-4', 'style' => 'padding-left: 0px;']])->widget(MaskedInput::className(), [
+    'mask' => '99999-999'])->label("<font color='#FF0000'>*</font> <b>CEP:</b>") ?>
 
         <?= $form->field($model, 'uf', ['options' => ['class' => 'col-md-4']])->dropDownList($ufs, ['prompt' => 'Selecione UF..'])->label("<font color='#FF0000'>*</font> <b>Estado:</b>") ?>
 
@@ -51,12 +53,8 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <?= $form->field($model, 'bairro', ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Bairro:</b>") ?>
 
-    <?= $form->field($model, 'datanascimento', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
-        'pluginOptions' => [
-            'format' => 'dd/mm/yyyy',
-            'autoclose'=>true
-        ]
-    ])->label("<font color='#FF0000'>*</font> <b>Data de Nascimento:</b>")
+    <?= $form->field($model, 'datanascimento', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+    'clientOptions' => ['alias' =>  'date']])->label("<font color='#FF0000'>*</font> <b>Data de Nascimento:</b>")
     ?>
     </div>
     <div class ="row">
@@ -73,7 +71,8 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
     <div id="divBrasileiro" style="display: none;">
     <div class="row">
         <p align="justify" class="col-md-12"><b>Estes campos são obrigatórios para candidatos com nacionalidade Brasileira</b></p>
-        <?= $form->field($model, 'cpf', ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <div style='display:inline;' id = 'corCPF'><b>CPF:</b> </div>") ?>   
+        <?= $form->field($model, 'cpf', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+    'mask' => '999.999.999-99'])->label("<font color='#FF0000'>*</font> <div style='display:inline;' id = 'corCPF'><b>CPF:</b> </div>") ?>   
     </div>
     <div class="row" style="margin-left:0px; margin-bottom:10px; ">
             <div id = "errocpf" style="color:#a94442; display:none;"> CPF é campo obrigatório para brasileiros </div>
@@ -83,12 +82,8 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
         <?= $form->field($model, 'orgaoexpedidor', ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Orgão Expedidor:</b>") ?>
 
-        <?= $form->field($model, 'dataexpedicao', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
-            'pluginOptions' => [
-                'format' => 'dd/mm/yyyy',
-                'autoclose'=>true
-            ]
-        ])->label("<font color='#FF0000'>*</font> <b>Data de Expedição:</b>")
+        <?= $form->field($model, 'dataexpedicao', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+    'clientOptions' => ['alias' =>  'date']])->label("<font color='#FF0000'>*</font> <b>Data de Expedição:</b>")
     ?>
     </div>  
     </div>
@@ -97,11 +92,14 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <div style="width: 100%; clear: both;"><p align="justify"><b>Telefones de Contato</b></p></div>
     <div class = "row">
-    <?= $form->field($model, 'telresidencial', ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Telefone Residencial:</b>") ?>
+    <?= $form->field($model, 'telresidencial', ['options' => ['class' => 'col-md-3']])->widget(\yii\widgets\MaskedInput::className(), [
+    'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Telefone Residencial:</b>") ?>
 
-    <?= $form->field($model, 'telcomercial', ['options' => ['class' => 'col-md-3', 'style' => 'margin-left: 50px;']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'telcomercial', ['options' => ['class' => 'col-md-3', 'style' => 'margin-left: 50px;']])->widget(MaskedInput::className(), [
+    'mask' => '(99) 99999-9999']) ?>
 
-    <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3', 'style' => 'margin-left: 50px;']])->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3', 'style' => 'margin-left: 50px;']])->widget(MaskedInput::className(), [
+    'mask' => '(99) 99999-9999']) ?>
     </div>
 
     <div style="width: 100%; clear: both;"><p align="justify"><b>Filiação</b></p></div>
