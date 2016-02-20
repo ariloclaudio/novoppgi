@@ -66,27 +66,45 @@ $(document).ready( function() {
 
      return true;
    }
+/*
+   function validacaoCPF(){
+            var cpf = $('#candidato-cpf').val();
 
+      if (cpf == ''){
 
-  $('#candidato-cpf').blur(function(){
+          $('#errocpf').css('display', 'block');
+          $('#errocpf').text("CPF é de preenchimento obrigatório");
+          $('#candidato-cpf').css('border-color', '#a94442');
+          $('#corCPF').css('color', '#a94442');
+          return 0;
+      }
+      else{
+        cpf = verificacpf(cpf);
 
-    var cpf = $('#candidato-cpf').val();
-    cpf = verificacpf(cpf);
-    if (cpf == false){
-      //alert("falso");
-    }
-    else{
-      //alert("true");
-    }
+        if(cpf == true){
+          $('#errocpf').css('display', 'none');
+          $('#candidato-cpf').css('border-color', '#3c763d');
+          $('#corCPF').css('color', '#3c763d');
+        }
+        else{
+          $('#errocpf').css('display', 'block');
+          $('#errocpf').text("CPF inserido é inválido");
+          $('#candidato-cpf').css('border-color', '#a94442');
+          $('#corCPF').css('color', '#a94442');
+        }
 
-  });
+      }
+   }
 
+     $('#candidato-cpf').blur(function(){
+
+        validacaoCPF();
+
+     });
+*/
 });
 
 
-
 function validacao(){
-  $('#errocpf').css('display', 'block');
-  $('#candidato-cpf').css('border-color', '#a94442');
-  $('#corCPF').css('color', '#a94442');
+    validacaoCPF();
 }

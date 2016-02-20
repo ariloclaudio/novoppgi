@@ -544,12 +544,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-star-rating.git",
-                "reference": "c19be9f8bd6b29cee0110e048a2c04bb6f1c4761"
+                "reference": "fbe4a597ba0cf584ed8dbb92ec6bc8d64d1cb2c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-star-rating/zipball/c19be9f8bd6b29cee0110e048a2c04bb6f1c4761",
-                "reference": "c19be9f8bd6b29cee0110e048a2c04bb6f1c4761",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-star-rating/zipball/fbe4a597ba0cf584ed8dbb92ec6bc8d64d1cb2c6",
+                "reference": "fbe4a597ba0cf584ed8dbb92ec6bc8d64d1cb2c6",
                 "shasum": ""
             },
             "type": "library",
@@ -580,7 +580,7 @@
                 "star",
                 "svg"
             ],
-            "time": "2016-02-18 04:03:30"
+            "time": "2016-02-20 11:05:03"
         },
         {
             "name": "kartik-v/dependent-dropdown",
@@ -2065,12 +2065,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "772feacf6849bf0114873e2b869bb500fccfd438"
+                "reference": "d8c0bebc230284edc91b5e7091013e7a0c55bf34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/772feacf6849bf0114873e2b869bb500fccfd438",
-                "reference": "772feacf6849bf0114873e2b869bb500fccfd438",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d8c0bebc230284edc91b5e7091013e7a0c55bf34",
+                "reference": "d8c0bebc230284edc91b5e7091013e7a0c55bf34",
                 "shasum": ""
             },
             "require": {
@@ -2107,7 +2107,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-02-11 12:29:31"
+            "time": "2016-02-20 14:15:56"
         },
         {
             "name": "phpspec/php-diff",
