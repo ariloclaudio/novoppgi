@@ -38,6 +38,22 @@ $(document).ready( function() {
    		}
    });
 
+   $('#candidato-vinculoemprego').click(function(){
+      if($( "input[name='Candidato[vinculoemprego]']:checked" ).val() == "SIM"){
+        $('#divVinculo').css('display', 'block');
+      }else{
+        $('#divVinculo').css('display', 'none');
+      }
+   });
+
+   $('#candidato-vinculoconvenio').click(function(){
+      if($( "input[name='Candidato[vinculoconvenio]']:checked" ).val() == "SIM"){
+        $('#divConvenio').css('display', 'block');
+      }else{
+        $('#divConvenio').css('display', 'none');
+      }
+   });
+
    function verificacpf(cpf){
       if (cpf.length != 11 || cpf == "00000000000" || cpf == "11111111111" || cpf == "22222222222" || cpf == "33333333333" || cpf == "44444444444" || cpf == "55555555555" || cpf == "66666666666" || cpf == "77777777777" || cpf == "88888888888" || cpf == "99999999999")
         return false;
@@ -106,5 +122,9 @@ $(document).ready( function() {
 
 
 function validacao(){
-    validacaoCPF();
+
+    //var x = $("input:radio[name=\"Candidato[nacionalidade]\"]:checked").val();
+    //alert(x);
+
+    //validacaoCPF();
 }

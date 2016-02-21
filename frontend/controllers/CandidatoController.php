@@ -37,7 +37,33 @@ class CandidatoController extends Controller
     {
         $model = new Candidato();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->senha = "1";
+            $model->periodo = "1";
+            $model->cursograd = "1";
+            $model->egressograd = 1;
+            $model->instituicaograd = "1";
+            $model->linhapesquisa = 1;
+            $model->crgrad = "1";
+            $model->proposta = "1";
+            $model->cartaNomeReq2 = 1;
+            $model->cartaEmailReq2 = 1;
+            $model->cartaNomeReq1 = 1;
+            $model->cartaEmailReq1 = 1;
+            $model->motivos = "1";
+
+
+
+        if ($model->load(Yii::$app->request->post())) {
+
+
+             $x = $model->save();
+
+             echo ('cara'.$x.'cara');
+
+             print_r($model->getErrors());
+
+             exit;
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create1', [

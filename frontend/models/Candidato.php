@@ -39,8 +39,11 @@ class Candidato extends \yii\db\ActiveRecord
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
             [['cartaNome'], 'string'],
             [['cartaEmail'], 'email'],
-
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
+            [['rg','cpf','orgaoexpedidor','dataexpedicao'], 'required',
+            'whenClient' => "function (attribute, value) {
+                return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 1;
+            }"], 
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'safe'],
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf'],
             [['inicio', 'fim'], 'safe'],

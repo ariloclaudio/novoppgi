@@ -124,36 +124,42 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>") ?>
     </div>
+
+
+
     <div class = "row">
     <?= $form->field($model, 'vinculoconvenio', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Vinculado a algum Convênio?</b>")  ?>
-
+    </div>
+    <div id="divConvenio" class = "row">
     <?= $form->field($model, 'convenio', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<b>Quais (ex: PICTD)?</b>") ?>
     </div>
-        <div class = "row">
-    <?= $form->field($model, 'solicitabolsa', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Solicita Bolsa de Estudo?</b>")  ?>
 
+
+
+
+    <div class = "row">
+        <?= $form->field($model, 'solicitabolsa', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Solicita Bolsa de Estudo?</b>")  ?>
+
+        
+        <?= $form->field($model, 'vinculoemprego', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Manterá Vínculo Empregatício?</b>") ?>
+    </div>
+</div>
+    <div id="divVinculo" style="border-radius: 25px; border: 2px solid #73AD21; padding: 20px; width: 100%; height: 100%; display:none">
+    <p align="justify"><b>Estes campos n&#227;o s&#227;o obrigat&#243;rios </b> (Se desejado, anexe o arquivo contendo a carta do empregador comprometendo-se a limitar a carga de trabalho do candidato a 24 horas semanais, ou meio expediente de trabalho)</p>
+
+    <?= $form->field($model, 'empregador')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'cargo')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'cartaempregador')->FileInput(['accept' => '.pdf'])->label("<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
+    </div>
     
-    <?= $form->field($model, 'vinculoemprego', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Manterá Vínculo Empregatício?</b>") ?>
-    </div>
-    </div>
-    <div id="divVinculo">
-    <p align="justify" class="col-md-12"><b>Estes campos n&#227;o s&#227;o obrigat&#243;rios </b> (Se desejado, anexe o arquivo contendo a carta do empregador comprometendo-se a limitar a carga de trabalho do candidato a 24 horas semanais, ou meio expediente de trabalho)</p>
 
-    <?= $form->field($model, 'empregador', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cargo', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'cartaempregador', ['options' => ['class' => 'col-md-12']])->FileInput(['accept' => '.pdf'])->label("<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
-    </div>
-    
-
-    <div class="form-group">
+    <div class="form-group" style="margin-top:10px">
 
         <?= Html::submitButton($model->isNewRecord ? 'Salvar e Continuar' : 'Update', ['onclick' => 'validacao()','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        </div>
     </div>
 
     <?php ActiveForm::end(); ?>
 
-</div>
 
