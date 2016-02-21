@@ -37,6 +37,7 @@ class CandidatoController extends Controller
     {
         $model = new Candidato();
 
+        /*
             $model->senha = "1";
             $model->periodo = "1";
             $model->cursograd = "1";
@@ -50,7 +51,7 @@ class CandidatoController extends Controller
             $model->cartaNomeReq1 = 1;
             $model->cartaEmailReq1 = 1;
             $model->motivos = "1";
-
+        */
 
 
         if ($model->load(Yii::$app->request->post())) {
@@ -59,10 +60,8 @@ class CandidatoController extends Controller
              $x = $model->save();
 
              echo ('cara'.$x.'cara');
-
-             print_r($model->getErrors());
-
              exit;
+
 
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

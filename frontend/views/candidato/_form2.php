@@ -14,6 +14,8 @@ use yii\widgets\MaskedInput;
 
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
+        <input type="hidden" id = "form_hidden" value ="passo_form_2"/>
+
     <div style="width: 100%; clear: both;"><p align="justify"><b>Curso de Gradua&#231;&#227;o</b></p></div>
 
     <?= $form->field($model, 'cursograd', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Curso:</b>") ?>

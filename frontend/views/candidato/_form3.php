@@ -16,6 +16,8 @@ $linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' 
 
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
+        <input type="hidden" id = "form_hidden" value ="passo_form_3"/>
+
     <div style="width: 100%; clear: both;"><p align="justify"><b>Proposta do Candidato</b></p></div>
 
     <?= $form->field($model, 'linhapesquisa', ['options' => ['class' => 'col-md-6']])->dropDownlist($linhasPesquisa, ['prompt' => 'Selecione uma Linha de Pesquisa'])->label("<font color='#FF0000'>*</font> <b>Linha de Pesquisa:</b>") ?>

@@ -18,15 +18,11 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<script>
-
-
-
-</script>
-
 <div class="candidato-form">
 
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
+
+    <input type="hidden" id = "form_hidden" value ="passo_form_1"/>
 
 <!-- Inicio da Identificação do Candidato -->
     
@@ -153,7 +149,6 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <?= $form->field($model, 'cartaempregador')->FileInput(['accept' => '.pdf'])->label("<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
     </div>
-    
 
     <div class="form-group" style="margin-top:10px">
 

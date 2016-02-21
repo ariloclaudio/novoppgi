@@ -35,7 +35,21 @@ class Candidato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['senha', 'sexo', 'periodo', 'nome', 'datanascimento', 'nacionalidade', 'nomepai', 'nomemae', 'cursodesejado', 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'estadocivil', 'telresidencial', 'cursograd', 'egressograd', 'instituicaograd', 'crgrad', 'linhapesquisa', 'proposta', 'cartaNomeReq2', 'cartaEmailReq2','cartaNomeReq1', 'cartaEmailReq1', 'motivos'], 'required'],
+            [['nome', 'estadocivil', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'nomepai', 'nomemae', 'cursodesejado', 'solicitabolsa' , 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa'], 'required',
+            'whenClient' => "function (attribute, value) {
+                return $('#form_hidden').val() == 'passo_form_1';
+            }"],
+
+            [['cursograd', 'instituicaograd', 'egressograd', 'crgrad', 'historicoFile' , 'curriculumFile' , 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required',
+            'whenClient' => "function (attribute, value) {
+                return $('#form_hidden').val() == 'passo_form_2';
+            }"],
+
+            [['linhapesquisa', 'tituloproposta', 'cartaNomeReq1', 'cartaNomeReq2', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required',
+            'whenClient' => "function (attribute, value) {
+                return $('#form_hidden').val() == 'passo_form_3';
+            }"],
+
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
             [['cartaNome'], 'string'],
             [['cartaEmail'], 'email'],

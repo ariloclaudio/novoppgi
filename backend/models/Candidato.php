@@ -114,6 +114,11 @@ class Candidato extends \yii\db\ActiveRecord
      */
     public function rules()
     {
+
+
+        // MODEL RELACIONADO AO BACK END !
+
+
         return [
             [['senha', 'periodo'], 'required'],
             [['inicio', 'fim'], 'safe'],
