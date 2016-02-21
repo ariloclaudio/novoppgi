@@ -37,7 +37,7 @@ class CandidatoController extends Controller
     {
         $model = new Candidato();
 
-        /*
+            $model->idEdital = "1";
             $model->senha = "1";
             $model->periodo = "1";
             $model->cursograd = "1";
@@ -51,20 +51,21 @@ class CandidatoController extends Controller
             $model->cartaNomeReq1 = 1;
             $model->cartaEmailReq1 = 1;
             $model->motivos = "1";
-        */
+            $model->historicoFile = "1";
+            $model->curriculumFile = "1";
+            $model->periodicosinternacionais = "1";
+            $model->periodicosnacionais = "1";
+            $model->conferenciasinternacionais = "1";
+            $model->conferenciasnacionais = "1";
+            $model->tituloproposta = "1";
+            $model->propostaFile = "1";
+            $model->comprovanteFile = "1";
+        
 
-
-        if ($model->load(Yii::$app->request->post())) {
-
-
-             $x = $model->save();
-
-             echo ('cara'.$x.'cara');
-             exit;
-
-
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['passo2', 'id' => $model->id]);
         } else {
+                        var_dump($model->getErrors());
             return $this->render('create1', [
                 'model' => $model,
             ]);
@@ -79,7 +80,7 @@ class CandidatoController extends Controller
         $model = new Candidato();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['passo3', 'id' => $model->id]);
         } else {
             return $this->render('create2', [
                 'model' => $model,
@@ -95,7 +96,7 @@ class CandidatoController extends Controller
         $model = new Candidato();        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['passo4', 'id' => $model->id]);
         } else {
             return $this->render('create3', [
                 'model' => $model,

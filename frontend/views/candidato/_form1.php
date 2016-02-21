@@ -20,7 +20,7 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
 <div class="candidato-form">
 
-    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['options'=>['validateOnSubmit' => true,'enctype'=>'multipart/form-data']]); ?>
 
     <input type="hidden" id = "form_hidden" value ="passo_form_1"/>
 

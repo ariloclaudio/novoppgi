@@ -123,8 +123,10 @@ $(document).ready( function() {
 
 function validacao(){
 
-    //var x = $("#form_hidden").val();    
-    //alert(x);
+    var x = $("#form_hidden").val();    
+
+
+
 
     //var x = $("input:radio[name=\"Candidato[nacionalidade]\"]:checked").val();
     //alert(x);
