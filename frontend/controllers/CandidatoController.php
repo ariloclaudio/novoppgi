@@ -53,31 +53,8 @@ public function actionPasso0(){
         $model = new Candidato();
 
             $model = $this->findModel($id);
-/*
-            $model->senha = "1";
-            $model->periodo = "1";
-            $model->cursograd = "1";
-            $model->egressograd = 1;
-            $model->instituicaograd = "1";
-            $model->linhapesquisa = 1;
-            $model->crgrad = "1";
-            $model->proposta = "1";
-            $model->cartaNomeReq2 = 1;
-            $model->cartaEmailReq2 = 1;
-            $model->cartaNomeReq1 = 1;
-            $model->cartaEmailReq1 = 1;
-            $model->motivos = "1";
-            $model->historicoFile = "1";
-            $model->curriculumFile = "1";
-            $model->periodicosinternacionais = "1";
-            $model->periodicosnacionais = "1";
-            $model->conferenciasinternacionais = "1";
-            $model->conferenciasnacionais = "1";
-            $model->tituloproposta = "1";
-            $model->propostaFile = "1";
-            $model->comprovanteFile = "1";
-        
-*/
+
+
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['passo2', 'id' => $model->id]);
         } else {
@@ -146,7 +123,7 @@ public function actionPasso0(){
      * Lists all Candidato models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex2()
 
     {
         $searchModel = new CandidatoSearch();
