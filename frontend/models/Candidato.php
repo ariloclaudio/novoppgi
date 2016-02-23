@@ -21,6 +21,9 @@ class Candidato extends \yii\db\ActiveRecord
     public $cartaNome;
     public $cartaEmail;
 
+    public $repetirSenha;
+    public $auth_key;
+
     /**
      * @inheritdoc
      */
@@ -35,38 +38,62 @@ class Candidato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nome', 'estadocivil', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'nomepai', 'nomemae', 'cursodesejado', 'solicitabolsa' , 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa'], 'required',
+/*Inicio Validações para passo 0*/
+            [['email', 'senha', 'repetirSenha'], 'required', 'when' => function($model){ return $model->passoatual == 0;},
+                'whenClient' => "function (attribute, value) {
+                    return $('#form_hidden').val() == 'passo_form_0';
+                }"],
+            [['repetirSenha'], 'compare', 'compareAttribute' => 'senha', 'message' => '"Repetir Senha" deve ser igual ao campo "Senha"', 'when' => function($model){ return $model->passoatual == 0;},
+                'whenClient' => "function (attribute, value) {
+                    return $('#form_hidden').val() == 'passo_form_0';
+                }"],
+            [['idEdital'], string],
+            [['email'], 'email'],
+/*FIM Validações para passo 0*/
+
+/*Inicio Validações para passo 1*/
+
+            [['nome', 'estadocivil', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'nomepai', 'nomemae', 'cursodesejado', 'solicitabolsa' , 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_1';
             }"],
 
-            [['cursograd', 'instituicaograd', 'egressograd', 'crgrad', 'historicoFile' , 'curriculumFile' , 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required',
+            [['rg','cpf','orgaoexpedidor','dataexpedicao'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
+            'whenClient' => "function (attribute, value) {
+                return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 1;
+            }"],
+/*FIM Validações para passo 1*/
+
+/*Inicio Validações para passo 2*/
+
+            [['cursograd', 'instituicaograd', 'egressograd', 'crgrad', 'historicoFile' , 'curriculumFile' , 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required', 'when' => function($model){ return $model->passoatual == 2;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_2';
             }"],
-
-            [['linhapesquisa', 'tituloproposta', 'cartaNomeReq1', 'cartaNomeReq2', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required',
+/*FIM Validações para passo 2*/
+/*Inicio Validações para passo 3*/
+            [['linhapesquisa', 'tituloproposta', 'cartaNomeReq1', 'cartaNomeReq2', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3';
             }"],
+/*FIM Validações para passo 3*/
+
+            
 
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
             [['cartaNome'], 'string'],
             [['cartaEmail'], 'email'],
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
-            [['rg','cpf','orgaoexpedidor','dataexpedicao'], 'required',
-            'whenClient' => "function (attribute, value) {
-                return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 1;
-            }"], 
+ 
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'safe'],
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf'],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],
-            [['senha', 'cidade'], 'string', 'max' => 40],
+            [['cidade'], 'string', 'max' => 40],
             [['nome', 'nomepai', 'nomemae'], 'string', 'max' => 60],
             [['endereco'], 'string', 'max' => 160],
-            [['bairro', 'email', 'empregador', 'cargo', 'convenio', 'cursograd', 'instituicaograd', 'instituicaoesp', 'cursopos', 'instituicaopos', 'instituicaoingles', 'nomeexame', 'empresa1', 'empresa2', 'empresa3', 'cargo1', 'cargo2', 'cargo3', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3'], 'string', 'max' => 50],
+            [['bairro', 'empregador', 'cargo', 'convenio', 'cursograd', 'instituicaograd', 'instituicaoesp', 'cursopos', 'instituicaopos', 'instituicaoingles', 'nomeexame', 'empresa1', 'empresa2', 'empresa3', 'cargo1', 'cargo2', 'cargo3', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3'], 'string', 'max' => 50],
             [['uf'], 'string', 'max' => 2],
             [['cep'], 'string', 'max' => 9],
             [['datanascimento', 'rg', 'orgaoexpedidor', 'dataexpedicao', 'crgrad', 'dataformaturagrad', 'dataformaturaesp', 'mediapos', 'dataformaturapos', 'dataexame', 'notaexame', 'periodo'], 'string', 'max' => 10],
@@ -194,12 +221,15 @@ class Candidato extends \yii\db\ActiveRecord
             'dataformaturaesp' => 'Dataformaturaesp',
             
             'dataformaturapos' => 'Dataformaturapos',
-            
-            
-            
 
             'resultado' => 'Resultado',
             'periodo' => 'Periodo',
         ];
     }
+
+    public function getEdital()
+    {
+        return $this->hasOne(Edital::className(), ['idEdital' => 'numero']);
+    }
+
 }

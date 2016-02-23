@@ -36,27 +36,46 @@ public function actionPasso0(){
     $model->idEdital = "1";
     
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['passo1', 'id' => $model->id]);
-        } else {
-            return $this->render('create0', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())){
+            if(!Candidato::find()->where(['idEdital' => $model->idEdital])->andWhere(['email' => $model->email])->count()){
+                
+                $model->inicio = date("Y-m-d H:i:s");
+                $model->passoatual = 0;
+                $model->repetirSenha = $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
+                $model->status = 10;
+                
+                if($model->save()){
+                    return $this->redirect(['passo1', 'id' => $model->id]);
+                }
+                else
+                    $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
+            }else{
+                $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital');
+            }
         }
+        
+        return $this->render('create0', [
+            'model' => $model,
+        ]);
     }
 
     /**
      * Exibe Formulário no passo 1
      */
-    public function actionPasso1($id)
-    {
+    public function actionPasso1($id){
+
         $model = new Candidato();
 
-            $model = $this->findModel($id);
+        $model = $this->findModel($id);
 
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['passo2', 'id' => $model->id]);
+            $model->passoatual = 1;
+
+            if($model->save())
+                return $this->redirect(['passo2', 'id' => $model->id]);
+            else
+                return var_dump($model->getErrors());
         } else {
             return $this->render('create1', [
                 'model' => $model,
@@ -71,8 +90,12 @@ public function actionPasso0(){
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['passo3', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())){
+            if($model->save())
+                return $this->redirect(['passo3', 'id' => $model->id]);
+            else
+                return var_dump($model->getErrors());
+
         } else {
             return $this->render('create2', [
                 'model' => $model,
@@ -129,7 +152,7 @@ public function actionPasso0(){
         $searchModel = new CandidatoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index2', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -211,5 +234,20 @@ public function actionPasso0(){
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /* Envio de mensagens para views
+       Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }
