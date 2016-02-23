@@ -58,7 +58,7 @@ class Candidato extends \yii\db\ActiveRecord
                 return $('#form_hidden').val() == 'passo_form_1';
             }"],
 
-            [['rg','cpf','orgaoexpedidor','dataexpedicao'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
+            [['rg','cpf','orgaoexpedidor','dataexpedicao'], 'required', 'when' => function($model){ return $model->passoatual == 1 && $model->nacionalidade == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 1;
             }"],
