@@ -47,7 +47,7 @@ class Candidato extends \yii\db\ActiveRecord
                 'whenClient' => "function (attribute, value) {
                     return $('#form_hidden').val() == 'passo_form_0';
                 }"],
-            [['idEdital'], string],
+            [['idEdital'], 'string'],
             [['email'], 'email'],
 /*FIM Validações para passo 0*/
 
