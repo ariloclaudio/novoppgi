@@ -29,15 +29,31 @@ class CandidatoController extends Controller
     }
 
 
+public function actionPasso0(){
+
+    $model = new Candidato();
+
+    $model->idEdital = "1";
+    
+
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+            return $this->redirect(['passo1', 'id' => $model->id]);
+        } else {
+            return $this->render('create0', [
+                'model' => $model,
+            ]);
+        }
+    }
 
     /**
      * Exibe Formulário no passo 1
      */
-    public function actionPasso1()
+    public function actionPasso1($id)
     {
         $model = new Candidato();
 
-            $model->idEdital = "1";
+            $model = $this->findModel($id);
+/*
             $model->senha = "1";
             $model->periodo = "1";
             $model->cursograd = "1";
@@ -61,11 +77,10 @@ class CandidatoController extends Controller
             $model->propostaFile = "1";
             $model->comprovanteFile = "1";
         
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+*/
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['passo2', 'id' => $model->id]);
         } else {
-                        var_dump($model->getErrors());
             return $this->render('create1', [
                 'model' => $model,
             ]);
@@ -75,11 +90,11 @@ class CandidatoController extends Controller
     /**
      * Exibe Formulário no passo 2
      */
-    public function actionPasso2()
+    public function actionPasso2($id)
     {
-        $model = new Candidato();
+        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['passo3', 'id' => $model->id]);
         } else {
             return $this->render('create2', [
@@ -91,11 +106,11 @@ class CandidatoController extends Controller
     /**
      * Exibe Formulário no passo 3
      */
-    public function actionPasso3()
+    public function actionPasso3($id)
     {
-        $model = new Candidato();        
+        $model = $this->findModel($id);        
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['passo4', 'id' => $model->id]);
         } else {
             return $this->render('create3', [
