@@ -29,36 +29,6 @@ class CandidatoController extends Controller
     }
 
 
-public function actionPasso0(){
-
-    $model = new Candidato();
-
-    $model->idEdital = "1";
-    
-
-        if ($model->load(Yii::$app->request->post())){
-            if(!Candidato::find()->where(['idEdital' => $model->idEdital])->andWhere(['email' => $model->email])->count()){
-                
-                $model->inicio = date("Y-m-d H:i:s");
-                $model->passoatual = 0;
-                $model->repetirSenha = $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
-                $model->status = 10;
-                
-                if($model->save()){
-                    return $this->redirect(['passo1', 'id' => $model->id]);
-                }
-                else
-                    $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
-            }else{
-                $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital');
-            }
-        }
-        
-        return $this->render('create0', [
-            'model' => $model,
-        ]);
-    }
-
     /**
      * Exibe Formulário no passo 1
      */

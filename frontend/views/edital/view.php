@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <br>
-    <?= Html::a('Inscrever-se', ['candidato/passo0', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
+    <?= Html::a('Inscrever-se', ['site/cadastroppgi', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
 
 <br>
 <br>

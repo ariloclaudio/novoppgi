@@ -62,6 +62,12 @@ class Candidato extends \yii\db\ActiveRecord
             'whenClient' => "function (attribute, value) {
                 return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 1;
             }"],
+
+
+            [['pais', 'passaporte'], 'required', 'when' => function($model){ return $model->passoatual == 1 && $model->nacionalidade == 2;},
+            'whenClient' => "function (attribute, value) {
+                return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 2;
+            }"],
 /*FIM Validações para passo 1*/
 
 /*Inicio Validações para passo 2*/

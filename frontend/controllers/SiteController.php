@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use Yii;
+use app\models\Candidato;
 use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
@@ -72,7 +73,41 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect(['edital/index']);
+    }
+
+    public function actionCadastroppgi($id)
+    {   
+
+    $model = new Candidato();
+
+    $model->idEdital = $id;    
+
+        if ($model->load(Yii::$app->request->post())){
+            if(!Candidato::find()->where(['idEdital' => $model->idEdital])->andWhere(['email' => $model->email])->count()){
+                
+                $model->inicio = date("Y-m-d H:i:s");
+                $model->passoatual = 0;
+                $model->repetirSenha = $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
+                $model->status = 10;
+                
+                try{
+                    $model->save();
+                    return $this->redirect(['candidato/passo1', 'id' => $model->id]);
+                }
+                catch(\Exception $e){ 
+                    $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
+                    throw new \yii\web\HttpException(405, 'Erro com relação ao identificador do edital'); 
+                }
+                    
+            }else{
+                $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital');
+            }
+        }
+        
+        return $this->render('/candidato/create0', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -90,7 +125,6 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()){
                 $this->redirect(['candidato/passo1', 'id' => Yii::$app->user->identity->id]);
         }else{
-            print_r($model->getErrors());
             return $this->render('login', [
                 'model' => $model,
             ]);
