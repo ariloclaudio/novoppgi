@@ -68,7 +68,7 @@ $fieldOptions2 = [
 
 
         <a href="#">Eu Esqueci minha senha</a><br>
-        <a href="index.php?r=candidato/passo0" class="text-center">Registrar um novo Usuário</a>
+        
 
     </div>
     <!-- /.login-box-body -->

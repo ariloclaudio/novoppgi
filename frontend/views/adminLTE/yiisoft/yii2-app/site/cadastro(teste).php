@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = 'aaaaaFormulário de Inscrição no Mestrado/Doutorado - PPGI/UFAM';
+$this->title = 'Formulário de Inscrição no Mestrado/Doutorado - PPGI/UFAM';
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -68,7 +68,6 @@ $fieldOptions2 = [
 
 
         <a href="#">Eu Esqueci minha senha</a><br>
-        <a href="index.php?r=candidato/passo0" class="text-center">Registrar um novo Usuário</a>
 
     </div>
     <!-- /.login-box-body -->
