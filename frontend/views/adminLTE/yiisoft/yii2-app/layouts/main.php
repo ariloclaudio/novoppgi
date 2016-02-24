@@ -14,7 +14,18 @@ if (Yii::$app->controller->action->id === 'login') {
         'main-login',
         ['content' => $content]
     );
-} else {
+} 
+/*
+//codigo comentado abaixo criado, ele fez com que a view contact mudasse de layout
+else if (Yii::$app->controller->action->id === 'contact') { 
+
+    echo $this->render(
+        'main-login',
+        ['content' => $content]
+    );
+}
+*/
+else {
 
     if (class_exists('backend\assets\AppAsset')) {
         backend\assets\AppAsset::register($this);

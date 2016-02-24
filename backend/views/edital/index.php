@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\SearchEdital */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Editals';
+$this->title = 'Editais';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="edital-index">

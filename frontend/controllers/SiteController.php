@@ -78,7 +78,9 @@ class SiteController extends Controller
 
     public function actionCadastroppgi($id)
     {   
-
+    
+    $this->layout = '@app/views/layouts/main2.php';
+    
     $model = new Candidato();
 
     $model->idEdital = $id;    

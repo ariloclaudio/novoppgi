@@ -35,6 +35,7 @@ class EditalController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = '@app/views/layouts/main2.php';
         $searchModel = new SearchEdital();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -51,6 +52,9 @@ class EditalController extends Controller
      */
     public function actionView($id)
     {
+
+        $this->layout = '@app/views/layouts/main2.php';
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

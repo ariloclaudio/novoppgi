@@ -7,11 +7,11 @@ use yii\helpers\Html;
 /* @var $model app\models\Candidato */
 
 $this->title = 'Formulário de Inscrição no Mestrado/Doutorado no PPGI/UFAM - Realizar Cadastro';
-$this->params['breadcrumbs'][] = ['label' => 'Candidatos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['index']];
 $this->params['breadcrumbs'][] = "Realizar Cadastro";
 ?>
 <div class="candidato-create">
-	
+	<h2> INSCRIÇÃO AO PROGRAMA DE PÓS GRADUAÇÃO EM INFORMÁTICA </h2>
 	<hr style="width: 100%; height: 2px; border-top: 1px solid black;">
 	<font size="2" style="line-height: 150%">
 		<p align="justify">Preencha os campos e-mail, senha e repetir senha para cadastrar um novo candidato.</p>

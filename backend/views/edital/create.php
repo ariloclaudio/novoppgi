@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Edital */
 
 $this->title = 'Criar Edital';
-$this->params['breadcrumbs'][] = ['label' => 'Editals', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="edital-create">

@@ -116,7 +116,7 @@ class CandidatoController extends Controller
      * Lists all Candidato models.
      * @return mixed
      */
-    public function actionIndex2()
+    public function actionIndex()
 
     {
         $searchModel = new CandidatoSearch();

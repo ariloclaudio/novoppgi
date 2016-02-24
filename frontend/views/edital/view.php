@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Edital */
 
 $this->title = "Edital de número: ".$model->numero;
-$this->params['breadcrumbs'][] = ['label' => 'Editals', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="edital-view">
