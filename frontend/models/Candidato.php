@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yiibr\brvalidator\CpfValidator;
+use yii\web\UploadedFile;
 
 class Candidato extends \yii\db\ActiveRecord
 {
@@ -37,7 +38,7 @@ class Candidato extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
+        return [        
 /*Inicio Validações para passo 0*/
             [['email', 'senha', 'repetirSenha'], 'required', 'when' => function($model){ return $model->passoatual == 0;},
                 'whenClient' => "function (attribute, value) {
@@ -95,7 +96,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf'],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
-            [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],
+            [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
             [['cidade'], 'string', 'max' => 40],
             [['nome', 'nomepai', 'nomemae'], 'string', 'max' => 60],
             [['endereco'], 'string', 'max' => 160],
@@ -233,9 +234,61 @@ class Candidato extends \yii\db\ActiveRecord
         ];
     }
 
+
+    /*Relacionamento*/
     public function getEdital()
     {
         return $this->hasOne(Edital::className(), ['idEdital' => 'numero']);
     }
+
+/*Uploads dos Pdf correspondente a cada passo*/
+
+    public function uploadPasso1($cartaFile)
+    {
+        if ($this->validate()) {
+            $this->cartaempregador = "cartaempregador-".date('dmYHis') . '.' . $cartaFile->extension;
+
+            $cartaFile->saveAs('documentos/' . 'cartaempregador' . '.' . $cartaFile->extension);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function uploadPasso2($historicoFile, $curriculumFile)
+    {
+        if ($this->validate()) {
+            
+            $this->historico = "Historico-".date('dmYHis'). '.' . $historicoFile->extension;
+            $this->curriculum = "Curriculum-".date('dmYHis'). '.' . $curriculumFile->extension;
+
+            $historicoFile->saveAs('documentos/' . $this->historico . '.' . $historicoFile->extension);
+            $curriculumFile->saveAs('documentos/' . $this->curriculum . '.' . $curriculumFile->extension);
+
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+    public function uploadPasso3($propostaFile, $comprovanteFile')
+    {
+        if ($this->validate()) {
+
+            $this->proposta = "Proposta".date('dmYHis'). '.' . $propostaFile->extension;
+            $this->comprovante = "Comprovante-".date('dmYHis'). '.' . $comprovanteFile->extension;
+
+            $propostaFile->saveAs('documentos/' . $this->proposta . '.' . $propostaFile->extension);
+            $comprovanteFile->saveAs('documentos/' . $this->comprovante . '.' . $comprovanteFile->extension);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
 }

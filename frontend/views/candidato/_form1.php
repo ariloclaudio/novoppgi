@@ -20,7 +20,7 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
 <div class="candidato-form">
 
-    <?php $form = ActiveForm::begin(['options'=>['validateOnSubmit' => true,'enctype'=>'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <input type="hidden" id = "form_hidden" value ="passo_form_1"/>
 
@@ -147,7 +147,7 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <?= $form->field($model, 'cargo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cartaempregador')->FileInput(['accept' => '.pdf'])->label("<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
+    <?= $form->field($model, 'cartaempregadorFile')->fileInput(['accept' => '.pdf'])->label("<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
     </div>
 
     <div class="form-group" style="margin-top:10px">

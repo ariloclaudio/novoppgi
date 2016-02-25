@@ -10,6 +10,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * CandidatoController implements the CRUD actions for Candidato model.
@@ -39,13 +41,17 @@ class CandidatoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-
             $model->passoatual = 1;
+            
+            if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile')))
+                if($model->save())
+                    return $this->redirect(['passo2', 'id' => $model->id]);
+                   
+            $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
+            return $this->render('create1', [
+                'model' => $model,
+            ]);
 
-            if($model->save())
-                return $this->redirect(['passo2', 'id' => $model->id]);
-            else
-                return var_dump($model->getErrors());
         } else {
             return $this->render('create1', [
                 'model' => $model,
@@ -61,6 +67,9 @@ class CandidatoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())){
+            
+            $model->passoatual = 2;
+
             if($model->save())
                 return $this->redirect(['passo3', 'id' => $model->id]);
             else
