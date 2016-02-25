@@ -259,7 +259,7 @@ class Candidato extends \yii\db\ActiveRecord
     public function uploadPasso2($historicoFile, $curriculumFile)
     {
         if ($this->validate()) {
-            
+
             $this->historico = "Historico-".date('dmYHis'). '.' . $historicoFile->extension;
             $this->curriculum = "Curriculum-".date('dmYHis'). '.' . $curriculumFile->extension;
 
@@ -273,11 +273,11 @@ class Candidato extends \yii\db\ActiveRecord
         }
     }
 
-    public function uploadPasso3($propostaFile, $comprovanteFile')
+    public function uploadPasso3($propostaFile, $comprovanteFile)
     {
         if ($this->validate()) {
 
-            $this->proposta = "Proposta".date('dmYHis'). '.' . $propostaFile->extension;
+            $this->proposta = "Proposta-".date('dmYHis'). '.' . $propostaFile->extension;
             $this->comprovante = "Comprovante-".date('dmYHis'). '.' . $comprovanteFile->extension;
 
             $propostaFile->saveAs('documentos/' . $this->proposta . '.' . $propostaFile->extension);
