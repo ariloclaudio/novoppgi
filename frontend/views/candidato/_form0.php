@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\Edital;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidato */
@@ -20,6 +22,11 @@ use yii\widgets\ActiveForm;
         </div>
         <div class= "row">
         <?= $form->field($model, 'repetirSenha' , ['options' => ['class' => 'col-md-3']] )->passwordInput(['value' => ""])->label("<font color='#FF0000'>*</font> <b>Repetir Senha:</b>") ?>
+        </div>
+        <div class ="row">
+        <?= $form->field($model, 'id', ['options' => ['class' => 'col-md-3']])->dropDownList(ArrayHelper::map(Edital::find()->all(),'numero','numero'),['prompt'=>'Selecione o Edital'])->label("<font color='#FF0000'>*</font> <b>Edital:</b>") ; ?>
+
+
         </div>
     <br>
         <div class="form-group">
