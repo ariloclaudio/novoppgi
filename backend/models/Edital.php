@@ -15,6 +15,7 @@ use Yii;
  */
 class Edital extends \yii\db\ActiveRecord
 {
+    public $documentoFile;
     /**
      * @inheritdoc
      */
@@ -29,9 +30,11 @@ class Edital extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['numero', 'datainicio', 'datafim', 'documento'], 'required'],
-            [['numero'], 'integer'],
-            [['datainicio', 'datafim'], 'safe'],
+            [['numero', 'datainicio', 'datafim', 'cartarecomendacao', 'curso', 'cotas', 'documentoFile', 'documento'], 'required'],
+            [['numero', 'curso'], 'string'],
+            [['cotas'], 'integer', 'min' => 0],
+            [['datainicio', 'datafim', 'documentoFile'], 'safe'],
+            [['documentoFile'], 'file', 'extensions' => 'pdf'],
             [['documento'], 'string', 'max' => 100]
         ];
     }
@@ -43,9 +46,13 @@ class Edital extends \yii\db\ActiveRecord
     {
         return [
             'numero' => 'Numero',
-            'datainicio' => 'Datainicio',
-            'datafim' => 'Datafim',
+            'datainicio' => 'Data Ínicio',
+            'datafim' => 'Data Fim',
             'documento' => 'Documento',
+            'cartarecomendacao' => 'Carta de Recomendação',
+            'curso' => 'Curso',
+            'cotas' => 'Cotas',
+            'documentoFile' => 'Edital PDF',
         ];
     }
 }

@@ -71,6 +71,9 @@ class EditalController extends Controller
     {
         $model = new Edital();
 
+        $model->cartarecomendacao = 1;
+        $model->cotas = 0;
+
         if ($model->load(Yii::$app->request->post())) {
 
             $diainicio = explode("/", $model->datainicio);
