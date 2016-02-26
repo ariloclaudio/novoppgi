@@ -71,7 +71,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex($id)
+    public function actionIndex()
     {
         return $this->redirect(['site/login']);
     }

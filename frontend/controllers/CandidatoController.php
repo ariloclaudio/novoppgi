@@ -78,7 +78,7 @@ class CandidatoController extends Controller
             
             $model->passoatual = 2;
 
-            if($model->uploadPasso2(UploadedFile::getInstance($model, 'histoticoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
+            if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
                 if($model->save()){
                     return $this->redirect(['passo3']);
                 }
