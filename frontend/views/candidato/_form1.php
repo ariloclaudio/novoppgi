@@ -13,9 +13,8 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Divorciado(a)' => 'Divorciado(a)', 
 'Viúvo(a)' => 'Viúvo(a)', "União Estável" => "União Estável"];
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Candidato */
-/* @var $form yii\widgets\ActiveForm */
+$labelCartaEmpregador = "<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b><br>Atual Arquivo com a Carta do Empregador:";
+if(1==1) $labelCartaEmpregador .= "<a target='resource window' href='documentos/$model->cartaempregador'><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>"; else $labelCartaEmpregador .= " <i>Nenhum arquivo de carta do empregador carregado.<i>";
 ?>
 
 <div class="candidato-form">
@@ -131,8 +130,6 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
     </div>
 
 
-
-
     <div class = "row">
         <?= $form->field($model, 'solicitabolsa', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Solicita Bolsa de Estudo?</b>")  ?>
 
@@ -147,7 +144,8 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 
     <?= $form->field($model, 'cargo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cartaempregadorFile')->fileInput(['accept' => '.pdf'])->label("<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b>") ?>
+    <?= $form->field($model, 'cartaempregadorFile')->FileInput(['accept' => '.pdf'])->label($labelCartaEmpregador) ?>
+    
     </div>
 
     <div class="form-group" style="margin-top:10px">

@@ -27,6 +27,19 @@ $(document).ready( function() {
    return false;    
    })
 
+   if($( "input[name='Candidato[vinculoemprego]']:checked" ).val() == "SIM"){
+        $('#divVinculo').css('display', 'block');
+    }
+
+    if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
+        $('#divBrasileiro').css('display', 'block');
+        $('#divEstrangeiro').css('display', 'none');
+
+    }else{
+        $('#divEstrangeiro').css('display', 'block');
+        $('#divBrasileiro').css('display', 'none');
+    }
+
    $('#candidato-nacionalidade').click(function(){
    		if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
    			$('#divBrasileiro').css('display', 'block');

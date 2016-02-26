@@ -12,7 +12,7 @@ use kartik\widgets\SwitchInput;
 
 <div class="edital-form">
 	<div class="grid">
-	    <?php $form = ActiveForm::begin(['options'=>['validateOnSubmit' => true,'enctype'=>'multipart/form-data']]); ?>
+	    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
 		    <div class="row">
 		    	<?= $form->field($model, 'numero', ['options' => ['class' => 'col-md-4']])->textInput() ?>

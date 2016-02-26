@@ -38,7 +38,8 @@ class Candidato extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [        
+
+        return [
 /*Inicio Validações para passo 0*/
             [['email', 'senha', 'repetirSenha'], 'required', 'when' => function($model){ return $model->passoatual == 0;},
                 'whenClient' => "function (attribute, value) {
@@ -73,10 +74,12 @@ class Candidato extends \yii\db\ActiveRecord
 
 /*Inicio Validações para passo 2*/
 
-            [['cursograd', 'instituicaograd', 'egressograd', 'crgrad', 'historicoFile' , 'curriculumFile' , 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required', 'when' => function($model){ return $model->passoatual == 2;},
+            [['cursograd', 'instituicaograd', 'egressograd', 'crgrad', 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required', 'when' => function($model){ return $model->passoatual == 2;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_2';
             }"],
+            [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->historico);}],
+            //[['curriculumFile'], 'required', 'when' => function($model){ return !isset($model->curriculum);}],
 /*FIM Validações para passo 2*/
 /*Inicio Validações para passo 3*/
             [['linhapesquisa', 'tituloproposta', 'cartaNomeReq1', 'cartaNomeReq2', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
@@ -93,7 +96,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
  
             [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'safe'],
-            [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf'],
+            [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 2],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
@@ -241,15 +244,15 @@ class Candidato extends \yii\db\ActiveRecord
         return $this->hasOne(Edital::className(), ['idEdital' => 'numero']);
     }
 
-/*Uploads dos Pdf correspondente a cada passo*/
+/*Uploads dos Pdfs correspondentes a cada passo*/
 
     public function uploadPasso1($cartaFile)
     {
         if(!isset($cartaFile)){
             return true;
         }else if ($this->validate()) {
-            $this->cartaempregador = "cartaempregador-".date('dmYHis') . '.' . $cartaFile->extension;
-            $cartaFile->saveAs('documentos/' . $this->cartaempregador . '.' . $cartaFile->extension);
+            $this->cartaempregador = "cartaempregador-".date('HdYmsisu') . '.' . $cartaFile->extension;
+            $cartaFile->saveAs('documentos/' . $this->cartaempregador);
             return true;
         } else {
             return false;
@@ -258,18 +261,18 @@ class Candidato extends \yii\db\ActiveRecord
     
     public function uploadPasso2($historicoFile, $curriculumFile)
     {
-        if ($this->validate()) {
+        if (isset($historicoFile) && isset($curriculumFile)) {
 
-            $this->historico = "Historico-".date('dmYHis'). '.' . $historicoFile->extension;
-            $this->curriculum = "Curriculum-".date('dmYHis'). '.' . $curriculumFile->extension;
+            $this->historico = "Historico-".date('dmYHisu'). '.' . $historicoFile->extension;
+            $this->curriculum = "Curriculum-".date('dmYHisu'). '.' . $curriculumFile->extension;
 
-            $historicoFile->saveAs('documentos/' . $this->historico . '.' . $historicoFile->extension);
-            $curriculumFile->saveAs('documentos/' . $this->curriculum . '.' . $curriculumFile->extension);
+            $historicoFile->saveAs('documentos/' . $this->historico);
+            $curriculumFile->saveAs('documentos/' . $this->curriculum);
 
             return true;
         } else {
 
-            return false;
+            return true;
         }
     }
 
@@ -277,11 +280,11 @@ class Candidato extends \yii\db\ActiveRecord
     {
         if ($this->validate()) {
 
-            $this->proposta = "Proposta-".date('dmYHis'). '.' . $propostaFile->extension;
-            $this->comprovante = "Comprovante-".date('dmYHis'). '.' . $comprovanteFile->extension;
+            $this->proposta = "Proposta-".date('dmYHisu'). '.' . $propostaFile->extension;
+            $this->comprovante = "Comprovante-".date('dmYHisu'). '.' . $comprovanteFile->extension;
 
-            $propostaFile->saveAs('documentos/' . $this->proposta . '.' . $propostaFile->extension);
-            $comprovanteFile->saveAs('documentos/' . $this->comprovante . '.' . $comprovanteFile->extension);
+            $propostaFile->saveAs('documentos/' . $this->proposta);
+            $comprovanteFile->saveAs('documentos/' . $this->comprovante);
 
             return true;
         } else {

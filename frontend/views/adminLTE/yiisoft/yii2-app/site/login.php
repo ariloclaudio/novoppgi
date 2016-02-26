@@ -19,13 +19,14 @@ $fieldOptions2 = [
 ];
 
 ?>
+<?= Yii::$app->view->renderFile('@app/views/layouts/mensagemFlash.php') ?>
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b> PPGI - Candidato </b></a>
+        <p align="center"><h3>Formulário de Inscrição no Mestrado/Doutorado - PPGI/UFAM</h3></p>
     </div>
-    
-    <div style="border: 2px solid white; margin-bottom: 10px;">
+    <hr style="width: 100%; height: 2px;">
+    <div style="margin-bottom: 10px;">    
         <font size="2" style="line-height: 150%">
         <p align="justify"><ul>
            <li>Para iniciar uma nova inscri&#231;&#227;o, clique no bot&#227;o <b>Nova Inscri&#231;&#227;o</b>.</li>
@@ -35,6 +36,7 @@ $fieldOptions2 = [
         </ul></p>
         </font>
     </div>
+    <hr style="width: 100%; height: 2px;">
 
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -53,22 +55,17 @@ $fieldOptions2 = [
             ->passwordInput(['placeholder' => $model->getAttributeLabel('senha')]) ?>
 
         <div class="row">
-            <div class="col-xs-8">
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+            <div class="col-xs-6">
+                <?= Html::a('Nova Inscrição', ['site/cadastroppgi'], ['class' => 'btn btn-primary btn-block btn-flat']) ?><br>
             </div>
             <!-- /.col -->
-            <div class="col-xs-4">
-                <?= Html::submitButton('Entrar', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+            <div class="col-xs-6">
+                <?= Html::submitButton('Continuar Inscrição', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
             <!-- /.col -->
         </div>
-
-
         <?php ActiveForm::end(); ?>
-
-
-        <a href="#">Eu Esqueci minha senha</a><br>
-        
+        <?= Html::a('Eu Esqueci Minha Senha', ['site/request-password-reset']) ?><br>
 
     </div>
     <!-- /.login-box-body -->

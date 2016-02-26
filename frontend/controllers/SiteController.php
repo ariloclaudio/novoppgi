@@ -37,7 +37,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -71,12 +71,12 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
-        return $this->redirect(['edital/index']);
+        return $this->redirect(['site/login']);
     }
 
-    public function actionCadastroppgi($id)
+    public function actionCadastroppgi()
     {   
     
     $this->layout = '@app/views/layouts/main2.php';
@@ -126,13 +126,23 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        /*Redirecionamento para o formulário caso candidato esteja "logado"*/
+        
+        /*if(Yii::$app->session->get('candidato') !== null)
+            $this->redirect(['candidato/passo1']);*/
+
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()){
-                $this->redirect(['candidato/passo1', 'id' => Yii::$app->user->identity->id]);
+            //setando o id do candidato via sessão
+            $session = Yii::$app->session;
+            $session->open();
+            $session->set('candidato', Yii::$app->user->identity->id);
+            //fim -> setando id do candidato
+            $this->redirect(['candidato/passo1']);
         }else{
             return $this->render('login', [
                 'model' => $model,
@@ -147,7 +157,7 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        Yii::$app->session->destroy();
 
         return $this->goHome();
     }
@@ -216,11 +226,11 @@ class SiteController extends Controller
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                $this->mensagens('success', 'Email Enviado com Sucesso.', 'Verifique sua conta de email');
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                $this->mensagens('warning', 'Erro ao Enviar Email', 'Desculpe, o email não pode ser enviado. Verique sua conexão ou contate o admin');
             }
         }
 

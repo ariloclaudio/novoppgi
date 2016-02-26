@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "j17_edital".
@@ -30,8 +31,10 @@ class Edital extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['numero', 'datainicio', 'datafim', 'cartarecomendacao', 'curso', 'cotas', 'documentoFile', 'documento'], 'required'],
+            [['numero', 'datainicio', 'datafim', 'cartarecomendacao', 'curso', 'cotas'], 'required'],
+            [['documentoFile'], 'required', 'when' => function($model){ return !isset($model->documento);}],
             [['numero', 'curso'], 'string'],
+            [['numero'], 'unique', 'message' => 'Edital já criado'],
             [['cotas'], 'integer', 'min' => 0],
             [['datainicio', 'datafim', 'documentoFile'], 'safe'],
             [['documentoFile'], 'file', 'extensions' => 'pdf'],
@@ -54,5 +57,16 @@ class Edital extends \yii\db\ActiveRecord
             'cotas' => 'Cotas',
             'documentoFile' => 'Edital PDF',
         ];
+    }
+
+    public function uploadDocumento($documentoFile)
+    {
+        if (isset($documentoFile)) {
+            $this->documento = "edital-".date('dmYHisu') . '.' . $documentoFile->extension;
+            $documentoFile->saveAs('editais/' . $this->documento);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

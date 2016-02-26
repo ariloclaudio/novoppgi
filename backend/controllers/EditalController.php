@@ -8,6 +8,8 @@ use app\models\SearchEdital;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * EditalController implements the CRUD actions for Edital model.
@@ -82,14 +84,15 @@ class EditalController extends Controller
             $diafim = explode("/", $model->datafim);
             $model->datafim =$diafim[2]."-".$diafim[1]."-".$diafim[0];
 
-            $model->save();
-
-            return $this->redirect(['view', 'id' => $model->numero]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if($model->uploadDocumento(UploadedFile::getInstance($model, 'documentoFile'))){
+                if($model->save())
+                    return $this->redirect(['view', 'id' => $model->numero]);
+            }
         }
+        
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -157,5 +160,20 @@ class EditalController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+            /* Envio de mensagens para views
+       Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }

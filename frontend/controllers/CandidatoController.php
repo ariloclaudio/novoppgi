@@ -46,13 +46,10 @@ class CandidatoController extends Controller
         
         if ($model->load(Yii::$app->request->post())) {
             $model->passoatual = 1;
-
-            //return $model->cartaempregadorFile == null ? "CERTO" : "Errado";
-            //exit();
             
             if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
                 if($model->save()){
-                    return $this->redirect(['passo2', 'id' => $model->id]);
+                    return $this->redirect(['passo2']);
                 }
             }
 
@@ -71,30 +68,30 @@ class CandidatoController extends Controller
     /**
      * Exibe Formulário no passo 2
      */
-    public function actionPasso2($id)
+    public function actionPasso2()
     {
         $session = Yii::$app->session;
-
-        var_dump($session->get('candidato'));
-
         $id = $session->get('candidato');
-
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())){
             
             $model->passoatual = 2;
 
-            if($model->save())
-                return $this->redirect(['passo3', 'id' => $model->id]);
-            else
-                return var_dump($model->getErrors());
+            if($model->uploadPasso2(UploadedFile::getInstance($model, 'histoticoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
+                if($model->save()){
+                    return $this->redirect(['passo3']);
+                }
+            }else{
+                echo "UPLOAD";
+            }
+        }
 
-        } else {
-            return $this->render('create2', [
+        echo var_dump($model->getErrors());
+
+        return $this->render('create2', [
                 'model' => $model,
             ]);
-        }
     }
 
     /**
@@ -102,7 +99,9 @@ class CandidatoController extends Controller
      */
     public function actionPasso3($id)
     {
-        $model = $this->findModel($id);        
+        $session = Yii::$app->session;
+        $id = $session->get('candidato');
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['passo4', 'id' => $model->id]);
@@ -118,13 +117,9 @@ class CandidatoController extends Controller
      */
     public function actionPasso4()
     {
-        $idCandidato = filter_input(INPUT_GET, 'idCandidato');
-        /*
-        if(!isset($idCandidato))
-            return "FALTA ID DO CANDIDATO";
-        */
-
-        $model = new Candidato();    
+        $session = Yii::$app->session;
+        $id = $session->get('candidato');
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()){
             return $this->redirect(['view', 'id' => $model->id]);
