@@ -34,19 +34,26 @@ class CandidatoController extends Controller
     /**
      * Exibe Formulário no passo 1
      */
-    public function actionPasso1($id){
+    public function actionPasso1(){
 
+        //obtendo o id do candidato por sessão.
         $model = new Candidato();
+        $session = Yii::$app->session;
+        $id = $session->get('candidato');
+        //fim do recebimento do id por sessão
 
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post())) {
             $model->passoatual = 1;
-            
-            if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile')))
-                if($model->save())
+
+            //está dando erro no if abaixo
+            //if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
+                if($model->save()){
                     return $this->redirect(['passo2', 'id' => $model->id]);
-                   
+                }
+            //}
+
             $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
             return $this->render('create1', [
                 'model' => $model,
@@ -64,6 +71,12 @@ class CandidatoController extends Controller
      */
     public function actionPasso2($id)
     {
+        $session = Yii::$app->session;
+
+        var_dump($session->get('candidato'));
+
+        $id = $session->get('candidato');
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())){

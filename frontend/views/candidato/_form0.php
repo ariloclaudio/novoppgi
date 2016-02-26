@@ -11,7 +11,7 @@ use app\models\Edital;
 ?>
 <div class="candidato-index">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'forum_post', 'method' => 'post',]); ?>
     <input type="hidden" id = "form_hidden" value ="passo_form_0"/>
 
         <div class ="row">
@@ -24,7 +24,7 @@ use app\models\Edital;
         <?= $form->field($model, 'repetirSenha' , ['options' => ['class' => 'col-md-3']] )->passwordInput(['value' => ""])->label("<font color='#FF0000'>*</font> <b>Repetir Senha:</b>") ?>
         </div>
         <div class ="row">
-        <?= $form->field($model, 'id', ['options' => ['class' => 'col-md-3']])->dropDownList(ArrayHelper::map(Edital::find()->all(),'numero','numero'),['prompt'=>'Selecione o Edital'])->label("<font color='#FF0000'>*</font> <b>Edital:</b>") ; ?>
+        <?= $form->field($model, 'idEdital', ['options' => ['class' => 'col-md-3']])->dropDownList(ArrayHelper::map(Edital::find()->all(),'numero','numero'),['prompt'=>'Selecione o Edital'])->label("<font color='#FF0000'>*</font> <b>Edital:</b>") ; ?>
 
 
         </div>

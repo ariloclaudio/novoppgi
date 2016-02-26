@@ -95,7 +95,14 @@ class SiteController extends Controller
                 
                 try{
                     $model->save();
-                    return $this->redirect(['candidato/passo1', 'id' => $model->id]);
+
+                    //setando o id do candidato via sessão
+                        $session = Yii::$app->session;
+                        $session->open();
+                        $session->set('candidato',$model->id);
+                    //fim -> setando id do candidato
+
+                    return $this->redirect(['candidato/passo1']);
                 }
                 catch(\Exception $e){ 
                     $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
