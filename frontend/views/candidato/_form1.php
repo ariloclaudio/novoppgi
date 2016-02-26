@@ -14,7 +14,7 @@ $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Di
 'Viúvo(a)' => 'Viúvo(a)', "União Estável" => "União Estável"];
 
 $labelCartaEmpregador = "<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b><br>Atual Arquivo com a Carta do Empregador:";
-if(1==1) $labelCartaEmpregador .= "<a target='resource window' href='documentos/$model->cartaempregador'><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>"; else $labelCartaEmpregador .= " <i>Nenhum arquivo de carta do empregador carregado.<i>";
+if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource window' href='documentos/$model->cartaempregador'><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>"; else $labelCartaEmpregador .= " <i>Nenhum arquivo de carta do empregador carregado.<i>";
 ?>
 
 <div class="candidato-form">

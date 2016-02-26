@@ -80,14 +80,13 @@ class CandidatoController extends Controller
 
             if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
                 if($model->save()){
+                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     return $this->redirect(['passo3']);
                 }
             }else{
-                echo "UPLOAD";
+                $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
             }
         }
-
-        echo var_dump($model->getErrors());
 
         return $this->render('create2', [
                 'model' => $model,
@@ -97,7 +96,7 @@ class CandidatoController extends Controller
     /**
      * Exibe Formulário no passo 3
      */
-    public function actionPasso3($id)
+    public function actionPasso3()
     {
         $session = Yii::$app->session;
         $id = $session->get('candidato');

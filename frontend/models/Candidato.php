@@ -78,8 +78,14 @@ class Candidato extends \yii\db\ActiveRecord
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_2';
             }"],
-            [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->historico) && $model->passoatual == 2;}],
-            [['curriculumFile'], 'required', 'when' => function($model){ return !isset($model->curriculum) && $model->passoatual == 2;}],
+            [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->historico) && $model->passoatual == 2;}, 
+                'whenClient' => "function (attribute, value) {
+                    return $('#form_hidden').val() == 'passo_form_2 && !isset($model->historico)';
+                }"],
+            [['curriculumFile'], 'required', 'when' => function($model){ return !isset($model->curriculum) && $model->passoatual == 2;},
+                'whenClient' => "function (attribute, value) {
+                    return $('#form_hidden').val() == 'passo_form_2 && !isset($model->curriculum)';
+                }"],
 /*FIM Validações para passo 2*/
 /*Inicio Validações para passo 3*/
             [['linhapesquisa', 'tituloproposta', 'cartaNomeReq1', 'cartaNomeReq2', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
@@ -261,7 +267,7 @@ class Candidato extends \yii\db\ActiveRecord
     
     public function uploadPasso2($historicoFile, $curriculumFile)
     {
-        if (!isset($historicoFile) && !isset($curriculumFile)) {
+        if (isset($historicoFile) && isset($curriculumFile)) {
 
             $this->historico = "Historico-".date('dmYHisu'). '.' . $historicoFile->extension;
             $this->curriculum = "Curriculum-".date('dmYHisu'). '.' . $curriculumFile->extension;
@@ -270,7 +276,9 @@ class Candidato extends \yii\db\ActiveRecord
             $curriculumFile->saveAs('documentos/' . $this->curriculum);
 
             return true;
-        } else {
+        } else if(isset($this->historico) && isset($this->curriculum)){
+            return true;
+        }else{
             return false;
         }
     }
@@ -290,7 +298,5 @@ class Candidato extends \yii\db\ActiveRecord
             return false;
         }
     }
-
-
 
 }
