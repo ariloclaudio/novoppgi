@@ -47,12 +47,14 @@ class CandidatoController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->passoatual = 1;
 
-            //está dando erro no if abaixo
-            //if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
+            //return $model->cartaempregadorFile == null ? "CERTO" : "Errado";
+            //exit();
+            
+            if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
                 if($model->save()){
                     return $this->redirect(['passo2', 'id' => $model->id]);
                 }
-            //}
+            }
 
             $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
             return $this->render('create1', [

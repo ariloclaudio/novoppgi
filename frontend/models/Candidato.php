@@ -245,11 +245,11 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function uploadPasso1($cartaFile)
     {
-        if ($this->validate()) {
+        if(!isset($cartaFile)){
+            return true;
+        }else if ($this->validate()) {
             $this->cartaempregador = "cartaempregador-".date('dmYHis') . '.' . $cartaFile->extension;
-
-            $cartaFile->saveAs('documentos/' . 'cartaempregador' . '.' . $cartaFile->extension);
-
+            $cartaFile->saveAs('documentos/' . $this->cartaempregador . '.' . $cartaFile->extension);
             return true;
         } else {
             return false;
