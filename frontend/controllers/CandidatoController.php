@@ -36,6 +36,8 @@ class CandidatoController extends Controller
      */
     public function actionPasso1(){
 
+        $this->layout = '@app/views/layouts/main2.php';
+
         //obtendo o id do candidato por sessão.
         $model = new Candidato();
         $session = Yii::$app->session;
@@ -70,6 +72,9 @@ class CandidatoController extends Controller
      */
     public function actionPasso2()
     {
+
+        $this->layout = '@app/views/layouts/main2.php';
+
         $session = Yii::$app->session;
         $id = $session->get('candidato');
         $model = $this->findModel($id);
@@ -98,6 +103,9 @@ class CandidatoController extends Controller
      */
     public function actionPasso3()
     {
+
+        $this->layout = '@app/views/layouts/main2.php';
+
         $session = Yii::$app->session;
         $id = $session->get('candidato');
         $model = $this->findModel($id);
@@ -116,6 +124,10 @@ class CandidatoController extends Controller
      */
     public function actionPasso4()
     {
+
+        $this->layout = '@app/views/layouts/main2.php';
+
+
         $session = Yii::$app->session;
         $id = $session->get('candidato');
         $model = $this->findModel($id);

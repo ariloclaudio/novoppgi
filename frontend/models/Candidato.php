@@ -267,15 +267,31 @@ class Candidato extends \yii\db\ActiveRecord
     
     public function uploadPasso2($historicoFile, $curriculumFile)
     {
+
         if (isset($historicoFile) && isset($curriculumFile)) {
 
-            $this->historico = "Historico-".date('dmYHisu'). '.' . $historicoFile->extension;
-            $this->curriculum = "Curriculum-".date('dmYHisu'). '.' . $curriculumFile->extension;
+            //obtenção o ID do usuário pelo meio de sessão
+            $id = Yii::$app->session->get('candidato');
+            //fim da obtenção do ID
 
-            $historicoFile->saveAs('documentos/' . $this->historico);
-            $curriculumFile->saveAs('documentos/' . $this->curriculum);
+            //definição de um caminho padrão, baseado no ID do candidato
+            $caminho = 'documentos/'.$id.'/';
+            //fim da definição do caminho padrão
 
-            return true;
+            //verificação se o diretório a ser criado já existe, pois se já existe, não há necessidade de criar outro
+            $caminho_ja_existe = is_dir($caminho);
+            if($caminho_ja_existe != true){
+                mkdir($caminho);
+            }
+            //fim da verificação
+
+            $this->historico = "Historico.".$historicoFile->extension;
+            $this->curriculum = "Curriculum.".$curriculumFile->extension;
+
+            $x = $historicoFile->saveAs($caminho.$this->historico);
+            $curriculumFile->saveAs($caminho.$this->curriculum);
+
+             return true;
         } else if(isset($this->historico) && isset($this->curriculum)){
             return true;
         }else{
@@ -287,11 +303,18 @@ class Candidato extends \yii\db\ActiveRecord
     {
         if ($this->validate()) {
 
-            $this->proposta = "Proposta-".date('dmYHisu'). '.' . $propostaFile->extension;
-            $this->comprovante = "Comprovante-".date('dmYHisu'). '.' . $comprovanteFile->extension;
+            //obtenção o ID do usuário pelo meio de sessão
+            $id = Yii::$app->session->get('candidato');
+            //fim da obtenção do ID
 
-            $propostaFile->saveAs('documentos/' . $this->proposta);
-            $comprovanteFile->saveAs('documentos/' . $this->comprovante);
+            //definição de um caminho padrão, baseado no ID do candidato
+            $caminho = 'documentos/'.$id.'/';
+
+            $this->proposta = "Proposta.".$propostaFile->extension;
+            $this->comprovante = "Comprovante".$comprovanteFile->extension;
+
+            $propostaFile->saveAs($id.$this->proposta);
+            $comprovanteFile->saveAs($id.$this->comprovante);
 
             return true;
         } else {
