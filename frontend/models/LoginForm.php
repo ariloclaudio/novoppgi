@@ -13,6 +13,7 @@ class LoginForm extends Model
     public $password;
     public $email;
     public $rememberMe = true;
+    public $idEdital;
 
     private $_user;
 
@@ -30,6 +31,7 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+            [['idEdital'],'required'],
         ];
     }
 
@@ -44,8 +46,12 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
+
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Login ou Senha incorreta.');
+                $this->addError($attribute, '');
+                $this->addError('email', '');
+                $this->addError('idEdital', 'Login ou Senha ou Edital incorretos');
+
             }
         }
     }
@@ -72,7 +78,7 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByEmail($this->email);
+            $this->_user = User::findByEmail($this->email,$this->idEdital);
         }
 
         return $this->_user;

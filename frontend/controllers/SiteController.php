@@ -73,7 +73,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->redirect(['site/login']);
+        return $this->redirect(['site/opcoes']);
     }
 
     public function actionCadastroppgi()
@@ -83,7 +83,7 @@ class SiteController extends Controller
     
     $model = new Candidato();
 
-    $model->idEdital = $id;    
+    //$model->idEdital = $id;    
 
         if ($model->load(Yii::$app->request->post())){
             if(!Candidato::find()->where(['idEdital' => $model->idEdital])->andWhere(['email' => $model->email])->count()){
@@ -124,6 +124,15 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+
+    public function actionOpcoes()
+    {
+        $this->layout = '@app/views/layouts/main-login.php';
+        $model = new Candidato();
+        return $this->render('opcoes',['model' => $model,
+            ]);
+    }
+
     public function actionLogin()
     {
         /*Redirecionamento para o formulário caso candidato esteja "logado"*/
@@ -137,6 +146,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()){
+
             //setando o id do candidato via sessão
             $session = Yii::$app->session;
             $session->open();
