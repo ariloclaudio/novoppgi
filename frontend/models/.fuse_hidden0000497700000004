@@ -78,14 +78,8 @@ class Candidato extends \yii\db\ActiveRecord
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_2';
             }"],
-            [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->historico) && $model->passoatual == 2;}, 
-                'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2';
-                }"],
-            [['curriculumFile'], 'required', 'when' => function($model){ return !isset($model->curriculum) && $model->passoatual == 2;},
-                'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2';
-                }"],
+            [['historicoFile'], 'required', 'when' => function($model){ return $model->passoatual == 2 && !isset($model->historico);}],
+            [['curriculumFile'], 'required', 'when' => function($model){ return $model->passoatual == 2 && !isset($model->historico);}],
 /*FIM Validações para passo 2*/
 /*Inicio Validações para passo 3*/
             [['linhapesquisa', 'tituloproposta', 'cartaNomeReq1', 'cartaNomeReq2', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
