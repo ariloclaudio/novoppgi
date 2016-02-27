@@ -58,30 +58,6 @@ $linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' 
 
     <?= $form->field($model, 'comprovantepagamento')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Comprovante de Pagamento da taxa de inscrição (Comprovante emitido por bancos e lotericas):</b>") ?>
 
-
-    <?= $form->field($model, 'senha')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'inicio')->textInput() ?>
-
-    <?= $form->field($model, 'fim')->textInput() ?>
-
-    <?= $form->field($model, 'passoatual')->textInput() ?>
-    
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-
-    <?= $form->field($model, 'diploma')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'dataformaturagrad')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'dataformaturaesp')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'dataformaturapos')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'resultado')->textInput() ?>
-
-    <?= $form->field($model, 'periodo')->textInput(['maxlength' => true]) ?>
-
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Salvar e Continuar' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
