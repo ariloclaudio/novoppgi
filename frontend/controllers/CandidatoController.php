@@ -47,7 +47,10 @@ class CandidatoController extends Controller
         $model = $this->findModel($id);
         
         if ($model->load(Yii::$app->request->post())) {
-            $model->passoatual = 1;
+
+            if($model->passoatual == 0){
+                $model->passoatual = 1;
+            }
             
             if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
                 if($model->save()){
@@ -60,7 +63,7 @@ class CandidatoController extends Controller
                 'model' => $model,
             ]);
 
-        } else {
+         }else {
             return $this->render('create1', [
                 'model' => $model,
             ]);
@@ -80,17 +83,25 @@ class CandidatoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())){
-            
-            $model->passoatual = 2;
 
+            if($model->passoatual == 1){
+                $model->passoatual = 2;
+            }
+            
             if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
                 if($model->save()){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     return $this->redirect(['passo3']);
                 }
-            }else{
+            }
+            else{
                 $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
             }
+        
+
+        }
+        else if( $model->passoatual == 0){
+                return $this->redirect(['passo1']);
         }
 
         return $this->render('create2', [
@@ -110,9 +121,23 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            if($model->passoatual == 2){
+                $model->passoatual = 3;
+            }
+
+            if($model->save(false)){
+                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
+                    return $this->redirect(['passo4', 'id' => $model->id]);
+            }
+
             return $this->redirect(['passo4', 'id' => $model->id]);
-        } else {
+        } 
+        else if( $model->passoatual <= 1){
+            return $this->redirect(['passo1']);
+        }
+        else {
             return $this->render('create3', [
                 'model' => $model,
             ]);
@@ -132,13 +157,14 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()){
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        if( $model->passoatual <= 2){
+            return $this->redirect(['passo1']);
+        }
+
             return $this->render('passo4', [
                 'model' => $model,
             ]);
-        }
+        
     }
 
 
