@@ -53,12 +53,14 @@ class CandidatoController extends Controller
             }
             
             if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
-                if($model->save()){
+                if($model->save(false)){
+                    $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
                     return $this->redirect(['passo2']);
                 }
             }
 
             $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
+
             return $this->render('create1', [
                 'model' => $model,
             ]);
@@ -89,7 +91,7 @@ class CandidatoController extends Controller
             }
             
             if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
-                if($model->save()){
+                if($model->save(false)){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     return $this->redirect(['passo3']);
                 }
@@ -129,10 +131,10 @@ class CandidatoController extends Controller
 
             if($model->save(false)){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
-                    return $this->redirect(['passo4', 'id' => $model->id]);
+                    return $this->redirect(['passo4']);
             }
 
-            return $this->redirect(['passo4', 'id' => $model->id]);
+            return $this->redirect(['passo4']);
         } 
         else if( $model->passoatual <= 1){
             return $this->redirect(['passo1']);
@@ -163,6 +165,7 @@ class CandidatoController extends Controller
 
             return $this->render('passo4', [
                 'model' => $model,
+                'id' => $id,
             ]);
         
     }
