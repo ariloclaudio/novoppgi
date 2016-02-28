@@ -30,7 +30,8 @@ $fieldOptions2 = [
 
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <div class="login-box-msg"> Preencha os campos abaixo: </div>
+        <div class="login-box-msg" style="font-weight: bold; font-size:20px"> Efetuar Login </div>
+        <div style="text-align:center; margin-bottom:20px; font-weight: normal"> Todos os campos são obrigatórios </div>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
@@ -45,7 +46,7 @@ $fieldOptions2 = [
             ->passwordInput(['placeholder' => $model->getAttributeLabel('senha')]) ?>
         
 
-            <?= $form->field($model, 'idEdital', ['options' => ['style' => 'text-align: center; margin-bottom:10px', 'class' => 'col-md-12']])->dropDownList(ArrayHelper::map(Edital::find()->all(),'numero','numero'))->label("<font color='#FF0000'></font> <b>Selecione um Edital:</b>") ; ?>
+            <?= $form->field($model, 'idEdital', ['options' => ['style' => 'text-align: center; margin-bottom:10px', 'class' => 'col-md-12']])->dropDownList(ArrayHelper::map(Edital::find()->all(),'numero','numero'),['prompt'=>'Selecione um Edital'])->label(false) ; ?>
 
         <div class="row">
             <!-- /.col -->

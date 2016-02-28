@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\Candidato;
+use app\models\Edital;
 use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
@@ -114,8 +115,11 @@ class SiteController extends Controller
             }
         }
         
+        $edital = Edital::find()->all();
+
         return $this->render('/candidato/create0', [
             'model' => $model,
+            'edital' => $edital,
         ]);
     }
 

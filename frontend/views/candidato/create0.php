@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = "Realizar Cadastro";
 
     <?= $this->render('_form0', [
         'model' => $model,
+        'edital'=> $edital,
     ]) ?>
 
 
