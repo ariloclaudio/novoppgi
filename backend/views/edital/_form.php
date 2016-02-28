@@ -51,6 +51,16 @@ use kartik\widgets\SwitchInput;
 		    <div class = "row">
 			    <?= $form->field($model, 'curso', ['options' => ['class' => 'col-md-3']])->radioList(['1' => 'Mestrado' , '2' => 'Doutorado', '3' => 'Ambos'])->label("<font color='#FF0000'>*</font> <b>Curso:</b>")  ?>
 			</div>
+			<div id="divVagasMestrado" style="display:none">
+		    	<div class="row">
+		    	<?= $form->field($model, 'vagas_mestrado', ['options' => ['class' => 'col-md-4']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Mestrado:</b>") ?>
+		     </div>
+		     </div>
+		    <div class="row">
+			<div id="divVagasDoutorado" style="display:none">
+		    	<?= $form->field($model, 'vagas_doutorado', ['options' => ['class' => 'col-md-4']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Doutorado:</b>") ?>
+		     </div>
+		     </div>
 
 		    <div class="form-group">
 		        <?= Html::submitButton($model->isNewRecord ? 'Criar' : 'Alterar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

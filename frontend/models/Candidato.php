@@ -343,7 +343,7 @@ class Candidato extends \yii\db\ActiveRecord
             //fim do método que gera o diretório
 
             $this->proposta = "Proposta.".$propostaFile->extension;
-            $this->comprovantepagamento = "Comprovante".$comprovanteFile->extension;
+            $this->comprovantepagamento = "Comprovante.".$comprovanteFile->extension;
 
             $propostaFile->saveAs($caminho.$this->proposta);
             $comprovanteFile->saveAs($caminho.$this->comprovantepagamento);

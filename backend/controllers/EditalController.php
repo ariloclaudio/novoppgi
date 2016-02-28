@@ -89,7 +89,9 @@ class EditalController extends Controller
                     return $this->redirect(['view', 'id' => $model->numero]);
             }
         }
-        
+
+
+
         return $this->render('create', [
             'model' => $model,
         ]);

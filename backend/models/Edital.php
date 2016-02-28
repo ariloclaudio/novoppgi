@@ -33,9 +33,15 @@ class Edital extends \yii\db\ActiveRecord
         return [
             [['numero', 'datainicio', 'datafim', 'cartarecomendacao', 'curso', 'cotas'], 'required'],
             [['documentoFile'], 'required', 'when' => function($model){ return !isset($model->documento);}],
+            [['vagas_mestrado'], 'required', 'when' => function($model){ return $model->curso == 1 || $model->curso == 3; },'whenClient' => "function (attribute, value) {
+                return $('input:radio[name=\"Edital[curso]\"]:checked').val() == 1;
+            }"],
+            [['vagas_doutorado'], 'required','when' => function($model){ return $model->curso == 2 || $model->curso == 3; },'whenClient' => "function (attribute, value) {
+                return $('input:radio[name=\"Edital[curso]\"]:checked').val() == 2;
+            }"],
             [['numero', 'curso'], 'string'],
             [['numero'], 'unique', 'message' => 'Edital já criado'],
-            [['cotas'], 'integer', 'min' => 0],
+            [['cotas','vagas_mestrado','vagas_doutorado'], 'integer', 'min' => 0],
             [['datainicio', 'datafim', 'documentoFile'], 'safe'],
             [['documentoFile'], 'file', 'extensions' => 'pdf'],
             [['documento'], 'string', 'max' => 100]
