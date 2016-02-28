@@ -20,10 +20,11 @@ use app\models\Edital;
 
                 <?php 
 
-                    echo "<div style=\" text-align:center; font-size: 15px; \"> <b> Editais Disponíveis </b> </div><hr>";
                     $tamanho_vetor = sizeof($edital);
 
                     if($tamanho_vetor != 0){
+
+                    echo "<div style=\" text-align:center; font-size: 15px; \"> <b> Editais Disponíveis </b> </div><hr>";
 
                         for($i=0; $i<$tamanho_vetor; $i++){
 
@@ -51,7 +52,7 @@ use app\models\Edital;
                         }
                     }
                     else{
-                        echo "<b> Não há editais disponíveis nesta presente data.</b>";
+                        echo "<font color='red'> <b> Não há editais disponíveis nesta presente data. </b> </font>";
                     }
 
 
@@ -96,7 +97,7 @@ use app\models\Edital;
                     <tr>
                         <td style="padding:0px 20px 10px 20px">
 
-                            <?= $form->field($model, 'idEdital')->dropDownList(ArrayHelper::map(Edital::find()->all(),'numero','numero'),['prompt'=>'Selecione o Edital'])->label("<font color='#FF0000'>*</font> <b>Número do Edital:</b>") ; ?>
+                            <?= $form->field($model, 'idEdital')->dropDownList(ArrayHelper::map($edital,'numero','numero'),['prompt'=>'Selecione o Edital'])->label("<font color='#FF0000'>*</font> <b>Número do Edital:</b>") ; ?>
 
                         </td>
                     </tr>

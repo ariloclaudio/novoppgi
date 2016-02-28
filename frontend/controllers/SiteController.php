@@ -114,8 +114,9 @@ class SiteController extends Controller
                 $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital');
             }
         }
-        
-        $edital = Edital::find()->all();
+
+        $edital = new Edital();
+        $edital = $edital->getEditaisDisponiveis();
 
         return $this->render('/candidato/create0', [
             'model' => $model,
@@ -158,8 +159,14 @@ class SiteController extends Controller
             //fim -> setando id do candidato
             $this->redirect(['candidato/passo1']);
         }else{
+
+        $edital = new Edital();
+        $edital = $edital->getEditaisDisponiveis();
+            
             return $this->render('login', [
                 'model' => $model,
+                'edital' => $edital,
+
             ]);
         }
     }

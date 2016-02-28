@@ -60,4 +60,17 @@ class Edital extends \yii\db\ActiveRecord
     {
         return $this->hasMany(J17Candidatos::className(), ['idEdital' => 'numero']);
     }
+
+
+
+//este método responsável por obter os editais os quais estão dentro do prazo inicial e final
+//é usado no sitecontroller(frontend), _form0 e login.php(este ultimo, neste caminho: views/adminLTE/yii2soft/yiisoft/yii2-app/site/login.php)
+    public function getEditaisDisponiveis(){
+
+        $edital = Edital::find()->where(['<=','datainicio',date('Y-m-d')])->andWhere(['>=','datafim',date('Y-m-d')])->all();
+
+        return $edital;
+    }
+
+    //fim do método de obter editais disponíveis
 }

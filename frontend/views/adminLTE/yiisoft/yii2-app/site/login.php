@@ -46,7 +46,7 @@ $fieldOptions2 = [
             ->passwordInput(['placeholder' => $model->getAttributeLabel('senha')]) ?>
         
 
-            <?= $form->field($model, 'idEdital', ['options' => ['style' => 'text-align: center; margin-bottom:10px', 'class' => 'col-md-12']])->dropDownList(ArrayHelper::map(Edital::find()->all(),'numero','numero'),['prompt'=>'Selecione um Edital'])->label(false) ; ?>
+            <?= $form->field($model, 'idEdital', ['options' => ['style' => 'text-align: center; margin-bottom:10px', 'class' => 'col-md-12']])->dropDownList(ArrayHelper::map($edital,'numero','numero'),['prompt'=>'Selecione um Edital'])->label(false) ; ?>
 
         <div class="row">
             <!-- /.col -->
