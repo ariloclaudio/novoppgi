@@ -25,17 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
    		<a target="resource window" href="index.php?option=com_inscricaoppgi&task=viewpdf&doc=fo&id=<?php echo $candidato['id'];?>">
 			<div class="iconimage" style="float: left; width: 200px; margin-top: 20px;"><img src="img/edit_f2.png" border="0" height="32" width="32"><br><b>Imprimir Formul&#225;rio de Inscri&#231;&#227;o</b></div></a>
 
-		<a target="resource window" href="documentos/<?php echo $id;?>/Propostatrabalho.pdf">
+		<a target="resource window" href="<?php echo $diretorio;?>Proposta.pdf">
 			<div class="iconimage" style="float: left; width: 200px; margin-top: 20px;"><img src="img/edit_f2.png" border="0" height="32" width="32"><br><b>Imprimir Proposta de Trabalho</b></div></a>
         <div id="cpanel" width="25%"></div>
 		
-		<a target="resource window" href="documentos/<?php echo $id;?>/Historico.pdf">
+		<a target="resource window" href="<?php echo $diretorio;?>Historico.pdf">
 				<div class="iconimage" style="float: left; width: 200px; margin-top: 20px;"><img src="img/historico.gif" border="0" height="32" width="32"><br><b>Imprimir Hist&#243;rico Escolar</b></div></a>
-		<a target="resource window" href="documentos/<?php echo $id;?>/Curriculum.pdf">
+		<a target="resource window" href="<?php echo $diretorio;?>Curriculum.pdf">
 				<div class="iconimage" style="float: left; width: 200px; margin-top: 20px;"><img src="img/curriculum.gif" border="0" ><br><b>Imprimir Curriculum Lattes</b></div></a>
-		<a target="resource window" href="documentos/<?php echo $id;?>/Comprovantepagamento.pdf">
+		<a target="resource window" href="<?php echo $diretorio;?>Comprovante.pdf">
 				<div class="iconimage" style="float: left; width: 200px; margin-top: 20px;"><img src="img/comprovante.png" border="0" height="32" width="32"><br><b>Imprimir Comprovante de Pagamento</b></div></a>
-		<a target="resource window" href="documentos/<?php echo $id;?>/Cartaempregador.pdf">
+		<a target="resource window" href="<?php echo $diretorio;?>cartaempregador.pdf">
 			<div class="iconimage" style="float: left; width: 200px; margin-top: 20px;"><img src="img/carta.jpg" border="0" height="32" width="32"><br><b>Imprimir Carta do Empregador</b></div></a>
 			</div>
 		<div style="clear: both;"></div>

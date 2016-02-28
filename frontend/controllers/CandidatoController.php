@@ -53,6 +53,7 @@ class CandidatoController extends Controller
             }
             
             if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
+
                 if($model->save(false)){
                     $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
                     return $this->redirect(['passo2']);
@@ -129,10 +130,16 @@ class CandidatoController extends Controller
                 $model->passoatual = 3;
             }
 
-            if($model->save(false)){
+            if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'))){
+                if($model->save(false)){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
                     return $this->redirect(['passo4']);
+                }
             }
+            else{
+                $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
+            }
+
 
             return $this->redirect(['passo4']);
         } 
@@ -159,13 +166,15 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
+        $diretorio = $model->getDiretorio($id);
+
         if( $model->passoatual <= 2){
             return $this->redirect(['passo1']);
         }
 
             return $this->render('passo4', [
                 'model' => $model,
-                'id' => $id,
+                'diretorio' => $diretorio,
             ]);
         
     }

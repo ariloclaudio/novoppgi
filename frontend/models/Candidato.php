@@ -250,45 +250,76 @@ class Candidato extends \yii\db\ActiveRecord
         return $this->hasOne(Edital::className(), ['idEdital' => 'numero']);
     }
 
+
+    //fim do relacionamento
+
+
+    
+
+    public function getDiretorio($id){
+        $salt1 = "programadeposgraduacaoufamicompPPGI";
+        $salt2 = $id * 777;
+        $idCriptografado = md5($salt1+$id+$salt2);
+        //definição de um caminho padrão, baseado no ID do candidato
+        $caminho = 'documentos/'.$idCriptografado.'/';
+        //fim da definição do caminho padrão
+        return $caminho;
+
+    }
+
+    public function gerarDiretorio($id){
+
+        $caminho = $this->getDiretorio($id);
+        
+        //verificação se o diretório a ser criado já existe, pois se já existe, não há necessidade de criar outro
+        $caminho_ja_existe = is_dir($caminho);
+        if($caminho_ja_existe != true){
+            mkdir($caminho); //cria de fato o diretório
+        }
+        //fim da verificação
+
+        return $caminho;
+    }
+
 /*Uploads dos Pdfs correspondentes a cada passo*/
 
-    public function uploadPasso1($cartaFile)
-    {
-        if(!isset($cartaFile)){
+    public function uploadPasso1($cartaFile){
+
+        //obtenção o ID do usuário pelo meio de sessão
+        $id = Yii::$app->session->get('candidato');
+        //fim da obtenção
+
+        //método que gera o diretório, retornando o caminho do diretório
+        $caminho = $this->gerarDiretorio($id);
+        //fim do método que gera o diretório
+
+        if(isset($cartaFile)){
+            $this->cartaempregador = "cartaempregador.".$cartaFile->extension;
+            $cartaFile->saveAs($caminho.$this->cartaempregador);
             return true;
-        }else if ($this->validate()) {
-            $this->cartaempregador = "cartaempregador-".date('HdYmsisu') . '.' . $cartaFile->extension;
-            $cartaFile->saveAs('documentos/' . $this->cartaempregador);
+        }else if ($this->cartaempregador) {
             return true;
         } else {
             return false;
         }
     }
     
-    public function uploadPasso2($historicoFile, $curriculumFile)
-    {
+    public function uploadPasso2($historicoFile, $curriculumFile){
 
         if (isset($historicoFile) && isset($curriculumFile)) {
 
             //obtenção o ID do usuário pelo meio de sessão
             $id = Yii::$app->session->get('candidato');
-            //fim da obtenção do ID
+            //fim da obtenção
 
-            //definição de um caminho padrão, baseado no ID do candidato
-            $caminho = 'documentos/'.$id.'/';
-            //fim da definição do caminho padrão
-
-            //verificação se o diretório a ser criado já existe, pois se já existe, não há necessidade de criar outro
-            $caminho_ja_existe = is_dir($caminho);
-            if($caminho_ja_existe != true){
-                mkdir($caminho);
-            }
-            //fim da verificação
+            //método que gera o diretório, retornando o caminho do diretório
+            $caminho = $this->gerarDiretorio($id);
+            //fim do método que gera o diretório
 
             $this->historico = "Historico.".$historicoFile->extension;
             $this->curriculum = "Curriculum.".$curriculumFile->extension;
 
-            $x = $historicoFile->saveAs($caminho.$this->historico);
+            $historicoFile->saveAs($caminho.$this->historico);
             $curriculumFile->saveAs($caminho.$this->curriculum);
 
              return true;
@@ -301,21 +332,24 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function uploadPasso3($propostaFile, $comprovanteFile)
     {
-        if ($this->validate()) {
+        if (isset($propostaFile) && isset($comprovanteFile)) {
 
             //obtenção o ID do usuário pelo meio de sessão
             $id = Yii::$app->session->get('candidato');
-            //fim da obtenção do ID
+            //fim da obtenção
 
-            //definição de um caminho padrão, baseado no ID do candidato
-            $caminho = 'documentos/'.$id.'/';
+            //método que gera o diretório, retornando o caminho do diretório
+            $caminho = $this->gerarDiretorio($id);
+            //fim do método que gera o diretório
 
             $this->proposta = "Proposta.".$propostaFile->extension;
-            $this->comprovante = "Comprovante".$comprovanteFile->extension;
+            $this->comprovantepagamento = "Comprovante".$comprovanteFile->extension;
 
-            $propostaFile->saveAs($id.$this->proposta);
-            $comprovanteFile->saveAs($id.$this->comprovante);
+            $propostaFile->saveAs($caminho.$this->proposta);
+            $comprovanteFile->saveAs($caminho.$this->comprovantepagamento);
 
+            return true;
+        } else if(isset($this->proposta) && isset($this->comprovantepagamento)){
             return true;
         } else {
             return false;
