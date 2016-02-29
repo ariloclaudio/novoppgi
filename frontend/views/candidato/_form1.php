@@ -115,7 +115,9 @@ if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource
 
     <div style="width: 100%; clear: both;"><p align="justify"><b>Dados da Inscrição</b></p></div>
     <div class = "row">
+    <?php if($editalCurso == 3){ ?>
     <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado:</b>")  ?>
+    <?php } ?>
 
     <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>") ?>
     </div>

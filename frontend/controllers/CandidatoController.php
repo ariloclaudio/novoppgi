@@ -46,8 +46,10 @@ class CandidatoController extends Controller
         //fim do recebimento do id por sessão
 
         $model = $this->findModel($id);
-        $cursoEdital = Edital::findOne(['numero' => $model->idEdital])->curso;
 
+        /*Atribuindo o curso do Edital selecionado para o candidato*/
+        $editalCurso = $this->getCursoDesejado($model);
+        
         if ($model->load(Yii::$app->request->post())) {
 
             if($model->passoatual == 0){
@@ -59,18 +61,20 @@ class CandidatoController extends Controller
                     $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
                     return $this->redirect(['passo2']);
                 }
-            }else{
 
+            }else{
                 $this->mensagens('danger', 'Erro ao Enviar Arquivos', 'Ocorreu um Erro ao Enviar os Arquivos. Tente novamente mais tarde');
 
                 return $this->render('create1', [
                     'model' => $model,
+                    'editalCurso' => $editalCurso,
                 ]);
             }
 
          }else {
             return $this->render('create1', [
                 'model' => $model,
+                'editalCurso' => $editalCurso,
             ]);
         }
     }
@@ -277,5 +281,14 @@ class CandidatoController extends Controller
             'positonX' => 'center',
             'showProgressbar' => true,
         ]);
+    }
+
+    public function getCursoDesejado($model){
+        $ambos = 0;
+        if(Edital::findOne(['numero' => $model->idEdital])->curso == 3)
+            $ambos = 3;
+        else
+            $model->cursodesejado = Edital::findOne(['numero' => $model->idEdital])->curso;
+        return $ambos;
     }
 }

@@ -360,7 +360,7 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function beforeSave()
     {
-        if(!Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
+        if($this->passoatual != 0 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
             return true;
         else
             return false;
