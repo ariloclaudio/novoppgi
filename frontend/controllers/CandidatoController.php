@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\Candidato;
+use app\models\Edital;
 use app\models\Recomendacoes;
 use app\models\CandidatoSearch;
 use yii\web\Controller;
@@ -45,7 +46,7 @@ class CandidatoController extends Controller
         //fim do recebimento do id por sessão
 
         $model = $this->findModel($id);
-        $cursoEdital = Edital::findOne(['idEdital' => $model->idEdital])->curso;
+        $cursoEdital = Edital::findOne(['numero' => $model->idEdital])->curso;
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -277,5 +278,4 @@ class CandidatoController extends Controller
             'showProgressbar' => true,
         ]);
     }
-    7
 }
