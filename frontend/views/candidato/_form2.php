@@ -5,9 +5,6 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use yii\widgets\MaskedInput;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Candidato */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="candidato-form">

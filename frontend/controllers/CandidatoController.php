@@ -45,7 +45,8 @@ class CandidatoController extends Controller
         //fim do recebimento do id por sessão
 
         $model = $this->findModel($id);
-        
+        $cursoEdital = Edital::findOne(['idEdital' => $model->idEdital])->curso;
+
         if ($model->load(Yii::$app->request->post())) {
 
             if($model->passoatual == 0){
@@ -53,18 +54,18 @@ class CandidatoController extends Controller
             }
             
             if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
-
                 if($model->save(false)){
                     $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
                     return $this->redirect(['passo2']);
                 }
+            }else{
+
+                $this->mensagens('danger', 'Erro ao Enviar Arquivos', 'Ocorreu um Erro ao Enviar os Arquivos. Tente novamente mais tarde');
+
+                return $this->render('create1', [
+                    'model' => $model,
+                ]);
             }
-
-            $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
-
-            return $this->render('create1', [
-                'model' => $model,
-            ]);
 
          }else {
             return $this->render('create1', [
@@ -197,18 +198,6 @@ class CandidatoController extends Controller
     }
 
     /**
-     * Displays a single Candidato model.
-     * @param string $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Candidato model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -288,4 +277,5 @@ class CandidatoController extends Controller
             'showProgressbar' => true,
         ]);
     }
+    7
 }

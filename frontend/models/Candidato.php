@@ -41,7 +41,7 @@ class Candidato extends \yii\db\ActiveRecord
 
         return [
 /*Inicio Validações para passo 0*/
-            [['email', 'senha', 'repetirSenha'], 'required', 'when' => function($model){ return $model->passoatual == 0;},
+            [['email', 'senha', 'repetirSenha', 'idEdital'], 'required', 'when' => function($model){ return $model->passoatual == 0;},
                 'whenClient' => "function (attribute, value) {
                     return $('#form_hidden').val() == 'passo_form_0';
                 }"],
@@ -55,7 +55,7 @@ class Candidato extends \yii\db\ActiveRecord
 
 /*Inicio Validações para passo 1*/
 
-            [['nome', 'estadocivil', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'nomepai', 'nomemae', 'cursodesejado', 'solicitabolsa' , 'vinculoconvenio', 'regime', 'vinculoemprego', 'solicitabolsa'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
+            [['nome', 'estadocivil', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'nomepai', 'nomemae', 'cursodesejado', 'solicitabolsa' , 'vinculoconvenio', 'cotas', 'regime', 'vinculoemprego', 'solicitabolsa'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_1';
             }"],
@@ -240,6 +240,7 @@ class Candidato extends \yii\db\ActiveRecord
 
             'resultado' => 'Resultado',
             'periodo' => 'Periodo',
+            'idEdital' => 'Edital',
         ];
     }
 
@@ -284,6 +285,7 @@ class Candidato extends \yii\db\ActiveRecord
 /*Uploads dos Pdfs correspondentes a cada passo*/
 
     public function uploadPasso1($cartaFile){
+        if(!isset($cartaFile)) return true;
 
         //obtenção o ID do usuário pelo meio de sessão
         $id = Yii::$app->session->get('candidato');
@@ -354,6 +356,14 @@ class Candidato extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+    }
+
+    public function beforeSave()
+    {
+        if(!Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
+            return true;
+        else
+            return false;
     }
 
 }

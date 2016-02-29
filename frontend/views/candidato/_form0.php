@@ -110,7 +110,6 @@ use app\models\Edital;
                     </tr>
                 </table>
         <?php }?>
-
     <br>
 
     <?php ActiveForm::end(); ?>

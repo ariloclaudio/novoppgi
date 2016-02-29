@@ -77,26 +77,24 @@ class SiteController extends Controller
         return $this->redirect(['site/opcoes']);
     }
 
-    public function actionCadastroppgi()
-    {   
-    
+    public function actionCadastroppgi(){
+        
     $this->layout = '@app/views/layouts/main2.php';
     
     $model = new Candidato();
 
     //$model->idEdital = $id;    
 
-        if ($model->load(Yii::$app->request->post())){
-            if(!Candidato::find()->where(['idEdital' => $model->idEdital])->andWhere(['email' => $model->email])->count()){
-                
-                $model->inicio = date("Y-m-d H:i:s");
-                $model->passoatual = 0;
-                $model->repetirSenha = $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
-                $model->status = 10;
-                
-                try{
-                    $model->save();
-
+        if ($model->load(Yii::$app->request->post())){                
+            $model->inicio = date("Y-m-d H:i:s");
+            $model->passoatual = 0;
+            $model->repetirSenha = $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
+            $model->status = 10;
+            
+            try{
+                if(!$model->save()){
+                    $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital');
+                }else{
                     //setando o id do candidato via sessão
                         $session = Yii::$app->session;
                         $session->open();
@@ -105,13 +103,10 @@ class SiteController extends Controller
 
                     return $this->redirect(['candidato/passo1']);
                 }
-                catch(\Exception $e){ 
-                    $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
-                    throw new \yii\web\HttpException(405, 'Erro com relação ao identificador do edital'); 
-                }
-                    
-            }else{
-                $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital');
+            }
+            catch(\Exception $e){ 
+                $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
+                throw new \yii\web\HttpException(405, 'Erro com relação ao identificador do edital'); 
             }
         }
 

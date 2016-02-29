@@ -115,20 +115,20 @@ if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource
 
     <div style="width: 100%; clear: both;"><p align="justify"><b>Dados da Inscrição</b></p></div>
     <div class = "row">
-    <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Mestrado' , '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado:</b>")  ?>
+    <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado:</b>")  ?>
 
     <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>") ?>
     </div>
 
-
-
     <div class = "row">
     <?= $form->field($model, 'vinculoconvenio', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Vinculado a algum Convênio?</b>")  ?>
+    
+    <?= $form->field($model, 'cotas', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Sim', '0' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Cotas?</b>")  ?>
+    
     </div>
     <div id="divConvenio" class = "row">
     <?= $form->field($model, 'convenio', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<b>Quais (ex: PICTD)?</b>") ?>
     </div>
-
 
     <div class = "row">
         <?= $form->field($model, 'solicitabolsa', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Solicita Bolsa de Estudo?</b>")  ?>
