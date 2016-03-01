@@ -9,6 +9,7 @@ use app\models\Recomendacoes;
 use app\models\CandidatoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Exception;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use app\models\UploadForm;
@@ -133,6 +134,8 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
+        echo "<script>bootbox.altert('teste')</script>";
+
         if ($model->load(Yii::$app->request->post())) {
 
             if($model->passoatual == 2) 
@@ -140,30 +143,26 @@ class CandidatoController extends Controller
             
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'))){
                 if($model->save(false)){
-                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 
-                        'Suas informações de Proposta de Trabalho e Documentos foram salvas');
+                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
+                    if(isset($_POST['finalizar'])){
+                        echo "<script>alert('Finalizar Inscrição? Após este passo seus dados serão submetidos para avaliação e não poderão ser alterados')</script>";
+                        
+                        /*ENVIAR EMAILS CADASTRADOS*/
+                        //$this->notificarCartasRecomendacao($model);
+                        
+                        return $this->redirect(['passo4']);
+                    }
+                }else{
+                    $this->mensagens('danger', 'Erro ao Salvar Alterações', 'Ocorreu um Erro ao salvar os dados.');
                 }
             
             }else{
                 $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
             }
-
-            /*Botão salvar pressinado recarrega senão redireciona*/
-            if(isset($_POST['salvar'])){
-                return $this->render('create3', [
-                    'model' => $model,
-                ]);
-            }else{
-                /*Envio das cartas de Email*/
-                /*Yii::$app->mailer->compose()
-                ->setFrom('fjsl@icomp.ufam.edu.br')
-                ->setTo('fabriciolima31@gmail.com')
-                ->setSubject("[SGE] RecuperaÃ§Ã£o de Senha")
-                ->setTextBody("Serviço de Recuperação de senha"."\n\n"."Olá Fulano, você solicitou a recuperação da sua senha. 
-                Geramos automaticamente uma nova senha de acesso para você. \nPor favor efetue o login no sistema com esta nova senha e modifique-a se achar necessário:\n\nSenha: 123")
-                ->send();*/
-                return $this->redirect(['passo4']);
-            }
+            
+            return $this->render('create3', [
+                'model' => $model,
+            ]);
         } 
         else if( $model->passoatual <= 1){
             return $this->redirect(['passo1']);
@@ -669,6 +668,42 @@ class CandidatoController extends Controller
         else
             $model->cursodesejado = Edital::findOne(['numero' => $model->idEdital])->curso;
         return $ambos;
+    }
+
+    public function notificarCartasRecomendacao($model){
+
+        $recomendacoesArray = Recomendacoes::findAll(['idCandidato' => $model->id]);
+
+        foreach ($recomendacoesArray as $recomendacoes) {
+            echo "<script>console.log('$recomendacoes->nome')</script>";
+            $link = "http://localhost/MyProjects/ppgi/frontend/web/index.php?r=candidato/cartaderecomendacao&token=".$recomendacoes->token;
+            // subject
+            $subject  = "[PPGI/UFAM] Solicitacao de Carta de Recomendacao para ".$model->nome;
+
+            $mime_boundary = "<<<--==-->>>";
+            $message = '';
+            // message
+            $message .= "Caro(a) ".$recomendacoes->nome.", \r\n\n";
+            $message .= "Você foi requisitado(a) por ".$model->nome." (email: ".$model->email.") para escrever uma carta de recomendação para o processo de seleção do Programa de Pós-Graduação em Informática (PPGI) da Universidade Federal do Amazonas (UFAM).\r\n";
+            $message .= "\nPara isso, a carta deve ser preenchida eletronicamente utilizando o link: \n ".$link."\r\n";
+            $message .= "O prazo para preenchimento da carta é ".$recomendacoes->prazo.".\r\n";
+            $message .= "Em caso de dúvidas, por favor nos contate. Agradecemos sua colaboração.\r\n";
+            $message .= "\nCoordenação do PPGI - ".date(DATE_RFC822)."\r\n";
+            $message .= $mime_boundary."\r\n";
+
+            /*Envio das cartas de Email*/
+           try{
+               Yii::$app->mailer->compose()
+                ->setFrom("secretariappgi@icomp.ufam.edu.br")
+                ->setTo($recomendacoes->email)
+                ->setSubject($subject)
+                ->setTextBody($message)
+                ->send();
+            }catch(Exception $e){
+                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Solicitações de Cartas de Recomendação.
+                    Tente novamente ou contate o adminstrador do sistema');
+            }
+        }
     }
 
 }
