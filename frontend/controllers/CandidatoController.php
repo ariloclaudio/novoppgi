@@ -135,31 +135,35 @@ class CandidatoController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-            if($model->passoatual == 2){
+            if($model->passoatual == 2) 
                 $model->passoatual = 3;
-            }
-
-            /*Envio das cartas de Email*/
-            /*Yii::$app->mailer->compose()
-            ->setFrom('fjsl@icomp.ufam.edu.br')
-            ->setTo('fabriciolima31@gmail.com')
-            ->setSubject("[SGE] RecuperaÃ§Ã£o de Senha")
-            ->setTextBody("Serviço de Recuperação de senha"."\n\n"."Olá Fulano, você solicitou a recuperação da sua senha. Geramos automaticamente uma nova senha de acesso para você. \nPor favor efetue o login no sistema com esta nova senha e modifique-a se achar necessário:\n\nSenha: 123")
-            ->send();*/
-
-
+            
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'))){
                 if($model->save(false)){
-                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
-                    return $this->redirect(['passo4']);
+                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 
+                        'Suas informações de Proposta de Trabalho e Documentos foram salvas');
                 }
-            }
-            else{
+            
+            }else{
                 $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
             }
 
-
-            return $this->redirect(['passo4']);
+            /*Botão salvar pressinado recarrega senão redireciona*/
+            if(isset($_POST['salvar'])){
+                return $this->render('create3', [
+                    'model' => $model,
+                ]);
+            }else{
+                /*Envio das cartas de Email*/
+                /*Yii::$app->mailer->compose()
+                ->setFrom('fjsl@icomp.ufam.edu.br')
+                ->setTo('fabriciolima31@gmail.com')
+                ->setSubject("[SGE] RecuperaÃ§Ã£o de Senha")
+                ->setTextBody("Serviço de Recuperação de senha"."\n\n"."Olá Fulano, você solicitou a recuperação da sua senha. 
+                Geramos automaticamente uma nova senha de acesso para você. \nPor favor efetue o login no sistema com esta nova senha e modifique-a se achar necessário:\n\nSenha: 123")
+                ->send();*/
+                return $this->redirect(['passo4']);
+            }
         } 
         else if( $model->passoatual <= 1){
             return $this->redirect(['passo1']);
@@ -657,7 +661,7 @@ class CandidatoController extends Controller
     fclose($arqPDF);
 
 }
-
+    /*Função que retorna o curso do edital ou se o curso deverá ser escolhido no formulário*/
     public function getCursoDesejado($model){
         $ambos = 0;
         if(Edital::findOne(['numero' => $model->idEdital])->curso == 3)
@@ -666,4 +670,5 @@ class CandidatoController extends Controller
             $model->cursodesejado = Edital::findOne(['numero' => $model->idEdital])->curso;
         return $ambos;
     }
+
 }

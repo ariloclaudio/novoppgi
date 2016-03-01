@@ -362,12 +362,69 @@ class Candidato extends \yii\db\ActiveRecord
         }
     }
 
+
+
     public function beforeSave()
     {
-        if($this->passoatual != 0 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
+
+        if($this->passoatual == 1 || $this->passoatual == 2 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
             return true;
-        else
+        else if($this->passoatual == 3){
+            $cartas = $this->arrayCartas();
+            
+            for ($i=0; $i < count($arrayCartas); $i++) {
+                $recomendacoes = new Recomendacoes();
+                $recomendacoes->idCandidato = $this->id;
+                $recomendacoes->dataEnvio = '0000-00-00 00:00:00';
+                $recomendacoes->prazo = date("Y-m-d", strtotime('+1 days'));
+                $recomendacoes->nome = $this->cartaNome[$i];
+                $recomendacoes->email = $this->cartaEmail[$i];
+                $recomendacoes->token = md5($this->id.$this->cartaEmail[$i].time()); 
+                if(!$recomendacoes->save())
+                    return false;
+            }
+            return true;
+        }else
             return false;
     }
 
+
+    public function arrayCartas(){
+        $this->cartaNome = array_filter($this->cartaNome);
+        $this->cartaEmail = array_filter($this->cartaEmail);
+
+        $array = [$this->cartaNomeReq1, $this->cartaEmailReq1, $this->cartaNomeReq2, $this->cartaEmailReq2];
+        
+        for ($i=0; $i < count($this->cartaNome); $i++) { 
+            array_push($array, $this->cartaNome[$i], $this->cartaEmail[$i]);
+        }
+        return $array;
+    }
+
+
+    public function notificarCartasRecomendacao(){
+
+        $recomendacoes = Recomendacoes::find()->where(['idCandidato' => $this->id]);
+
+        // subject
+        $subject  = "[PPGI/UFAM] Solicitacao de Carta de Recomendacao para ".$recomendacoes[0]->nomeCandidato;
+
+        $mime_boundary = "<<<--==-->>>";
+        $message = '';
+        // message
+        $message .= "Caro(a) ".$recomendacoes[0]->nome.", \r\n\n";
+        $message .= "Você foi requisitado(a) por ".$recomendacoes[0]->nomeCandidato." (email: ".$recomendacoes[0]->emailCandidato.") para escrever uma carta de recomendação para o processo de seleção do Programa de Pós-Graduação em Informática (PPGI) da Universidade Federal do Amazonas (UFAM).\r\n";
+        $message .= "\nPara isso, a carta deve ser preenchida eletronicamente utilizando o link: \n http://sistemas.icomp.ufam.edu.br/icomp/index.php?option=com_inscricaoppgi&task=rec&token=".$recomendacoes[0]->token."\r\n";
+        $message .= "O prazo para preenchimento da carta é ".$recomendacoes[0]->prazo.".\r\n";
+        $message .= "Em caso de dúvidas, por favor nos contate. Agradecemos sua colaboração.\r\n";
+        $message .= "\nCoordenação do PPGI - ".date(DATE_RFC822)."\r\n";
+        $message .= $mime_boundary."\r\n";
+
+        $mail =& JFactory::getMailer();
+        $mail->addRecipient( $recomendacoes[0]->email );
+        $mail->setSender( array( "secretariappgi@icomp.ufam.edu.br", "Coordenacao do PPGI" ) );
+        $mail->setSubject( $subject );
+        $mail->setBody( $message );
+        $sent = $mail->Send();
+    }
 }

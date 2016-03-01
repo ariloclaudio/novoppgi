@@ -59,7 +59,10 @@ class Recomendacoes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idCandidato', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes'], 'required'],
+            [['idCandidato', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes'], 'required', 
+                'when' => function($model){return $model->dataEnvio != '0000-00-00 00:00:00';}, 'whenClient' => "function (attribute, value) {
+                return $('#form_hidden').val() == 'passo_form_carta';
+            }"],
             [['idCandidato', 'anoTitulacao', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'anoContato', 'conheceGraduacao', 'conhecePos', 'conheceEmpresa', 'conheceOutros', 'orientador', 'professor', 'empregador', 'coordenador', 'colegaCurso', 'colegaTrabalho', 'outrosContatos'], 'integer'],
             [['dataEnvio', 'prazo'], 'safe'],
             [['informacoes'], 'string'],
@@ -111,5 +114,9 @@ class Recomendacoes extends \yii\db\ActiveRecord
             'outrosContatos' => 'Outros Contatos',
             'outrasFuncoes' => 'Outras Funcoes',
         ];
+    }
+
+    public function getCandidato(){
+        return $this->hasOne(Candidato::className(), ['id' => 'idCandidato']);
     }
 }

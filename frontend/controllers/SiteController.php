@@ -74,7 +74,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->redirect(['site/opcoes']);
+        $this->layout = '@app/views/layouts/main-login.php';
+        $model = new Candidato();
+        return $this->render('opcoes',['model' => $model,
+            ]);
     }
 
     public function actionCadastroppgi(){
@@ -117,20 +120,6 @@ class SiteController extends Controller
             'model' => $model,
             'edital' => $edital,
         ]);
-    }
-
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
-
-    public function actionOpcoes()
-    {
-        $this->layout = '@app/views/layouts/main-login.php';
-        $model = new Candidato();
-        return $this->render('opcoes',['model' => $model,
-            ]);
     }
 
     public function actionLogin()
