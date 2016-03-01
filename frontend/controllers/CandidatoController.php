@@ -134,8 +134,6 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
-        echo "<script>bootbox.altert('teste')</script>";
-
         if ($model->load(Yii::$app->request->post())) {
 
             if($model->passoatual == 2) 
@@ -197,6 +195,15 @@ class CandidatoController extends Controller
                 'model' => $model,
                 'diretorio' => $diretorio,
             ]);
+        
+    }
+
+    public function actionCartarecomendacao($token){
+        
+        return $this->render('cartarecomendacao', [
+            'model' => $model,
+            'diretorio' => $diretorio,
+        ]);
         
     }
 

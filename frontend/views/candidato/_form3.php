@@ -1,8 +1,11 @@
 <?php
-
+use xj\bootbox\BootboxAsset;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 /*Estático temporariamente*/
 $linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' => 'Sistemas Embarcados e Engenharia de Software', '3' => 'Inteligência Artificial', '3' => 'Visão Computacional e Robótica'];
@@ -71,7 +74,10 @@ $linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' 
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton('Salvar e Continuar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name' => 'finalizar']) ?>
+        <?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success', 
+            'data' => [
+                'confirm' => 'Finalizar Inscrição? Após esse passo seus dados serão submetidos para avaliação e não poderão ser alterados.',
+            ],'name' => 'finalizar']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
