@@ -88,9 +88,13 @@ class Candidato extends \yii\db\ActiveRecord
                 }"],
 /*FIM Validações para passo 2*/
 /*Inicio Validações para passo 3*/
-            [['linhapesquisa', 'tituloproposta', 'cartaNomeReq1', 'cartaNomeReq2', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
+            [['linhapesquisa', 'tituloproposta', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3';
+            }"],
+            [['cartaNomeReq1', 'cartaNomeReq2', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3 && $model->edital->cartarecomendacao == 1;},
+            'whenClient' => "function (attribute, value) {
+                return $('#form_hidden').val() == 'passo_form_3_carta';
             }"],
 /*FIM Validações para passo 3*/
 
@@ -248,7 +252,7 @@ class Candidato extends \yii\db\ActiveRecord
     /*Relacionamento*/
     public function getEdital()
     {
-        return $this->hasOne(Edital::className(), ['idEdital' => 'numero']);
+        return $this->hasOne(Edital::className(), ['numero' => 'idEdital']);
     }
 
 

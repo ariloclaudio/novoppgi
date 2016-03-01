@@ -136,6 +136,15 @@ class CandidatoController extends Controller
                 $model->passoatual = 3;
             }
 
+            /*Envio das cartas de Email*/
+            /*Yii::$app->mailer->compose()
+            ->setFrom('fjsl@icomp.ufam.edu.br')
+            ->setTo('fabriciolima31@gmail.com')
+            ->setSubject("[SGE] RecuperaÃ§Ã£o de Senha")
+            ->setTextBody("Serviço de Recuperação de senha"."\n\n"."Olá Fulano, você solicitou a recuperação da sua senha. Geramos automaticamente uma nova senha de acesso para você. \nPor favor efetue o login no sistema com esta nova senha e modifique-a se achar necessário:\n\nSenha: 123")
+            ->send();*/
+
+
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'))){
                 if($model->save(false)){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
