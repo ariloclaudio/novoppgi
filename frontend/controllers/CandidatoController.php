@@ -294,17 +294,20 @@ class CandidatoController extends Controller
         ]);
     }
 
-function actionPdf() {
+function actionComprovanteinscricao() {
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
         $candidato = $this->findModel($id);
+
+        $recomendacoesArray = Recomendacoes::findAll(['idCandidato' => $id]);
 
         $pdf = new mPDF('utf-8');
     
     $sexo = array ('M' => "Masculino",'F' => "Feminimo");
     $cursoDesejado = array (1 => "Mestrado",2 => "Doutorado");
     $regimeDedicacao = array (1 => "Integral",2 => "Parcial");
+    $nacionalidade = array (1 => "Brasileira",2 => "Estrangeira");
     
     //$comprovantePDF = "/formulario".$candidato->id.".pdf";
 
@@ -343,24 +346,25 @@ function actionPdf() {
             ');
 
 
-
                 $pdf->WriteHTML(' <br>
-                    <table style= "margin-top:80px" width="100%" border = "1"> 
+                    <table style= "margin-top:80px;" width="100%"> 
                     <tr>
-                        <td> </td>
-                        <td>
+                        <td colspan = "3" style="padding-left:32%; border-bottom: 1px solid #000">
                             <b> COMPROVANTE DE INSCRIÇÃO </b>
                         </td>   
-                     
-                        <td colspan="3" align="left">
+                        <td colspan="3" align="left" width="140px" style="border-bottom: 1px solid #000">
                             <b>Hora: '.date("H:i").'</b> <br> <b> Data: '.date("d/m/Y").'</b>
-
                         </td>                        
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px; text-align:center">
+                        <td colspan="3" style= "height:35px;">
                             <b> Dados Pessoais </b>
                         </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            Número da inscrição: '.$candidato->id.'
+                        </td>   
                     </tr>
                     <tr>
                         <td colspan="3">
@@ -381,9 +385,11 @@ function actionPdf() {
                         <td>
                             bairro: '.$candidato->bairro.'
                         </td>
-                        <td>
+                        <td colspan="2">
                             cidade: '.$candidato->cidade.'
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             País: '.$candidato->pais.'
                         </td>
@@ -395,8 +401,10 @@ function actionPdf() {
                         <td>
                             sexo: '.$sexo[$candidato->sexo].'
                         </td>
+                    </tr>
+                    <tr>
                         <td>
-                            nacionalidade: '.$candidato->nacionalidade.'
+                            nacionalidade: '.$nacionalidade[$candidato->nacionalidade].'
                         </td>
                     </tr>
                     <tr>
@@ -428,7 +436,7 @@ function actionPdf() {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px">
+                        <td colspan="3" style= "height:35px">
                             <b> Filiação </b>
                         </td>
                     </tr>
@@ -443,17 +451,7 @@ function actionPdf() {
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            cursoDesejado: '.$cursoDesejado[$candidato->cursodesejado].'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            regimeDedicacao: '.$regimeDedicacao[$candidato->regime].'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style= "height:55px">
+                        <td colspan="3" style= "height:35px">
                             <b> Dados do PosComp </b>
                         </td>
                     </tr>
@@ -461,8 +459,6 @@ function actionPdf() {
                         <td>
                             inscricao poscomp: '.$candidato->inscricaoposcomp.'
                         </td>
-                    </tr>
-                    <tr>
                         <td>
                             ano pos comp: '.$candidato->anoposcomp.'
                         </td>
@@ -470,11 +466,15 @@ function actionPdf() {
                             nota pos comp: '.$candidato->notaposcomp.'
                         </td>                        
                     </tr>
-                    <tr>
-                        <td colspan="3" style= "height:55px; text-align:center">
-                            <b> Dados da Inscrição </b>
-                        </td>
-                    </tr>
+                    </table>
+                    <table width="100%">
+                        <tr>
+                            <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000; border-top: 1px solid #000 ">
+                                <b> DADOS DA INSCRIÇÃO </b>
+                            </td>
+                        </tr>
+                    </table>
+                    <table>
                     <tr>
                         <td> 
                             Curso Desejado:'.$cursoDesejado[$candidato->cursodesejado].' 
@@ -519,15 +519,15 @@ function actionPdf() {
     $pdf->addPage();    
     $pdf->WriteHTML('
         <br>
-        <table style= "margin-top:80px" width="100%" border = "1"> 
+        <table style= "margin-top:80px" width="100%" border = "0"> 
 
                     <tr>
-                        <td colspan="3" style= "height:55px; text-align:center">
+                        <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;">
                             <b> FORMAÇÃO ACADÊMICA / PROFISSIONAL </b>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px;">
+                        <td colspan="3" style= "height:35px;">
                             <b> Curso de Graduação</b>
                         </td>
                     </tr>
@@ -541,14 +541,14 @@ function actionPdf() {
                     </tr>
                     <tr>
                         <td>
-                            Instituição graduação: '.$candidato->instituicaograd.'
+                            Instituição: '.$candidato->instituicaograd.'
                         </td>
                         <td>
                             Ano Egresso: '.$candidato->egressograd.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px">
+                        <td colspan="3" style= "height:35px">
                             <b> Curso de Especialização(ou Aperfeiçoamento) </b>
                         </td>
                     </tr>
@@ -566,7 +566,7 @@ function actionPdf() {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px">
+                        <td colspan="3" style= "height:35px">
                             <b> Curso de Pos-Graduação Stricto-Senso </b>
                         </td>
                     </tr>                    
@@ -590,7 +590,7 @@ function actionPdf() {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px">
+                        <td colspan="3" style= "height:35px">
                             <b> Publicações </b>
                         </td>
                     </tr>
@@ -611,8 +611,8 @@ function actionPdf() {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px">
-                            <b> Idioma - Língua Inglesa - Exame de Proeficiência </b>
+                        <td colspan="3" style= "height:35px">
+                            <b> Língua Inglesa</b>
                         </td>
                     </tr>
                     <tr>
@@ -621,6 +621,11 @@ function actionPdf() {
                         </td>
                         <td>
                                 duração ingles: '.$candidato->duracaoingles.'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style= "height:35px">
+                            <b> Exame de Proeficiência </b>
                         </td>
                     </tr>
                     <tr>
@@ -639,75 +644,104 @@ function actionPdf() {
                             <b> Experiência Profissional </b>
                         </td>
                     </tr>
+                </table>
+                <table width="100%" border = "1"> 
                     <tr>
-                        <td>
-                                Empresa 1 : '.$candidato->empresa1.'
+                        <th>
+                            Empresa
+                        </th>
+                        <th>
+                            Cargo/Função
+                        </th>
+                        <th>
+                            Período
+                        </th>
+                    </tr>
+                    <tr>
+                        <td height="22">
+                                '.$candidato->empresa1.'
                         </td>
                         <td>
-                                Cargo/funcaoPeríodo: '.$candidato->cargo1.'
+                                '.$candidato->cargo1.'
                         </td>
                         <td>
-                                Período: '.$candidato->periodoprofissional1.'
+                                '.$candidato->periodoprofissional1.'
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                                Empresa 2: '.$candidato->empresa2.'
+                        <td height="22">
+                                '.$candidato->empresa2.'
                         </td>
                         <td>
-                                Cargo/funcaoPeríodo: '.$candidato->cargo2.'
+                                '.$candidato->cargo2.'
                         </td>
                         <td>
-                                Período: '.$candidato->periodoprofissional2.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                                Empresa 3: '.$candidato->empresa3.'
-                        </td>
-                        <td>
-                                Cargo/funcaoPeríodo: '.$candidato->cargo3.'
-                        </td>
-                        <td>
-                                Período: '.$candidato->periodoprofissional3.'
+                                '.$candidato->periodoprofissional2.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px">
+                        <td height="22">
+                                '.$candidato->empresa3.'
+                        </td>
+                        <td>
+                                '.$candidato->cargo3.'
+                        </td>
+                        <td>
+                                '.$candidato->periodoprofissional3.'
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td colspan="3" style= "height:55px" border = "0">
                             <b> Experiência Acadêmica </b>
                         </td>
                     </tr>
+                </table>
+                <table width="100%" border = "1">
                     <tr>
-                        <td>
-                                Instituicao 1 : '.$candidato->instituicaoacademica1.'
+                        <th>
+                            Instituicao
+                        </th>
+                        <th>
+                            Cargo/Função
+                        </th>
+                        <th>
+                            Período (de X até Y)
+                        </th>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td height="22">
+                                '.$candidato->instituicaoacademica1.'
                         </td>
                         <td>
-                                Atividade: '.$candidato->atividade1.'
+                                '.$candidato->atividade1.'
                         </td>
                         <td>
-                                Período: '.$candidato->periodoacademico1.'
+                                '.$candidato->periodoacademico1.'
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                                Instituicao 1 : '.$candidato->instituicaoacademica2.'
+                        <td height="22">
+                                '.$candidato->instituicaoacademica2.'
                         </td>
                         <td>
-                                Atividade: '.$candidato->atividade2.'
+                                '.$candidato->atividade2.'
                         </td>
                         <td>
-                                Período: '.$candidato->periodoacademico2.'
+                                '.$candidato->periodoacademico2.'
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                                Instituicao 1 : '.$candidato->instituicaoacademica3.'
+                        <td height="22">
+                                '.$candidato->instituicaoacademica3.'
                         </td>
                         <td>
-                                Atividade: '.$candidato->atividade3.'
+                                '.$candidato->atividade3.'
                         </td>
                         <td>
-                                Período: '.$candidato->periodoacademico3.'
+                                '.$candidato->periodoacademico3.'
                         </td>
                     </tr>
         </table>
@@ -717,53 +751,59 @@ function actionPdf() {
 
     $pdf->WriteHTML('
         <br>
-        <table style= "margin-top:80px" width="100%" border = "1"> 
+        <table style= "margin-top:80px" width="100%" border = "0"> 
 
                     <tr>
-                        <td colspan="3" style= "height:55px; text-align:center">
+                        <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;">
                             <b> PROPOSTA DE TRABALHO </b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            titulo da proposta: '.$candidato->tituloproposta.'
+                            <b>Título da proposta: </b>'.$candidato->tituloproposta.'
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Linha de pesquisa: '.$candidato->linhapesquisa.'
+                            <b> Linha de pesquisa: </b>'.$candidato->linhapesquisa.'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan = "3" height = "100px">
+                            <b> Exposição de motivos (exponha resumidamente os motivos que o levaram a se candidatar ao Curso):  </b>'.$candidato->motivos.'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style= "height:55px" border = "0">
+                            <b> Cartas de Recomendação </b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Exposição de motivos (exponha resumidamente os motivos que o levaram a se candidatar ao Curso): '.$candidato->motivos.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Nome: $candidato->cartanome1
+                            <b> Nome:  </b>'.$recomendacoesArray[0]->nome.'
                         </td>
                         <td>
-                           Email: $candidato->cartaemail1
+                           <b> Email:  </b>'.$recomendacoesArray[0]->email.'
                         </td>
 
                     </tr>
                     <tr>
                         <td>
-                            Nome: //$candidato->cartanome2
+                            <b> Nome:  </b>'.$recomendacoesArray[1]->nome.'
                         </td>
                         <td>
-                           Email: $candidato->cartaemail2
+                           <b> Email: </b>'.$recomendacoesArray[1]->email.'
                         </td>
 
                     </tr>
                     <tr>
                         <td colspan="2">
+                        <br><br>
                             OBS: anexar a este documento sua proposta de trabalho e demais documentos inseridos no formulário de inscrição
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="vertical-align: bottom; padding-bottom: 20px" height = "600px">
+                        <td colspan="2" style="vertical-align: bottom; padding-bottom: 20px" height = "300px">
                             Declaro que as informações prestadas neste formulário são verdadeiras, sob pena de exclusão do Curso.
                             <br><br>
                             Data: ____/____/_______ , Assinatura: __________________________________________________________

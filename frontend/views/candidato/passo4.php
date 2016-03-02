@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
    		<div style="text-align: center;">
-   		<a target="resource window" href="index.php?option=com_inscricaoppgi&task=viewpdf&doc=fo&id=<?php echo $candidato['id'];?>">
+   		<a target="resource window" href="index.php?r=candidato/comprovanteinscricao">
 			<div class="iconimage" style="float: left; width: 200px; margin-top: 20px;"><img src="img/edit_f2.png" border="0" height="32" width="32"><br><b>Imprimir Formul&#225;rio de Inscri&#231;&#227;o</b></div></a>
 
 		<a target="resource window" href="<?php echo $diretorio;?>Proposta.pdf">
