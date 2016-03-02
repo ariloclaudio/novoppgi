@@ -1,11 +1,11 @@
 <?php
-use xj\bootbox\BootboxAsset;
+//use xj\bootbox\BootboxAsset;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 
-BootboxAsset::register($this);
-BootboxAsset::registerWithOverride($this);
+//BootboxAsset::register($this);
+//BootboxAsset::registerWithOverride($this);
 
 /*Estático temporariamente*/
 $linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' => 'Sistemas Embarcados e Engenharia de Software', '3' => 'Inteligência Artificial', '3' => 'Visão Computacional e Robótica'];

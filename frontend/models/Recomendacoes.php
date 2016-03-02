@@ -4,45 +4,6 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "j17_recomendacoes".
- *
- * @property integer $id
- * @property integer $idCandidato
- * @property string $dataEnvio
- * @property string $prazo
- * @property string $nome
- * @property string $email
- * @property string $token
- * @property string $titulacao
- * @property string $cargo
- * @property string $instituicaoTitulacao
- * @property integer $anoTitulacao
- * @property string $instituicaoAtual
- * @property integer $dominio
- * @property integer $aprendizado
- * @property integer $assiduidade
- * @property integer $relacionamento
- * @property integer $iniciativa
- * @property integer $expressao
- * @property integer $ingles
- * @property integer $classificacao
- * @property string $informacoes
- * @property integer $anoContato
- * @property integer $conheceGraduacao
- * @property integer $conhecePos
- * @property integer $conheceEmpresa
- * @property integer $conheceOutros
- * @property string $outrosLugares
- * @property integer $orientador
- * @property integer $professor
- * @property integer $empregador
- * @property integer $coordenador
- * @property integer $colegaCurso
- * @property integer $colegaTrabalho
- * @property integer $outrosContatos
- * @property string $outrasFuncoes
- */
 class Recomendacoes extends \yii\db\ActiveRecord
 {
     /**
@@ -58,11 +19,8 @@ class Recomendacoes extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
-            [['idCandidato', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes'], 'required', 
-                'when' => function($model){return $model->dataEnvio != '0000-00-00 00:00:00';}, 'whenClient' => "function (attribute, value) {
-                return $('#form_hidden').val() == 'passo_form_carta';
-            }"],
+            return [
+            [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes'], 'required'],
             [['idCandidato', 'anoTitulacao', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'anoContato', 'conheceGraduacao', 'conhecePos', 'conheceEmpresa', 'conheceOutros', 'orientador', 'professor', 'empregador', 'coordenador', 'colegaCurso', 'colegaTrabalho', 'outrosContatos'], 'integer'],
             [['dataEnvio', 'prazo'], 'safe'],
             [['informacoes'], 'string'],
@@ -118,5 +76,20 @@ class Recomendacoes extends \yii\db\ActiveRecord
 
     public function getCandidato(){
         return $this->hasOne(Candidato::className(), ['id' => 'idCandidato']);
+    }
+
+    /*Retorna erro da relacionado a status da carta
+        0 - Sem Erros
+        1 - Carta Já Enviada
+        2 - Carta Fora do Prazo
+    */
+    public function erroCartaRecomendacao(){
+        if($this->dataEnvio == '0000-00-00 00:00:00')
+            if($this->prazo >= date('Y-m-d'))
+                return 0;
+            else
+                return 2;
+        
+        return 1;
     }
 }
