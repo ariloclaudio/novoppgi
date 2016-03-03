@@ -7,8 +7,6 @@ use yii\helpers\Html;
 /* @var $model app\models\Recomendacoes */
 
 $this->title = 'Carta de Recomendação Enviada com Sucesso!!!';
-$this->params['breadcrumbs'][] = ['label' => 'Recomendacoes', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recomendacoes-create">
 

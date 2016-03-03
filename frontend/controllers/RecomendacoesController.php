@@ -48,15 +48,34 @@ class RecomendacoesController extends Controller
         $this->layout = '@app/views/layouts/main2.php';
         $model = Recomendacoes::findOne(['token' => $token]);
 
-        if(!isset($model))
-            return "TOKEN INVÁLIDO";
+        $erro = array();
+
+        if(!isset($model)){
+            $erro['titulo'] = 'Token Inválido';
+            $erro['menssagem'] = 'Confirme-o no email que você recebeu do PPGI.';
+
+            return $this->render('cartarecomendacaoerro', [
+                'erro' => $erro,
+            ]);
+        }
 
         $erroCarta = $model->erroCartaRecomendacao();
 
-        if($erroCarta == 1)
-            return "CARTA JÁ ENVIADA";
-        else if($erroCarta == 2)
-            return "CARTA FORA DO PRAZO";
+        if($erroCarta == 1){
+            $erro['titulo'] = 'Carta de Recomendação Já Enviada';
+            $erro['menssagem'] = 'Esta carta já foi submetida ao PPGI.';
+
+            return $this->render('cartarecomendacaoerro', [
+                'erro' => $erro,
+            ]);
+        }else if($erroCarta == 2){
+            $erro['titulo'] = 'Carta de Recomendação Fora do Prazo';
+            $erro['menssagem'] = 'Prazo esgotado para envio da carta. Contate o PPGI.';
+
+            return $this->render('cartarecomendacaoerro', [
+                'erro' => $erro,
+            ]);
+        }
         $model->passo = 2;
 
         if ($model->load(Yii::$app->request->post())){            
