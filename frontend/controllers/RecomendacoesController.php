@@ -27,21 +27,6 @@ class RecomendacoesController extends Controller
     }
 
     /**
-     * Lists all Recomendacoes models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new RecomendacoesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
      * Displays a single Recomendacoes model.
      * @param integer $id
      * @return mixed
@@ -74,14 +59,21 @@ class RecomendacoesController extends Controller
             return "CARTA FORA DO PRAZO";
 
 
-        if ($model->load(Yii::$app->request->post())){
-                if($model->save())            
-                    return $this->render('cartarecomendacaomsg', [
-                        'model' => $model,
-                    ]);
-                else
-                    $this->mensagens('danger', 'Erro ao enviar carta', 'Ocorreu um erro ao enviar a carta de recomendação. 
+        if ($model->load(Yii::$app->request->post())){            
+            if(isset($_POST['enviar']))
+                $model->setDataEnvio();
+                //return var_dump($model->funcoesCartaArray);
+                $model->setCheckbox();
+
+                if($model->save()){
+                    if(isset($_POST['enviar']))
+                        return $this->render('cartarecomendacaomsg', ['model' => $model,]);
+                    else
+                        $this->mensagens('success', 'Salvo com sucesso', 'As informações da carta de recomendação foram salvas com sucesso.');
+                }else
+                    $this->mensagens('danger', 'Erro ao salvar carta', 'Ocorreu um erro ao salvar as informações da carta de recomendação. 
                         Verifique os campos e tente novamente');
+                //return var_dump($model->getErrors());
         }
             
         return $this->render('create', [
@@ -106,19 +98,6 @@ class RecomendacoesController extends Controller
                 'model' => $model,
             ]);
         }
-    }
-
-    /**
-     * Deletes an existing Recomendacoes model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

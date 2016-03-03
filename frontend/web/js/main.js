@@ -14,10 +14,8 @@ $(document).ready( function() {
                         $('#candidato-bairro').val(data.bairro);
                         $('#candidato-cidade').val(data.cidade);
                         $('#candidato-uf').val(data.estado);
-
-                        console.log("Cidade: "+data.cidade);
  
-                        $('#candidato-numero').focus();
+                        $('#candidato-datanascimento').focus();
                     }
                 },
                 error: function(data){
@@ -27,18 +25,6 @@ $(document).ready( function() {
    return false;    
    })
 
-   if($( "input[name='Candidato[vinculoemprego]']:checked" ).val() == "SIM"){
-        $('#divVinculo').css('display', 'block');
-    }
-
-    if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
-        $('#divBrasileiro').css('display', 'block');
-        $('#divEstrangeiro').css('display', 'none');
-
-    }else{
-        $('#divEstrangeiro').css('display', 'block');
-        $('#divBrasileiro').css('display', 'none');
-    }
 
    $('#candidato-nacionalidade').click(function(){
    		if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
@@ -67,82 +53,53 @@ $(document).ready( function() {
       }
    });
 
-
-   function verificacpf(cpf){
-      if (cpf.length != 11 || cpf == "00000000000" || cpf == "11111111111" || cpf == "22222222222" || cpf == "33333333333" || cpf == "44444444444" || cpf == "55555555555" || cpf == "66666666666" || cpf == "77777777777" || cpf == "88888888888" || cpf == "99999999999")
-        return false;
-     add = 0;
-
-     for (i=0; i < 9; i ++)
-        add += parseInt(cpf.charAt(i)) * (10 - i);
-
-     rev = 11 - (add % 11);
-     if (rev == 10 || rev == 11)
-        rev = 0;
-
-     if (rev != parseInt(cpf.charAt(9)))
-        return false;
-
-     add = 0;
-     for (i = 0; i < 10; i ++)
-        add += parseInt(cpf.charAt(i)) * (11 - i);
-
-     rev = 11 - (add % 11);
-     if (rev == 10 || rev == 11)
-         rev = 0;
-
-     if (rev != parseInt(cpf.charAt(10)))
-         return false;
-
-     return true;
-   }
-/*
-   function validacaoCPF(){
-            var cpf = $('#candidato-cpf').val();
-
-      if (cpf == ''){
-
-          $('#errocpf').css('display', 'block');
-          $('#errocpf').text("CPF é de preenchimento obrigatório");
-          $('#candidato-cpf').css('border-color', '#a94442');
-          $('#corCPF').css('color', '#a94442');
-          return 0;
+   $('#recomendacoes-conheceoutros').click(function(){
+      if($("input[name='Recomendacoes[conheceOutros][]']" ).val() == 1){
+        $("input[name='Recomendacoes[conheceOutros][]']").val(0);
+        $('#outroslugarestexto').css('display', 'none');
+      }else{
+        $("input[name='Recomendacoes[conheceOutros][]']").val(1);
+        $('#outroslugarestexto').css('display', 'block');
       }
-      else{
-        cpf = verificacpf(cpf);
+   });
 
-        if(cpf == true){
-          $('#errocpf').css('display', 'none');
-          $('#candidato-cpf').css('border-color', '#3c763d');
-          $('#corCPF').css('color', '#3c763d');
-        }
-        else{
-          $('#errocpf').css('display', 'block');
-          $('#errocpf').text("CPF inserido é inválido");
-          $('#candidato-cpf').css('border-color', '#a94442');
-          $('#corCPF').css('color', '#a94442');
-        }
-
+  $('#recomendacoes-outroscontatos').click(function(){
+      if($("input[name='Recomendacoes[outrosContatos][]']" ).val() == 1){
+        $("input[name='Recomendacoes[outrosContatos][]']").val(0);
+        $('#outrasfuncoestexto').css('display', 'none');
+      }else{
+        $("input[name='Recomendacoes[outrosContatos][]']").val(1);
+        $('#outrasfuncoestexto').css('display', 'block');
       }
-   }
-
-     $('#candidato-cpf').blur(function(){
-
-        validacaoCPF();
-
-     });
-*/
+   });
 });
 
-function validacao(){
+$( window ).load(function() {
 
-    var x = $("#form_hidden").val();    
+    /*Para exibir a caixa de texto OUTROS ao carregar a view solicitação de carta de recomendadação*/
+    if($("input[name='Recomendacoes[conheceOutros][]']" ).val() == 1){       
+        $('#outroslugarestexto').css('display', 'block');
+    }else{
+        $('#outroslugarestexto').css('display', 'none');
+    }
 
+    if($("input[name='Recomendacoes[outrosContatos][]']" ).val() == 1){
+        $('#outroslugarestexto').css('display', 'block');
+    }else{
+        $('#outroslugarestexto').css('display', 'none');
+    }
 
+    if($( "input[name='Candidato[vinculoemprego]']:checked" ).val() == "SIM"){
+        $('#divVinculo').css('display', 'block');
+    }
 
+    if($("input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
+        $('#divBrasileiro').css('display', 'block');
+        $('#divEstrangeiro').css('display', 'none');
 
-    //var x = $("input:radio[name=\"Candidato[nacionalidade]\"]:checked").val();
-    //alert(x);
+    }else if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 2){
+        $('#divEstrangeiro').css('display', 'block');
+        $('#divBrasileiro').css('display', 'none');
+    }
 
-    //validacaoCPF();
-}
+});

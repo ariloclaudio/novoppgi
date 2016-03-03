@@ -7,13 +7,18 @@ use yii\web\JsExpression;
 
 $titulacao = ['1' => 'Mestrado', '2' => 'Doutorado', '3' => 'Epecialização', '4' => 'Graduação', '5' => 'Ensino Médio'];
 $atributos = ['1' => '1 - Fraco', '2' => '2 - Regular', '3' => '3 - Bom', '4' => '4 - Muito Bom', '5' => '5 - Excelente', '6' => 'X - Sem Condições de Informar'];
+$funcoesCarta = ['1' => 'Orientador', '2' => 'Professor', '3' => 'Empregador', '4' => 'Coordenador',  '5' => 'Colega de Curso', '6' => 'Colega de Trabalho', '7' => 'Outras Funções'];
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Recomendacoes */
-/* @var $form yii\widgets\ActiveForm */
+echo 
+"<style type='text/css'>
+label{
+    font-weight: inherit !important;
+}
+</style>";
 ?>
 
 <div class="recomendacoes-form">
+<?= "CANDIDATO: " . $model->candidato->nome ?>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -32,84 +37,80 @@ $atributos = ['1' => '1 - Fraco', '2' => '2 - Regular', '3' => '3 - Bom', '4' =>
 
         <?= $form->field($model, 'cargo', ['options' =>['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Cargo Atual:</b>") ?>
     </div>
-    <div class="row">
+    
+    <!-- <div class="row">
         <?= $form->field($model, 'anoContato', ['options' =>['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Eu o(a) conheço desde o ano:</b>") ?>
 
-        <?= $form->field($model, 'conheceGraduacao', ['options' =>['class' => 'col-md-2']])->checkBoxList(['1' => 'Curso de Graduação'])->label(false) ?>
+        <div style="padding-bottom: 10px;">
+            <b>Por meio de :</b>
+        </div>
+        <?= $form->field($model, 'conheceGraduacao', ['options' =>['class' => 'col-md-2']])->checkboxList(['1' => 'Curso de Graduação'])->label(false) ?>
 
         <?= $form->field($model, 'conhecePos', ['options' =>['class' => 'col-md-3']])->checkBoxList(['1' => 'Curso de Pós-Graduação'])->label(false) ?>
 
         <?= $form->field($model, 'conheceEmpresa', ['options' =>['class' => 'col-md-2']])->checkBoxList(['1' => 'Empresa'])->label(false) ?>
 
         <?= $form->field($model, 'conheceOutros', ['options' =>['class' => 'col-md-1']])->checkBoxList(['1' => 'Outros'])->label(false) ?>
-    </div>
+
+        <?= $form->field($model, 'outrosLugares', ['options' =>['class' => 'col-md-5', 'style' => 'display: none', 'id' => 'outroslugarestexto']])->textInput()->label("<b>Especifique quais outros: </b>") ?>
+    </div> -->
     <div class="row">
         <div>
             <font color='#FF0000'>*</font> <b>Com relação ao candidato, fui seu:</b>
         </div>
         <div style="margin-top:10px; " class="col-md-12">
-            <?= $form->field($model, 'orientador', ['options' =>['class' => 'col-md-3']])->checkBoxList(['1' => 'Professor Orientador'])->label(false) ?>
 
-            <?= $form->field($model, 'professor', ['options' =>['class' => 'col-md-3']])->checkBoxList(['1' => 'Professor De Disciplina(s)'])->label(false) ?>
+        <?= $form->field($model, 'funcoesCartaArray')->checkboxList($funcoesCarta)->label(false) ?>
 
-            <?= $form->field($model, 'empregador', ['options' =>['class' => 'col-md-2']])->checkBoxList(['1' => 'Empregador'])->label(false) ?>
 
-            <?= $form->field($model, 'coordenador', ['options' =>['class' => 'col-md-3']])->checkBoxList(['1' => 'Coordenador de Equipe'])->label(false) ?>
-
-            <?= $form->field($model, 'colegaCurso', ['options' =>['class' => 'col-md-3']])->checkBoxList(['1' => 'Colega de Curso Superior'])->label(false) ?>
-
-            <?= $form->field($model, 'colegaTrabalho', ['options' =>['class' => 'col-md-3']])->checkBoxList(['1' => 'Colega de Profissão'])->label(false) ?>
-
-            <?= $form->field($model, 'outrasFuncoes', ['options' =>['class' => 'col-md-2']])->checkBoxList(['1' => 'Outras Funções'])->label(false) ?>
+        <?= $form->field($model, 'outrasFuncoes', ['options' =>['class' => 'col-md-4', 'style' => 'display: none', 'id' => 'outrasfuncoestexto']])->textInput()->label('<b>Especifique quais outras:<b>') ?>
         </div>
     </div>
-    <div  class="row">
+    <div  class="row" class="col-md-12">
         <p align="justify"><b>Como classifica o candidato quanto aos atributos indicados no quadro abaixo:</b></p>
-        <div class="col-md-6">
+        <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Domínio em sua área de conhecimento cientifico</b>
         </div>
-        <?= $form->field($model, 'dominio', ['options' =>['class' => 'col-md-5']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false)  ?>
+        <?= $form->field($model, 'dominio', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false)  ?>
 
-        <div class="col-md-6">
+        <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Facilidade de aprendizado capacidade intelectual</b>
         </div>
-        <?= $form->field($model, 'aprendizado', ['options' =>['class' => 'col-md-5']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
+        <?= $form->field($model, 'aprendizado', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
 
-        <div class="col-md-6">
+        <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Assiduidade, perceverança</b>
         </div>
-        <?= $form->field($model, 'assiduidade', ['options' =>['class' => 'col-md-5']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
+        <?= $form->field($model, 'assiduidade', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
 
-        <div class="col-md-6">
+        <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Relacionamento com colegas e superiores</b>
         </div>
-        <?= $form->field($model, 'relacionamento', ['options' =>['class' => 'col-md-5']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
+        <?= $form->field($model, 'relacionamento', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
 
-        <div class="col-md-6">
+        <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Iniciativa, desembaraço, originalidade e liderança</b>
         </div>
-        <?= $form->field($model, 'iniciativa', ['options' =>['class' => 'col-md-5']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
-        <div class="col-md-6">
+        <?= $form->field($model, 'iniciativa', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
+        <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Capacidade de expressão escrita</b>
         </div>
-        <?= $form->field($model, 'expressao', ['options' =>['class' => 'col-md-5']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
-        <div class="col-md-6">
+        <?= $form->field($model, 'expressao', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
+        <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Conhecimento em inglês</b>
         </div>
-        <?= $form->field($model, 'ingles', ['options' =>['class' => 'col-md-5']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false)?>
+        <?= $form->field($model, 'ingles', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false)?>
     </div>
     <div class="row">
         <div class="col-md-12">
             <p align="justify"><font color="#FF0000">*</font> <b>Comparando este candidato com outros alunos ou profissionais, com similar n&#237;vel de educa&#231;&#227;o e experi&#234;ncia, que conheceu nos &#250;ltimos 2 anos, classifique a sua aptid&#227;o para realizar estudos avan&#231;ados e pesquisas. O candidato est&#225; entre (indique uma das alternativas):</b></p>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'classificacao')->radioList(['5' => 'os 5% mais aptos', '10' => 'os 10% mais aptos', '30' => 'os 30% mais aptos', '50' => 'os 50% mais aptos'])->label(false) ?>
+            <?= $form->field($model, 'classificacao')->radioList(['4' => 'os 5% mais aptos', '3' => 'os 10% mais aptos', '2' => 'os 30% mais aptos', '1' => 'os 50% mais aptos'])->label(false) ?>
         </div>
-    </div>
+    </div>    
 
-    
-
-    <?= $form->field($model, 'informacoes')->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b>Informações:</b>") ?>
+    <?= $form->field($model, 'informacoes')->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b>Informações:</b><br><br> <p align='justify'>Estamos particularmente interessados na avalia&#231;&#227;o do potencial do candidato para estudos, pesquisa e desenvolvimento na &#225;rea de Inform&#225;tica. Uma descri&#231;&#227;o detalhada dos pontos positivos e negativos do desempenho do candidato em atividades acad&#234;micas e/ou profissionais ser&#227;o mais &#250;teis do que coment&#225;rios gen&#233;ricos. Coment&#225;rios sobre car&#225;ter, integridade e motiva&#231;&#227;o ser&#227;o &#250;teis, se julgados pertinentes. A experi&#234;ncia na qual a opini&#227;o do avaliador se baseou tamb&#233;m deve ser descrita. Se poss&#237;vel, compare o candidato com outras pessoas que tenham o mesmo n&#237;vel de forma&#231;&#227;o/experi&#234;ncia. As informa&#231;&#245;es s&#227;o confidenciais.</p>") ?>
 
 
     <div class="form-group">
