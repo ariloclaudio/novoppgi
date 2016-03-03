@@ -149,7 +149,8 @@ class CandidatoController extends Controller
                         return $this->redirect(['passo4']);
                     }
                 }else{
-                    $this->mensagens('danger', 'Erro ao Salvar Alterações', 'Ocorreu um Erro ao salvar os dados.');
+                    //$this->mensagens('danger', 'Erro ao Salvar Alterações', 'Ocorreu um Erro ao salvar os dados.');
+                    return var_dump($model->getErrors());
                 }
             
             }else{

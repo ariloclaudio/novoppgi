@@ -22,7 +22,8 @@ class Recomendacoes extends \yii\db\ActiveRecord
     public function rules()
     {
             return [
-            [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes', 'funcoesCartaArray'], 'required'],
+            [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes', 'funcoesCartaArray', 'conhece'], 'required',
+            'when' => function($model){ return $model->passo == 2;},],
             [['anoTitulacao', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'anoContato'], 'integer'],
             [['dataEnvio', 'prazo'], 'safe'],
             [['informacoes'], 'string'],
@@ -177,7 +178,7 @@ class Recomendacoes extends \yii\db\ActiveRecord
         return 1;
     }
 
-    public function setDataInicio(){
+    public function setDataEnvio(){
         $this->dataEnvio = date('Y-m-d H:i:s');
     }
 }

@@ -43,8 +43,8 @@ class RecomendacoesController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($token)
-    {
+    public function actionCreate($token){
+        
         $this->layout = '@app/views/layouts/main2.php';
         $model = Recomendacoes::findOne(['token' => $token]);
 
@@ -57,14 +57,12 @@ class RecomendacoesController extends Controller
             return "CARTA JÁ ENVIADA";
         else if($erroCarta == 2)
             return "CARTA FORA DO PRAZO";
-
+        $model->passo = 2;
 
         if ($model->load(Yii::$app->request->post())){            
             if(isset($_POST['enviar']))
                 $model->setDataEnvio();
-                //return var_dump($model->funcoesCartaArray);
                 $model->setCheckbox();
-
                 if($model->save()){
                     if(isset($_POST['enviar']))
                         return $this->render('cartarecomendacaomsg', ['model' => $model,]);
@@ -73,7 +71,6 @@ class RecomendacoesController extends Controller
                 }else
                     $this->mensagens('danger', 'Erro ao salvar carta', 'Ocorreu um erro ao salvar as informações da carta de recomendação. 
                         Verifique os campos e tente novamente');
-                //return var_dump($model->getErrors());
         }
             
         return $this->render('create', [

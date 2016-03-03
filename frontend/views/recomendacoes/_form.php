@@ -8,6 +8,7 @@ use yii\web\JsExpression;
 $titulacao = ['1' => 'Mestrado', '2' => 'Doutorado', '3' => 'Epecialização', '4' => 'Graduação', '5' => 'Ensino Médio'];
 $atributos = ['1' => '1 - Fraco', '2' => '2 - Regular', '3' => '3 - Bom', '4' => '4 - Muito Bom', '5' => '5 - Excelente', '6' => 'X - Sem Condições de Informar'];
 $funcoesCarta = ['1' => 'Orientador', '2' => 'Professor', '3' => 'Empregador', '4' => 'Coordenador',  '5' => 'Colega de Curso', '6' => 'Colega de Trabalho', '7' => 'Outras Funções'];
+$conheceLista = ['1' => 'Curso Graduação', '2' => 'Curso de Pós-Graduação', '3' => 'Empresa', '4' => 'Outros'];
 
 echo 
 "<style type='text/css'>
@@ -18,7 +19,6 @@ label{
 ?>
 
 <div class="recomendacoes-form">
-<?= "CANDIDATO: " . $model->candidato->nome ?>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -38,22 +38,14 @@ label{
         <?= $form->field($model, 'cargo', ['options' =>['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Cargo Atual:</b>") ?>
     </div>
     
-    <!-- <div class="row">
+    <div class="row">
+        
         <?= $form->field($model, 'anoContato', ['options' =>['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Eu o(a) conheço desde o ano:</b>") ?>
 
-        <div style="padding-bottom: 10px;">
-            <b>Por meio de :</b>
-        </div>
-        <?= $form->field($model, 'conheceGraduacao', ['options' =>['class' => 'col-md-2']])->checkboxList(['1' => 'Curso de Graduação'])->label(false) ?>
-
-        <?= $form->field($model, 'conhecePos', ['options' =>['class' => 'col-md-3']])->checkBoxList(['1' => 'Curso de Pós-Graduação'])->label(false) ?>
-
-        <?= $form->field($model, 'conheceEmpresa', ['options' =>['class' => 'col-md-2']])->checkBoxList(['1' => 'Empresa'])->label(false) ?>
-
-        <?= $form->field($model, 'conheceOutros', ['options' =>['class' => 'col-md-1']])->checkBoxList(['1' => 'Outros'])->label(false) ?>
+        <?= $form->field($model, 'conhece')->checkboxList($conheceLista)->label("<font color='#FF0000'>*</font> <b>Por Meio de :</b>") ?>
 
         <?= $form->field($model, 'outrosLugares', ['options' =>['class' => 'col-md-5', 'style' => 'display: none', 'id' => 'outroslugarestexto']])->textInput()->label("<b>Especifique quais outros: </b>") ?>
-    </div> -->
+    </div>
     <div class="row">
         <div>
             <font color='#FF0000'>*</font> <b>Com relação ao candidato, fui seu:</b>

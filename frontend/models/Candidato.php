@@ -93,7 +93,7 @@ class Candidato extends \yii\db\ActiveRecord
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3';
             }"],
-            [['cartaNomeReq1', 'cartaNomeReq2', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3 && $model->edital->cartarecomendacao == 1;},
+            [['linhapesquisa', 'tituloproposta', 'motivos' , 'propostaFile','comprovanteFile', 'cartaNomeReq1', 'cartaNomeReq2', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3 && $model->edital->cartarecomendacao == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3_carta';
             }"],
@@ -389,29 +389,19 @@ class Candidato extends \yii\db\ActiveRecord
         else if($this->passoatual == 3){
             $cartas = $this->arrayCartas();
 
-            if(count($this->recomendacoes) == count($cartas['nome'])){
-                for ($i=0; $i < count($this->recomendacoes); $i++) {
-                    $this->recomendacoes[$i]->nome = $cartas['nome'][$i];
-                    $this->recomendacoes[$i]->email = $cartas['email'][$i];
-
-                    if(!$this->recomendacoes[$i]->save())
-                        return false;
-                }
-
-            }else {
-                Recomendacoes::deleteAll(['idCandidato' => $this->id]);
-                for ($i=0; $i < count($cartas['nome']); $i++) {
-                    $recomendacao = new Recomendacoes();
-                    $recomendacao->idCandidato = $this->id;
-                    $recomendacao->dataEnvio = '0000-00-00 00:00:00';
-                    $recomendacao->prazo = date("Y-m-d", strtotime('+1 days'));
-                    $recomendacao->nome = $cartas['nome'][$i];
-                    $recomendacao->email = $cartas['email'][$i];
-                    $recomendacao->token = md5($this->id.$cartas['email'][$i].time());
-                    $this->recomendacoes[$i] = $recomendacao;
-                    if(!$recomendacao->save())
-                        return false;
-                }
+            Recomendacoes::deleteAll(['idCandidato' => $this->id]);
+            for ($i=0; $i < count($cartas['nome']); $i++) {
+                $recomendacao = new Recomendacoes();
+                $recomendacao->idCandidato = $this->id;
+                $recomendacao->dataEnvio = '0000-00-00 00:00:00';
+                $recomendacao->prazo = date("Y-m-d", strtotime('+1 days'));
+                $recomendacao->nome = $cartas['nome'][$i];
+                $recomendacao->email = $cartas['email'][$i];
+                $recomendacao->token = md5($this->id.$cartas['email'][$i].time());
+                $this->recomendacoes[$i] = $recomendacao;
+                if(!$recomendacao->save())
+                    return false;
+                    
             }
             return true;
         }else
@@ -421,13 +411,13 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function arrayCartas(){
         $array = [];
+
+        $array['nome'] = [$this->cartaNomeReq1, $this->cartaNomeReq2];
+        $array['email'] = [$this->cartaEmailReq1, $this->cartaEmailReq2];
         
         if(isset($this->cartaNome) && isset($this->cartaEmail)){
             $this->cartaNome = array_filter($this->cartaNome);
             $this->cartaEmail = array_filter($this->cartaEmail);
-
-            $array['nome'] = [$this->cartaNomeReq1, $this->cartaNomeReq2];
-            $array['email'] = [$this->cartaEmailReq1, $this->cartaEmailReq2];
         }
         
         for ($i=0; $i < count($this->cartaNome); $i++){ 
