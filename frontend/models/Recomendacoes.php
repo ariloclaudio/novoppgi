@@ -6,6 +6,7 @@ use Yii;
 
 class Recomendacoes extends \yii\db\ActiveRecord
 {
+    public $conhece;
     /**
      * @inheritdoc
      */
@@ -21,6 +22,7 @@ class Recomendacoes extends \yii\db\ActiveRecord
     {
             return [
             [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes'], 'required'],
+            
             [['idCandidato', 'anoTitulacao', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'anoContato', 'conheceGraduacao', 'conhecePos', 'conheceEmpresa', 'conheceOutros', 'orientador', 'professor', 'empregador', 'coordenador', 'colegaCurso', 'colegaTrabalho', 'outrosContatos'], 'integer'],
             [['dataEnvio', 'prazo'], 'safe'],
             [['informacoes'], 'string'],

@@ -279,22 +279,7 @@ class CandidatoController extends Controller
         }
     }
 
-    /* Envio de mensagens para views
-       Tipo: success, danger, warning*/
-    protected function mensagens($tipo, $titulo, $mensagem){
-        Yii::$app->session->setFlash($tipo, [
-            'type' => $tipo,
-            'icon' => 'home',
-            'duration' => 5000,
-            'message' => $mensagem,
-            'title' => $titulo,
-            'positonY' => 'top',
-            'positonX' => 'center',
-            'showProgressbar' => true,
-        ]);
-    }
-
-function actionComprovanteinscricao() {
+    function actionComprovanteinscricao() {
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
@@ -885,6 +870,21 @@ function actionComprovanteinscricao() {
                     Tente novamente ou contate o adminstrador do sistema');
             }
         }
+    }
+
+    /* Envio de mensagens para views
+   Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 
 }

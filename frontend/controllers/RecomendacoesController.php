@@ -74,7 +74,7 @@ class RecomendacoesController extends Controller
             return "CARTA FORA DO PRAZO";
 
 
-        if ($model->load(Yii::$app->request->post()))
+        if ($model->load(Yii::$app->request->post())){
                 if($model->save())            
                     return $this->render('cartarecomendacaomsg', [
                         'model' => $model,
@@ -82,6 +82,7 @@ class RecomendacoesController extends Controller
                 else
                     $this->mensagens('danger', 'Erro ao enviar carta', 'Ocorreu um erro ao enviar a carta de recomendação. 
                         Verifique os campos e tente novamente');
+        }
             
         return $this->render('create', [
             'model' => $model,
@@ -134,5 +135,20 @@ class RecomendacoesController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+        /* Envio de mensagens para views
+   Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }
