@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Edital;
+use app\models\Candidato;
 use app\models\SearchEdital;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,6 +17,7 @@ use yii\web\UploadedFile;
  */
 class EditalController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -39,6 +41,10 @@ class EditalController extends Controller
     {
         $searchModel = new SearchEdital();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        //$x = $dataProvider->getModels();
+        //print_r($x[0]->candidato[0]);
+        //exit;   
 
         return $this->render('index', [
             'searchModel' => $searchModel,

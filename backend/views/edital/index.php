@@ -52,6 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         return date("d-m-Y", strtotime($model->datafim));
                 },
             ],
+            [
+                'label' => 'Quantidade Inscritos',
+                'attribute' => 'quantidadeInscritos',
+                'value' => function ($model) {
+                            return $model->numero;
+                },
+            ],
             //'documento',
 
 

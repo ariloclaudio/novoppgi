@@ -17,6 +17,8 @@ use yii\web\UploadedFile;
 class Edital extends \yii\db\ActiveRecord
 {
     public $documentoFile;
+    public $quantidadeInscritos;
+
     /**
      * @inheritdoc
      */
@@ -65,6 +67,16 @@ class Edital extends \yii\db\ActiveRecord
         ];
     }
 
+
+    /*Relacionamento*/
+    public function getCandidato()
+    {
+        return $this->hasMany(Candidato::className(), ['idEdital' => 'numero']);
+    }
+    //fim do relacionamento
+
+
+
     public function uploadDocumento($documentoFile)
     {
         if (isset($documentoFile)) {
@@ -75,4 +87,23 @@ class Edital extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+
+
+    public function quantidadeInscritos($id)
+    {
+
+        //$results = Candidatos::find()->where(['evento_idevento' => $id_evento])->count();
+        $results = Candidato::find()->where("idEdital = ".$id)->count();
+ 
+        return $results;
+    }
+
+
+
+
+
+
+
+
 }

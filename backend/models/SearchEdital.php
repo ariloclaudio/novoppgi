@@ -6,6 +6,8 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Edital;
+use app\models\Candidato;
+
 
 /**
  * SearchEdital represents the model behind the search form about `app\models\Edital`.
@@ -41,7 +43,7 @@ class SearchEdital extends Edital
      */
     public function search($params)
     {
-        $query = Edital::find();
+        $query = Edital::find()->joinWith("candidato");
 
         // add conditions that should always apply here
 
