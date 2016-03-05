@@ -50,8 +50,11 @@ class LoginForm extends Model
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, '');
                 $this->addError('email', '');
-                $this->addError('idEdital', 'Login ou Senha ou Edital incorretos');
+                $this->addError('idEdital', 'Login, Senha ou Edital incorretos');
 
+            }else if($user->passoatual == 4){
+                $this->addError('email', '');
+                $this->addError('idEdital', 'Usuário com cadastro já finalizado');
             }
         }
     }
