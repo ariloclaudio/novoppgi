@@ -102,7 +102,7 @@ class Candidato extends \yii\db\ActiveRecord
             
 
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
-            [['cartaNome'], 'string'],
+            [['cartaNome', 'cotaTipo'], 'string'],
             [['cartaEmail'], 'email'],
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
  
@@ -262,9 +262,9 @@ class Candidato extends \yii\db\ActiveRecord
 
     
 
-    public function getDiretorio($id){
+    public function getDiretorio(){
         $salt1 = "programadeposgraduacaoufamicompPPGI";
-        $salt2 = $id * 777;
+        $salt2 = $this->id * 777;
         $idCriptografado = md5($salt1+$id+$salt2);
         //definição de um caminho padrão, baseado no ID do candidato
         $caminho = 'documentos/'.$idCriptografado.'/';
@@ -275,7 +275,7 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function gerarDiretorio($id){
 
-        $caminho = $this->getDiretorio($id);
+        $caminho = $this->getDiretorio();
         
         //verificação se o diretório a ser criado já existe, pois se já existe, não há necessidade de criar outro
         $caminho_ja_existe = is_dir($caminho);
@@ -427,5 +427,16 @@ class Candidato extends \yii\db\ActiveRecord
             }
         }
         return $array;
+    }
+
+    public function getCotaTipoDesc(){
+        if($this->cotaTipo == 1)
+            return "Negro";
+        else if($this->cotaTipo == 2)
+            return "Pardo";
+        else if($this->cotaTipo == 3)
+            return "Índio";
+        else
+            return "NAO INFORMADO";
     }
 }

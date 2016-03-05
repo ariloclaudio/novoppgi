@@ -37,14 +37,6 @@ $(document).ready( function() {
    		}
    });
 
-   $('#candidato-vinculoemprego').click(function(){
-      if($( "input[name='Candidato[vinculoemprego]']:checked" ).val() == "SIM"){
-        $('#divVinculo').css('display', 'block');
-      }else{
-        $('#divVinculo').css('display', 'none');
-      }
-   });
-
    $('#candidato-vinculoconvenio').click(function(){
       if($( "input[name='Candidato[vinculoconvenio]']:checked" ).val() == "SIM"){
         $('#divConvenio').css('display', 'block');
@@ -71,12 +63,37 @@ $(document).ready( function() {
         $("input[name='Recomendacoes[outrosContatos][]']").val(1);
         $('#outrasfuncoestexto').css('display', 'block');
       }
-   });
+  });
+
+  $('input[name="Candidato[vinculoconvenio]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+      if(state){
+      $('#divConvenio').css('display', 'block');
+    }else{
+      $('#divConvenio').css('display', 'none');
+    }
+  });
+
+  $('input[name="Candidato[cotas]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+      if(state){
+      $('#divCotas').css('display', 'block');
+    }else{
+      $('#divCotas').css('display', 'none');
+    }
+  });
+
+  $('input[name="Candidato[vinculoemprego]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+      if(state){
+      $('#divVinculo').css('display', 'block');
+    }else{
+      $('#divVinculo').css('display', 'none');
+    }
+  });
+
 });
 
 $( window ).load(function() {
 
-    /*Para exibir a caixa de texto OUTROS ao carregar a view solicitação de carta de recomendadação*/
+/*Para exibir a caixa de texto OUTROS ao carregar a view solicitação de carta de recomendadação*/
     if($("input[name='Recomendacoes[conheceOutros][]']" ).val() == 1){       
         $('#outroslugarestexto').css('display', 'block');
     }else{

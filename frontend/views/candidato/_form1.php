@@ -4,6 +4,22 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use yii\widgets\MaskedInput;
+use kartik\widgets\SwitchInput;
+
+if($model->vinculoconvenio == 1)
+    $hideVinculo = "block;";
+ else
+    $hideVinculo = "none";
+
+if($model->cotas == 1)
+    $hideCotas = "block";
+else
+    $hideCotas = "none";
+
+if($model->vinculoemprego == 1)
+    $hideVinculoEmprego = "block";
+else
+    $hideVinculoEmprego = "none";
 
 $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "CE" => "CE", "DF" => "DF",
 "ES" => "ES", "GO" => "GO", "MA" => "MA", "MG" => "MG", "MS" => "MS", "MT" => "MT", "PA" => "PA",
@@ -13,8 +29,10 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 $estadoscivil = ['Solteiro(a)' => 'Solteiro(a)', 'Casado(a)' => 'Casado(a)', 'Divorciado(a)' => 'Divorciado(a)', 
 'Viúvo(a)' => 'Viúvo(a)', "União Estável" => "União Estável"];
 
+$cotas = ['1' => 'Negro', '2' => 'Pardo', '3' => 'Índio'];
+
 $labelCartaEmpregador = "<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b><br>Atual Arquivo com a Carta do Empregador:";
-if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource window' href='documentos/$model->cartaempregador'><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>"; else $labelCartaEmpregador .= " <i>Nenhum arquivo de carta do empregador carregado.<i>";
+if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource window' href=".$model->diretorio.$model->cartaempregador."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>"; else $labelCartaEmpregador .= " <i>Nenhum arquivo de carta do empregador carregado.<i>";
 ?>
 
 <div class="candidato-form">
@@ -116,30 +134,70 @@ if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource
     <div style="width: 100%; clear: both;"><p align="justify"><b>Dados da Inscrição</b></p></div>
     <div class = "row">
     <?php if($editalCurso == 3){ ?>
-    <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado:</b>")  ?>
+        <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+            'type' => SwitchInput::RADIO,
+            'items' => [
+                ['label' => 'Mestrado', 'value' => 1],
+                ['label' => 'Doutorado', 'value' => 2],
+            ],
+            'pluginOptions' => ['size' => 'mini'],
+            'labelOptions' => ['style' => 'font-size: 15px'],
+        ])->label("<font color='#FF0000'>*</font> <b>Curso Desejado?</b>") ?>
     <?php } ?>
 
-    <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>") ?>
+    <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-8']])->widget(SwitchInput::classname(), [
+            'type' => SwitchInput::RADIO,
+            'items' => [
+                ['label' => 'Integral', 'value' => 1],
+                ['label' => 'Parcial', 'value' => 2],
+            ],
+            'pluginOptions' => ['size' => 'mini'],
+            'labelOptions' => ['style' => 'font-size: 15px'],
+    ])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação?</b>") ?>
+    
     </div>
 
     <div class = "row">
-    <?= $form->field($model, 'vinculoconvenio', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Vinculado a algum Convênio?</b>")  ?>
-    
-    <?= $form->field($model, 'cotas', ['options' => ['class' => 'col-md-6']])->radioList(['1' => 'Sim', '0' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Cotas?</b>")  ?>
-    
+        <?= $form->field($model, 'cotas', ['options' => ['class' => 'col-md-6']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+        ]])->label("<font color='#FF0000'>*</font> <b>Regime de Cotas?</b>") ?>
+
+        <div id="divCotas" style="display: <?= $hideCotas ?>">
+            <?= $form->field($model, 'cotaTipo', ['options' => ['class' => 'col-md-4']])->dropDownList($cotas, ['prompt' => 'Selecione uma Opção..'])->label("<font color='#FF0000'>*</font> <b>Tipo de Cota:</b>") ?>
+        </div>    
     </div>
-    <div id="divConvenio" class = "row">
-    <?= $form->field($model, 'convenio', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<b>Quais (ex: PICTD)?</b>") ?>
+
+    <div class="row">
+        <?= $form->field($model, 'vinculoconvenio', ['options' => ['class' => 'col-md-6']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+            'onText' => 'Sim',
+            'offText' => 'Não',
+        ]])->label("<font color='#FF0000'>*</font> <b>Vinculado a algum Convênio?</b>") ?>
+
+        <div id="divConvenio" style="display: <?= $hideVinculo ?>">
+            <?= $form->field($model, 'convenio', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("<b>Quais (ex: PICTD)?</b>") ?>        
+        </div>
+
     </div>
 
     <div class = "row">
-        <?= $form->field($model, 'solicitabolsa', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Solicita Bolsa de Estudo?</b>")  ?>
 
-        
-        <?= $form->field($model, 'vinculoemprego', ['options' => ['class' => 'col-md-6']])->radioList(['SIM' => 'Sim', 'NAO' => 'Não'])->label("<font color='#FF0000'>*</font> <b>Manterá Vínculo Empregatício?</b>") ?>
+        <?= $form->field($model, 'solicitabolsa', ['options' => ['class' => 'col-md-6']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+        ]])->label("<font color='#FF0000'>*</font> <b>Solicita Bolsa de Estudo?</b>") ?>
+
+        <?= $form->field($model, 'vinculoemprego', ['options' => ['class' => 'col-md-6']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+        ]])->label("<font color='#FF0000'>*</font> <b>Manterá Vínculo Empregatício?</b>") ?>
     </div>
 </div>
-    <div id="divVinculo" style="border-radius: 25px; border: 2px solid #73AD21; padding: 20px; width: 100%; height: 100%; display:none">
+    <div id="divVinculo" style="border-radius: 25px; border: 2px solid #73AD21; padding: 20px; width: 100%; height: 100%;display: <?= $hideVinculoEmprego ?>">
     <p align="justify"><b>Estes campos n&#227;o s&#227;o obrigat&#243;rios </b> (Se desejado, anexe o arquivo contendo a carta do empregador comprometendo-se a limitar a carga de trabalho do candidato a 24 horas semanais, ou meio expediente de trabalho)</p>
 
     <?= $form->field($model, 'empregador')->textInput(['maxlength' => true]) ?>
@@ -152,7 +210,7 @@ if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource
 
     <div class="form-group" style="margin-top:10px">
 
-        <?= Html::submitButton($model->isNewRecord ? 'Salvar e Continuar' : 'Update', ['onclick' => 'validacao()','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton('Salvar e Continuar' , ['onclick' => 'validacao()','class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

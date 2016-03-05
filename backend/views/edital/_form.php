@@ -5,6 +5,9 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
 
+$model->mestrado = 1;
+$model->doutorado = 1;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Edital */
 /* @var $form yii\widgets\ActiveForm */
@@ -13,6 +16,10 @@ use kartik\widgets\SwitchInput;
 <div class="edital-form">
 	<div class="grid">
 	    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
+
+	    <?php if($model->mestrado != 1) echo "<input type='hidden' id = 'form_mestrado' value ='' />"; else echo "<input type='hidden' id = 'form_mestrado' value ='1' />"; ?>
+	    
+	    <?php if($model->doutorado != 1) echo "<input type='hidden' id = 'form_doutorado' value ='' />"; else echo "<input type='hidden' id = 'form_doutorado' value ='1' />";?>
 
 		    <div class="row">
 		    	<?= $form->field($model, 'numero', ['options' => ['class' => 'col-md-4']])->textInput() ?>
@@ -45,21 +52,30 @@ use kartik\widgets\SwitchInput;
 			        'offText' => 'Não',
 			    ]])->label("<font color='#FF0000'>*</font> <b>Carta de Recomendação?</b>") ?>
 			</div>
-			<div class="row">
-		    	<?= $form->field($model, 'cotas', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Cotas (0 senão houver cotas):</b>") ?>
-		    </div>
-		    <div class = "row">
-			    <?= $form->field($model, 'curso', ['options' => ['class' => 'col-md-3']])->radioList(['1' => 'Mestrado' , '2' => 'Doutorado', '3' => 'Ambos'])->label("<font color='#FF0000'>*</font> <b>Curso:</b>")  ?>
-			</div>
-			<div id="divVagasMestrado" style="display:none">
-		    	<div class="row">
-		    	<?= $form->field($model, 'vagas_mestrado', ['options' => ['class' => 'col-md-4']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Mestrado:</b>") ?>
-		     </div>
-		     </div>
 		    <div class="row">
-			<div id="divVagasDoutorado" style="display:none">
-		    	<?= $form->field($model, 'vagas_doutorado', ['options' => ['class' => 'col-md-4']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Doutorado:</b>") ?>
-		     </div>
+			    <?= $form->field($model, 'mestrado', ['options' => ['class' => 'col-md-2']])->widget(SwitchInput::classname(), [
+			    	'pluginOptions' => [
+				        'onText' => 'Sim',
+				        'offText' => 'Não',
+			    ]])->label("<font color='#FF0000'>*</font> <b>Mestrado?</b>") ?>
+			</div>
+			<div class="row" id="divVagasMestrado" style="display:none">
+		    	<?= $form->field($model, 'vagas_mestrado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Mestrado:</b>") ?>
+
+		    	<?= $form->field($model, 'cotas_mestrado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
+		    </div>
+			<div class="row">
+			    <?= $form->field($model, 'doutorado', ['options' => ['class' => 'col-md-2']])->widget(SwitchInput::classname(), [
+			    	'pluginOptions' => [
+			        'onText' => 'Sim',
+			        'offText' => 'Não',
+			    ]])->label("<font color='#FF0000'>*</font> <b>Doutorado?</b>") ?>
+			</div>
+
+		    <div class="row" id="divVagasDoutorado" style="display:none">
+		    	<?= $form->field($model, 'vagas_doutorado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Doutorado:</b>") ?>
+
+		    	<?= $form->field($model, 'cotas_doutorado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
 		     </div>
 
 		    <div class="form-group">

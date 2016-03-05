@@ -828,12 +828,20 @@ class CandidatoController extends Controller
 }
 
     /*Função que retorna o curso do edital ou se o curso deverá ser escolhido no formulário*/
+    /*Curso Desejado:
+         1 - Mestrado
+         2 - Doutorado
+     */
     public function getCursoDesejado($model){
         $ambos = 0;
-        if(Edital::findOne(['numero' => $model->idEdital])->curso == 3)
+        $edital = Edital::findOne(['numero' => $model->idEdital]);
+        if( $edital->mestrado == 1 && $edital->doutorado == 1)
             $ambos = 3;
+        else if($edital->mestrado == 1)
+            $model->cursodesejado = 1;
         else
-            $model->cursodesejado = Edital::findOne(['numero' => $model->idEdital])->curso;
+            $model->cursodesejado = 2;
+
         return $ambos;
     }
 
