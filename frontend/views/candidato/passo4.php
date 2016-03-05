@@ -15,6 +15,25 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="candidato-index">
 
+<div class="checkout-wrap">
+  <ul class="checkout-bar">
+
+    <li class="visited first">
+      <a href="#">Dados <br> Pessoais</a>
+    </li>
+    
+    <li class="previous visited">Histórico<br>Acadêmico/Profissional</li>
+    
+    <li class="previous visited">Proposta de Trabalho <br> e Documentos</li>
+    
+    <li class="previous visited"> Tela de<br> Confirmação</li>
+       
+  </ul>
+  <br><br><br><br><br>
+
+</div>
+
+
 	<p align="center"><font size="3"><b>Inscrição realizada com sucesso!!!</b></font></p>
    	<p><font size="2" style="line-height: 150%"><br>Seus dados foram cadastrados com sucesso. Sua proposta será analisada e em breve teremos a divulgação dos aprovados no processo de seleção do PPGI.<br /> Clique no link "Imprimir Formulário de Inscrição" e imprima a página contendo os dados de sua incrição para seu controle. Quando solicitado, assine e entregue este formulário na secretaria do PPGI/UFAM que fica no Departamento de Ciência da Computação, localizado na Rua Gen. Rodrigo Octávio Jordão Ramos, 3000 SETOR NORTE do Campus Universitário Manaus - AM - CEP 69.077-000.</font></p>
    	<br /><p align="right"><font size="2" style="line-height: 150%">Ass: Coordenação do PPGI/UFAM</font></p><br />
