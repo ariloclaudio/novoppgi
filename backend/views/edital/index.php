@@ -25,12 +25,49 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'numero',
-            'cartarecomendacao',
-            'datainicio',
-            'datafim',
-            'documento',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'label' => 'Carta de Recomendação',
+                'attribute' => 'cartarecomendacao',
+                'value' => function ($model) {
+                        if($model->cartarecomendacao == 0){
+                            return "Não";
+                        }
+                        else{
+                            return "Sim";
+                        }
+                },
+            ],
+            [
+                'label' => 'Data início',
+                'attribute' => 'datainicio',
+                'value' => function ($model) {
+                        return date("d-m-Y", strtotime($model->datainicio));
+                },
+            ],
+            [
+                'label' => 'Data fim',
+                'attribute' => 'datafim',
+                'value' => function ($model) {
+                        return date("d-m-Y", strtotime($model->datafim));
+                },
+            ],
+            //'documento',
+
+
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{download} {view} {delete} {update}',
+                'buttons'=>[
+                  'download' => function ($url, $model) {     
+                    return Html::a('<span class="glyphicon glyphicon-download"></span>', 'editais/'.$model->documento, [
+                            'target' => '_blank','title' => Yii::t('yii', 'Download do Edital'),
+                    ]);                                
+
+                  }
+              ]                            
+                ],
         ],
     ]); ?>
 </div>
+
+

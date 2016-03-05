@@ -12,19 +12,24 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="candidato-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
 
-    <p>
-        <?= Html::a('Create Candidato', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+<?= Html::a('Voltar', ['edital/view', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-warning']) ?>
+
+
+
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             //'senha',
             //'inicio',
             //'fim',
@@ -51,7 +56,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'telcelular',
             // 'nomepai',
             // 'nomemae',
-             'cursodesejado',
+            [   'label' => 'Curso Desejado',
+                'attribute' => 'cursodesejado',
+                'value' => function ($model) {
+                     return $model->cursodesejado == 0 ? 'Mestrado' : 'Doutorado';
+                },
+            ],
             // 'regime',
             // 'inscricaoposcomp',
             // 'anoposcomp',
@@ -62,7 +72,37 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'cargo',
             // 'vinculoconvenio',
             // 'convenio',
-             'linhapesquisa',
+            [   'label' => 'Linha de Pesquisa',
+                'attribute' => 'linhapesquisa',
+                'value' => function ($model) {
+                        switch ($model->linhapesquisa) {
+                            case 1:
+                                return "BD e RI";
+                                //return 'Banco de Dados e Recuperação de Informação';
+                                break;
+                            case 2:
+                                return "SistEmb & EngSW";
+                                //return Sistemas Embarcados e Engenharia de Software
+                                break;
+                            case 3:
+                                return "Int. Art.";
+                                //return Inteligência Artificial
+                                break;
+                            case 4:
+                                return "Visão Comp. e Rob.";
+                                //return Visão Computacional e Robótica
+                                break;
+                            case 5:
+                                return "Redes e Telec.";
+                                //return Redes e Telecomunicações
+                                break;
+                            case 5:
+                                return "Ot., Alg. e Complex.";
+                                //return Otimização, Alg. e Complexidade Computacional
+                                break;
+                        }
+                },
+            ],
             // 'tituloproposta',
             // 'diploma:ntext',
             // 'historico:ntext',

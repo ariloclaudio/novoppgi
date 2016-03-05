@@ -115,8 +115,10 @@ class EditalController extends Controller
             $diafim = explode("/", $model->datafim);
             $model->datafim =$diafim[2]."-".$diafim[1]."-".$diafim[0];
 
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->numero]);
+            if($model->uploadDocumento(UploadedFile::getInstance($model, 'documentoFile'))){
+                if($model->save())
+                    return $this->redirect(['view', 'id' => $model->numero]);
+            }
         } else {
 
             //modelo de conversão de data

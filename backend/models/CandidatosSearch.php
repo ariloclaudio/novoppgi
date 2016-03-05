@@ -41,7 +41,8 @@ class CandidatosSearch extends Candidato
      */
     public function search($params)
     {
-        $query = Candidato::find();
+        $idEdital = $params['id'];
+        $query = Candidato::find()->where('idEdital ='.$idEdital);
 
         // add conditions that should always apply here
 

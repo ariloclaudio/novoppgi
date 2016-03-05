@@ -8,7 +8,7 @@ use kartik\widgets\DatePicker;
 //BootboxAsset::registerWithOverride($this);
 
 /*Estático temporariamente*/
-$linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' => 'Sistemas Embarcados e Engenharia de Software', '3' => 'Inteligência Artificial', '3' => 'Visão Computacional e Robótica'];
+$linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' => 'Sistemas Embarcados e Engenharia de Software', '3' => 'Inteligência Artificial', '4' => 'Visão Computacional e Robótica', '5' => 'Redes e Telecomunicações',  '6' => 'Otimização, Alg. e Complexidade Computacional'];
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidato */

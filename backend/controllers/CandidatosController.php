@@ -33,7 +33,7 @@ class CandidatosController extends Controller
      * Lists all Candidato models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         $searchModel = new CandidatosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -41,6 +41,7 @@ class CandidatosController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'idEdital' => $id,
         ]);
     }
 
@@ -51,8 +52,38 @@ class CandidatosController extends Controller
      */
     public function actionView($id)
     {
+
+        $model = $this->findModel($id);
+
+        switch ($model->linhapesquisa) {
+            case 1:
+                //return "BD e RI";
+                $model->linhapesquisa = 'Banco de Dados e Recuperação de Informação';
+                break;
+            case 2:
+                //return "SistEmb & EngSW";
+                $model->linhapesquisa = 'Sistemas Embarcados e Engenharia de Software';
+                break;
+            case 3:
+                //return "Int. Art.";
+                $model->linhapesquisa = 'Inteligência Artificial';
+                break;
+            case 4:
+                //return "Visão Comp. e Rob.";
+                $model->linhapesquisa = 'Visão Computacional e Robótica';
+                break;
+            case 5:
+                //return "Redes e Telec.";
+                $model->linhapesquisa = 'Redes e Telecomunicações';
+                break;
+            case 5:
+                //return "Ot., Alg. e Complex.";
+                $model->linhapesquisa = 'Otimização, Alg. e Complexidade Computacional';
+                break;
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 

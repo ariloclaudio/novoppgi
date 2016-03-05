@@ -6,13 +6,11 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidato */
 
-$this->title = $model->id;
+$this->title = $model->nome;
 $this->params['breadcrumbs'][] = ['label' => 'Candidatos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="candidato-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -28,10 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'senha',
-            'inicio',
-            'fim',
+            //'id',
+            //'senha',
+                [
+                     'attribute' => 'inicio',
+                     'format'=>'raw',
+                     'value' => date("d/m/Y", strtotime($model->inicio)).' às '.date("H:i:s", strtotime($model->inicio))
+                ],
+                [
+                     'attribute' => 'fim',
+                     'format'=>'raw',
+                     'value' => $model->fim != null ? date("d/m/Y", strtotime($model->fim)).' às '.date("H:i:s", strtotime($model->fim)) : null
+                ],
             'passoatual',
             'nome',
             'endereco',
@@ -41,7 +47,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'cep',
             'email:email',
             'datanascimento',
-            'nacionalidade',
+                [
+                     'attribute' => 'nacionalidade',
+                     'format'=>'raw',
+                     'value' => $model->nacionalidade == 1 ? 'Brasileira' : 'Estrangeira'
+                ],
             'pais',
             'estadocivil',
             'rg',
@@ -49,14 +59,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataexpedicao',
             'passaporte',
             'cpf',
-            'sexo',
+                [
+                     'attribute' => 'sexo',
+                     'format'=>'raw',
+                     'value' => $model->sexo == 'M' ? 'Masculino' : 'Feminino'
+                ],
             'telresidencial',
             'telcomercial',
             'telcelular',
             'nomepai',
             'nomemae',
-            'cursodesejado',
-            'regime',
+                [
+                     'attribute' => 'cursodesejado',
+                     'format'=>'raw',
+                     'value' => $model->cursodesejado == 1 ? 'Mestrado' : 'Doutorado'
+                ],
+                [
+                     'attribute' => 'regime',
+                     'format'=>'raw',
+                     'value' => $model->regime == 1 ? 'Integral' : 'Parcial'
+                ],
             'inscricaoposcomp',
             'anoposcomp',
             'notaposcomp',
@@ -66,15 +88,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'cargo',
             'vinculoconvenio',
             'convenio',
-            'linhapesquisa',
-            'tituloproposta',
+                [
+                     'attribute' => 'linhapesquisa',
+                     'label'=> 'Linha de Pesquisa',
+                ],
+                [
+                     'attribute' => 'tituloproposta',
+                     'label'=> 'Título da Proposta',
+                ],
             'diploma:ntext',
-            'historico:ntext',
+            //'historico:ntext',
             'motivos:ntext',
-            'proposta:ntext',
-            'curriculum:ntext',
-            'cartaempregador:ntext',
-            'comprovantepagamento:ntext',
+            //'proposta:ntext',
+            //'curriculum:ntext',
+            //'cartaempregador:ntext',
+            //'comprovantepagamento:ntext',
             'cursograd',
             'instituicaograd',
             'crgrad',

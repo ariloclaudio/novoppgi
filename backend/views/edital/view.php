@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a('Voltar', ['edital/index', 'id' => $model->numero], ['class' => 'btn btn-warning']) ?>    
         <?= Html::a('Update', ['update', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->numero], [
             'class' => 'btn btn-danger',
@@ -23,13 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Lista de Inscritos', ['candidatos/index', 'id' => $model->numero], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'numero',
-            'cartarecomendacao',
+                [
+                     'attribute' => 'cartarecomendacao',
+                     'format'=>'raw',
+                     'value' => $model->cartarecomendacao == 1 ? 'Sim' : 'Não'
+                ],
             'datainicio',
             'datafim',
             'documento',
