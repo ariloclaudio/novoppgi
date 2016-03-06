@@ -24,17 +24,17 @@ use app\models\Edital;
 
             <li>O campo Repetir Senha deve ser preenchido com o mesmo valor preenchido no campo Senha.</li>
 
-            <li>Após confirmar o cadastro, você será direcionado ao formulário de inscrição. Você pode retornar ao formulário sempre que desejar usando o seu e-mail e senha informados abaixo.</li>
+            <li>Após confirmar o cadastro, você será direcionado ao formulário de inscrição.</li>
             </ul>
 
         </div>
 
     <div class ="row">
     <div class="col-*-*">
-        <table style="align-text:center; border: 0px solid gray; border-radius: 0px; display: block; height: 440px; 
+        <table style="text-align:left; border: 0px solid gray; border-radius: 0px; display: block; height: 440px; 
                         overflow-y: scroll; float: left ;width:51%;  margin: 15px 15px 15px 15px;">
             <tr>
-                <td style="width: 500px; padding:10px 20px 0px 20px">
+                <td style="width: 562px; padding:10px 20px 0px 20px">
 
                     <?php 
 
@@ -48,7 +48,8 @@ use app\models\Edital;
 
                             for($i=0; $i<$tamanho_vetor; $i++){
 
-                                echo "<b> Numero do edital: </b> ".$edital[$i]->numero."<br>";
+                                echo "<div style= \"padding-left:10px; padding-right:10px; border-bottom:solid 1px; padding-bottom:10px; margin-bottom: 10px\">";
+                                echo "<div style=\"text-align:left\"> <b> Número do Edital: </b> ".$edital[$i]->numero."<br> </div>";
                                 echo "<b> Período das Inscrições:</b> ";
                                 echo "<ul style=\"margin-bottom:0px \"> <li> <b> Início: </b>".date("d/m/Y", strtotime($edital[$i]->datainicio))."</li>";
                                 echo "<li> <b> Término: </b>".date("d/m/Y", strtotime($edital[$i]->datafim))."</li></ul>";
@@ -78,7 +79,7 @@ use app\models\Edital;
                                 }
                                 
                                 echo "<b> Baixar Edital: </b> <a href=../../backend/web/editais/".$edital[$i]->documento." target= '_blank'> Clique aqui</a> <br>";
-                                echo "<hr>";
+                                echo "</div>";
                             }
                         }
                         else{
@@ -142,9 +143,14 @@ use app\models\Edital;
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align:center;padding-top: 15px">
+                        <td style="text-align:center;padding-top: 10px">
                             <div class="form-group">
-                                <?= Html::submitButton('Salvar Candidato', ['class' => 'btn btn-success']) ?>
+                                <div style="display:block; float:right; margin-right:25%">
+                                    <?= Html::a('Voltar',['index'], ['class' => 'btn btn-warning']) ?>
+                                </div>
+                                <div style="display: block; float:left; margin-left:25%">
+                                    <?= Html::submitButton('Salvar Candidato', ['class' => 'btn btn-success']) ?>
+                                </div>
                             </div>
                         </td>
                     </tr>
