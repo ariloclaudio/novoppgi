@@ -54,7 +54,6 @@ class Candidato extends \yii\db\ActiveRecord
             [['idEdital'], 'string'],
             [['email'], 'email'],
 /*FIM Validações para passo 0*/
-
 /*Inicio Validações para passo 1*/
 
             [['nome', 'estadocivil', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'nomepai', 'nomemae', 'cursodesejado', 'solicitabolsa' , 'vinculoconvenio', 'cotas', 'regime', 'vinculoemprego', 'solicitabolsa'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
@@ -73,7 +72,6 @@ class Candidato extends \yii\db\ActiveRecord
                 return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 2;
             }"],
 /*FIM Validações para passo 1*/
-
 /*Inicio Validações para passo 2*/
 
             [['cursograd', 'instituicaograd', 'egressograd', 'crgrad', 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required', 'when' => function($model){ return $model->passoatual == 2;},
@@ -82,26 +80,34 @@ class Candidato extends \yii\db\ActiveRecord
             }"],
             [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->historico) && $model->passoatual == 2;}, 
                 'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2';
+                    return $('#form_hidden').val() == 'passo_form_2' && ($('#form_upload').val() == 2 || $('#form_upload').val() == 0);
                 }"],
             [['curriculumFile'], 'required', 'when' => function($model){ return !isset($model->curriculum) && $model->passoatual == 2;},
                 'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2';
+                    return $('#form_hidden').val() == 'passo_form_2' && ($('#form_upload').val() == 1 || $('#form_upload').val() == 0);
                 }"],
 /*FIM Validações para passo 2*/
 /*Inicio Validações para passo 3*/
-            [['linhapesquisa', 'tituloproposta', 'motivos' , 'curriculumFile' , 'propostaFile','comprovanteFile'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
+            [['linhapesquisa', 'tituloproposta', 'motivos'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3';
             }"],
+            [['propostaFile'], 'required', 'when' => function($model){ return !isset($model->proposta) && $model->passoatual == 3;},
+            'whenClient' => "function (attribute, value) {
+                return $('#form_hidden').val() == 'passo_form_3' && ($('#form_upload').val() == 2 || $('#form_upload').val() == 0);
+            }"],
+            [['comprovanteFile'], 'required', 'when' => function($model){ return !isset($model->comprovantepagamento) && $model->passoatual == 3;},
+            'whenClient' => "function (attribute, value) {
+                return $('#form_hidden').val() == 'passo_form_3' && ($('#form_upload').val() == 1 || $('#form_upload').val() == 0);
+            }"],
+
             [['linhapesquisa', 'tituloproposta', 'motivos' , 'propostaFile','comprovanteFile', 'cartaNomeReq1', 'cartaNomeReq2', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3 && $model->edital->cartarecomendacao == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3_carta';
             }"],
 /*FIM Validações para passo 3*/
 
-            
-
+        
             [['crgrad'], 'number', 'min' => 1, 'max' => 10],
             [['cartaNome', 'cotaTipo'], 'string'],
             [['cartaEmail'], 'email'],
@@ -281,8 +287,12 @@ class Candidato extends \yii\db\ActiveRecord
 
         //verificação se o diretório a ser criado já existe, pois se já existe, não há necessidade de criar outro
         $caminho_ja_existe = is_dir($caminho);
-        if($caminho_ja_existe != true){
+        $edital_ja_existe =  is_dir('documentos/'.$idEdital);
+        
+        if($edital_ja_existe != true)
             mkdir('documentos/'.$idEdital);
+
+        if($caminho_ja_existe != true){
             mkdir($caminho); //cria de fato o diretório
         }
         //fim da verificação
