@@ -384,7 +384,7 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function beforeSave()
     {
-        if($this->passoatual == 1 || $this->passoatual == 2 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
+        if($this->passoatual == 1 || $this->passoatual == 2 || $this->passoatual == 4 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
             return true;
         else if($this->passoatual == 3){
             $cartas = $this->arrayCartas();

@@ -80,7 +80,6 @@ class EditalController extends Controller
         $model = new Edital();
 
         $model->cartarecomendacao = 1;
-        $model->cotas = 0;
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -93,6 +92,8 @@ class EditalController extends Controller
             if($model->uploadDocumento(UploadedFile::getInstance($model, 'documentoFile'))){
                 if($model->save())
                     return $this->redirect(['view', 'id' => $model->numero]);
+                else
+                    return var_dump($model->getErrors());
             }
         }
 

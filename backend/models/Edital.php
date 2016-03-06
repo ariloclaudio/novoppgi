@@ -17,6 +17,8 @@ use yii\web\UploadedFile;
 class Edital extends \yii\db\ActiveRecord
 {
     public $documentoFile;
+    public $mestrado;
+    public $doutorado;
     
 
     /**
@@ -33,7 +35,7 @@ class Edital extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['numero', 'datainicio', 'datafim', 'cartarecomendacao', 'curso', 'cotas'], 'required'],
+            [['numero', 'datainicio', 'datafim', 'cartarecomendacao'], 'required'],
             [['documentoFile'], 'required', 'when' => function($model){ return !isset($model->documento);}],
             [['vagas_mestrado'], 'required', 'when' => function($model){ return $model->curso == 1 || $model->curso == 3; },'whenClient' => "function (attribute, value) {
                 return $('input:radio[name=\"Edital[curso]\"]:checked').val() == 1;
@@ -43,7 +45,7 @@ class Edital extends \yii\db\ActiveRecord
             }"],
             [['numero', 'curso'], 'string'],
             [['numero'], 'unique', 'message' => 'Edital já criado'],
-            [['cotas','vagas_mestrado','vagas_doutorado'], 'integer', 'min' => 0],
+            [['vagas_mestrado','vagas_doutorado', 'cotas_mestrado', 'cotas_doutorado'], 'integer', 'min' => 0],
             [['datainicio', 'datafim', 'documentoFile'], 'safe'],
             [['documentoFile'], 'file', 'extensions' => 'pdf'],
             [['documento'], 'string', 'max' => 100]
@@ -62,11 +64,20 @@ class Edital extends \yii\db\ActiveRecord
             'documento' => 'Documento',
             'cartarecomendacao' => 'Carta de Recomendação',
             'curso' => 'Curso',
-            'cotas' => 'Cotas',
             'documentoFile' => 'Edital PDF',
         ];
     }
 
+    public function beforeSave(){
+        if($this->mestrado == 1 && $this->doutorado == 1)
+            $this->curso = 3;
+        else if($this->mestrado == 1)
+            $this->curso = 1;
+        else if($this->doutorado == 1)
+            $this->curso = 2;
+
+        return true;
+    }
 
     /*Relacionamento*/
     public function getCandidato()

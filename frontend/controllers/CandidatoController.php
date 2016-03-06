@@ -142,7 +142,7 @@ class CandidatoController extends Controller
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'))){
                 if($model->save(false)){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
-                    if(isset($_POST['finalizar'])){                        
+                    if(isset($_POST['finalizar'])){
                         /*ENVIAR EMAILS CADASTRADOS*/
                         //$this->notificarCartasRecomendacao($model);
                         
@@ -183,6 +183,9 @@ class CandidatoController extends Controller
         $session = Yii::$app->session;
         $id = $session->get('candidato');
         $model = $this->findModel($id);
+
+        $model->passoatual = 4;
+        $model->save(false);
 
         $diretorio = $model->getDiretorio($id);
 
@@ -835,12 +838,10 @@ class CandidatoController extends Controller
     public function getCursoDesejado($model){
         $ambos = 0;
         $edital = Edital::findOne(['numero' => $model->idEdital]);
-        if( $edital->mestrado == 1 && $edital->doutorado == 1)
+        if( $edital->curso == 3)
             $ambos = 3;
-        else if($edital->mestrado == 1)
-            $model->cursodesejado = 1;
         else
-            $model->cursodesejado = 2;
+            $model->cursodesejado = $edital->curso;
 
         return $ambos;
     }
