@@ -43,7 +43,7 @@ class SearchEdital extends Edital
      */
     public function search($params)
     {
-        $query = Edital::find()->select(['numero','vagas_doutorado','vagas_mestrado','cartarecomendacao','datainicio','datafim','documento','j17_edital.cotas','COUNT(idEdital) as quantidadeinscritos'])->leftJoin("j17_candidatos","idEdital = numero")->groupBy('numero');
+        $query = Edital::find()->select(['*','COUNT(idEdital) as quantidadeinscritos'])->leftJoin("j17_candidatos","idEdital = numero")->groupBy('numero');
 
 
         // add conditions that should always apply here
