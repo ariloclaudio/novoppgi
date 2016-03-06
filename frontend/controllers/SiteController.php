@@ -82,7 +82,7 @@ class SiteController extends Controller
 
     public function actionCadastroppgi(){
         
-    $this->layout = '@app/views/layouts/main2.php';
+    $this->layout = '@app/views/layouts/main-login.php';
     
     $model = new Candidato();
 

@@ -185,12 +185,10 @@ class CandidatoController extends Controller
         $model = $this->findModel($id);
 
 
-        $diretorio = $model->getDiretorio($id,$model->idEdital);
-
         $model->passoatual = 4;
         $model->save(false);
 
-        $diretorio = $model->getDiretorio($id);
+        $diretorio = $model->getDiretorio();
 
 
         if( $model->passoatual <= 2){
