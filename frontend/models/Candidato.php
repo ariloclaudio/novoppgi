@@ -6,6 +6,7 @@ use Yii;
 use yiibr\brvalidator\CpfValidator;
 use yii\web\UploadedFile;
 
+
 class Candidato extends \yii\db\ActiveRecord
 {
     public $recomendacoes;
@@ -262,24 +263,26 @@ class Candidato extends \yii\db\ActiveRecord
 
     
 
-    public function getDiretorio(){
+    public function getDiretorio($idEdital){
         $salt1 = "programadeposgraduacaoufamicompPPGI";
         $salt2 = $this->id * 777;
+        $id = $this->id;
         $idCriptografado = md5($salt1+$id+$salt2);
         //definição de um caminho padrão, baseado no ID do candidato
-        $caminho = 'documentos/'.$idCriptografado.'/';
+        $caminho = 'documentos/'.$idEdital.'/'.$idCriptografado.'/';
         //fim da definição do caminho padrão
         return $caminho;
 
     }
 
-    public function gerarDiretorio($id){
+    public function gerarDiretorio($id,$idEdital){
 
-        $caminho = $this->getDiretorio();
-        
+        $caminho = $this->getDiretorio($idEdital);
+
         //verificação se o diretório a ser criado já existe, pois se já existe, não há necessidade de criar outro
         $caminho_ja_existe = is_dir($caminho);
         if($caminho_ja_existe != true){
+            mkdir('documentos/'.$idEdital);
             mkdir($caminho); //cria de fato o diretório
         }
         //fim da verificação
@@ -289,7 +292,7 @@ class Candidato extends \yii\db\ActiveRecord
 
 /*Uploads dos Pdfs correspondentes a cada passo*/
 
-    public function uploadPasso1($cartaFile){
+    public function uploadPasso1($cartaFile,$idEdital){
         if(!isset($cartaFile)) return true;
 
         //obtenção o ID do usuário pelo meio de sessão
@@ -297,7 +300,7 @@ class Candidato extends \yii\db\ActiveRecord
         //fim da obtenção
 
         //método que gera o diretório, retornando o caminho do diretório
-        $caminho = $this->gerarDiretorio($id);
+        $caminho = $this->gerarDiretorio($id,$idEdital);
         //fim do método que gera o diretório
 
         if(isset($cartaFile)){
@@ -311,7 +314,7 @@ class Candidato extends \yii\db\ActiveRecord
         }
     }
     
-    public function uploadPasso2($historicoFile, $curriculumFile){
+    public function uploadPasso2($historicoFile, $curriculumFile, $idEdital){
 
         if (isset($historicoFile) && isset($curriculumFile)) {
 
@@ -320,7 +323,7 @@ class Candidato extends \yii\db\ActiveRecord
             //fim da obtenção
 
             //método que gera o diretório, retornando o caminho do diretório
-            $caminho = $this->gerarDiretorio($id);
+        $caminho = $this->gerarDiretorio($id,$idEdital);
             //fim do método que gera o diretório
 
             $this->historico = "Historico.".$historicoFile->extension;
@@ -337,7 +340,7 @@ class Candidato extends \yii\db\ActiveRecord
         }
     }
 
-    public function uploadPasso3($propostaFile, $comprovanteFile)
+    public function uploadPasso3($propostaFile, $comprovanteFile, $idEdital)
     {
         if (isset($propostaFile) && isset($comprovanteFile)) {
 
@@ -346,7 +349,7 @@ class Candidato extends \yii\db\ActiveRecord
             //fim da obtenção
 
             //método que gera o diretório, retornando o caminho do diretório
-            $caminho = $this->gerarDiretorio($id);
+            $caminho = $this->gerarDiretorio($id,$idEdital);
             //fim do método que gera o diretório
 
             $this->proposta = "Proposta.".$propostaFile->extension;

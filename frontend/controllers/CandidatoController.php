@@ -60,7 +60,7 @@ class CandidatoController extends Controller
                 $model->passoatual = 1;
             }
             
-            if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'))){
+            if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'),$model->idEdital)) {
                 if($model->save(false)){
                     $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
                     return $this->redirect(['passo2']);
@@ -101,7 +101,7 @@ class CandidatoController extends Controller
                 $model->passoatual = 2;
             }
             
-            if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
+            if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'),$model->idEdital)){
                 if($model->save(false)){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     return $this->redirect(['passo3']);
@@ -139,7 +139,7 @@ class CandidatoController extends Controller
             if($model->passoatual == 2) 
                 $model->passoatual = 3;
             
-            if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'))){
+            if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'),$model->idEdital)){
                 if($model->save(false)){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
                     if(isset($_POST['finalizar'])){                        
@@ -184,7 +184,7 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
-        $diretorio = $model->getDiretorio($id);
+        $diretorio = $model->getDiretorio($id,$model->idEdital);
 
         if( $model->passoatual <= 2){
             return $this->redirect(['passo1']);
