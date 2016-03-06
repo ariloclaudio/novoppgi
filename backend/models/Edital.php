@@ -109,11 +109,4 @@ class Edital extends \yii\db\ActiveRecord
         return $results;
     }
 
-
-
-
-
-
-
-
 }

@@ -263,13 +263,13 @@ class Candidato extends \yii\db\ActiveRecord
 
     
 
-    public function getDiretorio($idEdital){
+    public function getDiretorio(){
         $salt1 = "programadeposgraduacaoufamicompPPGI";
         $salt2 = $this->id * 777;
         $id = $this->id;
         $idCriptografado = md5($salt1+$id+$salt2);
         //definição de um caminho padrão, baseado no ID do candidato
-        $caminho = 'documentos/'.$idEdital.'/'.$idCriptografado.'/';
+        $caminho = 'documentos/'.$this->idEdital.'/'.$idCriptografado.'/';
         //fim da definição do caminho padrão
         return $caminho;
 
@@ -277,7 +277,7 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function gerarDiretorio($id,$idEdital){
 
-        $caminho = $this->getDiretorio($idEdital);
+        $caminho = $this->getDiretorio();
 
         //verificação se o diretório a ser criado já existe, pois se já existe, não há necessidade de criar outro
         $caminho_ja_existe = is_dir($caminho);
