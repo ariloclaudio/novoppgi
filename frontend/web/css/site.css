@@ -202,8 +202,8 @@ ul.checkout-bar a {
     box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
     content: "";
     height: 15px;
-    width: 80%;
-    left: 50%;
+    width: 50%;
+    left: 0%;
     position: absolute;
     top: -50px;
     z-index: 0;
