@@ -5,6 +5,24 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use yii\widgets\MaskedInput;
 
+$uploadRealizados = 0;
+
+$labelHistorico = "<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b><br>Atual Arquivo com o Histórico:";
+if(isset($model->historico)){
+    $labelHistorico .= "<a target='resource window' href=".$model->diretorio.$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
+    $uploadRealizados = 1; 
+}else{
+    $labelHistorico.= " <i>Nenhum arquivo de histórico carregado.</i>";
+}
+
+$labelCurriculum = "<font color='#FF0000'>*</font> <b>Curriculum Vittae (no formato Lattes - http://lattes.cnpq.br):</b><br>Atual Arquivo com o Curriculum:";
+if(isset($model->curriculum)){
+    $labelCurriculum .= "<a target='resource window' href=".$model->diretorio.$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
+    $uploadRealizados += 2;
+}else{
+    $labelCurriculum .= " <i>Nenhum arquivo de Curriculum carregado.</i>";
+}
+
 ?>
 
 <div class="candidato-form">
@@ -12,6 +30,7 @@ use yii\widgets\MaskedInput;
     <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
         <input type="hidden" id = "form_hidden" value ="passo_form_2"/>
+        <input type="hidden" id = "form_upload" value = '<?=$uploadRealizados?>' />
 
     <div style="width: 100%; clear: both;"><p align="justify"><b>Curso de Gradua&#231;&#227;o</b></p></div>
 
@@ -48,7 +67,7 @@ use yii\widgets\MaskedInput;
     'mask' => '9999']) ?>
 
 
-    <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b>") ?>
+    <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ?>
 
     <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Publicações</b></p></div>
 
@@ -60,7 +79,7 @@ use yii\widgets\MaskedInput;
 
     <?= $form->field($model, 'conferenciasnacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Conferências Nacionais:</b>") ?>
 
-    <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Curriculum Vittae (no formato Lattes - http://lattes.cnpq.br):</b>") ?>
+    <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label($labelCurriculum) ?>
 
     <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Idioma - Língua Inglesa - Exame de Proeficiência</b></p></div>
 
