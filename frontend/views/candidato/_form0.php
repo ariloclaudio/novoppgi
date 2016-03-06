@@ -32,9 +32,9 @@ use app\models\Edital;
     <div class ="row">
     <div class="col-*-*">
         <table style="text-align:left; border: 0px solid gray; border-radius: 0px; display: block; height: 440px; 
-                        overflow-y: scroll; float: left ;width:51%;  margin: 15px 15px 15px 15px;">
+                        overflow-y: scroll; float: left ;min-width:25%;  margin: 15px 15px 15px 15px;">
             <tr>
-                <td style="width: 562px; padding:10px 20px 0px 20px">
+                <td style="padding:10px 20px 0px 20px">
 
                     <?php 
 
@@ -104,8 +104,7 @@ use app\models\Edital;
                 <?php $form = ActiveForm::begin(['id' => 'forum_post', 'method' => 'post',]); ?>
                 <input type="hidden" id = "form_hidden" value ="passo_form_0"/>
 
-                <table style="border-left: 0px solid black; width: 44%;
-                padding:20px 20px 20px 20px; margin: 15px 15px 15px 15px; ">
+                <table style="border: 0px solid black; min-width: 40%; padding:20px 20px 20px 20px; float:right; margin: 15px 225px 15px 15px;">
                     <tr>
                         <td style="padding:10px 20px 0px 20px">
 
@@ -144,13 +143,18 @@ use app\models\Edital;
                     </tr>
                     <tr>
                         <td style="text-align:center;padding-top: 10px">
-                            <div class="form-group">
-                                <div style="display:block; float:right; margin-right:25%">
-                                    <?= Html::a('Voltar',['index'], ['class' => 'btn btn-warning']) ?>
-                                </div>
-                                <div style="display: block; float:left; margin-left:25%">
+                            <div class="form-group row">
+                            <div class="col-md-6">
+                                <div style="display: block; margin-left:25%">
                                     <?= Html::submitButton('Salvar Candidato', ['class' => 'btn btn-success']) ?>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div style="display:block; margin-right:25%">
+                                    <?= Html::a('Voltar',['index'], ['class' => 'btn btn-warning']) ?>
+                                </div>
+                            </div>
+
                             </div>
                         </td>
                     </tr>
