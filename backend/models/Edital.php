@@ -17,7 +17,7 @@ use yii\web\UploadedFile;
 class Edital extends \yii\db\ActiveRecord
 {
     public $documentoFile;
-    public $quantidadeInscritos;
+    
 
     /**
      * @inheritdoc
@@ -90,10 +90,9 @@ class Edital extends \yii\db\ActiveRecord
 
 
 
-    public function quantidadeInscritos($id)
+    public function getQuantidadeInscritos($id)
     {
 
-        //$results = Candidatos::find()->where(['evento_idevento' => $id_evento])->count();
         $results = Candidato::find()->where("idEdital = ".$id)->count();
  
         return $results;

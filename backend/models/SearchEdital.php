@@ -43,7 +43,8 @@ class SearchEdital extends Edital
      */
     public function search($params)
     {
-        $query = Edital::find()->joinWith("candidato");
+        $query = Edital::find()->select(['numero','vagas_doutorado','vagas_mestrado','cartarecomendacao','datainicio','datafim','documento','j17_edital.cotas','COUNT(idEdital) as quantidadeinscritos'])->leftJoin("j17_candidatos","idEdital = numero")->groupBy('numero');
+
 
         // add conditions that should always apply here
 
@@ -58,6 +59,11 @@ class SearchEdital extends Edital
             // $query->where('0=1');
             return $dataProvider;
         }
+
+                $dataProvider->sort->attributes['quantidadeinscritos'] = [
+        'asc' => ['quantidadeinscritos' => SORT_ASC],
+        'desc' => ['quantidadeinscritos' => SORT_DESC],
+        ];
 
         // grid filtering conditions
         $query->andFilterWhere([

@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -53,14 +53,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => 'Quantidade Inscritos',
-                'attribute' => 'quantidadeInscritos',
+                'label' => 'Quantidade de Inscritos',
+                'attribute' => 'quantidadeinscritos',
                 'value' => function ($model) {
-                            return $model->numero;
+                            return $model->getQuantidadeInscritos($model->numero);
                 },
             ],
             //'documento',
-
 
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{download} {view} {delete} {update}',
