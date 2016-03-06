@@ -34,9 +34,6 @@ $cotas = ['1' => 'Negro', '2' => 'Pardo', '3' => 'Índio'];
 $labelCartaEmpregador = "<b>Carta Do Empregador (Adicionar nova carta. Apenas arquivos PDF):</b><br>Atual Arquivo com a Carta do Empregador:";
 if(isset($model->cartaempregador)) $labelCartaEmpregador .= "<a target='resource window' href=".$model->diretorio.$model->cartaempregador."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>"; else $labelCartaEmpregador .= " <i>Nenhum arquivo de carta do empregador carregado.<i>";
 ?>
-
-<div class="candidato-form">
-
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <input type="hidden" id = "form_hidden" value ="passo_form_1"/>

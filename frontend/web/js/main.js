@@ -21,10 +21,44 @@ $(document).ready( function() {
                 error: function(data){
                 	console.log("Erro ao Buscar endereço");
                 }
-           });   
-   return false;    
-   })
+           });
 
+   });
+
+
+
+
+   $('#mais').click(function () {
+    var tam = $('#teste').children(".row").length + 1;
+    
+    var instituicaoacademica = "instituicaoacademica"+tam;
+    var atividade = 'atividade'+tam;
+    var periodoacademico = 'periodoacademico'+tam;
+
+    console.log(instituicaoacademica);
+    console.log(atividade);
+    console.log(periodoacademico);
+
+    if($("#candidato-instituicaoacademica"+(tam-1)).val() != "" && $("#candidato-atividade"+(tam-1)).val() != "" && $("#candidato-periodoacademico"+(tam-1)).val() != ""){
+
+      if(tam < 4)
+        $('#teste').append("<div id='id"+instituicaoacademica+"'class='row'>"+
+          "<div class='col-md-4 field-candidato-"+instituicaoacademica+"'>"+
+            "<label class='control-label' for='candidato-"+instituicaoacademica+"'>Instituição Acadêmica "+tam+"</label>"+
+            "<input id='candidato-"+instituicaoacademica+"' class='form-control' name='Candidato["+instituicaoacademica+"]' value='' maxlength='50' type='text'>"+
+            "<div class='help-block'></div> </div>"+
+            "<div class='col-md-4 field-candidato-"+atividade+"'>"+
+              "<label class='control-label' for='candidato-"+atividade+"'>Atividade</label>"+
+              "<input id='candidato-"+atividade+"' class='form-control' name='Candidato["+atividade+"]' value='' maxlength='50' type='text'><div class='help-block'></div>"+
+            "</div>"+
+            "<div class='col-md-4 field-candidato-"+periodoacademico+"'>"+
+              "<label class='control-label' for='candidato-"+periodoacademico+"'>Período Acadêmico</label>"+
+              "<input id='candidato-"+periodoacademico+"' class='form-control' name='Candidato["+periodoacademico+"]' value='' maxlength='30' type='text'><div class='help-block'>"+
+              "</div>"+
+            "</div>"+
+          "</div>");
+    }
+  });
 
    $('#candidato-nacionalidade').click(function(){
    		if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
