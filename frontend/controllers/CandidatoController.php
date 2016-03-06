@@ -184,14 +184,14 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
-<<<<<<< HEAD
+
         $diretorio = $model->getDiretorio($id,$model->idEdital);
-=======
+
         $model->passoatual = 4;
         $model->save(false);
 
         $diretorio = $model->getDiretorio($id);
->>>>>>> 1c69dd8d2241921e9d86a0b9d2768d3a29fc8dc3
+
 
         if( $model->passoatual <= 2){
             return $this->redirect(['passo1']);
