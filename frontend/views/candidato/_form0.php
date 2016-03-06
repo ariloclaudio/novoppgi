@@ -11,7 +11,7 @@ use app\models\Edital;
 ?>
 <div class="candidato-index">
 
-<div class="login-box" style="width:40%;">
+<div class="login-box" style="width:60%;">
     <div class="login-logo">
         <p align="center"><h3> Formulário de Inscrição no Mestrado/Doutorado - PPGI/UFAM</h3></p>
     </div>
@@ -19,19 +19,22 @@ use app\models\Edital;
 
         <div style="float:inline; border-bottom: solid 1px; text-align: justify; text-justify: inter-word;">
             <h3  style="text-align:left; margin-top: 0px"> <b>Instruções: </b> </h3>
-            Preencha os campos <b>e-mail, senha, repetir senha e escolha um edital</b> para cadastrar um novo candidato.<br>
+            <ul>
+            <li>Preencha os campos <b>e-mail, senha, repetir senha e escolha um edital</b> para cadastrar um novo candidato.</li>
 
-            O campo Repetir Senha deve ser preenchido com o mesmo valor preenchido no campo Senha.<br>
+            <li>O campo Repetir Senha deve ser preenchido com o mesmo valor preenchido no campo Senha.</li>
 
-            Após confirmar o cadastro, você será direcionado ao formulário de inscrição. Você pode retornar ao formulário sempre que desejar usando o seu e-mail e senha informados abaixo. <br><br>
+            <li>Após confirmar o cadastro, você será direcionado ao formulário de inscrição. Você pode retornar ao formulário sempre que desejar usando o seu e-mail e senha informados abaixo.</li>
+            </ul>
 
         </div>
 
     <div class ="row">
-        <table style="border: 0px solid gray; border-radius: 0px; display: block; height: 429px; 
-                        overflow-y: scroll; float: right ;width:40%;  margin: 15px 15px 15px 15px;">
+    <div class="col-*-*">
+        <table style="align-text:center; border: 0px solid gray; border-radius: 0px; display: block; height: 440px; 
+                        overflow-y: scroll; float: left ;width:51%;  margin: 15px 15px 15px 15px;">
             <tr>
-                <td style="padding:10px 20px 0px 20px">
+                <td style="width: 500px; padding:10px 20px 0px 20px">
 
                     <?php 
 
@@ -39,27 +42,39 @@ use app\models\Edital;
 
                         if($tamanho_vetor != 0){
 
-                        echo "<div style=\" text-align:center; font-size: 15px; \"> <b> Editais Disponíveis </b> </div><hr>";
+                        echo "<div style=\" color:red; text-align:center; font-size: 15px; \"> <b> Editais Disponíveis </b> </div>
+                        <hr>";
+
 
                             for($i=0; $i<$tamanho_vetor; $i++){
 
-                                echo "<b> Numero: </b> ".$edital[$i]->numero."<br>";
-
-                                echo "<b> Inscrições abertas em: </b> ".date("d/m/Y", strtotime($edital[$i]->datainicio))."<br>";
-                                echo "<b> Inscrições encerradas em: </b> ".date("d/m/Y", strtotime($edital[$i]->datafim))."<br>";
+                                echo "<b> Numero do edital: </b> ".$edital[$i]->numero."<br>";
+                                echo "<b> Período das Inscrições:</b> ";
+                                echo "<ul style=\"margin-bottom:0px \"> <li> <b> Início: </b>".date("d/m/Y", strtotime($edital[$i]->datainicio))."</li>";
+                                echo "<li> <b> Término: </b>".date("d/m/Y", strtotime($edital[$i]->datafim))."</li></ul>";
 
                                 if($edital[$i]->curso == 1){
-                                    echo "<b> Curso: </b> Mestrado <br>";
-                                    echo "<b> Vagas: </b>".$edital[$i]->vagas_mestrado."<br>";
+                                    echo "<b> Vagas para Mestrado: </b><br>";
+                                    echo "<ul style=\" margin-bottom:0px \"> <li> <b> Ampla Concorrência: </b>".$edital[$i]->vagas_mestrado."</li>";
+                                    echo "<li> <b> Cotista: </b> </b>".$edital[$i]->cotas_mestrado."</li>";
+                                    echo "</ul>";
                                 }
                                 else if ($edital[$i]->curso == 2){
-                                    echo "<b> Curso: </b> Doutorado <br>";
-                                    echo "<b> Vagas: </b>".$edital[$i]->vagas_doutorado."<br>";
+                                    echo "<b> Vagas para Doutorado: </b><br>";
+                                    echo "<ul style=\" margin-bottom:0px \"> <li> <b> Ampla Concorrência: </b>".$edital[$i]->vagas_doutorado."</li>";
+                                    echo "<li> <b> Cotista: </b> </b>".$edital[$i]->cotas_doutorado."</li>";
+                                    echo "</ul>";
                                 }
                                 else{
                                     echo "<b> Curso: </b> Mestrado e Doutorado <br>";
-                                    echo "<b> Vagas para Mestrado: </b>".$edital[$i]->vagas_mestrado."<br>";   
-                                    echo "<b> Vagas para Doutorado: </b>".$edital[$i]->vagas_doutorado."<br>";   
+                                    echo "<b> Vagas para Mestrado: </b><br>";
+                                    echo "<ul style=\" margin-bottom:0px \"> <li> <b> Ampla Concorrência: </b>".$edital[$i]->vagas_mestrado."</li>";
+                                    echo "<li> <b> Cotista: </b> </b>".$edital[$i]->cotas_mestrado."</li>";
+                                    echo "</ul>";
+                                    echo "<b> Vagas para Doutorado: </b><br>";
+                                    echo "<ul style=\" margin-bottom:0px \"> <li> <b> Ampla Concorrência: </b>".$edital[$i]->vagas_doutorado."</li>";
+                                    echo "<li> <b> Cotista: </b> </b>".$edital[$i]->cotas_doutorado."</li>";
+                                    echo "</ul>";
                                 }
                                 
                                 echo "<b> Baixar Edital: </b> <a href=../../backend/web/editais/".$edital[$i]->documento." target= '_blank'> Clique aqui</a> <br>";
@@ -79,18 +94,21 @@ use app\models\Edital;
 
         </table>
 
+    </div>
+    <div class="col-*-*">
+
 
             <?php if($tamanho_vetor != 0){ ?>
 
                 <?php $form = ActiveForm::begin(['id' => 'forum_post', 'method' => 'post',]); ?>
                 <input type="hidden" id = "form_hidden" value ="passo_form_0"/>
 
-                <table style="border-right: 1px solid black; width: 51%;
+                <table style="border-left: 0px solid black; width: 44%;
                 padding:20px 20px 20px 20px; margin: 15px 15px 15px 15px; ">
                     <tr>
                         <td style="padding:10px 20px 0px 20px">
 
-                            <div style="text-align:center;font-size:15px; font-weight: bold;"> FORMULÁRIO DE INSCRIÇÃO</div>
+                            <div style="color:red; text-align:center;font-size:15px; font-weight: bold;"> Formulário de Inscrição</div>
                             <hr>
 
                         </td>
@@ -132,10 +150,11 @@ use app\models\Edital;
                     </tr>
                 </table>
         <?php }?>
-    <br>
+             <br>
 
-    <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
+    </div>
 </div>
 </div>
 
