@@ -24,6 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+
+
             'numero',
 
             [
@@ -53,14 +55,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => 'Quantidade de Inscritos',
+                'label' => 'Total de Inscritos',
                 'attribute' => 'quantidadeinscritos',
                 'value' => function ($model) {
                             return $model->getQuantidadeInscritos($model->numero);
                 },
             ],
-            //'documento',
+            [
+                'label' => 'Vagas Mestrado'."\n".'(Ampla Conc.)',
+                'attribute' => 'vagas_mestrado' ,
+            ],
+            [
+                'label' => 'Vagas Mestrado (Cotista)',
+                'attribute' => 'cotas_mestrado' ,
+            ],
+            [
+                'label' => 'Vagas Doutorado (Ampla Conc.)',
+                'attribute' => 'vagas_doutorado' ,
 
+            ],
+            [
+                'label' => 'Vagas Doutorado (Cotista)',
+                'attribute' => 'cotas_doutorado' ,
+            ],
+         
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{download} {view} {delete} {update}',
                 'buttons'=>[
