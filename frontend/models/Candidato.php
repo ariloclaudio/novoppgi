@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use yiibr\brvalidator\CpfValidator;
 use yii\web\UploadedFile;
+use yii\db\IntegrityException;
+use yii\base\Exception;
 
 
 class Candidato extends \yii\db\ActiveRecord
@@ -397,9 +399,11 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function beforeSave()
     {
-        if($this->passoatual == 1 || $this->passoatual == 2 || $this->passoatual == 4 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
+        if($this->passoatual == 1 || $this->passoatual == 4 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
             return true;
-        else if($this->passoatual == 3){
+        else if($this->passoatual == 2){
+            return $this->salvaInstituicaoAcademica();
+        }else if($this->passoatual == 3){
             $cartas = $this->arrayCartas();
 
             Recomendacoes::deleteAll(['idCandidato' => $this->id]);
@@ -440,6 +444,29 @@ class Candidato extends \yii\db\ActiveRecord
             }
         }
         return $array;
+    }
+
+    public function salvaInstituicaoAcademica(){
+        try{
+
+            $sql = "DELETE FROM j17_candidato_experiencia_academica WHERE idCandidato = '$this->id'";
+            Yii::$app->db->createCommand($sql)->execute();
+            if($this->instituicaoacademica1 != ""){
+                $sql = "INSERT INTO j17_candidato_experiencia_academica (idCandidato, instituicao, atividade, periodo) VALUES ($this->id, '$this->instituicaoacademica1', '$this->atividade1', '$this->periodoacademico1');";
+                Yii::$app->db->createCommand($sql)->execute();
+            }
+            if($this->instituicaoacademica2 != ""){
+                $sql = "INSERT INTO j17_candidato_experiencia_academica (idCandidato, instituicao, atividade, periodo) VALUES ($this->id, '$this->instituicaoacademica2', '$this->atividade2', '$this->periodoacademico2');";
+                Yii::$app->db->createCommand($sql)->execute();
+            }
+            if($this->instituicaoacademica3 != ""){
+                $sql = "INSERT INTO j17_candidato_experiencia_academica (idCandidato, instituicao, atividade, periodo) VALUES ($this->id, '$this->instituicaoacademica3', '$this->atividade3', '$this->periodoacademico3');";
+                Yii::$app->db->createCommand($sql)->execute();
+            }
+            return true;
+        }catch(Exception $e){
+            return false;
+        }
     }
 
     public function getCotaTipoDesc(){

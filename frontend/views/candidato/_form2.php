@@ -23,6 +23,18 @@ if(isset($model->curriculum)){
     $labelCurriculum .= " <i>Nenhum arquivo de Curriculum carregado.</i>";
 }
 
+if($model->instituicaoacademica2 == ""){
+    $hideInstituicao2 = 'none';
+}else{
+    $hideInstituicao2 = 'block';
+}
+
+if($model->instituicaoacademica3 == ""){
+    $hideInstituicao3 = 'none';
+}else{
+    $hideInstituicao3 = 'block';
+}
+
 ?>
 <div class="candidato-form">
 
@@ -123,14 +135,32 @@ if(isset($model->curriculum)){
 
             <?= $form->field($model, 'periodoacademico1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
         </div>
+        
+        
+        <div class="row" id="divInstituicao2" style="display: <?=$hideInstituicao2?>;">
+            <?= $form->field($model, 'instituicaoacademica2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'atividade2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'periodoacademico2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        </div>
+        
+       
+       <div class="row" id="divInstituicao3" style="display: <?=$hideInstituicao3?>;">
+            <?= $form->field($model, 'instituicaoacademica3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'atividade3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'periodoacademico3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        </div>
     </div>
     <p>
-        <?= Html::button("<span class='glyphicon glyphicon-plus'></span>", ['id' => 'mais', 'class' => 'btn btn-default btn-lg btn-success']); ?>
+        <?= Html::button("<span class='glyphicon glyphicon-plus'></span>", ['id' => 'maisInstituicoes', 'class' => 'btn btn-default btn-lg btn-success']); ?>
     </p>
     
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Salvar e Continuar' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
