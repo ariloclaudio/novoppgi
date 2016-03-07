@@ -16,10 +16,12 @@ $this->params['breadcrumbs'][] = $this->title;
   <ul class="checkout-bar">
 
     <li class="visited first">
-      <a href="#">Dados <br> Pessoais</a>
+      <a href="index.php?r=candidato%2Fpasso1">Dados <br> Pessoais</a>
     </li>
     
-    <li class="previous visited">Histórico<br>Acadêmico/Profissional</li>
+    <li class="previous visited">
+      <a href="index.php?r=candidato%2Fpasso2">Histórico <br> Acadêmico/Profissional</a>
+      </li>
     
     <li class="active">Proposta de Trabalho <br> e Documentos</li>
     
