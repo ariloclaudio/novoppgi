@@ -55,7 +55,6 @@ class CandidatoController extends Controller
         $editalCurso = $this->getCursoDesejado($model);
         
         if ($model->load(Yii::$app->request->post())) {
-
             if($model->passoatual == 0){
                 $model->passoatual = 1;
             }
@@ -100,9 +99,9 @@ class CandidatoController extends Controller
             if($model->passoatual == 1){
                 $model->passoatual = 2;
             }
-            
+
             if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'),$model->idEdital)){
-                if($model->save(false)){
+                if($model->save(false) && $model->salvaExperienciaAcademica()){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     return $this->redirect(['passo3']);
                 }else{
@@ -112,8 +111,6 @@ class CandidatoController extends Controller
             else{
                 $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
             }
-        
-
         }
         else if( $model->passoatual == 0){
                 return $this->redirect(['passo1']);
@@ -142,7 +139,7 @@ class CandidatoController extends Controller
                 $model->passoatual = 3;
             
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'),$model->idEdital)){
-                if($model->save(false)){
+                if($model->save(false) && $model->salvaCartaRecomendacao()){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
                     if(isset($_POST['finalizar'])){
                         /*ENVIAR EMAILS CADASTRADOS*/
@@ -151,8 +148,7 @@ class CandidatoController extends Controller
                         return $this->redirect(['passo4']);
                     }
                 }else{
-                    //$this->mensagens('danger', 'Erro ao Salvar Alterações', 'Ocorreu um Erro ao salvar os dados.');
-                    return var_dump($model->getErrors());
+                    $this->mensagens('danger', 'Erro ao Salvar Alterações', 'Ocorreu um Erro ao salvar os dados.');
                 }
             
             }else{
@@ -189,6 +185,7 @@ class CandidatoController extends Controller
 
 
         $model->passoatual = 4;
+        $model->fim = date('Y-M-d H:i:s');
         $model->save(false);
 
         $diretorio = $model->getDiretorio();
@@ -198,10 +195,10 @@ class CandidatoController extends Controller
             return $this->redirect(['passo1']);
         }
 
-            return $this->render('passo4', [
-                'model' => $model,
-                'diretorio' => $diretorio,
-            ]);
+        return $this->render('passo4', [
+            'model' => $model,
+            'diretorio' => $diretorio,
+        ]);
         
     }
     

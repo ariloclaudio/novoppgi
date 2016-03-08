@@ -7,9 +7,6 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\CandidatoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-/*Estático para abrir pagina*/
-$candidato['id']= "12";
-
 $this->title = 'Inscrição realizada com sucesso!!!';
 $this->params['breadcrumbs'][] = ['label' => 'Candidatos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

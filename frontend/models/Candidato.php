@@ -11,20 +11,33 @@ use yii\base\Exception;
 
 class Candidato extends \yii\db\ActiveRecord
 {
+    /*Varaiáveis intermediarias para uploads*/
     public $recomendacoes;
     public $historicoFile;
     public $curriculumFile;
     public $cartaempregadorFile;
     public $propostaFile;
     public $comprovanteFile;
-
+    
+    /*Cartas de recomendação Obrigatórias*/
     public $cartaNomeReq1;
     public $cartaNomeReq2;
     public $cartaEmailReq1;
     public $cartaEmailReq2;
 
+    /*Cartas de recomendação Optativas (array)*/
     public $cartaNome;
     public $cartaEmail;
+
+    public $instituicaoacademica1;
+    public $instituicaoacademica2;
+    public $instituicaoacademica3;
+    public $atividade1;
+    public $atividade2;
+    public $atividade3;
+    public $periodoacademico1;
+    public $periodoacademico2;
+    public $periodoacademico3;
 
     public $repetirSenha;
     public $auth_key;
@@ -96,16 +109,16 @@ class Candidato extends \yii\db\ActiveRecord
             }"],
             [['propostaFile'], 'required', 'when' => function($model){ return !isset($model->proposta) && $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
-                return $('#form_hidden').val() == 'passo_form_3' && ($('#form_upload').val() == 2 || $('#form_upload').val() == 0);
+                return $('#form_hidden').val() == 'passo_form_3' && ($('#form_upload').val() == '2' || $('#form_upload').val() == '0');
             }"],
             [['comprovanteFile'], 'required', 'when' => function($model){ return !isset($model->comprovantepagamento) && $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
-                return $('#form_hidden').val() == 'passo_form_3' && ($('#form_upload').val() == 1 || $('#form_upload').val() == 0);
+                return $('#form_hidden').val() == 'passo_form_3' && ($('#form_upload').val() == '1' || $('#form_upload').val() == '0');
             }"],
 
-            [['linhapesquisa', 'tituloproposta', 'motivos' , 'propostaFile','comprovanteFile', 'cartaNomeReq1', 'cartaNomeReq2', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3 && $model->edital->cartarecomendacao == 1;},
+            [['cartaNomeReq1', 'cartaNomeReq2', 'cartaEmailReq1' , 'cartaEmailReq2'], 'required', 'when' => function($model){ return $model->passoatual == 3 && $model->edital->cartarecomendacao == 1;},
             'whenClient' => "function (attribute, value) {
-                return $('#form_hidden').val() == 'passo_form_3_carta';
+                return $('#form_carta').val() == '1';
             }"],
 /*FIM Validações para passo 3*/
 
@@ -269,8 +282,6 @@ class Candidato extends \yii\db\ActiveRecord
     //fim do relacionamento
 
 
-    
-
     public function getDiretorio(){
         $salt1 = "programadeposgraduacaoufamicompPPGI";
         $salt2 = $this->id * 777;
@@ -392,6 +403,27 @@ class Candidato extends \yii\db\ActiveRecord
             $this->cartaEmail[$i-2] = $this->recomendacoes[$i]->email;
         }
 
+        $experienciaAcademica = ExperienciaAcademica::findAll(['idCandidato' => $this->id]);
+
+
+        for ($i=0; $i < count($experienciaAcademica); $i++) { 
+            if($i == 0){
+                $this->instituicaoacademica1 = $experienciaAcademica[0]->instituicao;
+                $this->atividade1 = $experienciaAcademica[0]->atividade;
+                $this->periodoacademico1 = $experienciaAcademica[0]->periodo;
+            }else if($i == 1){
+                $this->instituicaoacademica2 = $experienciaAcademica[1]->instituicao;
+                $this->atividade2 = $experienciaAcademica[1]->atividade;
+                $this->periodoacademico2 = $experienciaAcademica[1]->periodo;
+            }else{
+                $this->instituicaoacademica3 = $experienciaAcademica[2]->instituicao;
+                $this->atividade3 = $experienciaAcademica[2]->atividade;
+                $this->periodoacademico3 = $experienciaAcademica[2]->periodo;
+            }
+        }
+
+
+
         return true;
     }
 
@@ -399,56 +431,14 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function beforeSave()
     {
-        if($this->passoatual == 1 || $this->passoatual == 4 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
-            return true;
-        else if($this->passoatual == 2){
-            return $this->salvaInstituicaoAcademica();
-        }else if($this->passoatual == 3){
-            $cartas = $this->arrayCartas();
-
-            Recomendacoes::deleteAll(['idCandidato' => $this->id]);
-            for ($i=0; $i < count($cartas['nome']); $i++) {
-                $recomendacao = new Recomendacoes();
-                $recomendacao->idCandidato = $this->id;
-                $recomendacao->dataEnvio = '0000-00-00 00:00:00';
-                $recomendacao->prazo = date("Y-m-d", strtotime('+1 days'));
-                $recomendacao->nome = $cartas['nome'][$i];
-                $recomendacao->email = $cartas['email'][$i];
-                $recomendacao->token = md5($this->id.$cartas['email'][$i].time());
-                $this->recomendacoes[$i] = $recomendacao;
-                if(!$recomendacao->save())
-                    return false;
-                    
-            }
-            return true;
-        }else
+        if($this->passoatual != 0 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
+            return true;            
+        else
             return false;
     }
 
-
-    public function arrayCartas(){
-        $array = [];
-
-        $array['nome'] = [$this->cartaNomeReq1, $this->cartaNomeReq2];
-        $array['email'] = [$this->cartaEmailReq1, $this->cartaEmailReq2];
-        
-        if(isset($this->cartaNome) && isset($this->cartaEmail)){
-            $this->cartaNome = array_filter($this->cartaNome);
-            $this->cartaEmail = array_filter($this->cartaEmail);
-        }
-        
-        for ($i=0; $i < count($this->cartaNome); $i++){ 
-            if($this->cartaNome[$i] != "" && $this->cartaEmail[$i] != ""){
-                array_push($array['nome'], $this->cartaNome[$i]);
-                array_push($array['email'], $this->cartaEmail[$i]);
-            }
-        }
-        return $array;
-    }
-
-    public function salvaInstituicaoAcademica(){
+    public function salvaExperienciaAcademica(){
         try{
-
             $sql = "DELETE FROM j17_candidato_experiencia_academica WHERE idCandidato = '$this->id'";
             Yii::$app->db->createCommand($sql)->execute();
             if($this->instituicaoacademica1 != ""){
@@ -469,14 +459,47 @@ class Candidato extends \yii\db\ActiveRecord
         }
     }
 
-    public function getCotaTipoDesc(){
-        if($this->cotaTipo == 1)
-            return "Negro";
-        else if($this->cotaTipo == 2)
-            return "Pardo";
-        else if($this->cotaTipo == 3)
-            return "Índio";
-        else
-            return "NAO INFORMADO";
+
+    /*Responsável pela reunião de todas as cartas de recomendações em um array para salvamento*/
+    public function arrayCartas(){
+        $array = [];
+
+        $array['nome'] = [$this->cartaNomeReq1, $this->cartaNomeReq2];
+        $array['email'] = [$this->cartaEmailReq1, $this->cartaEmailReq2];
+        
+        if(isset($this->cartaNome) && isset($this->cartaEmail)){
+            $this->cartaNome = array_filter($this->cartaNome);
+            $this->cartaEmail = array_filter($this->cartaEmail);
+        }
+        
+        for ($i=0; $i < count($this->cartaNome); $i++){ 
+            if($this->cartaNome[$i] != "" && $this->cartaEmail[$i] != ""){
+                array_push($array['nome'], $this->cartaNome[$i]);
+                array_push($array['email'], $this->cartaEmail[$i]);
+            }
+        }
+        return $array;
+    }
+
+    public function salvaCartaRecomendacao(){
+        $cartas = $this->arrayCartas();
+        try{
+            Recomendacoes::deleteAll(['idCandidato' => $this->id]);
+            for ($i=0; $i < count($cartas['nome']); $i++) {
+                $recomendacao = new Recomendacoes();
+                $recomendacao->idCandidato = $this->id;
+                $recomendacao->dataEnvio = '0000-00-00 00:00:00';
+                $recomendacao->prazo = date("Y-m-d", strtotime('+1 days'));
+                $recomendacao->nome = $cartas['nome'][$i];
+                $recomendacao->email = $cartas['email'][$i];
+                $recomendacao->token = md5($this->id.$cartas['email'][$i].time());
+                $this->recomendacoes[$i] = $recomendacao;
+                if(!$recomendacao->save())
+                    return false;
+            }
+            return true;
+        }catch(Exception $e){
+            return false;
+        }
     }
 }

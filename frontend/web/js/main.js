@@ -25,15 +25,21 @@ $(document).ready( function() {
 
    });
 
-
-
-
-   $('#maisInstituicoes').click(function () {
+  $('#maisInstituicoes').click(function () {
     if($('#divInstituicao2').css('display') == 'none')
       $('#divInstituicao2').css('display', 'block');
     else if($('#divInstituicao3').css('display') == 'none')
       $('#divInstituicao3').css('display', 'block');
   });
+
+   $('#maisCartasRecomendacoes').click(function(){
+      if($('#divCartaRecomendacao0').css('display') == 'none')
+        $('#divCartaRecomendacao0').css('display', 'block');
+      else if($('#divCartaRecomendacao1').css('display') == 'none')
+        $('#divCartaRecomendacao1').css('display', 'block');
+      else if($('#divCartaRecomendacao2').css('display') == 'none')
+        $('#divCartaRecomendacao2').css('display', 'block');
+   });
 
    $('#candidato-nacionalidade').click(function(){
    		if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){

@@ -93,6 +93,7 @@ if($model->instituicaoacademica3 == ""){
     <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label($labelCurriculum) ?>
 
     <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Idioma - Língua Inglesa - Exame de Proeficiência</b></p></div>
+    <div class="row">
 
     <?= $form->field($model, 'instituicaoingles', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true]) ?>
 
@@ -102,29 +103,30 @@ if($model->instituicaoacademica3 == ""){
 
     <?= $form->field($model, 'notaexame', ['options' => ['class' => 'col-md-2']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'dataexame', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
-    'clientOptions' => ['alias' =>  'date']])
+    <?= $form->field($model, 'dataexame', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), ['clientOptions' => ['alias' =>  'date']])
     ?>
+    </div>
 
     <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Experiência Profissional</b></p></div>
+    <div class="row">
+        <?= $form->field($model, 'empresa1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'empresa1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'cargo1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cargo1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'periodoprofissional1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'periodoprofissional1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'empresa2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'empresa2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'cargo2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cargo2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'periodoprofissional2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'periodoprofissional2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'empresa3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'empresa3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'cargo3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'cargo3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'periodoprofissional3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'periodoprofissional3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+    </div>
     
     <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Experiência Acadêmica</b> (Monitoria, PIBIC, PET, Instutor, Professor)</p></div>
     <div id="teste">
