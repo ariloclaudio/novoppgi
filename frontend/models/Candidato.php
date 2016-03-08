@@ -15,9 +15,9 @@ class Candidato extends \yii\db\ActiveRecord
     public $recomendacoes;
     public $historicoFile;
     public $curriculumFile;
-    public $cartaempregadorFile;
     public $propostaFile;
     public $comprovanteFile;
+    public $publicacoesFile;
     
     /*Cartas de recomendação Obrigatórias*/
     public $cartaNomeReq1;
@@ -71,12 +71,12 @@ class Candidato extends \yii\db\ActiveRecord
 /*FIM Validações para passo 0*/
 /*Inicio Validações para passo 1*/
 
-            [['nome', 'estadocivil', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'nomepai', 'nomemae', 'cursodesejado', 'solicitabolsa' , 'vinculoconvenio', 'cotas', 'regime', 'vinculoemprego', 'solicitabolsa'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
+            [['nome', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'cursodesejado', 'solicitabolsa' , 'cotas', 'regime', 'solicitabolsa', 'inscricaoposcomp', 'anoposcomp', 'notaposcomp', 'deficiencia'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_1';
             }"],
 
-            [['rg','cpf','orgaoexpedidor','dataexpedicao'], 'required', 'when' => function($model){ return $model->passoatual == 1 && $model->nacionalidade == 1;},
+            [['cpf'], 'required', 'when' => function($model){ return $model->passoatual == 1 && $model->nacionalidade == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('input:radio[name=\"Candidato[nacionalidade]\"]:checked').val() == 1;
             }"],
@@ -89,7 +89,7 @@ class Candidato extends \yii\db\ActiveRecord
 /*FIM Validações para passo 1*/
 /*Inicio Validações para passo 2*/
 
-            [['cursograd', 'instituicaograd', 'egressograd', 'crgrad', 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required', 'when' => function($model){ return $model->passoatual == 2;},
+            [['cursograd', 'instituicaograd', 'egressograd', 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required', 'when' => function($model){ return $model->passoatual == 2;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_2';
             }"],
@@ -122,33 +122,31 @@ class Candidato extends \yii\db\ActiveRecord
             }"],
 /*FIM Validações para passo 3*/
 
-        
-            [['crgrad'], 'number', 'min' => 1, 'max' => 10],
-            [['cartaNome', 'cotaTipo'], 'string'],
+            [['cartaNome', 'cotaTipo', 'deficienciaTipo'], 'string'],
             [['cartaEmail'], 'email'],
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
  
-            [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'safe'],
-            [['historicoFile', 'curriculumFile', 'cartaempregadorFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 2],
+            [['historicoFile', 'curriculumFile', 'propostaFile', 'comprovanteFile', 'publicacoesFile'], 'safe'],
+            [['historicoFile', 'curriculumFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 2],
+            [['publicacoesFile'], 'file', 'extensions' => 'xml', 'maxSize' => 1024 * 1024 * 2],
             [['inicio', 'fim'], 'safe'],
-            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
+            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'linhapesquisa', 'tipopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
+            [['anoposcomp', 'egressograd', 'egressopos'], 'integer', 'min' => 1000, 'max' => 2099],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
             [['cidade'], 'string', 'max' => 40],
-            [['nome', 'nomepai', 'nomemae'], 'string', 'max' => 60],
+            [['nome', 'nomesocial'], 'string', 'max' => 60],
             [['endereco'], 'string', 'max' => 160],
-            [['bairro', 'empregador', 'cargo', 'convenio', 'cursograd', 'instituicaograd', 'instituicaoesp', 'cursopos', 'instituicaopos', 'instituicaoingles', 'nomeexame', 'empresa1', 'empresa2', 'empresa3', 'cargo1', 'cargo2', 'cargo3', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3'], 'string', 'max' => 50],
+            [['bairro', 'cursograd', 'instituicaograd', 'cursopos', 'instituicaopos', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3'], 'string', 'max' => 50],
             [['uf'], 'string', 'max' => 2],
             [['cep'], 'string', 'max' => 9],
-            [['datanascimento', 'rg', 'orgaoexpedidor', 'dataexpedicao', 'crgrad', 'dataformaturagrad', 'dataformaturaesp', 'mediapos', 'dataformaturapos', 'dataexame', 'notaexame', 'periodo'], 'string', 'max' => 10],
+            [['datanascimento', 'dataformaturagrad', 'dataformaturapos', 'periodo'], 'string', 'max' => 10],
             [['pais', 'passaporte', 'inscricaoposcomp'], 'string', 'max' => 20],
-            [['estadocivil', 'periodoprofissional1', 'periodoprofissional2', 'periodoprofissional3'], 'string', 'max' => 15],
             [['cpf'], 'string'],
             [['sexo'], 'string', 'max' => 1],
-            [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
+            [['telresidencial', 'telcelular'], 'string', 'max' => 18],
             [['notaposcomp'], 'string', 'max' => 5],
-            [['solicitabolsa', 'vinculoemprego', 'vinculoconvenio'], 'string', 'max' => 3],
+            [['solicitabolsa'], 'string', 'max' => 3],
             [['tituloproposta'], 'string', 'max' => 100],
-            [['cursoesp'], 'string', 'max' => 70],
             [['periodoacademico1', 'periodoacademico2', 'periodoacademico3'], 'string', 'max' => 30]
         ];
     }
@@ -162,6 +160,7 @@ class Candidato extends \yii\db\ActiveRecord
             'id' => 'ID',
 
             'nome' => 'Nome',
+            'nomesocial' => 'Nome Social',
             'endereco' => 'Endereco',
             'bairro' => 'Bairro',
             'cidade' => 'Cidade',
@@ -171,41 +170,25 @@ class Candidato extends \yii\db\ActiveRecord
             'datanascimento' => 'Data Nascimento',
             'nacionalidade' => 'Nacionalidade',
             'pais' => 'Pais',
-            'estadocivil' => 'Estado Civil',
-            'rg' => 'RG',
-            'orgaoexpedidor' => 'Orgao Expedidor',
-            'dataexpedicao' => 'Data Expedicao',
             'passaporte' => 'Passaporte',
             'cpf' => 'CPF',
             'sexo' => 'Sexo',
-            'telresidencial' => 'Telelefone Residencial',
-            'telcomercial' => 'Telelefone Comercial',
-            'telcelular' => 'Telelefone Celular',
-            'nomepai' => 'Nome do Pai',
-            'nomemae' => 'Nome da Mae',
+            'telresidencial' => 'Telelefone',
+            'telcelular' => 'Telelefone Alternativo',
             'cursodesejado' => 'Curso Desejado',
             'regime' => 'Regime',
             'inscricaoposcomp' => 'Inscricao PosComp',
             'anoposcomp' => 'Ano PosComp',
             'notaposcomp' => 'Nota PosComp',
             'solicitabolsa' => 'Solicita Bolsa de Estudo',
-            'vinculoemprego' => 'Vinculo Emprego',
-            'empregador' => 'Empregador',
-            'cargo' => 'Cargo',
             
             'cursograd' => 'Curso',
             'instituicaograd' => 'Instituição',
-            'crgrad' => 'Coeficiente de Rendimento',
             'egressograd' => 'Ano de Egresso',
-            
-            'cursoesp' => 'Curso',
-            'instituicaoesp' => 'Instituição',
-            'egressoesp' => 'Ano de Egresso',
 
             'cursopos' => 'Curso',
             'instituicaopos' => 'Instituição',
             'tipopos' => 'Tipo',
-            'mediapos' => 'Média',
             'egressopos' => 'Ano Egresso',
 
             'historico' => 'Histórico',
@@ -214,22 +197,6 @@ class Candidato extends \yii\db\ActiveRecord
             'periodicosnacionais' => 'Periódicos Nacionais',
             'conferenciasinternacionais' => 'Conferências Internacionais',
             'conferenciasnacionais' => 'Conferências Nacionais',
-
-            'instituicaoingles' => 'Instituição',
-            'duracaoingles' => 'Anos de Estudo',
-            'nomeexame' => 'Exame de Proeficiência',
-            'dataexame' => 'Data',
-            'notaexame' => 'Nota',
-
-            'empresa1' => 'Empresa/Instituição 1',
-            'empresa2' => 'Empresa/Instituição 2',
-            'empresa3' => 'Empresa/Instituição 3',
-            'cargo1' => 'Cargo/Função',
-            'cargo2' => 'Cargo/Função',
-            'cargo3' => 'Cargo/Função',
-            'periodoprofissional1' => 'Período (De X até Y)',
-            'periodoprofissional2' => 'Período (De X até Y)',
-            'periodoprofissional3' => 'Período (De X até Y)',
 
             'instituicaoacademica1' => 'Instituição Acadêmica 1',
             'instituicaoacademica2' => 'Instituição Acadêmica 2',
@@ -244,11 +211,7 @@ class Candidato extends \yii\db\ActiveRecord
             'senha' => 'Senha',
             'inicio' => 'Inicio',
             'fim' => 'Fim',
-            'passoatual' => 'Passoatual',
 
-            
-            'vinculoconvenio' => 'Vinculoconvenio',
-            'convenio' => 'Convenio',
             'linhapesquisa' => 'Linhapesquisa',
             'tituloproposta' => 'Tituloproposta',
             'diploma' => 'Diploma',
@@ -256,12 +219,9 @@ class Candidato extends \yii\db\ActiveRecord
             'motivos' => 'Motivos',
             'proposta' => 'Proposta',
             'curriculum' => 'Curriculum',
-            'cartaempregador' => 'Cartaempregador',
             'comprovantepagamento' => 'Comprovantepagamento',
             
             'dataformaturagrad' => 'Dataformaturagrad',
-
-            'dataformaturaesp' => 'Dataformaturaesp',
             
             'dataformaturapos' => 'Dataformaturapos',
 
@@ -312,41 +272,17 @@ class Candidato extends \yii\db\ActiveRecord
 
         return $caminho;
     }
-
-/*Uploads dos Pdfs correspondentes a cada passo*/
-
-    public function uploadPasso1($cartaFile,$idEdital){
-        if(!isset($cartaFile)) return true;
-
-        //obtenção o ID do usuário pelo meio de sessão
-        $id = Yii::$app->session->get('candidato');
-        //fim da obtenção
-
-        //método que gera o diretório, retornando o caminho do diretório
-        $caminho = $this->gerarDiretorio($id,$idEdital);
-        //fim do método que gera o diretório
-
-        if(isset($cartaFile)){
-            $this->cartaempregador = "cartaempregador.".$cartaFile->extension;
-            $cartaFile->saveAs($caminho.$this->cartaempregador);
-            return true;
-        }else if ($this->cartaempregador) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     
-    public function uploadPasso2($historicoFile, $curriculumFile, $idEdital){
+    public function uploadPasso2($historicoFile, $curriculumFile, $publicacoesFile, $idEdital){
 
-        if (isset($historicoFile) && isset($curriculumFile)) {
+        if (isset($historicoFile) && isset($curriculumFile) && isset($publicacoesFile)) {
 
             //obtenção o ID do usuário pelo meio de sessão
             $id = Yii::$app->session->get('candidato');
             //fim da obtenção
 
             //método que gera o diretório, retornando o caminho do diretório
-        $caminho = $this->gerarDiretorio($id,$idEdital);
+            $caminho = $this->gerarDiretorio($id,$idEdital);
             //fim do método que gera o diretório
 
             $this->historico = "Historico.".$historicoFile->extension;
@@ -354,6 +290,7 @@ class Candidato extends \yii\db\ActiveRecord
 
             $historicoFile->saveAs($caminho.$this->historico);
             $curriculumFile->saveAs($caminho.$this->curriculum);
+            $publicacoesFile->saveAs($caminho."publicacoes.".$publicacoesFile->extension);
 
              return true;
         } else if(isset($this->historico) && isset($this->curriculum)){

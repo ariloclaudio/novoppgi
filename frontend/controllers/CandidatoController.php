@@ -58,23 +58,17 @@ class CandidatoController extends Controller
             if($model->passoatual == 0){
                 $model->passoatual = 1;
             }
-            
-            if($model->uploadPasso1(UploadedFile::getInstance($model, 'cartaempregadorFile'),$model->idEdital)) {
-                if($model->save(false)){
-                    $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
-                    return $this->redirect(['passo2']);
-                }
-
-            }else{
-                $this->mensagens('danger', 'Erro ao Enviar Arquivos', 'Ocorreu um Erro ao Enviar os Arquivos. Tente novamente mais tarde');
-
-                return $this->render('create1', [
-                    'model' => $model,
-                    'editalCurso' => $editalCurso,
-                ]);
+        
+            if($model->save(false)){
+                $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
+                return $this->redirect(['passo2']);
             }
 
-         }else {
+            return $this->render('create1', [
+                'model' => $model,
+                'editalCurso' => $editalCurso,
+            ]);
+        }else {
             return $this->render('create1', [
                 'model' => $model,
                 'editalCurso' => $editalCurso,
@@ -100,7 +94,7 @@ class CandidatoController extends Controller
                 $model->passoatual = 2;
             }
 
-            if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'),$model->idEdital)){
+            if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'), UploadedFile::getInstance($model, 'publicacoesFile'),$model->idEdital)){
                 if($model->save(false) && $model->salvaExperienciaAcademica()){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     return $this->redirect(['passo3']);
@@ -185,7 +179,7 @@ class CandidatoController extends Controller
 
 
         $model->passoatual = 4;
-        $model->fim = date('Y-M-d H:i:s');
+        $model->fim = date("Y-m-d H:i:s");
         $model->save(false);
 
         $diretorio = $model->getDiretorio();
