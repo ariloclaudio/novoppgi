@@ -109,4 +109,18 @@ class Edital extends \yii\db\ActiveRecord
         return $results;
     }
 
+        public function getVagasMestrado()
+    {
+
+        return 'AC: '.$this->vagas_mestrado.' / Cota: '.$this->cotas_mestrado;
+ 
+   }
+
+        public function getVagasDoutorado()
+    {
+
+        return 'AC: '.$this->vagas_doutorado.' / Cota: '.$this->cotas_doutorado;
+ 
+   }
+
 }
