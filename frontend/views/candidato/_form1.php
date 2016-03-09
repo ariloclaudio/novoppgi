@@ -22,7 +22,7 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 "PB" => "PB", "PE" => "PE", "PI" => "PI", "PR" => "PR", "RJ" => "RJ", "RN" => "RN", "RO" => "RO",
 "RR" => "RR", "RS" => "RS", "SC" => "SC", "SE" => "SE", "SP" => "SP", "TO" => "TO"];
 
-$deficiencias = ['1' => 'Deficiência Física', '2' => 'Deficiência Auditiva'];
+$deficiencias = ['1' => 'Deficiência Visual', '2' => 'Deficiência Auditiva', '3' => 'Deficiência Motora'];
 
 $cotas = ['Negro' => 'Negro', 'Pardo' => 'Pardo', 'Indio' => 'Índio'];
 

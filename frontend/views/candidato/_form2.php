@@ -7,7 +7,7 @@ use yii\widgets\MaskedInput;
 
 $uploadRealizados = 0;
 
-$labelHistorico = "<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b><br>Atual Arquivo com o Histórico:";
+$labelHistorico = "<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b><br>Arquivo contendo seu Histórico:";
 if(isset($model->historico)){
     $labelHistorico .= "<a target='resource window' href=".$model->diretorio.$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados = 1; 
@@ -15,7 +15,7 @@ if(isset($model->historico)){
     $labelHistorico.= " <i>Nenhum arquivo de histórico carregado.</i>";
 }
 
-$labelCurriculum = "<font color='#FF0000'>*</font> <b>Curriculum Vittae (no formato Lattes - http://lattes.cnpq.br):</b><br>Atual Arquivo com o Curriculum:";
+$labelCurriculum = "<font color='#FF0000'>*</font> <b>Curriculum Vittae (no formato Lattes - http://lattes.cnpq.br):</b><br>Arquivo contendo seu Curriculum:";
 if(isset($model->curriculum)){
     $labelCurriculum .= "<a target='resource window' href=".$model->diretorio.$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados += 2;
@@ -56,7 +56,7 @@ if($model->instituicaoacademica3 == ""){
 
     <?= $form->field($model, 'cursopos', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'tipopos', ['options' => ['class' => 'col-md-6', 'style' => 'padding-left: 100px;']])->radioList(['1' => 'Mestrado Acadêmico', '2' => 'Mestrado Profissional', '3' => 'Doutorado'], ['style' => 'height: 34px;']) ?>
+    <?= $form->field($model, 'tipopos', ['options' => ['class' => 'col-md-6', 'style' => 'padding-left: 100px;']])->radioList(['0' => 'Mestrado Acadêmico', '1' => 'Mestrado Profissional', '2' => 'Doutorado'], ['style' => 'height: 34px;']) ?>
 
     <?= $form->field($model, 'instituicaopos', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])?>
 
