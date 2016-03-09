@@ -12,15 +12,15 @@ $uploadRealizados = 0;
 /*Estático temporariamente*/
 $linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' => 'Sistemas Embarcados e Engenharia de Software', '3' => 'Inteligência Artificial', '4' => 'Visão Computacional e Robótica', '5' => 'Redes e Telecomunicações',  '6' => 'Otimização, Alg. e Complexidade Computacional'];
 
-$labelProposta = "<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b></b><br>Atual Arquivo com o Curriculum:";
+$labelProposta = "<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b></b><br>Arquivo contendo sua Proposta:";
 if(isset($model->proposta)){
     $labelProposta .= "<a target='resource window' href=".$model->diretorio.$model->proposta."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados = 1;
 }else{
-    $labelProposta .= " <i>Nenhum arquivo de Proposta carregado.</i>";
+    $labelProposta .= " <i>Nenhum arquivo com Proposta carregado.</i>";
 }
 
-$labelComprovante = "<font color='#FF0000'>*</font> <b>Comprovante de Pagamento da taxa de inscrição (Comprovante emitido por bancos e lotéricas):</b><br>Atual Arquivo com o Comprovante:";
+$labelComprovante = "<font color='#FF0000'>*</font> <b>Comprovante de Pagamento da taxa de inscrição (Comprovante emitido por bancos e lotéricas):</b><br>Arquivo contendo seu Comprovante de Pagamento:";
 if(isset($model->comprovantepagamento)){
     $labelComprovante .= "<a target='resource window' href=".$model->diretorio.$model->comprovantepagamento."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados += 2;
@@ -104,7 +104,7 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
 
     <div class="row">
 
-        <?= $form->field($model, 'motivos')->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b>Exposição dos Motivos </b>(Descreva os motivos que o levaram a se candidatar ao curso):") ?>
+        <?= $form->field($model, 'motivos')->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b> Descreva os motivos que o levaram a se candidatar ao curso (máximo de caracteres: 1000): </b>") ?>
     </div>
 
     <?= $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label($labelProposta) ?>

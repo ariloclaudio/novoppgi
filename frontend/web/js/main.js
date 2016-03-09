@@ -96,6 +96,14 @@ $(document).ready( function() {
     }
   });
 
+  $('input[name="Candidato[deficiencia]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+      if(state){
+      $('#divDeficiencia').css('display', 'block');
+    }else{
+      $('#divDeficiencia').css('display', 'none');
+    }
+  });
+
   $('input[name="Candidato[vinculoemprego]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
       if(state){
       $('#divVinculo').css('display', 'block');
