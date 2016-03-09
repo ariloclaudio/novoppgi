@@ -104,7 +104,7 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
 
     <div class="row">
 
-        <?= $form->field($model, 'motivos')->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b>Exposição dos Motivos </b>(Descreva os motivos que o levaram a se candidatar ao curso):") ?>
+        <?= $form->field($model, 'motivos')->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b> Descreva os motivos que o levaram a se candidatar ao curso (máximo de caracteres: 1000): </b>") ?>
     </div>
 
     <?= $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label($labelProposta) ?>

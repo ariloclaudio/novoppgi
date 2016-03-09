@@ -134,6 +134,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['anoposcomp', 'egressograd', 'egressopos'], 'integer', 'min' => 1000, 'max' => 2099],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
             [['cidade'], 'string', 'max' => 40],
+            [['motivos'], 'string', 'max' => 1000],
             [['nome', 'nomesocial'], 'string', 'max' => 60],
             [['endereco'], 'string', 'max' => 160],
             [['bairro', 'cursograd', 'instituicaograd', 'cursopos', 'instituicaopos', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3'], 'string', 'max' => 50],

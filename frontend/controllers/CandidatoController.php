@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use app\models\Candidato;
 use app\models\Edital;
+use app\models\ExperienciaAcademica;
 use app\models\Recomendacoes;
 use app\models\CandidatoSearch;
 use yii\web\Controller;
@@ -212,21 +213,42 @@ class CandidatoController extends Controller
         }
     }
 
-    function actionComprovanteinscricao() {
+function actionComprovanteinscricao() {
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
         $candidato = $this->findModel($id);
 
         $recomendacoesArray = Recomendacoes::findAll(['idCandidato' => $id]);
+        $experienciaArray = ExperienciaAcademica::findAll(['idCandidato' => $id]);
+
+        $instituicao = array(0 => null, 1 => null, 2=> null);
+        $atividade = array(0 => null, 1 => null, 2=> null);
+        $periodo  = array(0 => null, 1 => null, 2=> null);
+
+        for ($i=0; $i<sizeof($experienciaArray); $i++){
+            $instituicao[$i] = $experienciaArray[$i]->instituicao;
+            $atividade[$i] = $experienciaArray[$i]->atividade;
+            $periodo[$i] = $experienciaArray[$i]->periodo;
+        }
+
 
         $pdf = new mPDF('utf-8');
     
     $sexo = array ('M' => "Masculino",'F' => "Feminimo");
     $cursoDesejado = array (1 => "Mestrado",2 => "Doutorado");
+    $tipoCursoPos = array (0 => "Mestrado Acadêmico", 1 => "Mestrado Profissional", 2 => "Doutorado");
     $regimeDedicacao = array (1 => "Integral",2 => "Parcial");
     $nacionalidade = array (1 => "Brasileira",2 => "Estrangeira");
-    
+    $simOuNao = array (0 => "Não", 1 => "Sim");
+
+
+    if ($candidato->nacionalidade == 1){
+        $campoCPFouPassaporte = "CPF: ".$candidato->cpf;
+    }   
+    else{
+        $campoCPFouPassaporte = "Passaporte: ".$candidato->passaporte;
+    }
     //$comprovantePDF = "/formulario".$candidato->id.".pdf";
 
     //$arqPDF = fopen($comprovantePDF, 'w') or die('CREATE ERROR');
@@ -249,7 +271,7 @@ class CandidatoController extends Controller
             ');
 
             $pdf->SetHTMLFooter('
-                <hr>
+
                 <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
                     <tr>
                         <td  colspan = "3" align="center" ><span style="font-weight: bold"> Av. Rodrigo Otávio, 6.200 - Campus Universitário Senador Arthur Virgílio Filho - CEP 69077-000 - Manaus, AM, Brasil </span></td>
@@ -265,182 +287,135 @@ class CandidatoController extends Controller
 
 
                 $pdf->WriteHTML(' <br>
-                    <table style= "margin-top:80px;" width="100%"> 
+                    <table style= "margin-top:65px;" width="100%;"> 
                     <tr>
-                        <td colspan = "3" style="padding-left:32%; border-bottom: 1px solid #000">
+                        <td colspan = "1" style="text-align:right;">
                             <b> COMPROVANTE DE INSCRIÇÃO </b>
                         </td>   
-                        <td colspan="3" align="left" width="140px" style="border-bottom: 1px solid #000">
+                        <td align="right" width="35%">
                             <b>Hora: '.date("H:i").'</b> <br> <b> Data: '.date("d/m/Y").'</b>
                         </td>                        
                     </tr>
+                    </table>
+                    <table width="100%" style="border-top: solid 1px; ">
                     <tr>
-                        <td colspan="3" style= "height:35px;">
+                        <td style= "height:35px;">
                             <b> Dados Pessoais </b>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td style="width:50%">
                             Número da inscrição: '.$candidato->id.'
                         </td>   
+                        <td colspan="2">
+
+                        </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="2">
                             Nome: '.$candidato->nome.'
+                        </td> 
+                        <td colspan="2">
+                            Nome Social: '.$candidato->nomesocial.'
                         </td>   
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="2">
                             Endereço: '.$candidato->endereco.'
                         </td>
+                    </tr>
                     <tr>
-
-                        <td>
+                        <td colspan="2">
                             CEP: '.$candidato->cep.'
                         </td>
+
+                        <td colspan="2">
+                            Bairro: '.$candidato->bairro.'
+                        </td>
                     </tr>
                     <tr>
-                        <td>
-                            bairro: '.$candidato->bairro.'
+                        <td colspan="2">
+                            Cidade: '.$candidato->cidade.'
                         </td>
                         <td colspan="2">
-                            cidade: '.$candidato->cidade.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             País: '.$candidato->pais.'
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            estado civil: '.$candidato->estadocivil.'
+                        <td colspan="2">
+                            Data de Nascimento: '.$candidato->datanascimento.'
                         </td>
-                        <td>
-                            sexo: '.$sexo[$candidato->sexo].'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            nacionalidade: '.$nacionalidade[$candidato->nacionalidade].'
+                        <td colspan="2">
+                            Sexo: '.$sexo[$candidato->sexo].'
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            rg: '.$candidato->rg.'
+                        <td colspan="2">
+                            Nacionalidade: '.$nacionalidade[$candidato->nacionalidade].'
                         </td>
-                        <td>
-                            orgão de expedição: '.$candidato->orgaoexpedidor.'
-                        </td>
-                        <td>
-                            data expedição: '.$candidato->dataexpedicao.'
+                        <td colspan="2">
+                            '.$campoCPFouPassaporte.'
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            cpf: '.$candidato->cpf.'
+                        <td colspan="2">
+                            Telefone Celular: '.$candidato->telcelular.'
                         </td>
                         <td>
-                            datanascimento: '.$candidato->datanascimento.'
+                            Telefone Residencial: '.$candidato->telresidencial.'
                         </td>
                     </tr>
                     <tr>
-
-                        <td>
-                            telresidencial: '.$candidato->telresidencial.'
-                        </td>
-                        <td>
-                            telcelular: '.$candidato->telcelular.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style= "height:35px">
-                            <b> Filiação </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" >
-                            nome mae: '.$candidato->nomemae.'1111111111111111111
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            nome pai: '.$candidato->nomepai.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style= "height:35px">
+                        <td style= "height:35px">
                             <b> Dados do PosComp </b>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            inscricao poscomp: '.$candidato->inscricaoposcomp.'
+                            Número da Inscrição: '.$candidato->inscricaoposcomp.'
                         </td>
-                        <td>
-                            ano pos comp: '.$candidato->anoposcomp.'
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            Ano: '.$candidato->anoposcomp.'
                         </td>
-                        <td>
-                            nota pos comp: '.$candidato->notaposcomp.'
+                        <td colspan="2">
+                            Nota: '.$candidato->notaposcomp.'
                         </td>                        
                     </tr>
                     </table>
                     <table width="100%">
-                        <tr>
-                            <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000; border-top: 1px solid #000 ">
-                                <b> DADOS DA INSCRIÇÃO </b>
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
                     <tr>
-                        <td> 
+                        <td style= "height:35px">
+                            <b> Dados da Inscrição </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1"  style="width:50%">
                             Curso Desejado:'.$cursoDesejado[$candidato->cursodesejado].' 
                         </td>
+
                         <td>
                             Regime de Dedicação: '.$regimeDedicacao[$candidato->regime].'
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Vinculo Convenio: '.$candidato->vinculoconvenio.'
+                            Solicita Bolsa de Estudos? '.$simOuNao[$candidato->solicitabolsa].'
                         </td>
-                    </tr>
-                    <tr>
                         <td>
-                            Convenio: '.$candidato->convenio.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            solicita bolsa: '.$candidato->solicitabolsa.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            vinculo emprego: '.$candidato->vinculoemprego.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            empregador: '.$candidato->empregador.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            cargo: '.$candidato->cargo.'
+                            
                         </td>
                     </tr>
                 </table>');
 
   
-    $pdf->addPage();    
     $pdf->WriteHTML('
-        <br>
-        <table style= "margin-top:80px" width="100%" border = "0"> 
+
+        <table width="100%" border = "0"> 
 
                     <tr>
-                        <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;">
+                        <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;border-top: 1px solid #000">
                             <b> FORMAÇÃO ACADÊMICA / PROFISSIONAL </b>
                         </td>
                     </tr>
@@ -454,33 +429,12 @@ class CandidatoController extends Controller
                             Curso: '.$candidato->cursograd.'
                         </td>
                         <td>
-                            Coeficiente de Rendimento: '.$candidato->crgrad.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             Instituição: '.$candidato->instituicaograd.'
                         </td>
+                    </tr>
+                    <tr>
                         <td>
                             Ano Egresso: '.$candidato->egressograd.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style= "height:35px">
-                            <b> Curso de Especialização(ou Aperfeiçoamento) </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Curso: '.$candidato->cursoesp.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Instituição: '.$candidato->instituicaoesp.'
-                        </td>
-                        <td>
-                            Ano Egresso: '.$candidato->egressoesp.'
                         </td>
                     </tr>
                     <tr>
@@ -493,7 +447,7 @@ class CandidatoController extends Controller
                             Curso: '.$candidato->cursopos.'
                         </td>
                         <td>
-                            Ano Egresso: '.$candidato->egressoesp.'
+                            
                         </td>
                     </tr>
                     <tr>
@@ -501,10 +455,7 @@ class CandidatoController extends Controller
                                 Instituição: '.$candidato->instituicaopos.'
                         </td>
                         <td>
-                                Tipo: '.$cursoDesejado[$candidato->tipopos].'
-                        </td>
-                        <td>
-                                Média: '.$candidato->mediapos.'
+                                Tipo: '.$tipoCursoPos[$candidato->tipopos].'
                         </td>
                     </tr>
                     <tr>
@@ -528,88 +479,7 @@ class CandidatoController extends Controller
                                 Conferencias Nacionais: '.$candidato->conferenciasnacionais.'
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="3" style= "height:35px">
-                            <b> Língua Inglesa</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                                instituicao ingles: '.$candidato->instituicaoingles.'
-                        </td>
-                        <td>
-                                duração ingles: '.$candidato->duracaoingles.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style= "height:35px">
-                            <b> Exame de Proeficiência </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                                nome exame: '.$candidato->nomeexame.'
-                        </td>
-                        <td>
-                                data exame: '.$candidato->dataexame.'
-                        </td>
-                        <td>
-                                nota exame: '.$candidato->notaexame.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style= "height:55px">
-                            <b> Experiência Profissional </b>
-                        </td>
-                    </tr>
-                </table>
-                <table width="100%" border = "1"> 
-                    <tr>
-                        <th>
-                            Empresa
-                        </th>
-                        <th>
-                            Cargo/Função
-                        </th>
-                        <th>
-                            Período
-                        </th>
-                    </tr>
-                    <tr>
-                        <td height="22">
-                                '.$candidato->empresa1.'
-                        </td>
-                        <td>
-                                '.$candidato->cargo1.'
-                        </td>
-                        <td>
-                                '.$candidato->periodoprofissional1.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td height="22">
-                                '.$candidato->empresa2.'
-                        </td>
-                        <td>
-                                '.$candidato->cargo2.'
-                        </td>
-                        <td>
-                                '.$candidato->periodoprofissional2.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td height="22">
-                                '.$candidato->empresa3.'
-                        </td>
-                        <td>
-                                '.$candidato->cargo3.'
-                        </td>
-                        <td>
-                                '.$candidato->periodoprofissional3.'
-                        </td>
-                    </tr>
-                </table>
-                <table>
+
                     <tr>
                         <td colspan="3" style= "height:55px" border = "0">
                             <b> Experiência Acadêmica </b>
@@ -619,47 +489,46 @@ class CandidatoController extends Controller
                 <table width="100%" border = "1">
                     <tr>
                         <th>
-                            Instituicao
+                            Instituição
                         </th>
                         <th>
                             Cargo/Função
                         </th>
                         <th>
-                            Período (de X até Y)
+                            Período
                         </th>
                     </tr>
                     <tr>
+                        <td width = "35%" height="22">
+                                '.$instituicao[0].'
+                        </td>
+                        <td width = "35%">
+                                '.$atividade[0].'
+                        </td>
+                        <td>
+                                '.$periodo[0].'
+                        </td>
+                    </tr>
                     <tr>
-                        <td height="22">
-                                '.$candidato->instituicaoacademica1.'
+                        <td  height="22">
+                                '.$instituicao[1].'
                         </td>
                         <td>
-                                '.$candidato->atividade1.'
+                                '.$atividade[1].'
                         </td>
                         <td>
-                                '.$candidato->periodoacademico1.'
+                                '.$periodo[1].'
                         </td>
                     </tr>
                     <tr>
                         <td height="22">
-                                '.$candidato->instituicaoacademica2.'
+                                '.$instituicao[2].'
                         </td>
                         <td>
-                                '.$candidato->atividade2.'
+                                '.$atividade[2].'
                         </td>
                         <td>
-                                '.$candidato->periodoacademico2.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td height="22">
-                                '.$candidato->instituicaoacademica3.'
-                        </td>
-                        <td>
-                                '.$candidato->atividade3.'
-                        </td>
-                        <td>
-                                '.$candidato->periodoacademico3.'
+                                '.$periodo[2].'
                         </td>
                     </tr>
         </table>
@@ -669,7 +538,7 @@ class CandidatoController extends Controller
 
     $pdf->WriteHTML('
         <br>
-        <table style= "margin-top:80px" width="100%" border = "0"> 
+        <table style= "margin-top:65px" width="100%" border = "0"> 
 
                     <tr>
                         <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;">
@@ -687,8 +556,13 @@ class CandidatoController extends Controller
                         </td>
                     </tr>
                     <tr>
-                        <td colspan = "3" height = "100px">
-                            <b> Exposição de motivos (exponha resumidamente os motivos que o levaram a se candidatar ao Curso):  </b>'.$candidato->motivos.'
+                        <td  style= "vertical-align: text-top;" colspan = "3">
+                            <b> Exposição de motivos (exponha resumidamente os motivos que o levaram a se candidatar ao Curso):  </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td  style= "border: solid 1px; vertical-align: text-top;" colspan = "3" height = "200px">
+                            '.$candidato->motivos.'
                         </td>
                     </tr>
                     <tr>
