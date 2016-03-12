@@ -143,13 +143,23 @@ class CandidatosController extends Controller
 
         $idEdital = $id;
 
-
         $resultado = shell_exec("cd ../../frontend/web/documentos/ && zip -r ".$idEdital.".zip ".$idEdital);
+
+        if (is_dir('../../frontend/web/documentos/'.$idEdital)){
 
             header('Content-type: application/zip');
             header('Content-disposition: attachment; filename=Doc_Completos_'.$idEdital.".zip");
             readfile("../../frontend/web/documentos/".$idEdital.".zip");
             unlink("../../frontend/web/documentos/".$idEdital.".zip");
+
+        }
+        else{
+
+        $this->mensagens('warning', 'Não há documentos', 'Nenhum candidato fez upload de sua documentação.');
+
+        return $this->redirect(['edital/view','id'=>$id]);
+
+        }
 
     }
 
@@ -168,7 +178,6 @@ class CandidatosController extends Controller
 
 
         $diretorio = '../../frontend/web/documentos/'.$idEdital.'/'.$idCriptografado;
-
 
 
         $zipFile = $candidato->nome.'_doc_ppgi.zip';
@@ -210,7 +219,20 @@ class CandidatosController extends Controller
         }
     }
 
-
+        /* Envio de mensagens para views
+       Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
+    }
 
 
 
