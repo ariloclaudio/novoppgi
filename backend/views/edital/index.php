@@ -10,13 +10,37 @@ use yii\grid\GridView;
 $this->title = 'Editais';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+    <table style="border:solid 1px; float:right; margin-top:5%; width: 17%;">
+        <tr style="border:solid 1px;">
+            <td colspan="2" style = "width: 20%; background-color: #C0C0C0; text-align:center;">
+                Legenda
+            </td>
+        </tr>
+        <tr style="background-color:lightblue" align="center">
+            <td>
+            AC
+            </td>
+            <td align="left">
+            Ampla Concorrência
+            </td>
+        </tr>
+        <tr style="background-color: lightgreen; border:solid 1px;" align="center">>
+            <td>
+            Cota
+            </td>
+            <td align="left">
+            Cotista
+            </td>
+        </tr>
+    </table>
+
+
+
 <div class="edital-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Edital', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Novo Edital', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
