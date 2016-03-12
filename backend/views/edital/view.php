@@ -15,16 +15,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Voltar', ['edital/index', 'id' => $model->numero], ['class' => 'btn btn-warning']) ?>    
-        <?= Html::a('Update', ['update', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->numero], [
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['edital/index', 'id' => $model->numero], ['class' => 'btn btn-warning']) ?>    
+        <?= Html::a('<span class="glyphicon glyphicon-edit"></span> Editar  ', ['update', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-remove-sign"></span> Excluir', ['delete', 'id' => $model->numero], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Lista de Inscritos', ['candidatos/index', 'id' => $model->numero], ['class' => 'btn btn-info']) ?>
+        <?= Html::a(' <span class="glyphicon glyphicon-list-alt"></span> Lista de Inscritos  ', ['candidatos/index', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(' <span class="glyphicon glyphicon-download"></span> Baixar Documentação ', ['candidatos/downloads', 'id' => $model->numero], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([

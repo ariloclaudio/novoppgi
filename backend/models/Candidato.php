@@ -243,4 +243,18 @@ class Candidato extends \yii\db\ActiveRecord
             'periodo' => 'Periodo',
         ];
     }
+
+
+    public function download($idCandidato,$idEdital){
+
+        return Candidato::findOne(['id' => $idCandidato]);
+    }
+
+    public function getDiretorio($idEdital){
+        $caminho = 'documentos/'.$idEdital;
+        //fim da definição do caminho padrão
+        return $caminho;
+
+    }
+
 }

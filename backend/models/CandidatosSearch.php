@@ -42,7 +42,7 @@ class CandidatosSearch extends Candidato
     public function search($params)
     {
         $idEdital = $params['id'];
-        $query = Candidato::find()->where('idEdital ='.$idEdital);
+        $query = Candidato::find()->where('idEdital ="'.$idEdital.'"');
 
         // add conditions that should always apply here
 
@@ -58,7 +58,7 @@ class CandidatosSearch extends Candidato
             return $dataProvider;
         }
 
-        /* grid filtering conditions
+        // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'inicio' => $this->inicio,
@@ -89,69 +89,30 @@ class CandidatosSearch extends Candidato
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'datanascimento', $this->datanascimento])
             ->andFilterWhere(['like', 'pais', $this->pais])
-            ->andFilterWhere(['like', 'rg', $this->rg])
-            ->andFilterWhere(['like', 'orgaoexpedidor', $this->orgaoexpedidor])
-            ->andFilterWhere(['like', 'dataexpedicao', $this->dataexpedicao])
             ->andFilterWhere(['like', 'passaporte', $this->passaporte])
             ->andFilterWhere(['like', 'cpf', $this->cpf])
             ->andFilterWhere(['like', 'sexo', $this->sexo])
             ->andFilterWhere(['like', 'telresidencial', $this->telresidencial])
-            ->andFilterWhere(['like', 'telcomercial', $this->telcomercial])
             ->andFilterWhere(['like', 'telcelular', $this->telcelular])
-            ->andFilterWhere(['like', 'nomepai', $this->nomepai])
-            ->andFilterWhere(['like', 'nomemae', $this->nomemae])
             ->andFilterWhere(['like', 'inscricaoposcomp', $this->inscricaoposcomp])
             ->andFilterWhere(['like', 'notaposcomp', $this->notaposcomp])
             ->andFilterWhere(['like', 'solicitabolsa', $this->solicitabolsa])
-            ->andFilterWhere(['like', 'vinculoemprego', $this->vinculoemprego])
-            ->andFilterWhere(['like', 'empregador', $this->empregador])
-            ->andFilterWhere(['like', 'cargo', $this->cargo])
-            ->andFilterWhere(['like', 'vinculoconvenio', $this->vinculoconvenio])
-            ->andFilterWhere(['like', 'convenio', $this->convenio])
             ->andFilterWhere(['like', 'tituloproposta', $this->tituloproposta])
             ->andFilterWhere(['like', 'diploma', $this->diploma])
             ->andFilterWhere(['like', 'historico', $this->historico])
             ->andFilterWhere(['like', 'motivos', $this->motivos])
             ->andFilterWhere(['like', 'proposta', $this->proposta])
             ->andFilterWhere(['like', 'curriculum', $this->curriculum])
-            ->andFilterWhere(['like', 'cartaempregador', $this->cartaempregador])
             ->andFilterWhere(['like', 'comprovantepagamento', $this->comprovantepagamento])
             ->andFilterWhere(['like', 'cursograd', $this->cursograd])
             ->andFilterWhere(['like', 'instituicaograd', $this->instituicaograd])
-            ->andFilterWhere(['like', 'crgrad', $this->crgrad])
             ->andFilterWhere(['like', 'dataformaturagrad', $this->dataformaturagrad])
-            ->andFilterWhere(['like', 'cursoesp', $this->cursoesp])
-            ->andFilterWhere(['like', 'instituicaoesp', $this->instituicaoesp])
-            ->andFilterWhere(['like', 'dataformaturaesp', $this->dataformaturaesp])
             ->andFilterWhere(['like', 'cursopos', $this->cursopos])
             ->andFilterWhere(['like', 'instituicaopos', $this->instituicaopos])
-            ->andFilterWhere(['like', 'mediapos', $this->mediapos])
             ->andFilterWhere(['like', 'dataformaturapos', $this->dataformaturapos])
-            ->andFilterWhere(['like', 'instituicaoingles', $this->instituicaoingles])
-            ->andFilterWhere(['like', 'nomeexame', $this->nomeexame])
-            ->andFilterWhere(['like', 'dataexame', $this->dataexame])
-            ->andFilterWhere(['like', 'notaexame', $this->notaexame])
-            ->andFilterWhere(['like', 'empresa1', $this->empresa1])
-            ->andFilterWhere(['like', 'empresa2', $this->empresa2])
-            ->andFilterWhere(['like', 'empresa3', $this->empresa3])
-            ->andFilterWhere(['like', 'cargo1', $this->cargo1])
-            ->andFilterWhere(['like', 'cargo2', $this->cargo2])
-            ->andFilterWhere(['like', 'cargo3', $this->cargo3])
-            ->andFilterWhere(['like', 'periodoprofissional1', $this->periodoprofissional1])
-            ->andFilterWhere(['like', 'periodoprofissional2', $this->periodoprofissional2])
-            ->andFilterWhere(['like', 'periodoprofissional3', $this->periodoprofissional3])
-            ->andFilterWhere(['like', 'instituicaoacademica1', $this->instituicaoacademica1])
-            ->andFilterWhere(['like', 'instituicaoacademica2', $this->instituicaoacademica2])
-            ->andFilterWhere(['like', 'instituicaoacademica3', $this->instituicaoacademica3])
-            ->andFilterWhere(['like', 'atividade1', $this->atividade1])
-            ->andFilterWhere(['like', 'atividade2', $this->atividade2])
-            ->andFilterWhere(['like', 'atividade3', $this->atividade3])
-            ->andFilterWhere(['like', 'periodoacademico1', $this->periodoacademico1])
-            ->andFilterWhere(['like', 'periodoacademico2', $this->periodoacademico2])
-            ->andFilterWhere(['like', 'periodoacademico3', $this->periodoacademico3])
             ->andFilterWhere(['like', 'periodo', $this->periodo]);
 
-            */
+            //
 
         return $dataProvider;
     }

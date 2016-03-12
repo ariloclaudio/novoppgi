@@ -104,8 +104,8 @@ class Edital extends \yii\db\ActiveRecord
     public function getQuantidadeInscritos($id)
     {
 
-        $results = Candidato::find()->where("idEdital = ".$id)->count();
- 
+        $results = Candidato::find()->where("idEdital = '".$this->numero."'")->count(); 
+
         return $results;
     }
 

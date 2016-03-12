@@ -156,7 +156,17 @@ function goBack() {
             // 'resultado',
             // 'periodo',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{download} {view} {delete} {update}',
+                'buttons'=>[
+                  'download' => function ($url, $model) {     
+                    return Html::a('<span class="glyphicon glyphicon-download"></span>', ['candidatos/downloads', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                            'target' => '_blank','title' => Yii::t('yii', 'Download do Edital'),
+                    ]);                                
+
+                  }
+              ]                            
+            ],
         ],
     ]); ?>
 </div>

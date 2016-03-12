@@ -137,6 +137,50 @@ class CandidatosController extends Controller
         return $this->redirect(['index']);
     }
 
+
+
+
+    public function actionDownloads($id,$idEdital)
+    {
+        //$model = $this->findModel($id);
+
+        $modelCandidato = new Candidato();
+        $candidato = $modelCandidato->download($id,$idEdital);
+
+
+        $salt1 = "programadeposgraduacaoufamicompPPGI";
+        $salt2 = $id * 777;
+        $idCriptografado = md5($salt1+$id+$salt2);
+
+
+        $diretorio = '../../frontend/web/documentos/'.$idEdital.'/'.$idCriptografado;
+
+
+
+        $zipFile = $candidato->nome.'_doc_ppgi.zip';
+        $zipArchive = new \ZipArchive();
+
+            if (!$zipArchive->open($zipFile, \ZIPARCHIVE::OVERWRITE))
+                die("Failed to create archive\n");
+
+                $options = array('add_path' => '/', 'remove_path' => $diretorio);
+
+                $zipArchive->addGlob($diretorio.'/*', GLOB_BRACE, $options);
+
+            if (!$zipArchive->status == \ZIPARCHIVE::ER_OK)
+                echo "Failed to write files to zip\n";
+
+            $zipArchive->close();
+            header('Content-type: application/zip');
+            header('Content-disposition: attachment; filename='.$zipFile);
+            readfile($zipFile);
+            unlink($zipFile);
+
+
+    }
+
+
+
     /**
      * Finds the Candidato model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -152,4 +196,9 @@ class CandidatosController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+
+
+
+
 }
