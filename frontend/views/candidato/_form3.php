@@ -1,11 +1,11 @@
 <?php
-//use xj\bootbox\BootboxAsset;
+use xj\bootbox\BootboxAsset;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 
-//BootboxAsset::register($this);
-//BootboxAsset::registerWithOverride($this);
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 $uploadRealizados = 0;
 

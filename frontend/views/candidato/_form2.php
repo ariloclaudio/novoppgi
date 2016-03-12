@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use yii\widgets\MaskedInput;
+use kartik\widgets\FileInput;
+use yii\helpers\Url;
 
 $uploadRealizados = 0;
 
@@ -65,16 +67,20 @@ if($model->instituicaoacademica3 == ""){
 
     <div style="clear: both;"><legend>Publicações</legend></div>
 
-    <?= $form->field($model, 'publicacoesFile')->FileInput(['accept' => '.xml'])->label("<font color='#FF0000'>*</font> <b>Arquivo XML (http://lattes.cnpq.br):</b>") ?>
 
-    <?= $form->field($model, 'periodicosinternacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Periódicos Internacionais:</b>") ?>
+    <?= $form->field($model, 'publicacoesFile')->widget(FileInput::classname(), [
+        'options' => [
+            'accept' => '.xml',
+            'name' => 'te',
+            'multiple' => false
+        ],
+        
+        'pluginOptions' => [
+            'uploadUrl' => Url::to(['/candidato/fileupload']),
+        ]
+    ])->label("<div><font color='#FF0000'>*</font> <b>Arquivo XML (http://lattes.cnpq.br):</b></div>")?>
 
-    <?= $form->field($model, 'periodicosnacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Periódicos Nacionais:</b>") ?>
-
-    <?= $form->field($model, 'conferenciasinternacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Conferências Internacionais:</b>") ?>
-
-    <?= $form->field($model, 'conferenciasnacionais', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Conferências Nacionais:</b>") ?>
-
+    
     <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ?>
 
     <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label($labelCurriculum) ?>
