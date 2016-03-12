@@ -18,6 +18,7 @@ class Candidato extends \yii\db\ActiveRecord
     public $propostaFile;
     public $comprovanteFile;
     public $publicacoesFile;
+    public $xml;
     
     /*Cartas de recomendação Obrigatórias*/
     public $cartaNomeReq1;
@@ -128,7 +129,7 @@ class Candidato extends \yii\db\ActiveRecord
  
             [['historicoFile', 'curriculumFile', 'propostaFile', 'comprovanteFile', 'publicacoesFile'], 'safe'],
             [['historicoFile', 'curriculumFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 2],
-            [['publicacoesFile'], 'file', 'extensions' => 'xml', 'maxSize' => 1024 * 1024 * 2],
+            [['publicacoesFile'], 'file', 'extensions' => 'xml'],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'linhapesquisa', 'tipopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
             [['anoposcomp', 'egressograd', 'egressopos'], 'integer', 'min' => 1000, 'max' => 2099],
@@ -274,16 +275,16 @@ class Candidato extends \yii\db\ActiveRecord
         return $caminho;
     }
     
-    public function uploadPasso2($historicoFile, $curriculumFile, $publicacoesFile, $idEdital){
+    public function uploadPasso2($historicoFile, $curriculumFile){
 
-        if (isset($historicoFile) && isset($curriculumFile) && isset($publicacoesFile)) {
+        if (isset($historicoFile) && isset($curriculumFile)) {
 
             //obtenção o ID do usuário pelo meio de sessão
             $id = Yii::$app->session->get('candidato');
             //fim da obtenção
 
             //método que gera o diretório, retornando o caminho do diretório
-            $caminho = $this->gerarDiretorio($id,$idEdital);
+            $caminho = $this->gerarDiretorio($id,$this->idEdital);
             //fim do método que gera o diretório
 
             $this->historico = "Historico.".$historicoFile->extension;
@@ -291,7 +292,6 @@ class Candidato extends \yii\db\ActiveRecord
 
             $historicoFile->saveAs($caminho.$this->historico);
             $curriculumFile->saveAs($caminho.$this->curriculum);
-            $publicacoesFile->saveAs($caminho."publicacoes.".$publicacoesFile->extension);
 
              return true;
         } else if(isset($this->historico) && isset($this->curriculum)){
@@ -364,8 +364,6 @@ class Candidato extends \yii\db\ActiveRecord
 
         return true;
     }
-
-
 
     public function beforeSave()
     {

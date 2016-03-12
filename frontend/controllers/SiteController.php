@@ -107,6 +107,7 @@ class SiteController extends Controller
                     return $this->redirect(['candidato/passo1']);
                 }
             }catch(\Exception $e){ 
+                return var_dump($e);
                 $this->mensagens('danger', 'Erro ao salvar candidato', 'Verifique os campos e tente novamente');
                 throw new \yii\web\HttpException(405, 'Erro com relação ao identificador do edital'); 
             }
