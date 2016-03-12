@@ -6,6 +6,16 @@ use kartik\widgets\DatePicker;
 use yii\widgets\MaskedInput;
 use kartik\widgets\FileInput;
 use yii\helpers\Url;
+use yii\bootstrap\Collapse;
+use yii\bootstrap\Modal;
+
+if(count($itensPeriodicos) + count($itensConferencias) > 0){
+    $hidePublicacoes = 'block';
+    $hideInputPublicacoes = 'none';
+}else{
+    $hidePublicacoes = 'none';
+    $hideInputPublicacoes = 'block';
+}
 
 $uploadRealizados = 0;
 
@@ -17,7 +27,7 @@ if(isset($model->historico)){
     $labelHistorico.= " <i>Nenhum arquivo de histórico carregado.</i>";
 }
 
-$labelCurriculum = "<font color='#FF0000'>*</font> <b>Curriculum Vittae (no formato Lattes - http://lattes.cnpq.br):</b><br>Arquivo contendo seu Curriculum:";
+$labelCurriculum = "<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b><br>Arquivo contendo seu Curriculum:";
 if(isset($model->curriculum)){
     $labelCurriculum .= "<a target='resource window' href=".$model->diretorio.$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados += 2;
@@ -47,29 +57,80 @@ if($model->instituicaoacademica3 == ""){
 
     <div style="clear: both;"><legend>Curso de Graduação</legend></div>
 
-    <?= $form->field($model, 'cursograd', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Curso:</b>") ?>
+    <div class="row">
+        <?= $form->field($model, 'cursograd', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Curso:</b>") ?>
 
-    <?= $form->field($model, 'instituicaograd', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Instituição:</b>") ?>
+        <?= $form->field($model, 'instituicaograd', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Instituição:</b>") ?>
+    </div>
 
-    <?= $form->field($model, 'egressograd', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+    <div class="row">
+        <?= $form->field($model, 'egressograd', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
     'mask' => '9999'])->label("<font color='#FF0000'>*</font> <b>Ano de Egresso:</b>") ?>
+    </div>
     
-    <div style="margin-top: 100px; clear: both;"><p align="justify"><b>Curso de Pos-Gradua&#231;&#227;o Stricto-Senso</b></p></div>
+    <div style="clear: both;"><legend>Curso de Pós-Graduação Stricto-Senso</legend></div>
 
-    <?= $form->field($model, 'cursopos', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])?>
+    <div class="row">
+        <?= $form->field($model, 'cursopos', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'tipopos', ['options' => ['class' => 'col-md-6', 'style' => 'padding-left: 100px;']])->radioList(['0' => 'Mestrado Acadêmico', '1' => 'Mestrado Profissional', '2' => 'Doutorado'], ['style' => 'height: 34px;']) ?>
+        <?= $form->field($model, 'tipopos', ['options' => ['class' => 'col-md-6 col-xs-12']])->radioList(['0' => 'Mestrado Acadêmico', '1' => 'Mestrado Profissional', '2' => 'Doutorado']) ?>
+    </div>
+    <div class="row">
+        <?= $form->field($model, 'instituicaopos', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])?>
 
-    <?= $form->field($model, 'instituicaopos', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])?>
+        <?= $form->field($model, 'egressopos',['options' => ['class' => 'col-md-2']] )->widget(MaskedInput::className(), [
+        'mask' => '9999']) ?>
+    </div>
+    
+    <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ?>
 
-    <?= $form->field($model, 'egressopos',['options' => ['class' => 'col-md-2']] )->widget(MaskedInput::className(), [
-    'mask' => '9999']) ?>
+    <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label($labelCurriculum) ?>
+    
+    <div style="clear: both;"><legend>Experiência Acadêmica</b> (Monitoria, PIBIC, PET, Instutor, Professor)</legend></div>
+
+    <div class="row">
+        <?= $form->field($model, 'instituicaoacademica1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'atividade1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'periodoacademico1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+    </div>
+    
+    
+    <div class="row" id="divInstituicao2" style="display: <?=$hideInstituicao2?>;">
+        <?= $form->field($model, 'instituicaoacademica2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'atividade2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'periodoacademico2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+    </div>
+    
+   
+   <div class="row" id="divInstituicao3" style="display: <?=$hideInstituicao3?>;">
+        <?= $form->field($model, 'instituicaoacademica3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'atividade3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'periodoacademico3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+    </div>
+    <p>
+        <?= Html::button("<span class='glyphicon glyphicon-plus'></span>", ['id' => 'maisInstituicoes', 'class' => 'btn btn-default btn-lg btn-success']); ?>
+    </p>
 
     <div style="clear: both;"><legend>Publicações</legend></div>
-
-
-    <?= $form->field($model, 'publicacoesFile')->widget(FileInput::classname(), [
-        'options' => [
+    <p>
+    <?php
+    Modal::begin([
+        'header'=>"<div><font color='#FF0000'>*</font> <b>Curriculum Vittae XML (no formato Lattes - http://lattes.cnpq.br):</b></div>",
+        'toggleButton' => [
+            'label'=>'Enviar Arquivo XML...', 'class'=>'btn btn-primary'
+        ],
+    ]);
+    $form1 = ActiveForm::begin([
+        'options'=>['enctype'=>'multipart/form-data'] // important
+    ]);
+    
+    echo FileInput::widget(['name'=>'te', 'options' => [
             'accept' => '.xml',
             'name' => 'te',
             'multiple' => false
@@ -77,45 +138,40 @@ if($model->instituicaoacademica3 == ""){
         
         'pluginOptions' => [
             'uploadUrl' => Url::to(['/candidato/fileupload']),
-        ]
-    ])->label("<div><font color='#FF0000'>*</font> <b>Arquivo XML (http://lattes.cnpq.br):</b></div>")?>
+            'dropZoneTitle' => 'Arraste e Solte o arquivo XML aqui...',
+            'allowedFileExtensions' => ['xml'],
+            'allowedPreviewTypes' => 'text'
+        ],
+        ]);
+    ActiveForm::end();
+    Modal::end();
+    ?>
+    </p>
 
-    
-    <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ?>
+    <div id="divPublicacoes" style="display: <?= $hidePublicacoes ?>;">
+        <p>Foram encontradas total de <?= count($itensPeriodicos) + count($itensConferencias) ?> Publicações</p>
 
-    <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label($labelCurriculum) ?>
-    
-    <div style="margin-top: 10px; clear: both;"><p align="justify"><b>Experiência Acadêmica</b> (Monitoria, PIBIC, PET, Instutor, Professor)</p></div>
-    <div id="teste">
-        <div class="row">
-            <?= $form->field($model, 'instituicaoacademica1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <p><button id="btnPeriodicos" class="btn btn-success">Periódicos <span class="label label-primary"><?= count($itensPeriodicos)?></span></button></p>
 
-            <?= $form->field($model, 'atividade1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <div id="divPeriodicos" style="display: none;">
+            <?php if($hidePublicacoes != 'none')
+                    echo  Collapse::widget(['items' => $itensPeriodicos,]);
+                else
+                    echo "<div>Nenhuma Publicação</div>";
 
-            <?= $form->field($model, 'periodoacademico1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+            ?>
         </div>
-        
-        
-        <div class="row" id="divInstituicao2" style="display: <?=$hideInstituicao2?>;">
-            <?= $form->field($model, 'instituicaoacademica2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'atividade2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
-
-            <?= $form->field($model, 'periodoacademico2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
-        </div>
-        
-       
-       <div class="row" id="divInstituicao3" style="display: <?=$hideInstituicao3?>;">
-            <?= $form->field($model, 'instituicaoacademica3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
-
-            <?= $form->field($model, 'atividade3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
-
-            <?= $form->field($model, 'periodoacademico3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        <p><button id="btnConferencias" class="btn btn-success">Conferências <span class="label label-primary"><?= count($itensConferencias)?></span></button></p>
+        <div id="divConferencias" style="display: none;">
+            <?php
+                if($hidePublicacoes != 'none')
+                    echo Collapse::widget(['items' => $itensConferencias,]);
+                else
+                    echo "<div>Nenhuma Publicação</div>";
+            ?> 
         </div>
     </div>
-    <p>
-        <?= Html::button("<span class='glyphicon glyphicon-plus'></span>", ['id' => 'maisInstituicoes', 'class' => 'btn btn-default btn-lg btn-success']); ?>
-    </p>
     
     <div class="form-group">
         <?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success']) ?>

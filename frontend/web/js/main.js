@@ -2,7 +2,6 @@ $(document).ready( function() {
    /* Executa a requisição quando o campo CEP perder o foco */
    $('#candidato-cep').blur(function(){
            /* Configura a requisição AJAX */
-           console.log('cep=' + $('#candidato-cep').val());
            $.ajax({
                 url : 'consultar_cep.php', /* URL que será chamada */ 
                 type : 'POST', /* Tipo da requisição */ 
@@ -110,6 +109,14 @@ $(document).ready( function() {
     }else{
       $('#divVinculo').css('display', 'none');
     }
+  });
+
+  $('#btnPeriodicos').click(function(){
+    $('#divPeriodicos').fadeToggle('slow');
+  });
+
+  $('#btnConferencias').click(function() {
+    $('#divConferencias').fadeToggle('slow');
   });
 
 });

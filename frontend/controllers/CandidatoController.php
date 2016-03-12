@@ -83,12 +83,25 @@ class CandidatoController extends Controller
      */
     public function actionPasso2()
     {
-
         $this->layout = '@app/views/layouts/main2.php';
+
+
+        $items = array();
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
         $model = $this->findModel($id);
+
+        $publicacoes = CandidatoPublicacoes::find()->where(['idCandidato' => $model->id])->all();
+        
+        for ($i=0; $i < count($publicacoes); $i++) {
+            if($publicacoes[$i]->tipo == 2)
+                $itensPeriodicos[$i] = ['label' => $publicacoes[$i]->titulo, 
+                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
+            else
+                $itensConferencias[$i] = ['label' => $publicacoes[$i]->titulo, 
+                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
+        }
 
         if ($model->load(Yii::$app->request->post())){
 
@@ -115,6 +128,8 @@ class CandidatoController extends Controller
 
         return $this->render('create2', [
                 'model' => $model,
+                'itensPeriodicos' => $itensPeriodicos,
+                'itensConferencias' => $itensConferencias,
             ]);
     }
 
@@ -200,74 +215,69 @@ class CandidatoController extends Controller
     }
 
 
-    public function actionFileupload()
-    {
-/*        if(isset($_FILES['te']))
-            if($_FILES['te']['type'] == 'text/xml')
-                if(move_uploaded_file($_FILES['te']['tmp_name'], 'documentos/publicacao.xml')){
-                    return var_dump(Candidato::setPublicacoesPeriodicos(simplexml_load_file('documentos/publicacao.xml')));
+    public function actionFileupload() {
+
+        if(isset($_FILES['te'])){
+            if($_FILES['te']['type'] == 'text/xml'){
+                if($xml = simplexml_load_file('documentos/publicacao.xml')){
+                $session = Yii::$app->session;
+                $idCandidato = $session->get('candidato');
+
+                CandidatoPublicacoes::deleteAll('idCandidato = \''.$idCandidato.'\' AND tipo = 1');
+                CandidatoPublicacoes::deleteAll('idCandidato = \''.$idCandidato.'\' AND tipo = 2');
+
+                foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'} as $publicacao) {
+                    
+                    for ($i=0; $i < count($publicacao); $i++) {
+                        
+                        $candidatoPublicacoes = new CandidatoPublicacoes();
+                        $candidatoPublicacoes->idCandidato = $idCandidato;
+                        
+                        $candidatoPublicacoes->titulo = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
+                        $candidatoPublicacoes->local = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DETALHAMENTO-DO-ARTIGO'}['TITULO-DO-PERIODICO-OU-REVISTA'];
+                        $candidatoPublicacoes->ano = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO'];
+                        $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA']));
+                        $candidatoPublicacoes->tipo = 2;
+                        $candidatoPublicacoes->autores = "";
+                        foreach ($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'AUTORES'} as $autor) {
+                            $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                        }
+                        
+                        if(!$candidatoPublicacoes->save())
+                            return var_dump($candidatoPublicacoes->getErrors());
+                    }
                 }
-                else
+                
+                foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TRABALHOS-EM-EVENTOS'} as $publicacao) {
+                    
+                    for ($i=0; $i < count($publicacao); $i++) {
+
+                        $candidatoPublicacoes = new CandidatoPublicacoes();
+                        $candidatoPublicacoes->idCandidato = $idCandidato;
+                        
+                        $candidatoPublicacoes->titulo = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO'];
+                        $candidatoPublicacoes->local = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DETALHAMENTO-DO-TRABALHO'}['NOME-DO-EVENTO'];
+                        $candidatoPublicacoes->ano = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DO-TRABALHO']; 
+                        $candidatoPublicacoes->tipo = 1;
+                        $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'])); 
+                        $candidatoPublicacoes->autores = "";
+                        foreach ($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'AUTORES'} as $autor) {
+                            $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                        }
+                        
+                        if(!$candidatoPublicacoes->save())
+                            return var_dump($candidatoPublicacoes->getErrors());
+                    }
+                }
+                return true;
+            }else
                     $error = 'Erro ao Salvar Arquivo';
-            else
-                $error = 'Arquivo deve ter formato XML.';
-        else
-            $error = 'Nenhum Arquivo Encontrado';
+        }else
+            $error = 'Arquivo deve ter formato XML.';
+    }else
+        $error = 'Nenhum Arquivo Encontrado';
 
-        return json_encode(['error' => $error]);*/
-
-        $xml = simplexml_load_file('documentos/publicacao.xml');
-        $session = Yii::$app->session;
-        $idCandidato = $session->get('candidato');
-
-        CandidatoPublicacoes::deleteAll('idCandidato = \''.$idCandidato.'\' AND tipo = 1');
-        CandidatoPublicacoes::deleteAll('idCandidato = \''.$idCandidato.'\' AND tipo = 2');
-
-        foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'} as $publicacao) {
-            
-            for ($i=0; $i < count($publicacao); $i++) {
-                
-                $candidatoPublicacoes = new CandidatoPublicacoes();
-                $candidatoPublicacoes->idCandidato = $idCandidato;
-                
-                $candidatoPublicacoes->titulo = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
-                $candidatoPublicacoes->local = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DETALHAMENTO-DO-ARTIGO'}['TITULO-DO-PERIODICO-OU-REVISTA'];
-                $candidatoPublicacoes->ano = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO'];
-                $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA']));
-                $candidatoPublicacoes->tipo = 2;
-                $candidatoPublicacoes->autores = "";
-                foreach ($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'AUTORES'} as $autor) {
-                    $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
-                }
-                
-                if(!$candidatoPublicacoes->save())
-                    return var_dump($candidatoPublicacoes->getErrors());
-            }
-        }
-        
-        foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TRABALHOS-EM-EVENTOS'} as $publicacao) {
-            
-            for ($i=0; $i < count($publicacao); $i++) {
-
-                $candidatoPublicacoes = new CandidatoPublicacoes();
-                $candidatoPublicacoes->idCandidato = $idCandidato;
-                
-                $candidatoPublicacoes->titulo = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO'];
-                $candidatoPublicacoes->local = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DETALHAMENTO-DO-TRABALHO'}['NOME-DO-EVENTO'];
-                $candidatoPublicacoes->ano = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DO-TRABALHO']; 
-                $candidatoPublicacoes->tipo = 1;
-                $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'])); 
-                $candidatoPublicacoes->autores = "";
-                foreach ($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'AUTORES'} as $autor) {
-                    $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
-                }
-                
-                if(!$candidatoPublicacoes->save())
-                    return var_dump($candidatoPublicacoes->getErrors());
-            }
-        }
-
-        return true;
+    return json_encode(['error' => $error]);
     }
 
     
