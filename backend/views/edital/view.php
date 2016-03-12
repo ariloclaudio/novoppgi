@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
         <?= Html::a(' <span class="glyphicon glyphicon-list-alt"></span> Lista de Inscritos  ', ['candidatos/index', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(' <span class="glyphicon glyphicon-download"></span> Baixar Documentação ', ['candidatos/downloads', 'id' => $model->numero], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(' <span class="glyphicon glyphicon-download"></span> Baixar Documentação ', ['candidatos/downloadscompletos', 'id' => $model->numero], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([

@@ -139,6 +139,20 @@ class CandidatosController extends Controller
 
 
 
+    public function actionDownloadscompletos($id){
+
+        $idEdital = $id;
+
+
+        $resultado = shell_exec("cd ../../frontend/web/documentos/ && zip -r ".$idEdital.".zip ".$idEdital);
+
+            header('Content-type: application/zip');
+            header('Content-disposition: attachment; filename=Doc_Completos_'.$idEdital.".zip");
+            readfile("../../frontend/web/documentos/".$idEdital.".zip");
+            unlink("../../frontend/web/documentos/".$idEdital.".zip");
+
+    }
+
 
     public function actionDownloads($id,$idEdital)
     {
@@ -175,7 +189,6 @@ class CandidatosController extends Controller
             header('Content-disposition: attachment; filename='.$zipFile);
             readfile($zipFile);
             unlink($zipFile);
-
 
     }
 
