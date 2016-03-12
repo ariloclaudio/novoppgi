@@ -79,11 +79,11 @@ $fieldOptions2 = [
 
         <div class="row">
 
-            <div class="col-xs-6">
+            <div class=" col-sm-6 col-xs-12">
                 <?= Html::a('Nova Inscrição', ['site/cadastroppgi'], ['class' => 'btn btn-primary btn-block btn-flat']) ?><br>
             </div>
             <!-- /.col -->
-            <div class="col-xs-6">
+            <div class=" col-sm-6 col-xs-12">
                 <?= Html::a('Continuar Inscrição', ['site/login'], ['data-target'=>'#myModal','data-toggle'=> 'modal' ,'class' => 'btn btn-success btn-block btn-flat']) ?><br>
             </div>
             <!-- /.col -->

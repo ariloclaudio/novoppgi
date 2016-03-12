@@ -18,8 +18,8 @@ class CandidatosSearch extends Candidato
     public function rules()
     {
         return [
-            [['id', 'passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer'],
-            [['senha', 'inicio', 'fim', 'nome', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'email', 'datanascimento', 'pais', 'estadocivil', 'rg', 'orgaoexpedidor', 'dataexpedicao', 'passaporte', 'cpf', 'sexo', 'telresidencial', 'telcomercial', 'telcelular', 'nomepai', 'nomemae', 'inscricaoposcomp', 'notaposcomp', 'solicitabolsa', 'vinculoemprego', 'empregador', 'cargo', 'vinculoconvenio', 'convenio', 'tituloproposta', 'diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento', 'cursograd', 'instituicaograd', 'crgrad', 'dataformaturagrad', 'cursoesp', 'instituicaoesp', 'dataformaturaesp', 'cursopos', 'instituicaopos', 'mediapos', 'dataformaturapos', 'instituicaoingles', 'nomeexame', 'dataexame', 'notaexame', 'empresa1', 'empresa2', 'empresa3', 'cargo1', 'cargo2', 'cargo3', 'periodoprofissional1', 'periodoprofissional2', 'periodoprofissional3', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3', 'periodoacademico1', 'periodoacademico2', 'periodoacademico3', 'periodo'], 'safe'],
+            [['id', 'passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'resultado'], 'integer'],
+            [['senha', 'inicio', 'fim', 'nome', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'email', 'datanascimento', 'pais', 'passaporte', 'cpf', 'sexo', 'telresidencial', 'telcelular', 'inscricaoposcomp', 'notaposcomp', 'solicitabolsa', 'tituloproposta', 'diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento', 'cursograd', 'instituicaograd',  'dataformaturagrad', 'cursopos', 'instituicaopos', 'dataformaturapos', 'periodo'], 'safe'],
         ];
     }
 
@@ -58,7 +58,7 @@ class CandidatosSearch extends Candidato
             return $dataProvider;
         }
 
-        // grid filtering conditions
+        /* grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'inicio' => $this->inicio,
@@ -70,14 +70,12 @@ class CandidatosSearch extends Candidato
             'anoposcomp' => $this->anoposcomp,
             'linhapesquisa' => $this->linhapesquisa,
             'egressograd' => $this->egressograd,
-            'egressoesp' => $this->egressoesp,
             'tipopos' => $this->tipopos,
             'egressopos' => $this->egressopos,
             'periodicosinternacionais' => $this->periodicosinternacionais,
             'periodicosnacionais' => $this->periodicosnacionais,
             'conferenciasinternacionais' => $this->conferenciasinternacionais,
             'conferenciasnacionais' => $this->conferenciasnacionais,
-            'duracaoingles' => $this->duracaoingles,
             'resultado' => $this->resultado,
         ]);
 
@@ -91,7 +89,6 @@ class CandidatosSearch extends Candidato
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'datanascimento', $this->datanascimento])
             ->andFilterWhere(['like', 'pais', $this->pais])
-            ->andFilterWhere(['like', 'estadocivil', $this->estadocivil])
             ->andFilterWhere(['like', 'rg', $this->rg])
             ->andFilterWhere(['like', 'orgaoexpedidor', $this->orgaoexpedidor])
             ->andFilterWhere(['like', 'dataexpedicao', $this->dataexpedicao])
@@ -153,6 +150,8 @@ class CandidatosSearch extends Candidato
             ->andFilterWhere(['like', 'periodoacademico2', $this->periodoacademico2])
             ->andFilterWhere(['like', 'periodoacademico3', $this->periodoacademico3])
             ->andFilterWhere(['like', 'periodo', $this->periodo]);
+
+            */
 
         return $dataProvider;
     }

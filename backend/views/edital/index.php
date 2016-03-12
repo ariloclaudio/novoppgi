@@ -62,23 +62,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => 'Vagas Mestrado'."\n".'(Ampla Conc.)',
-                'attribute' => 'vagas_mestrado' ,
+                'label' => 'Vagas Mestrado',
+                'attribute' => 'vagasmestrado' ,
             ],
             [
-                'label' => 'Vagas Mestrado (Cotista)',
-                'attribute' => 'cotas_mestrado' ,
-            ],
-            [
-                'label' => 'Vagas Doutorado (Ampla Conc.)',
-                'attribute' => 'vagas_doutorado' ,
+                'label' => 'Vagas Doutorado',
+                'attribute' => 'vagasdoutorado' ,
 
             ],
-            [
-                'label' => 'Vagas Doutorado (Cotista)',
-                'attribute' => 'cotas_doutorado' ,
-            ],
-         
+        
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{download} {view} {delete} {update}',
                 'buttons'=>[

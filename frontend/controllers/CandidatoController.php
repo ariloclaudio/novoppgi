@@ -209,7 +209,7 @@ class CandidatoController extends Controller
         if (($model = Candidato::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('A Página solicitada não existe.');
         }
     }
 
@@ -222,6 +222,8 @@ function actionComprovanteinscricao() {
         $recomendacoesArray = Recomendacoes::findAll(['idCandidato' => $id]);
         $experienciaArray = ExperienciaAcademica::findAll(['idCandidato' => $id]);
 
+
+
         $instituicao = array(0 => null, 1 => null, 2=> null);
         $atividade = array(0 => null, 1 => null, 2=> null);
         $periodo  = array(0 => null, 1 => null, 2=> null);
@@ -232,16 +234,90 @@ function actionComprovanteinscricao() {
             $periodo[$i] = $experienciaArray[$i]->periodo;
         }
 
+        //gerando html das cartas de recomendações
+                $cartasRecomendacoes = "";
+                for ($i=0; $i < sizeof($recomendacoesArray); $i++){
+                    $cartasRecomendacoes = $cartasRecomendacoes.'
+                            <tr>
+                                <td colspan="1"  style="width:50%">
+                                    <b> Nome:  </b>'.$recomendacoesArray[$i]->nome.'
+                                </td>
+                                <td colspan="1"  style="width:50%">
+                                   <b> Email:  </b>'.$recomendacoesArray[$i]->email.'
+                                </td>
+
+                            </tr>';
+                }
+        // fim da geração de html das cartas de gerações
+
+        //gerando html das tabela de experiências acadêmicas
+
+            if(sizeof($experienciaArray) > 0){
+
+                $experienciasAcademicas = "
+                    <tr>
+                        <th>
+                            Instituição
+                        </th>
+                        <th>
+                            Cargo/Função
+                        </th>
+                        <th>
+                            Período
+                        </th>
+                    </tr>";
+
+                for ($i=0; $i<sizeof($experienciaArray); $i++){
+
+                    $experienciasAcademicas = $experienciasAcademicas.
+                    '<tr>
+                        <td width = "35%" height="22">
+                                '.$experienciaArray[$i]->instituicao.'
+                        </td>
+                        <td width = "35%">
+                                '.$experienciaArray[$i]->atividade.'
+                        </td>
+                        <td>
+                                '.$experienciaArray[$i]->periodo.'
+                        </td>
+                    </tr>';
+                }
+            }
+            else{
+                $experienciasAcademicas = 
+                "
+                <tr>
+                    <td align='left'>
+                             Não consta Informações.
+                    </td>
+                </tr>
+                ";
+            }
+        // fim da geração html das tabela de experiências acadêmicas
 
         $pdf = new mPDF('utf-8');
     
     $sexo = array ('M' => "Masculino",'F' => "Feminimo");
     $cursoDesejado = array (1 => "Mestrado",2 => "Doutorado");
     $tipoCursoPos = array (0 => "Mestrado Acadêmico", 1 => "Mestrado Profissional", 2 => "Doutorado");
+    $tipoDeficiencia = array (0 => "Visual", 1 => "Auditiva", 2 => "Motora");
     $regimeDedicacao = array (1 => "Integral",2 => "Parcial");
     $nacionalidade = array (1 => "Brasileira",2 => "Estrangeira");
     $simOuNao = array (0 => "Não", 1 => "Sim");
 
+    if ($candidato->cotas == 1){
+        $cota = 'Regime de Cotas ? Sim, <br> Tipo de cota: '.$candidato->cotaTipo;
+    }
+    else{
+        $cota = 'Regime de Cotas ? Não.';
+    }
+
+    if ($candidato->deficiencia == 1){
+        $deficiencia = 'Possui algum tipo de deficiência ? Sim <br> Tipo de deficiência: '.$tipoDeficiencia[$candidato->deficienciaTipo];
+    }
+    else{
+        $deficiencia = 'Possui algum tipo de deficiência ? Não.';
+    }
 
     if ($candidato->nacionalidade == 1){
         $campoCPFouPassaporte = "CPF: ".$candidato->cpf;
@@ -249,6 +325,10 @@ function actionComprovanteinscricao() {
     else{
         $campoCPFouPassaporte = "Passaporte: ".$candidato->passaporte;
     }
+
+    $arrayLinhaPesquisa = array 
+    (1 => "Banco de Dados e Recuperação de Informação",2 => "Sistemas Embarcados e Engenharia de Software",3 => "Inteligência Artificial",4 => "Visão Computacional e Robótica",5 => "Redes e Telecomunicações",6 => "Otimização, Alg. e Complexidade Computacional");
+
     //$comprovantePDF = "/formulario".$candidato->id.".pdf";
 
     //$arqPDF = fopen($comprovantePDF, 'w') or die('CREATE ERROR');
@@ -404,9 +484,15 @@ function actionComprovanteinscricao() {
                             Solicita Bolsa de Estudos? '.$simOuNao[$candidato->solicitabolsa].'
                         </td>
                         <td>
-                            
+                            '.$cota.'
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="3">
+                            '.$deficiencia.'
+                        </td>
+                    </tr>
+
                 </table>');
 
   
@@ -425,10 +511,10 @@ function actionComprovanteinscricao() {
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="1"  style="width:50%">
                             Curso: '.$candidato->cursograd.'
                         </td>
-                        <td>
+                        <td colspan="2">
                             Instituição: '.$candidato->instituicaograd.'
                         </td>
                     </tr>
@@ -486,51 +572,8 @@ function actionComprovanteinscricao() {
                         </td>
                     </tr>
                 </table>
-                <table width="100%" border = "1">
-                    <tr>
-                        <th>
-                            Instituição
-                        </th>
-                        <th>
-                            Cargo/Função
-                        </th>
-                        <th>
-                            Período
-                        </th>
-                    </tr>
-                    <tr>
-                        <td width = "35%" height="22">
-                                '.$instituicao[0].'
-                        </td>
-                        <td width = "35%">
-                                '.$atividade[0].'
-                        </td>
-                        <td>
-                                '.$periodo[0].'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td  height="22">
-                                '.$instituicao[1].'
-                        </td>
-                        <td>
-                                '.$atividade[1].'
-                        </td>
-                        <td>
-                                '.$periodo[1].'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td height="22">
-                                '.$instituicao[2].'
-                        </td>
-                        <td>
-                                '.$atividade[2].'
-                        </td>
-                        <td>
-                                '.$periodo[2].'
-                        </td>
-                    </tr>
+                <table width="100%" border = "0">
+                    '.$experienciasAcademicas.'
         </table>
     ');
                 
@@ -546,13 +589,13 @@ function actionComprovanteinscricao() {
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td colspan="3">
                             <b>Título da proposta: </b>'.$candidato->tituloproposta.'
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <b> Linha de pesquisa: </b>'.$candidato->linhapesquisa.'
+                        <td colspan="3">
+                            <b> Linha de pesquisa: </b>'.$arrayLinhaPesquisa[$candidato->linhapesquisa].'
                         </td>
                     </tr>
                     <tr>
@@ -570,24 +613,9 @@ function actionComprovanteinscricao() {
                             <b> Cartas de Recomendação </b>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <b> Nome:  </b>'.$recomendacoesArray[0]->nome.'
-                        </td>
-                        <td>
-                           <b> Email:  </b>'.$recomendacoesArray[0]->email.'
-                        </td>
 
-                    </tr>
-                    <tr>
-                        <td>
-                            <b> Nome:  </b>'.$recomendacoesArray[1]->nome.'
-                        </td>
-                        <td>
-                           <b> Email: </b>'.$recomendacoesArray[1]->email.'
-                        </td>
+                    '.$cartasRecomendacoes.'
 
-                    </tr>
                     <tr>
                         <td colspan="2">
                         <br><br>
