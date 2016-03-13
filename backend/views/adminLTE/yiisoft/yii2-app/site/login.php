@@ -55,7 +55,7 @@ $fieldOptions2 = [
 
 
         <a href="#">Eu Esqueci minha senha</a><br>
-        <a href="register.html" class="text-center">Registrar um novo Usuário</a>
+        <a href="index.php?r=site/signup" class="text-center">Registrar um novo Usuário</a>
 
     </div>
     <!-- /.login-box-body -->
