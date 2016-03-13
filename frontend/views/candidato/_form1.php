@@ -22,9 +22,9 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 "PB" => "PB", "PE" => "PE", "PI" => "PI", "PR" => "PR", "RJ" => "RJ", "RN" => "RN", "RO" => "RO",
 "RR" => "RR", "RS" => "RS", "SC" => "SC", "SE" => "SE", "SP" => "SP", "TO" => "TO"];
 
-$deficiencias = ['1' => 'Deficiência Visual', '2' => 'Deficiência Auditiva', '3' => 'Deficiência Motora'];
+$deficiencias = ['1' => 'Deficiência Auditiva', '2' => 'Deficiência Motora', '3' => 'Deficiência Visual'];
 
-$cotas = ['Negro' => 'Negro', 'Pardo' => 'Pardo', 'Indio' => 'Índio'];
+$cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
 
 ?>
 <div class="candidato-form">
@@ -42,7 +42,7 @@ $cotas = ['Negro' => 'Negro', 'Pardo' => 'Pardo', 'Indio' => 'Índio'];
             ['alias' =>  'date']])->label("<font color='#FF0000'>*</font> <b>Data de Nascimento:</b>")
         ?>
         
-        <?= $form->field($model, 'sexo', ['options' => ['class' => 'col-md-3']])->radioList(['M' => 'Masculino', 'F' => 'Feminino'], ['style' => 'height: 34px;'])->label("<font color='#FF0000'>*</font> <b>Sexo:</b>") ?>
+        <?= $form->field($model, 'sexo', ['options' => ['class' => 'col-md-3']])->radioList(['M' => 'Masculino', 'F' => 'Feminino'])->label("<font color='#FF0000'>*</font> <b>Sexo:</b>") ?>
     </div>
     <div class ="row">
         <?= $form->field($model, 'nomesocial', ['options' => ['class' => 'col-md-6']])->textInput() ?>
@@ -81,9 +81,9 @@ $cotas = ['Negro' => 'Negro', 'Pardo' => 'Pardo', 'Indio' => 'Índio'];
     <div style="clear: both;"><legend>Telefones para Contato</legend></div>
     <div class = "row">
     <?= $form->field($model, 'telresidencial', ['options' => ['class' => 'col-md-3']])->widget(\yii\widgets\MaskedInput::className(), [
-    'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Telefone</b>") ?>
+    'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Celular:</b>") ?>
 
-    <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3', 'style' => 'margin-left: 50px;']])->widget(MaskedInput::className(), [
+    <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
     'mask' => '(99) 99999-9999']) ?>
     </div>
 
@@ -100,27 +100,10 @@ $cotas = ['Negro' => 'Negro', 'Pardo' => 'Pardo', 'Indio' => 'Índio'];
     
     <div class = "row">
         <?php if($editalCurso == 3){ ?>
-            <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                'type' => SwitchInput::RADIO,
-                'items' => [
-                    ['label' => 'Mestrado', 'value' => 1],
-                    ['label' => 'Doutorado', 'value' => 2],
-                ],
-                'pluginOptions' => ['size' => 'mini'],
-                'labelOptions' => ['style' => 'font-size: 15px'],
-            ])->label("<font color='#FF0000'>*</font> <b>Curso Desejado?</b>") ?>
+            <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado</b>") ?>
         <?php } ?>
 
-        <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                'type' => SwitchInput::RADIO,
-                'items' => [
-                    ['label' => 'Integral', 'value' => 1],
-                    ['label' => 'Parcial', 'value' => 2],
-                ],
-                'pluginOptions' => ['size' => 'mini'],
-                'labelOptions' => ['style' => 'font-size: 15px'],
-        ])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação?</b>") ?>
-        
+        <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação</b>") ?>        
     </div>
 
     <div class = "row">
@@ -128,7 +111,7 @@ $cotas = ['Negro' => 'Negro', 'Pardo' => 'Pardo', 'Indio' => 'Índio'];
             'pluginOptions' => [
                 'onText' => 'Sim',
                 'offText' => 'Não',
-        ]])->label("<font color='#FF0000'>*</font> <b>Regime de Cotas?</b>") ?>
+        ]])->label("<font color='#FF0000'>*</font> <b>Cotista?</b>") ?>
 
         <div id="divCotas" style="display: <?= $hideCotas ?>">
             <?= $form->field($model, 'cotaTipo', ['options' => ['class' => 'col-md-5']])->dropDownList($cotas, ['prompt' => 'Selecione uma Opção..'])->label("<font color='#FF0000'>*</font> <b>Tipo de Cota:</b>") ?>

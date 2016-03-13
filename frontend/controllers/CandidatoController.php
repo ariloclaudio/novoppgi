@@ -85,7 +85,8 @@ class CandidatoController extends Controller
     {
         $this->layout = '@app/views/layouts/main2.php';
 
-        $items = array();
+        $itensPeriodicos = array();
+        $itensConferencias = array();
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
@@ -108,16 +109,17 @@ class CandidatoController extends Controller
                 $model->passoatual = 2;
             }
 
-            if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))){
+            if($model->uploadXml(UploadedFile::getInstance($model, 'publicacoesFile')) && $model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))) {
                 if($model->save(false) && $model->salvaExperienciaAcademica()){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
-                    return $this->redirect(['passo3']);
+                    if(isset($_POST['enviar']))
+                        return $this->redirect(['passo3']);
                 }else{
                     $this->mensagens('danger', 'Erro ao salvar informações', 'Ocorreu um erro ao salvar as informações. Contate o adminstrador do sistema.');
                 }
             }
             else{
-                return var_dump($model->getErrors());
+                //return var_dump($model->getErrors());
                 $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
             }
         }
@@ -214,72 +216,6 @@ class CandidatoController extends Controller
     }
 
 
-    public function actionFileupload() {
-
-        if(isset($_FILES['te'])){
-            if($_FILES['te']['type'] == 'text/xml'){
-                if($xml = simplexml_load_file('documentos/publicacao.xml')){
-                $session = Yii::$app->session;
-                $idCandidato = $session->get('candidato');
-
-                CandidatoPublicacoes::deleteAll('idCandidato = \''.$idCandidato.'\' AND tipo = 1');
-                CandidatoPublicacoes::deleteAll('idCandidato = \''.$idCandidato.'\' AND tipo = 2');
-
-                foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'} as $publicacao) {
-                    
-                    for ($i=0; $i < count($publicacao); $i++) {
-                        
-                        $candidatoPublicacoes = new CandidatoPublicacoes();
-                        $candidatoPublicacoes->idCandidato = $idCandidato;
-                        
-                        $candidatoPublicacoes->titulo = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
-                        $candidatoPublicacoes->local = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DETALHAMENTO-DO-ARTIGO'}['TITULO-DO-PERIODICO-OU-REVISTA'];
-                        $candidatoPublicacoes->ano = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO'];
-                        $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA']));
-                        $candidatoPublicacoes->tipo = 2;
-                        $candidatoPublicacoes->autores = "";
-                        foreach ($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'AUTORES'} as $autor) {
-                            $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
-                        }
-                        
-                        if(!$candidatoPublicacoes->save())
-                            return var_dump($candidatoPublicacoes->getErrors());
-                    }
-                }
-                
-                foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TRABALHOS-EM-EVENTOS'} as $publicacao) {
-                    
-                    for ($i=0; $i < count($publicacao); $i++) {
-
-                        $candidatoPublicacoes = new CandidatoPublicacoes();
-                        $candidatoPublicacoes->idCandidato = $idCandidato;
-                        
-                        $candidatoPublicacoes->titulo = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO'];
-                        $candidatoPublicacoes->local = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DETALHAMENTO-DO-TRABALHO'}['NOME-DO-EVENTO'];
-                        $candidatoPublicacoes->ano = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DO-TRABALHO']; 
-                        $candidatoPublicacoes->tipo = 1;
-                        $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'])); 
-                        $candidatoPublicacoes->autores = "";
-                        foreach ($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'AUTORES'} as $autor) {
-                            $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
-                        }
-                        
-                        if(!$candidatoPublicacoes->save())
-                            return var_dump($candidatoPublicacoes->getErrors());
-                    }
-                }
-                return true;
-            }else
-                    $error = 'Erro ao Salvar Arquivo';
-        }else
-            $error = 'Arquivo deve ter formato XML.';
-    }else
-        $error = 'Nenhum Arquivo Encontrado';
-
-    return json_encode(['error' => $error]);
-    }
-
-    
     /**
      * Finds the Candidato model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

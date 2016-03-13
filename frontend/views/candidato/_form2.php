@@ -9,7 +9,11 @@ use yii\helpers\Url;
 use yii\bootstrap\Collapse;
 use yii\bootstrap\Modal;
 
+$uploadRealizados = 0;
+$uploadXML = 0;
+
 if(count($itensPeriodicos) + count($itensConferencias) > 0){
+    $uploadXML = 1;
     $hidePublicacoes = 'block';
     $hideInputPublicacoes = 'none';
 }else{
@@ -17,12 +21,10 @@ if(count($itensPeriodicos) + count($itensConferencias) > 0){
     $hideInputPublicacoes = 'block';
 }
 
-$uploadRealizados = 0;
-
 $labelHistorico = "<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b><br>Arquivo contendo seu Histórico:";
 if(isset($model->historico)){
     $labelHistorico .= "<a target='resource window' href=".$model->diretorio.$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
-    $uploadRealizados = 1; 
+    $uploadRealizados = 1;
 }else{
     $labelHistorico.= " <i>Nenhum arquivo de histórico carregado.</i>";
 }
@@ -54,6 +56,8 @@ if($model->instituicaoacademica3 == ""){
 
         <input type="hidden" id = "form_hidden" value ="passo_form_2"/>
         <input type="hidden" id = "form_upload" value = '<?=$uploadRealizados?>' />
+        <input type="hidden" id = "form_uploadxml" value = '<?= $uploadXML ?>' />
+        
 
     <div style="clear: both;"><legend>Curso de Graduação</legend></div>
 
@@ -85,6 +89,36 @@ if($model->instituicaoacademica3 == ""){
     <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ?>
 
     <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label($labelCurriculum) ?>
+
+
+    <div style="clear: both;"><legend>Publicações</legend></div>
+
+    <?= $form->field($model, 'publicacoesFile')->FileInput(['accept' => '.xml'])->label("<div><font color='#FF0000'>*</font> <b>Curriculum Vittae XML (no formato Lattes - http://lattes.cnpq.br):</b></div>") ?>
+
+
+    <div id="divPublicacoes" style="display: <?= $hidePublicacoes ?>;">
+        <p>Foram encontradas total de <?= count($itensPeriodicos) + count($itensConferencias) ?> Publicações</p>
+
+        <p><?= Html::button('Periódicos <span class=\'label label-primary\'>'.count($itensPeriodicos).'</span>', ['id' => 'btnPeriodicos', 'class' => 'btn btn-success'])?></p>
+
+        <div id="divPeriodicos" style="display: none;">
+            <?php if($hidePublicacoes != 'none')
+                    echo  Collapse::widget(['items' => $itensPeriodicos,]);
+                else
+                    echo "<div>Nenhuma Publicação</div>";
+            ?>
+        </div>
+
+        <p><?= Html::button('Conferências <span class=\'label label-primary\'>'.count($itensConferencias).'</span>', ['id' => 'btnConferencias', 'class' => 'btn btn-success']); ?></p>
+        <div id="divConferencias" style="display: none;">
+            <?php
+                if($hidePublicacoes != 'none')
+                    echo Collapse::widget(['items' => $itensConferencias,]);
+                else
+                    echo "<div>Nenhuma Publicação</div>";
+            ?> 
+        </div>
+    </div>
     
     <div style="clear: both;"><legend>Experiência Acadêmica</b> (Monitoria, PIBIC, PET, Instutor, Professor)</legend></div>
 
@@ -116,65 +150,10 @@ if($model->instituicaoacademica3 == ""){
     <p>
         <?= Html::button("<span class='glyphicon glyphicon-plus'></span>", ['id' => 'maisInstituicoes', 'class' => 'btn btn-default btn-lg btn-success']); ?>
     </p>
-
-    <div style="clear: both;"><legend>Publicações</legend></div>
-    <p>
-    <?php
-    Modal::begin([
-        'header'=>"<div><font color='#FF0000'>*</font> <b>Curriculum Vittae XML (no formato Lattes - http://lattes.cnpq.br):</b></div>",
-        'toggleButton' => [
-            'label'=>'Enviar Arquivo XML...', 'class'=>'btn btn-primary'
-        ],
-    ]);
-    $form1 = ActiveForm::begin([
-        'options'=>['enctype'=>'multipart/form-data'] // important
-    ]);
-    
-    echo FileInput::widget(['name'=>'te', 'options' => [
-            'accept' => '.xml',
-            'name' => 'te',
-            'multiple' => false
-        ],
-        
-        'pluginOptions' => [
-            'uploadUrl' => Url::to(['/candidato/fileupload']),
-            'dropZoneTitle' => 'Arraste e Solte o arquivo XML aqui...',
-            'allowedFileExtensions' => ['xml'],
-            'allowedPreviewTypes' => 'text'
-        ],
-        ]);
-    ActiveForm::end();
-    Modal::end();
-    ?>
-    </p>
-
-    <div id="divPublicacoes" style="display: <?= $hidePublicacoes ?>;">
-        <p>Foram encontradas total de <?= count($itensPeriodicos) + count($itensConferencias) ?> Publicações</p>
-
-        <p><button id="btnPeriodicos" class="btn btn-success">Periódicos <span class="label label-primary"><?= count($itensPeriodicos)?></span></button></p>
-
-        <div id="divPeriodicos" style="display: none;">
-            <?php if($hidePublicacoes != 'none')
-                    echo  Collapse::widget(['items' => $itensPeriodicos,]);
-                else
-                    echo "<div>Nenhuma Publicação</div>";
-
-            ?>
-        </div>
-
-        <p><button id="btnConferencias" class="btn btn-success">Conferências <span class="label label-primary"><?= count($itensConferencias)?></span></button></p>
-        <div id="divConferencias" style="display: none;">
-            <?php
-                if($hidePublicacoes != 'none')
-                    echo Collapse::widget(['items' => $itensConferencias,]);
-                else
-                    echo "<div>Nenhuma Publicação</div>";
-            ?> 
-        </div>
-    </div>
     
     <div class="form-group">
-        <?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success']) ?>
+        <p><?= Html::submitButton('Salvar', ['class' => 'btn btn-success', 'name' => 'salvar']) ?></p>
+        <p><?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success', 'name' => 'enviar']) ?></p>
     </div>
 
     <?php ActiveForm::end(); ?>
