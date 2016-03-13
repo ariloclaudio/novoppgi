@@ -71,11 +71,11 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->render('edital', [
-                'model' => $model,
-            ]);
-            //return $this->goBack();
+            $this->mensagens('success', 'Autentição', 'Seu login foi efetuado com sucesso.');
+            return $this->redirect('index.php?r=edital');
+
         } else {
             return $this->render('login', [
                 'model' => $model,
@@ -105,5 +105,20 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+            /* Envio de mensagens para views
+       Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 10000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }

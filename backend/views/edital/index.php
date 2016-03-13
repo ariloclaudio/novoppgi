@@ -10,48 +10,42 @@ use yii\grid\GridView;
 $this->title = 'Editais';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="edital-index">
 
-    <table style="border:solid 1px; float:right; margin-top:5%; width: 17%;">
+    <table style="border:solid 1px; float:right; width: 10%;">
         <tr style="border:solid 1px;">
             <td colspan="2" style = "width: 20%; background-color: #C0C0C0; text-align:center;">
                 Legenda
             </td>
         </tr>
         <tr style="background-color:lightblue" align="center">
-            <td>
+            <td style="border:solid 1px;">
             AC
             </td>
-            <td align="left">
+            <td align="center">
             Ampla Concorrência
             </td>
         </tr>
-        <tr style="background-color: lightgreen; border:solid 1px;" align="center">>
-            <td>
+        <tr style="background-color: lightgreen; border:solid 1px;" align="center">
+            <td style="border:solid 1px;">
             Cota
             </td>
-            <td align="left">
+            <td align="center">
             Cotista
             </td>
         </tr>
     </table>
 
 
+    <?= Html::a('Novo Edital', ['create'], ['class' => 'btn btn-success']) ?>
 
-<div class="edital-index">
 
-    <p>
-        <?= Html::a('Novo Edital', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-
-
             'numero',
-
             [
                 'label' => 'Carta de Recomendação',
                 'attribute' => 'cartarecomendacao',

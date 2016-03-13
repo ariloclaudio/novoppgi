@@ -113,7 +113,7 @@ class CandidatoController extends Controller
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     return $this->redirect(['passo3']);
                 }else{
-                    $this->mensagens('danger', 'Erro ao salvar informações', 'Ocorreu um ao salvar as informações. Contate o adminstrador do sistema.');
+                    $this->mensagens('danger', 'Erro ao salvar informações', 'Ocorreu um erro ao salvar as informações. Contate o adminstrador do sistema.');
                 }
             }
             else{
