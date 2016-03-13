@@ -90,7 +90,7 @@ class Candidato extends \yii\db\ActiveRecord
 /*FIM Validações para passo 1*/
 /*Inicio Validações para passo 2*/
 
-            [['cursograd', 'instituicaograd', 'egressograd', 'periodicosinternacionais','periodicosnacionais','conferenciasinternacionais', 'conferenciasnacionais' ], 'required', 'when' => function($model){ return $model->passoatual == 2;},
+            [['cursograd', 'instituicaograd', 'egressograd'], 'required', 'when' => function($model){ return $model->passoatual == 2;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_2';
             }"],
@@ -109,7 +109,7 @@ class Candidato extends \yii\db\ActiveRecord
 
 /*FIM Validações para passo 2*/
 /*Inicio Validações para passo 3*/
-            [['linhapesquisa', 'tituloproposta', 'motivos'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
+            [['idLinhaPesquisa', 'tituloproposta', 'motivos'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3';
             }"],
@@ -137,7 +137,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['historicoFile', 'curriculumFile', 'propostaFile', 'comprovanteFile'], 'file', 'extensions' => 'pdf', 'maxSize' => 1024 * 1024 * 3],
             [['publicacoesFile'], 'file', 'extensions' => 'xml'],
             [['inicio', 'fim'], 'safe'],
-            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'linhapesquisa', 'tipopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
+            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'tipopos', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
             [['anoposcomp', 'egressograd', 'egressopos'], 'integer', 'min' => 1800, 'max' => 2099],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
             [['cidade'], 'string', 'max' => 40],
@@ -166,7 +166,6 @@ class Candidato extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-
             'nome' => 'Nome',
             'nomesocial' => 'Nome Social',
             'endereco' => 'Endereco',
@@ -181,7 +180,7 @@ class Candidato extends \yii\db\ActiveRecord
             'passaporte' => 'Passaporte',
             'cpf' => 'CPF',
             'sexo' => 'Sexo',
-            'telresidencial' => 'Telelefone',
+            'telresidencial' => 'Celular',
             'telcelular' => 'Celular Alternativo',
             'cursodesejado' => 'Curso Desejado',
             'regime' => 'Regime',
@@ -189,52 +188,41 @@ class Candidato extends \yii\db\ActiveRecord
             'anoposcomp' => 'Ano PosComp',
             'notaposcomp' => 'Nota PosComp',
             'solicitabolsa' => 'Solicita Bolsa de Estudo',
-            
             'cursograd' => 'Curso',
             'instituicaograd' => 'Instituição',
             'egressograd' => 'Ano de Egresso',
-
             'cursopos' => 'Curso',
             'instituicaopos' => 'Instituição',
             'tipopos' => 'Tipo',
             'egressopos' => 'Ano Egresso',
-
             'historico' => 'Histórico',
-
             'periodicosinternacionais' => 'Periódicos Internacionais',
             'periodicosnacionais' => 'Periódicos Nacionais',
             'conferenciasinternacionais' => 'Conferências Internacionais',
             'conferenciasnacionais' => 'Conferências Nacionais',
-
-            'instituicaoacademica1' => 'Instituição Acadêmica 1',
-            'instituicaoacademica2' => 'Instituição Acadêmica 2',
-            'instituicaoacademica3' => 'Instituição Acadêmica 3',
+            'instituicaoacademica1' => 'Instituição Acadêmica',
+            'instituicaoacademica2' => 'Instituição Acadêmica',
+            'instituicaoacademica3' => 'Instituição Acadêmica',
             'atividade1' => 'Atividade',
             'atividade2' => 'Atividade',
             'atividade3' => 'Atividade',
             'periodoacademico1' => 'Período Acadêmico',
             'periodoacademico2' => 'Período Acadêmico',
             'periodoacademico3' => 'Período Acadêmico',
-            
             'senha' => 'Senha',
-            'inicio' => 'Inicio',
-            'fim' => 'Fim',
-
-            'linhapesquisa' => 'Linhapesquisa',
-            'tituloproposta' => 'Tituloproposta',
+            'inicio' => 'Data Início',
+            'fim' => 'Data Fim',
+            'idLinhaPesquisa' => 'Linha de Pesquisa',
+            'tituloproposta' => 'Titulo da Proposta',
             'diploma' => 'Diploma',
-            
             'motivos' => 'Motivos',
             'proposta' => 'Proposta',
             'curriculum' => 'Curriculum',
-            'comprovantepagamento' => 'Comprovantepagamento',
-            
+            'comprovantepagamento' => 'Comprovante de Pagamento',
             'dataformaturagrad' => 'Dataformaturagrad',
-            
-            'dataformaturapos' => 'Dataformaturapos',
-
+            'dataformaturapos' => 'Data de Formatura',
             'resultado' => 'Resultado',
-            'periodo' => 'Periodo',
+            'periodo' => 'Período',
             'idEdital' => 'Edital',
         ];
     }

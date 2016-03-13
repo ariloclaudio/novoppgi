@@ -2,13 +2,6 @@
 
 use yii\helpers\Html;
 
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Candidato */
-
-$this->title = 'Dados Pessoais';
-$this->params['breadcrumbs'][] = ['label' => 'Candidatos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <style>

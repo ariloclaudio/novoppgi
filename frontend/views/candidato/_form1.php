@@ -84,7 +84,7 @@ $cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
     'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Celular:</b>") ?>
 
     <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
-    'mask' => '(99) 99999-9999']) ?>
+    'mask' => '(99) 99999-9999'])->label("Celular Alternativo:") ?>
     </div>
 
     <div style="clear: both;"><legend>Dados do PosComp</legend></div>
@@ -100,10 +100,10 @@ $cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
     
     <div class = "row">
         <?php if($editalCurso == 3){ ?>
-            <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado</b>") ?>
+            <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado:</b>") ?>
         <?php } ?>
 
-        <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação</b>") ?>        
+        <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>") ?>
     </div>
 
     <div class = "row">

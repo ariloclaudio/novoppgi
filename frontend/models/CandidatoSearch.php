@@ -18,7 +18,7 @@ class CandidatoSearch extends Candidato
     public function rules()
     {
         return [
-            [['id', 'passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer'],
+            [['id', 'passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'idLinhaPesquisa', 'egressograd', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer'],
             [['senha', 'inicio', 'fim', 'nome', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'email', 'datanascimento', 'pais', 'estadocivil', 'rg', 'orgaoexpedidor', 'dataexpedicao', 'passaporte', 'cpf', 'sexo', 'telresidencial', 'telcomercial', 'telcelular', 'nomepai', 'nomemae', 'inscricaoposcomp', 'notaposcomp', 'solicitabolsa', 'vinculoemprego', 'empregador', 'cargo', 'vinculoconvenio', 'convenio', 'tituloproposta', 'diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento', 'cursograd', 'instituicaograd', 'crgrad', 'dataformaturagrad', 'cursoesp', 'instituicaoesp', 'dataformaturaesp', 'cursopos', 'instituicaopos', 'mediapos', 'dataformaturapos', 'instituicaoingles', 'nomeexame', 'dataexame', 'notaexame', 'empresa1', 'empresa2', 'empresa3', 'cargo1', 'cargo2', 'cargo3', 'periodoprofissional1', 'periodoprofissional2', 'periodoprofissional3', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3', 'periodoacademico1', 'periodoacademico2', 'periodoacademico3', 'periodo'], 'safe'],
         ];
     }
@@ -64,7 +64,7 @@ class CandidatoSearch extends Candidato
             'cursodesejado' => $this->cursodesejado,
             'regime' => $this->regime,
             'anoposcomp' => $this->anoposcomp,
-            'linhapesquisa' => $this->linhapesquisa,
+            'idLinhaPesquisa' => $this->idLinhaPesquisa,
             'egressograd' => $this->egressograd,
             'tipopos' => $this->tipopos,
             'egressopos' => $this->egressopos,

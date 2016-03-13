@@ -2,13 +2,6 @@
 
 use yii\helpers\Html;
 
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Candidato */
-
-$this->title = 'Proposta de Trabalho e Documentos';
-$this->params['breadcrumbs'][] = ['label' => 'Candidatos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="candidato-create">
 
@@ -34,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form3', [
         'model' => $model,
+        'linhasPesquisas' => $linhasPesquisas,
     ]) ?>
 
 </div>

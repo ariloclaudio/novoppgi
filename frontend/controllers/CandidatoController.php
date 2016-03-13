@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\Candidato;
+use app\models\LinhaPesquisa;
 use app\models\CandidatoPublicacoes;
 use app\models\Edital;
 use app\models\ExperienciaAcademica;
@@ -16,6 +17,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Html;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
+use yii\helpers\ArrayHelper;
 use mPDF;
 use kartik\mpdf\Pdf;
 
@@ -146,6 +148,8 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
+        $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
+
         if ($model->load(Yii::$app->request->post())) {
 
             if($model->passoatual == 2) 
@@ -153,9 +157,9 @@ class CandidatoController extends Controller
             
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'),$model->idEdital)){
                 if($model->save(false) && $model->salvaCartaRecomendacao()){
-                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações de Proposta de Trabalho e Documentos foram salvas');
+                    $this->mensagens('success', 'Inscrição Finalizada', 'Sua inscrição foi realizada com sucesso.');
                     if(isset($_POST['finalizar'])){
-                        /*ENVIAR EMAILS CADASTRADOS*/
+                        //ENVIAR EMAILS CADASTRADOS*
                         //$this->notificarCartasRecomendacao($model);
                         
                         return $this->redirect(['passo4']);
@@ -170,6 +174,7 @@ class CandidatoController extends Controller
             
             return $this->render('create3', [
                 'model' => $model,
+                'linhasPesquisas' => $linhasPesquisas,
             ]);
         } 
         else if( $model->passoatual <= 1){
@@ -178,6 +183,7 @@ class CandidatoController extends Controller
         else {
             return $this->render('create3', [
                 'model' => $model,
+                'linhasPesquisas' => $linhasPesquisas,
             ]);
         }
     }
@@ -200,6 +206,7 @@ class CandidatoController extends Controller
         $model->passoatual = 4;
         $model->fim = date("Y-m-d H:i:s");
         $model->save(false);
+        Yii::$app->session->destroy();
 
         $diretorio = $model->getDiretorio();
 

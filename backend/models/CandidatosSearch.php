@@ -18,7 +18,7 @@ class CandidatosSearch extends Candidato
     public function rules()
     {
         return [
-            [['id', 'passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'linhapesquisa', 'egressograd', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'resultado'], 'integer'],
+            [['id', 'passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'idLinhaPesquisa', 'egressograd', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'resultado'], 'integer'],
             [['senha', 'inicio', 'fim', 'nome', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'email', 'datanascimento', 'pais', 'passaporte', 'cpf', 'sexo', 'telresidencial', 'telcelular', 'inscricaoposcomp', 'notaposcomp', 'solicitabolsa', 'tituloproposta', 'diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento', 'cursograd', 'instituicaograd',  'dataformaturagrad', 'cursopos', 'instituicaopos', 'dataformaturapos', 'periodo'], 'safe'],
         ];
     }
@@ -68,7 +68,7 @@ class CandidatosSearch extends Candidato
             'cursodesejado' => $this->cursodesejado,
             'regime' => $this->regime,
             'anoposcomp' => $this->anoposcomp,
-            'linhapesquisa' => $this->linhapesquisa,
+            'idLinhaPesquisa' => $this->idLinhaPesquisa,
             'egressograd' => $this->egressograd,
             'tipopos' => $this->tipopos,
             'egressopos' => $this->egressopos,

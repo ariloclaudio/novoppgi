@@ -2,13 +2,6 @@
 
 use yii\helpers\Html;
 
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Candidato */
-
-$this->title = 'Histórico Acadêmico Profissional';
-$this->params['breadcrumbs'][] = ['label' => 'Candidatos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="candidato-create">
 

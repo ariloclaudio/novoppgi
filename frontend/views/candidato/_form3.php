@@ -3,14 +3,18 @@ use xj\bootbox\BootboxAsset;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use app\models\LinhaPesquisa;
+use yii\helpers\ArrayHelper;
 
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
-$uploadRealizados = 0;
 
-/*Estático temporariamente*/
-$linhasPesquisa = ['1' => 'Banco de Dados e Recuperação de Informação', '2' => 'Sistemas Embarcados e Engenharia de Software', '3' => 'Inteligência Artificial', '4' => 'Visão Computacional e Robótica', '5' => 'Redes e Telecomunicações',  '6' => 'Otimização, Alg. e Complexidade Computacional'];
+//$linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->all(), 'id', 'nome');
+//$linhasPesquisas = ['1' => '12'];
+
+
+$uploadRealizados = 0;
 
 $labelProposta = "<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b></b><br>Arquivo contendo sua Proposta:";
 if(isset($model->proposta)){
@@ -57,17 +61,17 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
         <input type='hidden' id = 'form_upload' value ='<?= $uploadRealizados ?>'/>
 
 
-    <div style="width: 100%; clear: both;"><p align="justify"><b>Proposta do Candidato</b></p></div>
+    <div style="clear: both;"><legend>Proposta do Candidato</legend></div>
 
    <div class="row">
-        <?= $form->field($model, 'linhapesquisa', ['options' => ['class' => 'col-md-6']])->dropDownlist($linhasPesquisa, ['prompt' => 'Selecione uma Linha de Pesquisa'])->label("<font color='#FF0000'>*</font> <b>Linha de Pesquisa:</b>") ?>
+        <?= $form->field($model, 'idLinhaPesquisa', ['options' => ['class' => 'col-md-6']])->dropDownlist($linhasPesquisas, ['prompt' => 'Selecione uma Linha de Pesquisa'])->label("<font color='#FF0000'>*</font> <b>Linha de Pesquisa:</b>") ?>
     </div>
     <div class="row">
         <?= $form->field($model, 'tituloproposta', ['options' => ['class' => 'col-md-8']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Titulo da Proposta:</b>") ?>
     </div>
 
     <?php if($model->edital->cartarecomendacao == 1){ ?>
-        <div style="clear: both;"><p align="justify"><b>Carta de Recomendação</b></p></div>
+        <div style="clear: both;"><legend>Carta de Recomendação</legend></div>
         <div class="row">
             <p align="justify" style="padding-left: 10px;">Você precisa apenas preencher corretamente o nome e email das pessoas que devem fornecer as cartas de recomendação. Feito isso, assim que você finalizar e submeter sua inscrição os indicados receberão um email com as instruções de como preencher de forma online sua carta de recomendação. Ao menos 2 nomes são obrigatórios.</p>
         </div>
@@ -117,7 +121,7 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
     
 
     <div class="form-group">
-        <?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success', 
+        <?= Html::submitButton('Salvar e Finalizar', ['class' => 'btn btn-success', 
             'data' => [
                 'confirm' => 'Finalizar Inscrição? Após esse passo seus dados serão submetidos para avaliação e não poderão ser alterados.',
             ],'name' => 'finalizar']) ?>
