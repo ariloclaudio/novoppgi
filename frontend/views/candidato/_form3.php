@@ -9,6 +9,8 @@ use yii\helpers\ArrayHelper;
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
 
+$this->title = "Proposta de Trabalho e Documentos";
+
 
 //$linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->all(), 'id', 'nome');
 //$linhasPesquisas = ['1' => '12'];
@@ -108,16 +110,24 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
 
     <div class="row">
 
-        <?= $form->field($model, 'motivos')->textarea(['rows' => 6])->label("<font color='#FF0000'>*</font> <b> Descreva os motivos que o levaram a se candidatar ao curso (máximo de caracteres: 1000): </b>") ?>
+        <?= $form->field($model, 'motivos')->textarea(['rows' => 6, 'id' => 'txtMotivos'])->label("<font color='#FF0000'>*</font> <b> Descreva os motivos que o levaram a se candidatar ao curso (máximo de caracteres: 1000): </b>") ?>
     </div>
 
     <?= $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label($labelProposta) ?>
 
     <?= $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label($labelComprovante) ?>
 
+     <div style="clear: both;"><legend>Declaração de Veracidade de Informações</legend></div>
+     <div align="justify">
+
+     <?= $form->field($model, 'declaracao')->checkBoxList(['1' => 'Declaro a veracidade das informações fornecidas neste formulário e nos documentos enviados, e desde já autorizo a verificação dos dados.'])->label(false) ?>
+     
+     </div>
+    <p>
     <div class="form-group">
         <?= Html::submitButton('Salvar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name' => 'salvar']) ?>
     </div>
+    </p>
     
 
     <div class="form-group">

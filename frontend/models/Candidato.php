@@ -18,7 +18,7 @@ class Candidato extends \yii\db\ActiveRecord
     public $propostaFile;
     public $comprovanteFile;
     public $publicacoesFile;
-    public $xml;
+    //public $declaracao;
     
     /*Cartas de recomendação Obrigatórias*/
     public $cartaNomeReq1;
@@ -109,7 +109,7 @@ class Candidato extends \yii\db\ActiveRecord
 
 /*FIM Validações para passo 2*/
 /*Inicio Validações para passo 3*/
-            [['idLinhaPesquisa', 'tituloproposta', 'motivos'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
+            [['idLinhaPesquisa', 'tituloproposta', 'motivos', 'declaracao'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3';
             }"],
@@ -129,7 +129,7 @@ class Candidato extends \yii\db\ActiveRecord
             }"],
 /*FIM Validações para passo 3*/
 
-            [['cartaNome', 'cotaTipo', 'deficienciaTipo'], 'string'],
+            [['cartaNome', 'cotaTipo', 'deficienciaTipo', 'declaracao'], 'string'],
             [['cartaEmail'], 'email'],
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
  
@@ -224,6 +224,7 @@ class Candidato extends \yii\db\ActiveRecord
             'resultado' => 'Resultado',
             'periodo' => 'Período',
             'idEdital' => 'Edital',
+            'declaracao' => 'Declaração',
         ];
     }
 
@@ -353,8 +354,6 @@ class Candidato extends \yii\db\ActiveRecord
                 $this->periodoacademico3 = $experienciaAcademica[2]->periodo;
             }
         }
-
-
 
         return true;
     }
