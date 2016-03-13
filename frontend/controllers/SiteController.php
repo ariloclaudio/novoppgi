@@ -89,6 +89,7 @@ class SiteController extends Controller
     //$model->idEdital = $id;    
 
         if ($model->load(Yii::$app->request->post())){                
+
             $model->inicio = date("Y-m-d H:i:s");
             $model->passoatual = 0;
             $model->repetirSenha = $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
@@ -96,7 +97,9 @@ class SiteController extends Controller
             
             try{
                 if(!$model->save()){
-                    $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital');
+                    $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital, Efetue o seu Login.');
+
+                    return $this->redirect(['site/login']);
                 }else{
                     //setando o id do candidato via sessão
                         $session = Yii::$app->session;
@@ -124,14 +127,12 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
+
         /*Redirecionamento para o formulário caso candidato esteja "logado"*/
         
         /*if(Yii::$app->session->get('candidato') !== null)
             $this->redirect(['candidato/passo1']);*/
 
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()){
@@ -193,7 +194,7 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-
+*/
     public function actionSignup()
     {
         $model = new SignupForm();
@@ -210,7 +211,7 @@ class SiteController extends Controller
         ]);
     }
 
-*/
+
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();

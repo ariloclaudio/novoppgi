@@ -85,7 +85,6 @@ class CandidatoController extends Controller
     {
         $this->layout = '@app/views/layouts/main2.php';
 
-
         $items = array();
 
         $session = Yii::$app->session;

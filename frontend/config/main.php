@@ -19,6 +19,7 @@ return [
             'enableAutoLogin' => true,
         ],
 
+
     'view' => [
          'theme' => [
              'pathMap' => [
@@ -27,6 +28,7 @@ return [
              ],
          ],
     ],
+
 
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
