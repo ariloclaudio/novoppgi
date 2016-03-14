@@ -1,6 +1,6 @@
 <?php
 namespace backend\models;
-
+use yiibr\brvalidator\CpfValidator;
 use common\models\User;
 use yii\base\Model;
 use Yii;
@@ -13,6 +13,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $password_repeat;
 
     /**
      * @inheritdoc
@@ -22,8 +23,8 @@ class SignupForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            [['username'], CpfValidator::className(), 'message' => 'CPF Inválido'],
+            ['username', 'string'],
 
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
@@ -33,8 +34,22 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['password_repeat', 'required'],
+            ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Esta senha não é igual à anterior" ],
+
         ];
     }
+
+public function attributeLabels()
+    {
+        return [
+            'username' => 'CPF (Digite somente números)',
+            'password' => 'Senha',
+            'password_repeat' => 'Senha novamente',
+            'email' => 'E-mail',
+         ];
+    }
+
 
     /**
      * Signs user up.
