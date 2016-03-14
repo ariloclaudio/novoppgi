@@ -23,6 +23,7 @@ class SignupForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
+            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Já existe usuário cadastrado com esse CPF'],
             [['username'], CpfValidator::className(), 'message' => 'CPF Inválido'],
             ['username', 'string'],
 
@@ -42,6 +43,7 @@ class SignupForm extends Model
 
 public function attributeLabels()
     {
+
         return [
             'username' => 'CPF (Digite somente números)',
             'password' => 'Senha',
