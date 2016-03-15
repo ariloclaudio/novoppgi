@@ -38,11 +38,15 @@ class Edital extends \yii\db\ActiveRecord
             [['numero', 'datainicio', 'datafim', 'cartarecomendacao'], 'required'],
             [['documentoFile'], 'required', 'when' => function($model){ return !isset($model->documento);}],
             [['vagas_mestrado'], 'required', 'when' => function($model){ return $model->curso == 1 || $model->curso == 3; },'whenClient' => "function (attribute, value) {
-                return $('input:radio[name=\"Edital[curso]\"]:checked').val() == 1;
+                return $('#form_mestrado').val() == 1;
             }"],
             [['vagas_doutorado'], 'required','when' => function($model){ return $model->curso == 2 || $model->curso == 3; },'whenClient' => "function (attribute, value) {
-                return $('input:radio[name=\"Edital[curso]\"]:checked').val() == 2;
+                return $('#form_doutorado').val() == 1;
             }"],
+            [['doutorado', 'mestrado'], 'required', 'when' => function($model){ return $model->curso == 0; }, 'whenClient' => "function (attribute, value){ 
+                return $('#form_mestrado').val() != '1' || $('#form_doutorado').val() != '1';
+            }"],
+            [['doutorado', 'mestrado'], 'integer'],
             [['numero', 'curso'], 'string'],
             [['numero'], 'unique', 'message' => 'Edital já criado'],
             [['vagas_mestrado','vagas_doutorado', 'cotas_mestrado', 'cotas_doutorado'], 'integer', 'min' => 0],
@@ -68,14 +72,14 @@ class Edital extends \yii\db\ActiveRecord
         ];
     }
 
-    public function beforeSave(){
-        if($this->mestrado == 1 && $this->doutorado == 1)
-            $this->curso = 3;
-        else if($this->mestrado == 1)
-            $this->curso = 1;
-        else if($this->doutorado == 1)
-            $this->curso = 2;
-
+    public function afterFind(){
+        if($this->curso == '3')
+            $this->mestrado = $this->doutorado = 1;
+        else if($this->curso == '1')
+            $this->mestrado = 1;
+        else if($this->curso == '2')
+            $this->doutorado = 1;
+    
         return true;
     }
 

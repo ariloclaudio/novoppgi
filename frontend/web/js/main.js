@@ -24,22 +24,6 @@ $(document).ready( function() {
 
    });
 
-  $('#maisInstituicoes').click(function () {
-    if($('#divInstituicao2').css('display') == 'none')
-      $('#divInstituicao2').css('display', 'block');
-    else if($('#divInstituicao3').css('display') == 'none')
-      $('#divInstituicao3').css('display', 'block');
-  });
-
-   $('#maisCartasRecomendacoes').click(function(){
-      if($('#divCartaRecomendacao0').css('display') == 'none')
-        $('#divCartaRecomendacao0').css('display', 'block');
-      else if($('#divCartaRecomendacao1').css('display') == 'none')
-        $('#divCartaRecomendacao1').css('display', 'block');
-      else if($('#divCartaRecomendacao2').css('display') == 'none')
-        $('#divCartaRecomendacao2').css('display', 'block');
-   });
-
    $('#candidato-nacionalidade').click(function(){
    		if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
    			$('#divBrasileiro').css('display', 'block');
@@ -51,66 +35,48 @@ $(document).ready( function() {
    		}
    });
 
-   $('#candidato-vinculoconvenio').click(function(){
-      if($( "input[name='Candidato[vinculoconvenio]']:checked" ).val() == "SIM"){
-        $('#divConvenio').css('display', 'block');
-      }else{
-        $('#divConvenio').css('display', 'none');
-      }
-   });
-
+  /*Inicio dos campos com radiobutton com campos Ocultos da Carta de Recomendação (VIA EMAIL)*/
    $('#recomendacoes-conheceoutros').click(function(){
       if($("input[name='Recomendacoes[conheceOutros][]']" ).val() == 1){
         $("input[name='Recomendacoes[conheceOutros][]']").val(0);
-        $('#outroslugarestexto').css('display', 'none');
+        $('#outroslugarestexto').fadeToggle('slow');
       }else{
         $("input[name='Recomendacoes[conheceOutros][]']").val(1);
-        $('#outroslugarestexto').css('display', 'block');
+        $('#outroslugarestexto').fadeToggle('slow');
       }
    });
 
   $('#recomendacoes-outroscontatos').click(function(){
       if($("input[name='Recomendacoes[outrosContatos][]']" ).val() == 1){
         $("input[name='Recomendacoes[outrosContatos][]']").val(0);
-        $('#outrasfuncoestexto').css('display', 'none');
+        $('#outrasfuncoestexto').fadeToggle('slow');
       }else{
         $("input[name='Recomendacoes[outrosContatos][]']").val(1);
-        $('#outrasfuncoestexto').css('display', 'block');
+        $('#outrasfuncoestexto').fadeToggle('slow');
       }
   });
+  /*Inicio dos campos com radiobutton com campos Ocultos da Carta de Recomendação (VIA EMAIL)*/
 
-  $('input[name="Candidato[vinculoconvenio]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
-      if(state){
-      $('#divConvenio').css('display', 'block');
-    }else{
-      $('#divConvenio').css('display', 'none');
-    }
-  });
 
+  /*Inicio dos campos com botão liga/desliga com campos ocultos do Passo 1*/
   $('input[name="Candidato[cotas]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
       if(state){
-      $('#divCotas').css('display', 'block');
+      $('#divCotas').fadeToggle('slow');
     }else{
-      $('#divCotas').css('display', 'none');
+      $('#divCotas').fadeToggle('slow');
     }
   });
 
   $('input[name="Candidato[deficiencia]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
       if(state){
-      $('#divDeficiencia').css('display', 'block');
+      $('#divDeficiencia').fadeToggle('slow');
     }else{
-      $('#divDeficiencia').css('display', 'none');
+      $('#divDeficiencia').fadeToggle('slow');
     }
   });
+  /*Fim dos campos com botão liga/desliga com campos ocultos do Passo 1*/
 
-  $('input[name="Candidato[vinculoemprego]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
-      if(state){
-      $('#divVinculo').css('display', 'block');
-    }else{
-      $('#divVinculo').css('display', 'none');
-    }
-  });
-
+  /*Inicio da Ocultação e Exibição dos Periódios e Conferências (XML)*/
   $('#btnPeriodicos').click(function(){
     $('#divPeriodicos').fadeToggle('slow');
   });
@@ -118,12 +84,98 @@ $(document).ready( function() {
   $('#btnConferencias').click(function() {
     $('#divConferencias').fadeToggle('slow');
   });
+  /*Fim da Ocultação e Exibição dos Periódios e Conferências (XML)*/
+
+  /*Inicio Contagem de Caracteres do textArea do Passo 3*/
+  $('#txtMotivos').on("input", function () {
+    var limite = 1000;
+    var caracteresDigitados = $(this).val().length;
+    var caracteresRestantes = limite - caracteresDigitados;
+
+    $(".caracteres").text(caracteresRestantes);
+  });
+  /*Fim Contagem de Caracteres do textArea do Passo 3*/
+
+  /*Inicio dos campos dinâmicos das experiências acadêmicas Passo 2*/
+  $('#maisInstituicoes').click(function () {
+    if($('#divInstituicao2').css('display') == 'none')
+      $('#divInstituicao2').css('display', 'block');
+    else if($('#divInstituicao3').css('display') == 'none'){
+      $('#divInstituicao3').css('display', 'block');
+      $('#maisInstituicoes').css('display', 'none');
+  }else
+    $('#maisInstituicoes').css('display', 'none');
+  });
+
+  $('#removerInstituicao2').click(function(){
+    if($('#maisInstituicoes').css('display') == 'none')
+      $('#maisInstituicoes').css('display', 'block');
+    $('#candidato-instituicaoacademica2').val('');
+    $('#candidato-atividade2').val('');
+    $('#candidato-periodoacademico2').val('');
+    $('#divInstituicao2').css('display', 'none');
+  });
+
+  $('#removerInstituicao3').click(function(){
+    if($('#maisInstituicoes').css('display') == 'none')
+      $('#maisInstituicoes').css('display', 'block');
+    $('#candidato-instituicaoacademica3').val('');
+    $('#candidato-atividade3').val('');
+    $('#candidato-periodoacademico3').val('');
+    $('#divInstituicao3').css('display', 'none');
+  });
+  /*Fim dos campos dinâmicos das experiências acadêmicas Passo 2*/
+
+  /*Inicio dos campos dinâmicos das cartas de Recomendações Passo 3*/
+  $('#maisCartasRecomendacoes').click(function(){
+    if($('#divCartaRecomendacao0').css('display') == 'none')
+      $('#divCartaRecomendacao0').fadeToggle('slow');
+    else if($('#divCartaRecomendacao1').css('display') == 'none')
+      $('#divCartaRecomendacao1').fadeToggle('slow');
+    else if($('#divCartaRecomendacao2').css('display') == 'none'){
+      $('#divCartaRecomendacao2').fadeToggle('slow');
+      $('#maisCartasRecomendacoes').fadeToggle('slow');
+    }else
+      $('#maisCartasRecomendacoes').fadeToggle('slow');
+ });
+
+  $('#removerCartaRecomendacao0').click(function(){
+    if($('#maisCartasRecomendacoes').css('display') == 'none')
+      $('#maisCartasRecomendacoes').fadeToggle('slow');
+    $('#candidato-cartanome-0').val('');
+    $('#candidato-cartaemail-0').val('');
+    $('#divCartaRecomendacao0').fadeToggle('slow');
+  });
+
+  $('#removerCartaRecomendacao1').click(function(){
+    if($('#maisCartasRecomendacoes').css('display') == 'none')
+      $('#maisCartasRecomendacoes').fadeToggle('slow');
+    $('#candidato-cartanome-1').val('');
+    $('#candidato-cartaemail-1').val('');
+    $('#divCartaRecomendacao1').fadeToggle('slow');
+  });
+
+  $('#removerCartaRecomendacao2').click(function(){
+    if($('#maisCartasRecomendacoes').css('display') == 'none')
+      $('#maisCartasRecomendacoes').fadeToggle('slow');
+    $('#candidato-cartanome-2').val('');
+    $('#candidato-cartaemail-2').val('');
+    $('#divCartaRecomendacao2').fadeToggle('slow');
+  });
+  /*Fim dos campos dinâmicos das cartas de Recomendações Passo 3*/
 
 });
 
 $( window ).load(function() {
 
-/*Para exibir a caixa de texto OUTROS ao carregar a view solicitação de carta de recomendadação*/
+    if($('#txtMotivos').length && $('#txtMotivos').val().length > 0){
+      var limite = 1000;
+      var caracteresDigitados = $('#txtMotivos').val().length;
+      var caracteresRestantes = limite - caracteresDigitados;
+
+      $(".caracteres").text(caracteresRestantes);
+    }
+
     if($("input[name='Recomendacoes[conheceOutros][]']" ).val() == 1){       
         $('#outroslugarestexto').css('display', 'block');
     }else{
@@ -148,5 +200,4 @@ $( window ).load(function() {
         $('#divEstrangeiro').css('display', 'block');
         $('#divBrasileiro').css('display', 'none');
     }
-
 });

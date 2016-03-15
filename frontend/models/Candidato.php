@@ -229,14 +229,18 @@ class Candidato extends \yii\db\ActiveRecord
     }
 
 
-    /*Relacionamento*/
+    /*Inicio dos Relacionamentos*/
     public function getEdital()
     {
         return $this->hasOne(Edital::className(), ['numero' => 'idEdital']);
     }
 
+    public function getlinhaPesquisa()
+    {
+        return $this->hasOne(LinhaPesquisa::className(), ['id' => 'idLinhaPesquisa']);
+    }
 
-    //fim do relacionamento
+    /*Fim dos Relacionamentos*/
 
 
     public function getDiretorio(){
@@ -322,6 +326,7 @@ class Candidato extends \yii\db\ActiveRecord
         }
     }
 
+    /*Busca nas tabelas de recomendações e experiencias acadêmicas para atribuir aos campos do formulário*/
     public function afterFind(){
         $this->recomendacoes = Recomendacoes::findAll(['idCandidato' => $this->id]);
         if(count($this->recomendacoes) != 0){
@@ -358,6 +363,7 @@ class Candidato extends \yii\db\ActiveRecord
         return true;
     }
 
+    /*Validação para identidicar se usuáio já está cadastrado*/
     public function beforeSave()
     {
         if($this->passoatual != 0 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
@@ -432,8 +438,8 @@ class Candidato extends \yii\db\ActiveRecord
         }
     }
 
+    /*Extração dos periódicos e conferências e salvamento no banco*/
     public function uploadXml($xmlFile) {
-
         if(isset($xmlFile)){
             if($xmlFile->type == 'text/xml'){
                 $caminho = $this->gerarDiretorio($this->id,$this->idEdital);

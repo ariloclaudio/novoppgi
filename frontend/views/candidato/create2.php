@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 
+$this->title = "Histórico Acadêmico/Profissional";
 ?>
 <div class="candidato-create">
 

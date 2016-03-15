@@ -2,14 +2,8 @@
 
 use yii\helpers\Html;
 
+$this->title = "Dados Pessoais";
 ?>
-
-<style>
-
-
-
-</style>
-
 
 <div class="candidato-create">
 
@@ -30,9 +24,6 @@ use yii\helpers\Html;
   <br><br><br><br><br>
 
 </div>
-
-            
-
     <?= $this->render('_form1', [
         'model' => $model,
         'editalCurso' => $editalCurso,

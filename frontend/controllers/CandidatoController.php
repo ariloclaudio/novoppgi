@@ -39,7 +39,6 @@ class CandidatoController extends Controller
         ];
     }
 
-
     /**
      * Exibe Formulário no passo 1
      */
@@ -157,7 +156,6 @@ class CandidatoController extends Controller
             
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'),$model->idEdital)){
                 if($model->save(false) && $model->salvaCartaRecomendacao()){
-                    $this->mensagens('success', 'Inscrição Finalizada', 'Sua inscrição foi realizada com sucesso.');
                     if(isset($_POST['finalizar'])){
                         //ENVIAR EMAILS CADASTRADOS*
                         //$this->notificarCartasRecomendacao($model);
@@ -195,8 +193,6 @@ class CandidatoController extends Controller
     {
 
         $this->layout = '@app/views/layouts/main2.php';
-        
-
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
@@ -206,7 +202,7 @@ class CandidatoController extends Controller
         $model->passoatual = 4;
         $model->fim = date("Y-m-d H:i:s");
         $model->save(false);
-        Yii::$app->session->destroy();
+        //Yii::$app->session->destroy();
 
         $diretorio = $model->getDiretorio();
 
@@ -221,6 +217,31 @@ class CandidatoController extends Controller
         ]);
         
     }
+
+    /*Obriga o php a baixar o arquivos pdf Solicitado da pasta do candidato*/
+    public function actionPdf($documento){
+
+        $session = Yii::$app->session;
+        $id = $session->get('candidato');
+        $model = $this->findModel($id);
+
+        $localArquivo = $model->getDiretorio().$documento;
+
+        if(!file_exists($localArquivo))
+            throw new NotFoundHttpException('A Página solicitada não existe.');
+
+        header('Content-Description: File Transfer');
+        header('Content-Disposition: attachment; filename="'.$documento.'"');
+        header('Content-Type: application/pdf');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($model->getDiretorio().$documento));
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Expires: 0');
+
+        readfile($localArquivo);
+    }
+
 
 
     /**
@@ -351,9 +372,6 @@ function actionComprovanteinscricao() {
     else{
         $campoCPFouPassaporte = "Passaporte: ".$candidato->passaporte;
     }
-
-    $arrayLinhaPesquisa = array 
-    (1 => "Banco de Dados e Recuperação de Informação",2 => "Sistemas Embarcados e Engenharia de Software",3 => "Inteligência Artificial",4 => "Visão Computacional e Robótica",5 => "Redes e Telecomunicações",6 => "Otimização, Alg. e Complexidade Computacional");
 
     //$comprovantePDF = "/formulario".$candidato->id.".pdf";
 
@@ -621,7 +639,7 @@ function actionComprovanteinscricao() {
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <b> Linha de pesquisa: </b>'.$arrayLinhaPesquisa[$candidato->linhapesquisa].'
+                            <b> Linha de pesquisa: </b>'.$candidato->linhaPesquisa->nome.'
                         </td>
                     </tr>
                     <tr>

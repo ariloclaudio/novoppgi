@@ -92,8 +92,19 @@ class EditalController extends Controller
         $model = new Edital();
 
         $model->cartarecomendacao = 1;
+        $model->mestrado = 1;
+        $model->doutorado = 1;
 
         if ($model->load(Yii::$app->request->post())) {
+            
+            if($model->mestrado == 1 && $model->doutorado == 1)
+                $model->curso = '3';
+            else if($model->mestrado == 1)
+                $model->curso = '1';
+            else if($model->doutorado == 1)
+                $model->curso = '2';
+            else
+                $model->curso = '0';
 
             $diainicio = explode("/", $model->datainicio);
             $model->datainicio = $diainicio[2]."-".$diainicio[1]."-".$diainicio[0];
@@ -127,6 +138,15 @@ class EditalController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
+            //return $model->mestrado." ".$model->doutorado;
+            if($model->mestrado == 1 && $model->doutorado == 1)
+                $model->curso = '3';
+            else if($model->mestrado == 1)
+                $model->curso = '1';
+            else if($model->doutorado == 1)
+                $model->curso = '2';
+            else
+                $model->curso = '0';
 
             $diainicio = explode("/", $model->datainicio);
             $model->datainicio = $diainicio[2]."-".$diainicio[1]."-".$diainicio[0];

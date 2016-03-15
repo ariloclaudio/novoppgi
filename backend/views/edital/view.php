@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'datainicio',
             'datafim',
             'documento',
+            'curso',
         ],
     ]) ?>
 

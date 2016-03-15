@@ -23,7 +23,7 @@ if(count($itensPeriodicos) + count($itensConferencias) > 0){
 
 $labelHistorico = "<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b><br>Arquivo contendo seu Histórico:";
 if(isset($model->historico)){
-    $labelHistorico .= "<a target='resource window' href=".$model->diretorio.$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
+    $labelHistorico .= "<a href=index.php?r=candidato/pdf&documento=".$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados = 1;
 }else{
     $labelHistorico.= " <i>Nenhum arquivo de histórico carregado.</i>";
@@ -31,7 +31,7 @@ if(isset($model->historico)){
 
 $labelCurriculum = "<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b><br>Arquivo contendo seu Curriculum:";
 if(isset($model->curriculum)){
-    $labelCurriculum .= "<a target='resource window' href=".$model->diretorio.$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
+    $labelCurriculum .= "<a href=index.php?r=candidato/pdf&documento=".$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados += 2;
 }else{
     $labelCurriculum .= " <i>Nenhum arquivo de Curriculum carregado.</i>";
@@ -122,37 +122,44 @@ if($model->instituicaoacademica3 == ""){
     
     <div style="clear: both;"><legend>Experiência Acadêmica</b> (Monitoria, PIBIC, PET, Instutor, Professor)</legend></div>
 
-    <div class="row">
-        <?= $form->field($model, 'instituicaoacademica1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+    <div id="divInstituicoes">
+        <div class="row">
+            <?= $form->field($model, 'instituicaoacademica1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'atividade1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'atividade1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'periodoacademico1', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
-    </div>
-    
-    
-    <div class="row" id="divInstituicao2" style="display: <?=$hideInstituicao2?>;">
-        <?= $form->field($model, 'instituicaoacademica2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'periodoacademico1', ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'atividade2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+        </div>
+        
+        
+        <div class="row" id="divInstituicao2" style="display: <?=$hideInstituicao2?>;">
+            <?= $form->field($model, 'instituicaoacademica2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'periodoacademico2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
-    </div>
-    
-   
-   <div class="row" id="divInstituicao3" style="display: <?=$hideInstituicao3?>;">
-        <?= $form->field($model, 'instituicaoacademica3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'atividade2', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'atividade3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'periodoacademico2', ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true]) ?>
 
-        <?= $form->field($model, 'periodoacademico3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+            <?= Html::button("<span class='glyphicon glyphicon-remove'></span>", ['id' => 'removerInstituicao2', 'class' => 'btn btn-danger col-md-1 col-xs-12', 'style' => 'margin-top: 25px;']); ?>
+        </div>
+        
+       
+       <div class="row" id="divInstituicao3" style="display: <?=$hideInstituicao3?>;">
+            <?= $form->field($model, 'instituicaoacademica3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'atividade3', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'periodoacademico3', ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true]) ?>
+
+            <?= Html::button("<span class='glyphicon glyphicon-remove'></span>", ['id' => 'removerInstituicao3', 'class' => 'btn btn-danger col-md-1 col-xs-12', 'style' => 'margin-top: 25px;']); ?>
+        </div>
     </div>
     <p>
-        <?= Html::button("<span class='glyphicon glyphicon-plus'></span>", ['id' => 'maisInstituicoes', 'class' => 'btn btn-default btn-lg btn-success']); ?>
+        <?= Html::button("<span class='glyphicon glyphicon-plus'></span> Adicionar Experiência Acadêmica", ['id' => 'maisInstituicoes', 'class' => 'btn btn-default btn-md btn-success']); ?>
     </p>
     
     <div class="form-group">
-        <p><?= Html::submitButton('Salvar', ['class' => 'btn btn-success', 'name' => 'salvar']) ?></p>
+        <p><?= Html::submitButton('Salvar', ['class' => 'btn btn-primary', 'name' => 'salvar']) ?></p>
         <p><?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success', 'name' => 'enviar']) ?></p>
     </div>
 

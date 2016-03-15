@@ -54,17 +54,16 @@ $this->params['breadcrumbs'][] = $this->title;
 		   		<a target="resource window" href="index.php?r=candidato/comprovanteinscricao">
 					<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/edit_f2.png" border="0" height="32" width="32"><br><b>Imprimir Formul&#225;rio de Inscri&#231;&#227;o</b></div></a>
 
-				<a target="resource window" href="<?php echo $diretorio;?>Proposta.pdf">
+				<a href="index.php?r=candidato/pdf&documento=Proposta.pdf">
 					<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/trabalho.png" border="0" height="32" width="32"><br><b>Imprimir Proposta de Trabalho</b></div></a>
 		        <div id="cpanel" width="25%"></div>
 				
-				<a target="resource window" href="<?php echo $diretorio;?>Historico.pdf">
+				<a href="index.php?r=candidato/pdf&documento=Historico.pdf">
 						<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/historico.gif" border="0" height="32" width="32"><br><b>Imprimir Hist&#243;rico Escolar</b></div></a>
-				<a target="resource window" href="<?php echo $diretorio;?>Curriculum.pdf">
+				<a href="index.php?r=candidato/pdf&documento=Curriculum.pdf">
 						<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/curriculum.gif" border="0" ><br><b>Imprimir Curriculum Lattes</b></div></a>
-				<a target="resource window" href="<?php echo $diretorio;?>Comprovante.pdf">
+				<a href="index.php?r=candidato/pdf&documento=Comprovante.pdf">
 						<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/pagamento.png" border="0" height="32" width="32"><br><b>Imprimir Comprovante de Pagamento</b></div></a>
 			</div>
-
 </div>
 

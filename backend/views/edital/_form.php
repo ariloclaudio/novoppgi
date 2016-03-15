@@ -5,21 +5,14 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
 
-$model->mestrado = 1;
-$model->doutorado = 1;
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Edital */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="edital-form">
 	<div class="grid">
 	    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
-	    <?php if($model->mestrado != 1) echo "<input type='hidden' id = 'form_mestrado' value ='' />"; else echo "<input type='hidden' id = 'form_mestrado' value ='1' />"; ?>
-	    
-	    <?php if($model->doutorado != 1) echo "<input type='hidden' id = 'form_doutorado' value ='' />"; else echo "<input type='hidden' id = 'form_doutorado' value ='1' />";?>
+	    	<input type='hidden' id = 'form_mestrado' value =<?= $model->mestrado ?> />
+	    	<input type='hidden' id = 'form_doutorado' value =<?= $model->doutorado?> />
 
 		    <div class="row">
 		    	<?= $form->field($model, 'numero', ['options' => ['class' => 'col-md-4']])->textInput() ?>

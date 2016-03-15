@@ -103,7 +103,7 @@ $cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
             <?= $form->field($model, 'cursodesejado', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso Desejado:</b>") ?>
         <?php } ?>
 
-        <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>") ?>
+        <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-5']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>") ?>
     </div>
 
     <div class = "row">
