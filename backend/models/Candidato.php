@@ -27,7 +27,7 @@ class Candidato extends \yii\db\ActiveRecord
         return [
             [['senha', 'periodo'], 'required'],
             [['inicio', 'fim'], 'safe'],
-            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'idLinhaPesquisa', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer'],
+            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer'],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],
             [['senha', 'cidade'], 'string', 'max' => 40],
             [['nome', 'nomepai', 'nomemae'], 'string', 'max' => 60],
@@ -93,7 +93,7 @@ class Candidato extends \yii\db\ActiveRecord
             'cargo' => 'Cargo',
             'vinculoconvenio' => 'Vinculoconvenio',
             'convenio' => 'Convenio',
-            'idLinhaPesquisa' => 'idLinhaPesquisa',
+            //'idLinhaPesquisa' => 'idLinhaPesquisa',
             'tituloproposta' => 'Tituloproposta',
             'diploma' => 'Diploma',
             'historico' => 'Historico',

@@ -94,7 +94,7 @@ class CandidatoController extends Controller
         $model = $this->findModel($id);
 
         $publicacoes = CandidatoPublicacoes::find()->where(['idCandidato' => $model->id])->all();
-        
+
         for ($i=0; $i < count($publicacoes); $i++) {
             if($publicacoes[$i]->tipo == 2)
                 $itensPeriodicos[$i] = ['label' => $publicacoes[$i]->titulo, 
@@ -270,6 +270,9 @@ function actionComprovanteinscricao() {
         $experienciaArray = ExperienciaAcademica::findAll(['idCandidato' => $id]);
 
 
+        $publicacoes1 = CandidatoPublicacoes::find()->where(['idCandidato' => $id , 'tipo' => '2'])->all();
+
+        $publicacoes2 = CandidatoPublicacoes::find()->where(['idCandidato' => $id , 'tipo' => '1'])->all();
 
         $instituicao = array(0 => null, 1 => null, 2=> null);
         $atividade = array(0 => null, 1 => null, 2=> null);
@@ -342,7 +345,8 @@ function actionComprovanteinscricao() {
             }
         // fim da geração html das tabela de experiências acadêmicas
 
-        $pdf = new mPDF('utf-8');
+            $pdf = new mPDF('utf-8','A4','','','15','15','37','30');
+
     
     $sexo = array ('M' => "Masculino",'F' => "Feminimo");
     $cursoDesejado = array (1 => "Mestrado",2 => "Doutorado");
@@ -384,7 +388,7 @@ function actionComprovanteinscricao() {
     $optionsTable = array(fontSize=>10, titleFontSize=>12, xPos=>'center', width=>500, cols=>array('Código'=>array('width'=>60, 'justification'=>'center'),'Período'=>array('width'=>50, 'justification'=>'center'),'Disciplina'=>array('width'=>285), 'Conceito'=>array('width'=>50, 'justification'=>'center'), 'FR%'=>array('width'=>45, 'justification'=>'center'), 'CR'=>array('width'=>30, 'justification'=>'center'), 'CH'=>array('width'=>30, 'justification'=>'center')));
 
             $pdf->SetHTMLHeader('
-                <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
+                <table style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
                     <tr>
                         <td width="20%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 175%;"> <img src = "../web/img/logo-brasil.jpg" height="90px" width="90px"> </td>
                         <td width="60%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 135%;">  PODER EXECUTIVO <br> UNIVERSIDADE FEDERAL DO AMAZONAS <br> INSTITUTO DE COMPUTAÇÃO <br> PROGRAMA DE PÓS-GRADUAÇÃO EM INFORMÁTICA </td>
@@ -411,7 +415,7 @@ function actionComprovanteinscricao() {
 
 
                 $pdf->WriteHTML(' <br>
-                    <table style= "margin-top:65px;" width="100%;"> 
+                    <table style= "margin-top:0px;" width="100%;"> 
                     <tr>
                         <td colspan = "1" style="text-align:right;">
                             <b> COMPROVANTE DE INSCRIÇÃO </b>
@@ -589,28 +593,6 @@ function actionComprovanteinscricao() {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:35px">
-                            <b> Publicações </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                                Períodicos Internacionais: '.$candidato->periodicosinternacionais.'
-                        </td>
-                        <td>
-                                Períodicos Nacionais: '.$candidato->periodicosnacionais.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                                Conferencias Internacionais: '.$candidato->conferenciasinternacionais.'
-                        </td>
-                        <td>
-                                Conferencias Nacionais: '.$candidato->conferenciasnacionais.'
-                        </td>
-                    </tr>
-
-                    <tr>
                         <td colspan="3" style= "height:55px" border = "0">
                             <b> Experiência Acadêmica </b>
                         </td>
@@ -625,7 +607,7 @@ function actionComprovanteinscricao() {
 
     $pdf->WriteHTML('
         <br>
-        <table style= "margin-top:65px" width="100%" border = "0"> 
+        <table style= "margin-top:0px" width="100%" border = "0"> 
 
                     <tr>
                         <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;">
@@ -666,38 +648,38 @@ function actionComprovanteinscricao() {
                             OBS: anexar a este documento sua proposta de trabalho e demais documentos inseridos no formulário de inscrição
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2" style="vertical-align: bottom; padding-bottom: 20px" height = "300px">
-                            Declaro que as informações prestadas neste formulário são verdadeiras, sob pena de exclusão do Curso.
-                            <br><br>
-                            Data: ____/____/_______ , Assinatura: __________________________________________________________
-                            <br>
-
-                        </td>
-                    </tr>
-
-
         </table>
         ');
 
-    $pdf->Output('');
+    $pdf->addPage();
 
-    $pdf->ezText("<b>Nome: </b>".utf8_decode($candidato->cartanome1)."     <b>E-mail: </b>".$candidato->cartaemail1,10,$dados);
-    $pdf->ezText('');  //Para quebra de linha
-    $pdf->ezText("<b>Nome: </b>".utf8_decode($candidato->cartanome2)."     <b>E-mail: </b>".$candidato->cartaemail2,10,$dados);
-    $pdf->ezText('');  //Para quebra de linha
-    $pdf->ezText('');  //Para quebra de linha
-    $pdf->ezText("OBS: anexar a este documento sua proposta de trabalho e demais documentos inseridos no formulário de inscrição",10,$dados);
-    $pdf->ezText('');  //Para quebra de linha
-    $pdf->addText(30,130,10,'Declaro que as informações prestadas neste formulário são verdadeiras, sob pena de exclusão do Curso.',0,0);
-    $pdf->addText(30,100,10,'Data: ____/____/_______ , Assinatura: ______________________________________',0,0);
-    $pdf->line(20, 80, 580, 80);
-    $pdf->ezText('');  //Para quebra de linha
-    $pdf->addText(80,40,8,'Av. Rodrigo Otávio, 6.200 • Campus Universitário Senador Arthur Virgílio Filho • CEP 69077-000 •  Manaus, AM, Brasil',0,0);
-    $pdf->addJpegFromFile('components/com_portalsecretaria/images/icon_telefone.jpg', 140, 30, 8, 8);
-    $pdf->addJpegFromFile('components/com_portalsecretaria/images/icon_email.jpg', 229, 30, 8, 8);
-    $pdf->addJpegFromFile('components/com_portalsecretaria/images/icon_casa.jpg', 383, 30, 8, 8);
-    $pdf->addText(150,30,8,'Tel. (092) 3305 1193       E-mail: secretaria@icomp.ufam.edu.br        www.ppgi.ufam.edu.br',0,0);
+
+
+        $pdf->Ln(5);
+        $pdf->MultiCell(0,6,"PERIÓDICOS",0, 'C');
+        $pdf->WriteHTML("<hr>");
+        for($i=0 ; $i<count($publicacoes1); $i++){
+
+            $pdf->MultiCell(0,5,$publicacoes1[$i]->titulo, 0, 'L');
+            $pdf->MultiCell(0,5,$publicacoes1[$i]->autores.' '.$publicacoes1[$i]->local,0., 'L');
+            $pdf->WriteHTML("<hr>");
+        }
+
+        $pdf->MultiCell(0,6,"CONFERÊNCIAS",0, 'C');
+        $pdf->WriteHTML("<hr>");
+        for($i=0 ; $i<count($publicacoes2); $i++){
+
+            $pdf->WriteHTML("<table><tr><td>");
+            $pdf->MultiCell(0,5,$publicacoes2[$i]->titulo, 0, 'L');
+            $pdf->MultiCell(0,5,$publicacoes2[$i]->autores.' '.$publicacoes2[$i]->local,0., 'L');
+            $pdf->WriteHTML("</td></tr></table>");
+            $pdf->WriteHTML("<hr>");
+        }
+
+    //$pdf->MultiCell(0,5,$periodicos,0, 'L');
+
+
+    $pdf->Output('');
 
     $pdfcode = $pdf->output();
     fwrite($arqPDF,$pdfcode);

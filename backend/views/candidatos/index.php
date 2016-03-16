@@ -21,8 +21,6 @@ function goBack() {
 <?= Html::a('Voltar', ['edital/view', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-warning']) ?>
 
 
-
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -75,7 +73,8 @@ function goBack() {
             [   'label' => 'Linha de Pesquisa',
                 'attribute' => 'linhapesquisa',
                 'value' => function ($model) {
-                        switch ($model->linhapesquisa) {
+
+                        switch ($model->idLinhaPesquisa) {
                             case 1:
                                 return "BD e RI";
                                 //return 'Banco de Dados e Recuperação de Informação';
@@ -103,6 +102,7 @@ function goBack() {
                         }
                 },
             ],
+    
             // 'tituloproposta',
             // 'diploma:ntext',
             // 'historico:ntext',
