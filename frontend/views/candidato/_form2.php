@@ -93,7 +93,11 @@ if($model->instituicaoacademica3 == ""){
 
     <div style="clear: both;"><legend>Publicações</legend></div>
 
-    <?= $form->field($model, 'publicacoesFile')->FileInput(['accept' => '.xml'])->label("<div><font color='#FF0000'>*</font> <b>Curriculum Vittae XML (no formato Lattes - http://lattes.cnpq.br):</b></div>") ?>
+    <div class="row">
+        <?= $form->field($model, 'publicacoesFile', ['options' => ['class' => 'col-md-6']])->FileInput(['accept' => '.xml'])->label("<div><font color='#FF0000'>*</font> <b>Curriculum Vittae XML (no formato Lattes - http://lattes.cnpq.br):</b></div>") ?>
+
+        <?= Html::submitButton('Enviar', ['class' => 'btn btn-primary col-md-2', 'name' => 'salvar']) ?>
+    </div>
 
 
     <div id="divPublicacoes" style="display: <?= $hidePublicacoes ?>;">
@@ -159,8 +163,8 @@ if($model->instituicaoacademica3 == ""){
     </p>
     
     <div class="form-group">
-        <p><?= Html::submitButton('Salvar', ['class' => 'btn btn-primary', 'name' => 'salvar']) ?></p>
-        <p><?= Html::submitButton('Salvar e Continuar', ['class' => 'btn btn-success', 'name' => 'enviar']) ?></p>
+        <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo1'], ['class' => 'btn btn-default col-md-6']) ?>
+        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Continuar</b>', ['class' => 'btn btn-default col-md-6', 'name' => 'enviar']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

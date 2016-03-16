@@ -132,13 +132,10 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
      </div>
     <p>
     <div class="form-group">
-        <?= Html::submitButton('Salvar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary', 'name' => 'salvar']) ?>
-    </div>
-    </p>
-    
+        <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo2'], ['class' => 'btn btn-default col-md-4']) ?>
+        <?= Html::submitButton('<img src="img/save.png" border="0" height="32" width="32"><br><b>Salvar</b>', ['class' => 'btn btn-default col-md-4', 'name' => 'salvar']) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Salvar e Finalizar', ['class' => 'btn btn-success', 
+        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Finalizar</b>', ['class' => 'btn btn-default col-md-4',
             'data' => [
                 'confirm' => 'Finalizar Inscrição? Após esse passo seus dados serão submetidos para avaliação e não poderão ser alterados, sob pena de exclusão do
             Curso.',

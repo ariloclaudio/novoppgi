@@ -140,8 +140,7 @@ $cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
 </div>
 
     <div class="form-group" style="margin-top:10px">
-
-        <?= Html::submitButton('Salvar e Continuar' , ['onclick' => 'validacao()','class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Continuar</b>' , ['class' => 'btn btn-default col-md-12']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
