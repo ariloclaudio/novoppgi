@@ -180,8 +180,8 @@ class Candidato extends \yii\db\ActiveRecord
             'passaporte' => 'Passaporte',
             'cpf' => 'CPF',
             'sexo' => 'Sexo',
-            'telresidencial' => 'Celular',
-            'telcelular' => 'Celular Alternativo',
+            'telresidencial' => 'Telefone Principal',
+            'telcelular' => 'Telefone Alternativo',
             'cursodesejado' => 'Curso Desejado',
             'regime' => 'Regime',
             'inscricaoposcomp' => 'Inscricao PosComp',
@@ -224,7 +224,12 @@ class Candidato extends \yii\db\ActiveRecord
             'resultado' => 'Resultado',
             'periodo' => 'Período',
             'idEdital' => 'Edital',
-            'declaracao' => 'Declaração',
+            'declaracao' => 'Declaração de Veracidade de Informações',
+            'cartaNomeReq1' => 'Nome',
+            'cartaNomeReq2' => 'Nome',
+            'cartaEmailReq1' => 'Email',
+            'cartaEmailReq2' => 'Email',
+            
         ];
     }
 

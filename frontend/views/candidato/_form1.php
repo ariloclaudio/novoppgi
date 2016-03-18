@@ -81,10 +81,10 @@ $cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
     <div style="clear: both;"><legend>Telefones para Contato</legend></div>
     <div class = "row">
     <?= $form->field($model, 'telresidencial', ['options' => ['class' => 'col-md-3']])->widget(\yii\widgets\MaskedInput::className(), [
-    'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Celular:</b>") ?>
+    'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Telefone Principal:</b>") ?>
 
     <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
-    'mask' => '(99) 99999-9999'])->label("Celular Alternativo:") ?>
+    'mask' => '(99) 99999-9999'])->label("Telefone Alternativo:") ?>
     </div>
 
     <div style="clear: both;"><legend>Dados do PosComp</legend></div>
