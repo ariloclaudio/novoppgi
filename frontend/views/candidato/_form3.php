@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use app\models\LinhaPesquisa;
 use yii\helpers\ArrayHelper;
+use kartik\widgets\SwitchInput;
 
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
@@ -119,11 +120,70 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
     </div>
 
     <div class="row">
-        <?= $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label($labelProposta) ?>
+
+    <div style="padding: 3px 3px 3px 3px">
+        <?php 
+        if(!isset($model->proposta)){
+            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
+            echo "<div style= padding: 3px 3px 3px 3px'> <b>Proposta de Trabalho:</b> 
+                Você já fez o upload deste Arquivo, clique no icone ao lado para visualizá-lo: <a href=index.php?r=candidato/pdf&documento=".$model->proposta."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br> ";
+            echo $form->field($model, 'propostaUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
+        }
+        else{
+
+            echo $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b><br>");
+        }
+        ?>
+        <br><br><br>
+        <div id="divPropostaFile" style="display: none">
+        <br>
+        <?= $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label(false) ?>
+        <div style='border-bottom:solid 1px'> </div>
+        <?php echo "</div>"; ?>
+        </div>
     </div>
+
+    <br>
+
+    </div>
+
+
     <div class="row">
-        <?= $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label($labelComprovante) ?>
+
+    <div style="padding: 3px 3px 3px 3px">
+        <?php 
+        if(!isset($model->comprovante)){
+            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
+            echo "<div style= padding: 3px 3px 3px 3px'> <b>Proposta de Trabalho:</b> 
+                Você já fez o upload deste Arquivo, clique no icone ao lado para visualizá-lo: <a href=index.php?r=candidato/pdf&documento=".$model->proposta."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br> ";
+            echo $form->field($model, 'comprovanteUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
+        }
+        else{
+
+            echo $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b><br>");
+        }
+        ?>
+
+        <div id="divComprovanteFile" style="display: none">
+        <br><br><br><br>
+        <?= $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label(false) ?>
+        <div style='border-bottom:solid 1px'> </div>
+        <?php echo "</div>"; ?>
+        </div>
     </div>
+
+    <br>
+    </div>
+
+
     <div style="clear: both;"><legend>Declaração de Veracidade de Informações</legend></div>
     <div align="justify">
     <div class="row">

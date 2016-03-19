@@ -24,6 +24,57 @@ $(document).ready( function() {
 
    });
 
+
+
+
+
+
+
+    $('input[name="Candidato[historicoUpload]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+        if(state){
+              $('#divHistoricoFile').css('display','block');
+        }else{
+              $('#divHistoricoFile').css('display','none');
+        }
+    });
+
+    $('input[name="Candidato[curriculumUpload]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+            if(state){
+                  $('#divCurriculumFile').css('display','block');
+            }else{
+                  $('#divCurriculumFile').css('display','none');
+            }
+        });
+
+    $('input[name="Candidato[propostaUpload]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+            if(state){
+                  $('#divPropostaFile').css('display','block');
+            }else{
+                  $('#divPropostaFile').css('display','none');
+            }
+        });
+
+    $('input[name="Candidato[comprovanteUpload]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
+            if(state){
+                  $('#divComprovanteFile').css('display','block');
+            }else{
+                  $('#divComprovanteFile').css('display','none');
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    $('#candidato-nacionalidade').click(function(){
    		if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
    			$('#divBrasileiro').css('display', 'block');
@@ -201,3 +252,45 @@ $( window ).load(function() {
         $('#divBrasileiro').css('display', 'none');
     }
 });
+
+
+        function aparecerInputHistorico(){
+
+
+            if (($('#candidato-historicoupload').is(":checked")).val() == "1"){
+                $('#divHistoricoFile').css('display','block');
+            }
+            else if (($('#candidato-historicoupload').is(":checked")).val() == "0"){
+                $('#divHistoricoFile').css('display','none');
+              }
+        }
+
+        function aparecerInputCurriculum(){
+
+            if ($("input:radio[name='curriculumUpload']:checked").val() == "1"){
+                $('#divCurriculumFile').css('display','block');
+            }
+            else if($("input:radio[name='curriculumUpload']:checked").val() == "0"){
+                $('#divCurriculumFile').css('display','none');
+              }
+        }
+
+        function aparecerInputProposta(){
+
+            if ($("input:radio[name='propostaUpload']:checked").val() == "1"){
+                $('#divPropostaFile').css('display','block');
+            }
+            else if($("input:radio[name='propostaUpload']:checked").val() == "0"){
+                $('#divPropostaFile').css('display','none');
+              }
+        }
+
+        function aparecerInputComprovante(){
+
+            if ($("input:radio[name='comprovanteUpload']:checked").val() == "1"){
+                $('#divComprovanteFile').css('display','block');
+            }
+            else if($("input:radio[name='comprovanteUpload']:checked").val() == "0"){
+                $('#divComprovanteFile').css('display','none');
+              }
+        }

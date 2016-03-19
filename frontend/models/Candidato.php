@@ -18,6 +18,11 @@ class Candidato extends \yii\db\ActiveRecord
     public $propostaFile;
     public $comprovanteFile;
     public $publicacoesFile;
+
+    public $historicoUpload;
+    public $curriculumUpload;
+    public $propostaUpload;
+    public $comprovanteUpload;
     //public $declaracao;
     
     /*Cartas de recomendação Obrigatórias*/

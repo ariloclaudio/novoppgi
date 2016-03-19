@@ -1,5 +1,6 @@
 <?php
 
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
@@ -8,6 +9,7 @@ use kartik\widgets\FileInput;
 use yii\helpers\Url;
 use yii\bootstrap\Collapse;
 use yii\bootstrap\Modal;
+use kartik\widgets\SwitchInput;
 
 $uploadRealizados = 0;
 $uploadXML = 0;
@@ -86,10 +88,65 @@ if($model->instituicaoacademica3 == ""){
         'mask' => '9999']) ?>
     </div>
     
-    <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ?>
+    <div style="padding: 3px 3px 3px 3px">
+        <?php 
+        if(isset($model->historico)){
+            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
+            echo "<div style= padding: 3px 3px 3px 3px'> <b>Histórico Escolar (mesmo que incompleto para os formandos):<br> 
+                Você já fez o upload deste Arquivo, clique no icone ao lado para visualizá-lo: <a href=index.php?r=candidato/pdf&documento=".$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br> ";
+            
+            echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
+         
+        }
+        else{
 
-    <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label($labelCurriculum) ?>
+            echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b>");
+        }
+        ?>
 
+<br><br><br>
+        <div id="divHistoricoFile" style="display: none">
+        <br>
+        <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label(false); ?>
+        <div style='border-bottom:solid 1px'> </div>
+        <?php echo "</div>"; ?>
+    </div>
+
+    <br>
+
+
+    <div style="padding: 3px 3px 3px 3px">
+        <?php 
+        if(isset($model->curriculum)){
+            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
+            echo "<div style= padding: 3px 3px 3px 3px'> <b><b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b><br>Arquivo contendo seu Curriculum: <a href=index.php?r=candidato/pdf&documento=".$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br>";
+            
+            echo $form->field($model, 'curriculumUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
+        }
+
+
+        else{
+            echo $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b>");
+        }
+        ?>
+
+<br><br><br><br>
+
+        <div id="divCurriculumFile" style="display: none">
+
+        <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label(false);?>
+        <div style='border-bottom:solid 1px'>
+        </div>
+
+    </div>
 
     <div style="clear: both;"><legend>Publicações</legend></div>
 
@@ -98,7 +155,6 @@ if($model->instituicaoacademica3 == ""){
 
         <?= Html::submitButton('Enviar', ['class' => 'btn btn-primary col-md-2', 'name' => 'salvar']) ?>
     </div>
-
 
     <div id="divPublicacoes" style="display: <?= $hidePublicacoes ?>;">
         <p>Foram encontradas total de <?= count($itensPeriodicos) + count($itensConferencias) ?> Publicações</p>
