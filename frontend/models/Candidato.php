@@ -229,6 +229,12 @@ class Candidato extends \yii\db\ActiveRecord
             'cartaNomeReq2' => 'Nome',
             'cartaEmailReq1' => 'Email',
             'cartaEmailReq2' => 'Email',
+
+                'historicoFile' => 'Histórico Escolar',
+                'curriculumFile' => 'Curriculum Vittae',
+                'propostaFile' => 'Proposta de Trabalho',
+                'comprovanteFile' => 'Comprovante de Pagamento',
+                'publicacoesFile' => 'Curriculum Vittae XML',
             
         ];
     }
