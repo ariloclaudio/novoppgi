@@ -40,14 +40,45 @@ $count_candidatos = count($candidato);
                                 };
                                     xhttp2.open("GET", "index.php?r=edital/listacandidatos", true);
                                     xhttp2.send();
+
+
+                                var xhttp3 = new XMLHttpRequest();
+                                xhttp3.onreadystatechange = function() {
+                                    if (xhttp3.readyState == 4 && xhttp3.status == 200) {
+                                        document.getElementById("listaEncerrados").innerHTML = xhttp3.responseText;
+                                    }
+                                };
+                                    xhttp3.open("GET", "index.php?r=edital/listaencerrados", true);
+                                    xhttp3.send();
+
+                                var xhttp4 = new XMLHttpRequest();
+                                xhttp4.onreadystatechange = function() {
+                                    if (xhttp4.readyState == 4 && xhttp4.status == 200) {
+                                        var class2 = document.getElementsByClassName("quantidadeEncerrados");
+                                        class2[0].innerHTML = xhttp4.responseText;
+                                        class2[1].innerHTML = xhttp4.responseText;
+                                    }
+                                };
+                                    xhttp4.open("GET", "index.php?r=edital/quantidadeencerrados", true);
+                                    xhttp4.send();
+
+
                             }, 1000
     );
 
 
-    function zerarNotificacao(){
+    function zerarNotificacaoInscricoes(){
 
         var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "index.php?r=edital/zerarnotificacao", true);
+            xhttp.open("GET", "index.php?r=edital/zerarnotificacaoinscricoes", true);
+            xhttp.send();
+
+    }
+
+    function zerarNotificacaoEncerrados(){
+        alert('oi');
+        var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "index.php?r=edital/zerarnotificacaoencerrados", true);
             xhttp.send();
 
     }
@@ -84,78 +115,41 @@ $count_candidatos = count($candidato);
                         <span class="label label-success"> <div class="quantidadeCandidatos"> </div> </span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header"> <div style="display: inline" class="quantidadeCandidatos"> </div> Novos Candidatos</b></li>
+                        <li class="header"> Número de Novas Inscrições: <div style="display: inline" class="quantidadeCandidatos"> </div> </b></li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul id="listaCandidatos" class="menu">
 
-                                <li><!-- start message -->
-                                    <a href="#">
-                                        <h4>
-                                            Support Team
-                                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                                <!-- end message -->
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src='../web/img/candidato.png' class='img-circle'
-                                                 alt='user image'/>
-                                        </div>
-                                        <h4>
-                                            AdminLTE Design Team
-                                            <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user4-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
-                                        </div>
-                                        <h4>
-                                            Developers
-                                            <small><i class="fa fa-clock-o"></i> Today</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user3-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
-                                        </div>
-                                        <h4>
-                                            Sales Department
-                                            <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user4-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
-                                        </div>
-                                        <h4>
-                                            Reviewers
-                                            <small><i class="fa fa-clock-o"></i> 2 days</small>
-                                        </h4>
-                                        <p>Why not buy a new awesome theme?</p>
-                                    </a>
-                                </li>
+
                             </ul>
+
                         </li>
-                        <li class="footer"><a href="#" onclick = "zerarNotificacao()"> Zerar Notificação </a></li>
+                        <li class="footer"><a href="#" onclick = "zerarNotificacaoInscricoes()"> Limpar Notificações </a></li>
                     </ul>
                 </li>
+
+
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning"> <div class=" quantidadeEncerrados "> </div> </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header"> Número de Inscrições Finalizadas: <div style="display: inline" class=" quantidadeEncerrados "> </div> </b></li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul id="listaEncerrados" class="menu">
+
+
+                            </ul>
+                            
+                        </li>
+                        <li class="footer"><a href="#" onclick = "zerarNotificacaoEncerrados()"> Limpar Notifições </a></li>
+                    </ul>
+                </li>
+
+
+
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>

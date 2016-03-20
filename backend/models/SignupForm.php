@@ -17,6 +17,7 @@ class SignupForm extends Model
     public $nome;
 
     public $visualizacao_candidatos;
+    public $visualizacao_candidatos_finalizados;
 
     /**
      * @inheritdoc
@@ -74,6 +75,7 @@ public function attributeLabels()
             $user->setPassword($this->password);
             $user->generateAuthKey();
             $user->visualizacao_candidatos =  date("Y-m-d H:i:s");
+            $user->visualizacao_candidatos_finalizados =  date("Y-m-d H:i:s");
             if ($user->save()) {
                 return $user;
             }

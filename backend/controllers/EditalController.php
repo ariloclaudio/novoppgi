@@ -114,24 +114,58 @@ class EditalController extends Controller
 
     }
 
-    public function actionZerarnotificacao()
+    public function actionZerarnotificacaoinscricoes()
     {       
-
             $usuario = new User();
             $usuario = $usuario->findIdentity(Yii::$app->user->identity->id);
             $usuario->visualizacao_candidatos = date("Y-m-d H:i:s");
             $usuario->save();
-
     }
     
-
 //fim das funções responsáveis pelas notificações de novas INSCRIÇÕES
 
+//inicio das funcoes responsáveis pelas notificações de ENCERRAMENTO de novas inscrições:
+
+
+    public function actionListaencerrados()
+    {       
+
+            $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos_finalizados;
+            $candidato = Candidato::find()->where("fim > '".$ultima_visualizacao."'")->orderBy("inicio DESC")->all(); 
+
+            for ($i=0; $i<count($candidato); $i++){
+                echo "<li><a href='#'>";
+                echo "<div class='pull-left'>
+                <img src='../web/img/candidato.png' class='img-circle'
+                alt='user image'/>
+                </div>";
+                echo("<p>"."Email: ".$candidato[$i]->email)."<br>";
+                echo("Data: ".$candidato[$i]->fim)."</p></a></li>";
+            }
+
+    }
+
+    public function actionQuantidadeencerrados()
+    {       
+
+            $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos_finalizados;
+            $candidato = Candidato::find()->where("fim > '".$ultima_visualizacao."'")->all(); 
+
+            echo count($candidato);
+
+    }
+
+    public function actionZerarnotificacaoencerrados()
+    {       
+            $usuario = new User();
+            $usuario = $usuario->findIdentity(Yii::$app->user->identity->id);
+            $usuario->visualizacao_candidatos_finalizados = date("Y-m-d H:i:s");
+            $usuario->save();
+    }
 
 
 
-
-
+//fim das funções responsáveis pelas notificações de encerramento de novas inscrições
 
 
 
