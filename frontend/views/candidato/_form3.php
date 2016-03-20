@@ -136,7 +136,11 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
                 'offText' => 'Não',
                 ]])->label("<font color='#FF0000'>*</font> Deseja mudar o arquivo?");
         }else{
+<<<<<<< HEAD
             echo $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Comprovante de Pagamento: </b>");
+=======
+            echo $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b>");
+>>>>>>> ce3caf39d09c69ef252c62063b18ca1cf7f3dcc4
         }
         ?>
     </div>

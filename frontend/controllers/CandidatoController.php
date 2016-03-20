@@ -93,16 +93,7 @@ class CandidatoController extends Controller
         $id = $session->get('candidato');
         $model = $this->findModel($id);
 
-        $publicacoes = CandidatoPublicacoes::find()->where(['idCandidato' => $model->id])->all();
-
-        for ($i=0; $i < count($publicacoes); $i++) {
-            if($publicacoes[$i]->tipo == 2)
-                $itensPeriodicos[$i] = ['label' => $publicacoes[$i]->titulo, 
-                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
-            else
-                $itensConferencias[$i] = ['label' => $publicacoes[$i]->titulo, 
-                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
-        }
+        
 
         if ($model->load(Yii::$app->request->post())){
 
@@ -126,6 +117,16 @@ class CandidatoController extends Controller
         }
         else if( $model->passoatual == 0){
                 return $this->redirect(['passo1']);
+        }
+
+        $publicacoes = CandidatoPublicacoes::find()->where(['idCandidato' => $model->id])->all();
+        for ($i=0; $i < count($publicacoes); $i++) {
+            if($publicacoes[$i]->tipo == 2)
+                $itensPeriodicos[$i] = ['label' => $publicacoes[$i]->titulo, 
+                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
+            else
+                $itensConferencias[$i] = ['label' => $publicacoes[$i]->titulo, 
+                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
         }
 
         return $this->render('create2', [
