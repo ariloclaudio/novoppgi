@@ -62,7 +62,7 @@ class Edital extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'numero' => 'Numero',
+            'numero' => 'Número',
             'datainicio' => 'Data Ínicio',
             'datafim' => 'Data Fim',
             'documento' => 'Documento',
@@ -108,9 +108,17 @@ class Edital extends \yii\db\ActiveRecord
     public function getQuantidadeInscritos($id)
     {
 
-        $results = Candidato::find()->where("idEdital = '".$this->numero."'")->count(); 
+        $results1 = Candidato::find()->where("idEdital = '".$this->numero."'")->count(); 
 
-        return $results;
+        return $results1;
+    }
+
+    public function getQuantidadeInscritosFinalizados($id)
+    {
+
+        $results2 = Candidato::find()->where("passoatual = 4 AND idEdital = '".$this->numero."'")->count(); 
+
+        return $results2;
     }
 
         public function getVagasMestrado()
