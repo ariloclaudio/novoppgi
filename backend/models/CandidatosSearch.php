@@ -42,7 +42,7 @@ class CandidatosSearch extends Candidato
     public function search($params)
     {
         $idEdital = $params['id'];
-        $query = Candidato::find()->where('idEdital ="'.$idEdital.'"');
+        $query = Candidato::find()->select("j17_linhaspesquisa.nome as nomeLinhaPesquisa, j17_candidatos.*")->innerJoin("j17_linhaspesquisa","j17_candidatos.idLinhaPesquisa = j17_linhaspesquisa.id")->where('idEdital ="'.$idEdital.'"');
 
         // add conditions that should always apply here
 

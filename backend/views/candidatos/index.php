@@ -70,37 +70,9 @@ function goBack() {
             // 'cargo',
             // 'vinculoconvenio',
             // 'convenio',
-            [   'label' => 'Linha de Pesquisa',
-                'attribute' => 'linhapesquisa',
-                'value' => function ($model) {
 
-                        switch ($model->idLinhaPesquisa) {
-                            case 1:
-                                return "BD e RI";
-                                //return 'Banco de Dados e Recuperação de Informação';
-                                break;
-                            case 2:
-                                return "SistEmb & EngSW";
-                                //return Sistemas Embarcados e Engenharia de Software
-                                break;
-                            case 3:
-                                return "Int. Art.";
-                                //return Inteligência Artificial
-                                break;
-                            case 4:
-                                return "Visão Comp. e Rob.";
-                                //return Visão Computacional e Robótica
-                                break;
-                            case 5:
-                                return "Redes e Telec.";
-                                //return Redes e Telecomunicações
-                                break;
-                            case 5:
-                                return "Ot., Alg. e Complex.";
-                                //return Otimização, Alg. e Complexidade Computacional
-                                break;
-                        }
-                },
+            [   'label' => 'Linha Pesquisa',
+                'attribute' => 'nomeLinhaPesquisa',
             ],
     
             // 'tituloproposta',

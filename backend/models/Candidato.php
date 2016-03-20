@@ -6,6 +6,8 @@ use Yii;
 
 class Candidato extends \yii\db\ActiveRecord
 {
+
+        public $nomeLinhaPesquisa;
     /**
      * @inheritdoc
      */

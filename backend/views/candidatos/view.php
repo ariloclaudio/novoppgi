@@ -89,7 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'vinculoconvenio',
 //           'convenio',
                 [
-                     'attribute' => 'linhapesquisa',
+                     'attribute' => 'idLinhaPesquisa',
                      'label'=> 'Linha de Pesquisa',
                 ],
                 [

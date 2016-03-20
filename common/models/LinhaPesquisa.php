@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace common\models;
 
 use Yii;
 
@@ -49,7 +49,7 @@ class LinhaPesquisa extends \yii\db\ActiveRecord
     }
 
     public function getLinhaPesquisaNome($id){
-        return LinhaPesquisa::find("nome")->select("")->where("id = '".$model->idLinhaPesquisa."'")->one();
+        return LinhaPesquisa::find("nome as nomeLinhaPesquisa")->select("")->where("id = '".$id."'")->one();
     }
 
 }

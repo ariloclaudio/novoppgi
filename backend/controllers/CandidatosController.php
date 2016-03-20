@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use app\models\Candidato;
 use app\models\CandidatosSearch;
+use common\models\LinhaPesquisa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -66,33 +67,12 @@ class CandidatosController extends Controller
     {
 
         $model = $this->findModel($id);
-
-        switch ($model->linhapesquisa) {
-            case 1:
-                //return "BD e RI";
-                $model->linhapesquisa = 'Banco de Dados e Recuperação de Informação';
-                break;
-            case 2:
-                //return "SistEmb & EngSW";
-                $model->linhapesquisa = 'Sistemas Embarcados e Engenharia de Software';
-                break;
-            case 3:
-                //return "Int. Art.";
-                $model->linhapesquisa = 'Inteligência Artificial';
-                break;
-            case 4:
-                //return "Visão Comp. e Rob.";
-                $model->linhapesquisa = 'Visão Computacional e Robótica';
-                break;
-            case 5:
-                //return "Redes e Telec.";
-                $model->linhapesquisa = 'Redes e Telecomunicações';
-                break;
-            case 5:
-                //return "Ot., Alg. e Complex.";
-                $model->linhapesquisa = 'Otimização, Alg. e Complexidade Computacional';
-                break;
-        }
+        
+        //obtendo o nome linha de pesquisa através do id da linha de pesquisa
+        $linhaPesquisa = new LinhaPesquisa();
+        $linhaPesquisa = $linhaPesquisa->getLinhaPesquisaNome($model->idLinhaPesquisa);
+        $model->idLinhaPesquisa = $linhaPesquisa->nome;
+        //fim de obter nome da linha de pesquisa
 
         return $this->render('view', [
             'model' => $model,
