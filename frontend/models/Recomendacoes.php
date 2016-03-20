@@ -181,4 +181,8 @@ class Recomendacoes extends \yii\db\ActiveRecord
     public function setDataEnvio(){
         $this->dataEnvio = date('Y-m-d H:i:s');
     }
+    public function setDataResposta(){
+        $this->dataResposta = date('Y-m-d H:i:s');
+    }
+
 }

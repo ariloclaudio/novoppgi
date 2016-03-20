@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use app\models\Edital;
 use common\models\User;
+use common\models\Recomendacoes;
 use app\models\Candidato;
 use app\models\SearchEdital;
 use yii\web\Controller;
@@ -56,6 +57,7 @@ class EditalController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -79,9 +81,6 @@ class EditalController extends Controller
             'model' => $model,
         ]);
     }
-
-
-
 
 
 
@@ -131,7 +130,7 @@ class EditalController extends Controller
     {       
 
             $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos_finalizados;
-            $candidato = Candidato::find()->where("fim > '".$ultima_visualizacao."'")->orderBy("inicio DESC")->all(); 
+            $candidato = Candidato::find()->where("fim > '".$ultima_visualizacao."'")->orderBy("fim DESC")->all(); 
 
             for ($i=0; $i<count($candidato); $i++){
                 echo "<li><a href='#'>";
@@ -162,10 +161,55 @@ class EditalController extends Controller
             $usuario->visualizacao_candidatos_finalizados = date("Y-m-d H:i:s");
             $usuario->save();
     }
-
-
-
 //fim das funções responsáveis pelas notificações de encerramento de novas inscrições
+
+//funções responsáveis pelas notificações das cartas respondidas
+
+
+    public function actionCartasrespondidas()
+    {       
+
+            $ultima_visualizacao = Yii::$app->user->identity->visualizacao_cartas_respondidas;
+            $recomendacao = Recomendacoes::find()->innerJoin('j17_candidatos','j17_candidatos.id = j17_recomendacoes.idCandidato')->
+                where("dataResposta > '".$ultima_visualizacao."'")->orderBy("dataResposta DESC")->all();
+
+            for ($i=0; $i<count($recomendacao); $i++){
+                echo "<li><a href='#'>";
+                echo "<div class='pull-left'>
+                <img src='../web/img/candidato.png' class='img-circle'
+                alt='user image'/>
+                </div>";
+                echo("<p>"."Candidato: ".$recomendacao[$i]->candidato->nome)."<br>";
+                echo("<p>"."Recomendado por: ".$recomendacao[$i]->nome)."<br>";
+                echo("Data Resposta: ".$recomendacao[$i]->dataResposta)."</p></a></li>";
+            }
+
+    }
+
+    public function actionQuantidadecartasrecebidas()
+    {       
+
+            $ultima_visualizacao = Yii::$app->user->identity->visualizacao_cartas_respondidas;
+            $recomendacao = Recomendacoes::find()->innerJoin('j17_candidatos','j17_candidatos.id = j17_recomendacoes.idCandidato')->
+                where("dataResposta > '".$ultima_visualizacao."'")->all();
+
+            echo count($recomendacao);
+
+    }
+
+    public function actionZerarnotificacaocartas()
+    {       
+            $usuario = new User();
+            $usuario = $usuario->findIdentity(Yii::$app->user->identity->id);
+            $usuario->visualizacao_cartas_respondidas = date("Y-m-d H:i:s");
+            $usuario->save();
+    }
+
+
+//fim das funções responsáveis pelas notificações das cartas respondidas
+
+
+
 
 
 

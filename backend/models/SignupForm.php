@@ -18,6 +18,7 @@ class SignupForm extends Model
 
     public $visualizacao_candidatos;
     public $visualizacao_candidatos_finalizados;
+    public $visualizacao_cartas_respondidas;
 
     /**
      * @inheritdoc
@@ -76,6 +77,8 @@ public function attributeLabels()
             $user->generateAuthKey();
             $user->visualizacao_candidatos =  date("Y-m-d H:i:s");
             $user->visualizacao_candidatos_finalizados =  date("Y-m-d H:i:s");
+            $user->visualizacao_cartas_respondidas =  date("Y-m-d H:i:s");
+
             if ($user->save()) {
                 return $user;
             }
