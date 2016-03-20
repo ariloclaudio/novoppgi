@@ -97,15 +97,15 @@ class Candidato extends \yii\db\ActiveRecord
 
             [['cursograd', 'instituicaograd', 'egressograd'], 'required', 'when' => function($model){ return $model->passoatual == 2;},
             'whenClient' => "function (attribute, value) {
-                return $('#form_hidden').val() == 'passo_form_2';
+                return $('#form_hidden').val() == 'passo_form_2' && $('#ignorarRequired').val() == '0';
             }"],
             [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->historico) && $model->passoatual == 2;}, 
                 'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2' && ($('#form_upload').val() == 2 || $('#form_upload').val() == 0);
+                    return $('#form_hidden').val() == 'passo_form_2' && $('#ignorarRequired').val() == '0' && ($('#form_upload').val() == 2 || $('#form_upload').val() == 0);
                 }"],
             [['curriculumFile'], 'required', 'when' => function($model){ return !isset($model->curriculum) && $model->passoatual == 2;},
                 'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2' && ($('#form_upload').val() == 1 || $('#form_upload').val() == 0);
+                    return $('#form_hidden').val() == 'passo_form_2' && $('#ignorarRequired').val() == '0' && ($('#form_upload').val() == 1 || $('#form_upload').val() == 0);
                 }"],
             [['publicacoesFile'], 'required', 'when' => function($model){ return !isset($model->publicacoesFile) && $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {

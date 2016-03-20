@@ -1,3 +1,21 @@
+<script type="text/javascript" >
+
+function tirarRequired(){
+    document.getElementById("ignorarRequired").value = 1;
+    var x = document.getElementById("ignorarRequired").value;
+    alert(x);
+}
+
+function colocarRequired(){
+    document.getElementById("ignorarRequired").value = 0;
+    var x = document.getElementById("ignorarRequired").value;
+    alert(x);
+}
+
+
+
+</script>
+
 <?php
 
 
@@ -49,6 +67,7 @@ if($model->instituicaoacademica3 == ""){
         <input type="hidden" id = "form_hidden" value ="passo_form_2"/>
         <input type="hidden" id = "form_upload" value = '<?=$uploadRealizados?>' />
         <input type="hidden" id = "form_uploadxml" value = '<?= $uploadXML ?>' />
+        <input type="hidden" id = "ignorarRequired" value = '0' />
         
 
     <div style="clear: both;"><legend>Curso de Graduação</legend></div>
@@ -78,7 +97,7 @@ if($model->instituicaoacademica3 == ""){
         'mask' => '9999']) ?>
     </div>
     
-    <div style="padding: 3px 3px 3px 3px">
+    <div class="row" style="padding: 3px 3px 3px 3px">
         <?php 
         if(isset($model->historico)){
             echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Histórico Escolar (mesmo que incompleto para os formandos):<br> 
@@ -89,13 +108,15 @@ if($model->instituicaoacademica3 == ""){
                 'onText' => 'Sim',
                 'offText' => 'Não',
                 ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
-         
+
         }
         else{
 
             echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b>");
         }
         ?>
+    </div>
+    <div class="row">
         <?php if(isset($model->historico)){ ?>
             <div id="divHistoricoFile" style="display: none; clear: both;">
                 <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label(false); ?>
@@ -104,7 +125,7 @@ if($model->instituicaoacademica3 == ""){
         <?php } ?>
     </div>
 
-    <div>
+    <div class="row">
         <?php 
         if(isset($model->curriculum)){
             echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'><b><b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b><br>Você já fez o upload do seu curriculum, <a href=index.php?r=candidato/pdf&documento=".$model->curriculum.">clique aqui </a>para visualizá-lo.</b><br></div>";
@@ -118,6 +139,8 @@ if($model->instituicaoacademica3 == ""){
             echo $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b>");
         }
         ?>
+    </div>
+    <div class="row">
         <?php if(isset($model->curriculum)){ ?>
             <div id="divCurriculumFile" style="display: none; clear: both;">
                 <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label(false);?>
@@ -132,7 +155,7 @@ if($model->instituicaoacademica3 == ""){
     <div class="row">
         <?= $form->field($model, 'publicacoesFile', ['options' => ['class' => 'col-md-6']])->FileInput(['accept' => '.xml'])->label("<div><font color='#FF0000'>*</font> <b>Curriculum Vittae XML (no formato Lattes - http://lattes.cnpq.br):</b></div>") ?>
 
-        <?= Html::submitButton('Enviar', ['class' => 'btn btn-primary col-md-2', 'name' => 'salvar']) ?>
+        <?= Html::submitButton('Enviar', ['onclick' =>  'tirarRequired()' , 'class' => 'btn btn-primary col-md-2', 'name' => 'salvar']) ?>
     </div>
 
     <div id="divPublicacoes" style="display: <?= $hidePublicacoes ?>;">
@@ -199,7 +222,8 @@ if($model->instituicaoacademica3 == ""){
     
     <div class="form-group">
         <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo1'], ['class' => 'btn btn-default col-md-6 col-xs-12']) ?>
-        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Continuar</b>', ['class' => 'btn btn-default col-md-6 col-xs-12', 'name' => 'enviar']) ?>
+        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Continuar</b>', 
+        ['onclick' => 'colocarRequired()' ,'class' => 'btn btn-default col-md-6 col-xs-12', 'name' => 'enviar']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

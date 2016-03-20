@@ -43,7 +43,7 @@ class SearchEdital extends Edital
      */
     public function search($params)
     {
-        $query = Edital::find()->select(['*','COUNT(idEdital) as quantidadeinscritos'])->leftJoin("j17_candidatos","idEdital = numero")->groupBy('numero')->orderBy('datacriacao DESC');
+        $query = Edital::find()->select(['*','COUNT(idEdital) as quantidadeinscritos','COUNT(idEdital) as quantidadeinscritosfinalizados'])->leftJoin("j17_candidatos","idEdital = numero")->groupBy('numero')->orderBy('datacriacao DESC');
 
 
         // add conditions that should always apply here
@@ -63,6 +63,10 @@ class SearchEdital extends Edital
                 $dataProvider->sort->attributes['quantidadeinscritos'] = [
         'asc' => ['quantidadeinscritos' => SORT_ASC],
         'desc' => ['quantidadeinscritos' => SORT_DESC],
+        ];
+                $dataProvider->sort->attributes['quantidadeinscritosfinalizados'] = [
+        'asc' => ['quantidadeinscritosfinalizados' => SORT_ASC],
+        'desc' => ['quantidadeinscritosfinalizados' => SORT_DESC],
         ];
 
         // grid filtering conditions

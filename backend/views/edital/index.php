@@ -47,18 +47,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'numero',
             [
-                'label' => 'Carta de Recomendação',
-                'attribute' => 'cartarecomendacao',
-                'value' => function ($model) {
-                        if($model->cartarecomendacao == 0){
-                            return "Não";
-                        }
-                        else{
-                            return "Sim";
-                        }
-                },
-            ],
-            [
                 'label' => 'Data início',
                 'attribute' => 'datainicio',
                 'value' => function ($model) {
@@ -73,10 +61,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
-                'label' => 'Total de Inscritos',
+                'label' => 'Inscrições Iniciadas',
                 'attribute' => 'quantidadeinscritos',
                 'value' => function ($model) {
                             return $model->getQuantidadeInscritos($model->numero);
+                },
+            ],
+            [
+                'label' => 'Inscrições Encerradas',
+                'attribute' => 'quantidadeinscritosfinalizados',
+                'value' => function ($model) {
+                            return $model->getQuantidadeInscritosFinalizados($model->numero);
                 },
             ],
             [
