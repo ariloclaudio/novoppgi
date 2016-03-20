@@ -23,21 +23,11 @@ if(count($itensPeriodicos) + count($itensConferencias) > 0){
     $hideInputPublicacoes = 'block';
 }
 
-$labelHistorico = "<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b><br>Arquivo contendo seu Histórico:";
 if(isset($model->historico)){
-    $labelHistorico .= "<a href=index.php?r=candidato/pdf&documento=".$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados = 1;
-}else{
-    $labelHistorico.= " <i>Nenhum arquivo de histórico carregado.</i>";
-}
 
-$labelCurriculum = "<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b><br>Arquivo contendo seu Curriculum:";
 if(isset($model->curriculum)){
-    $labelCurriculum .= "<a href=index.php?r=candidato/pdf&documento=".$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
     $uploadRealizados += 2;
-}else{
-    $labelCurriculum .= " <i>Nenhum arquivo de Curriculum carregado.</i>";
-}
 
 if($model->instituicaoacademica2 == ""){
     $hideInstituicao2 = 'none';
@@ -91,7 +81,6 @@ if($model->instituicaoacademica3 == ""){
     <div style="padding: 3px 3px 3px 3px">
         <?php 
         if(isset($model->historico)){
-            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
             echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Histórico Escolar (mesmo que incompleto para os formandos):<br> 
                 Você já fez o upload do seu histórico, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-lo.</b><br></div>";
             

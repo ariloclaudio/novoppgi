@@ -77,9 +77,9 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $email
      * @return static|null
      */
-    public static function findByEmail($email)
+    public static function findByEmailAndPerfil($email, $perfil)
     {
-        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['email' => $email, $perfil => '1', 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -184,5 +184,20 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function descricaoPerfil(){
+        switch ($this->perfil) {
+            case '1':
+                return 'administrador';
+            case '2':
+                return 'coordenador';
+            case '3':
+                return 'secretaria';
+            case '4':
+                return 'professor';
+            case '5':
+                return 'aluno';
+        }
     }
 }

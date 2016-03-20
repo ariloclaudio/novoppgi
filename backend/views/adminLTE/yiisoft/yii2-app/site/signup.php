@@ -8,8 +8,10 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\MaskedInput;
 
+$perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4' => 'Professor', '5' => 'Aluno'];
+
+
 $this->title = 'Cadastro';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-signup">
 
@@ -35,6 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'password')->passwordInput()->label("<font color='#FF0000'>*</font> <b>Senha:</b>")  ?>
 
                 <?= $form->field($model, 'password_repeat')->passwordInput()->label("<font color='#FF0000'>*</font> <b>Repetir Senha:</b>")  ?>
+
+                <?= $form->field($model, 'perfil')->checkBoxList($perfis) ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Cadastrar-se', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

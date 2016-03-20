@@ -6,6 +6,8 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
+$perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4' => 'Professor', '5' => 'Aluno'];
+
 $this->title = 'Sign In';
 
 $fieldOptions1 = [
@@ -38,6 +40,8 @@ $fieldOptions2 = [
             ->field($model, 'password', $fieldOptions2)
             ->label(false)
             ->passwordInput(['placeholder' => $model->getAttributeLabel('senha')]) ?>
+
+        <?= $form->field($model, 'perfil')->radioList($perfis) ?>
 
         <div class="row">
             <div class="col-xs-8">

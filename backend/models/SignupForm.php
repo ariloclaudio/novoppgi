@@ -16,6 +16,14 @@ class SignupForm extends Model
     public $password_repeat;
     public $nome;
 
+    public $perfil;
+    public $perfilAtual;
+    public $administrador;
+    public $coordenador;
+    public $secretaria;
+    public $professor;
+    public $aluno;
+
     public $visualizacao_candidatos;
     public $visualizacao_candidatos_finalizados;
     public $visualizacao_cartas_respondidas;
@@ -27,9 +35,18 @@ class SignupForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
+            ['perfil', 'required'],
             ['username', 'required'],
             ['nome', 'required'],
             ['nome', 'string'],
+            
+            ['perfil', 'safe'],
+            ['administrador', 'string'],
+            ['coordenador', 'string'],
+            ['secretaria', 'string'],
+            ['professor', 'string'],
+            ['aluno', 'string'],
+
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Já existe usuário cadastrado com esse CPF'],
             [['username'], CpfValidator::className(), 'message' => 'CPF Inválido'],
             ['username', 'string'],
@@ -39,7 +56,7 @@ class SignupForm extends Model
             ['email', 'email'],
             ['nome', 'string', 'max' => 255],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Email já em uso.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -74,6 +91,27 @@ public function attributeLabels()
             $user->email = $this->email;
             $user->nome = $this->nome;
             $user->setPassword($this->password);
+
+            foreach ($this->perfil as $value) {
+                switch ($value) {
+                    case '1':
+                        $user->administrador = '1';            
+                        break;
+                    case '2':
+                        $user->coordenador = '1';            
+                        break;
+                    case '3':
+                        $user->secretaria = '1';
+                        break;
+                    case '4':
+                        $user->professor = '1';            
+                        break;
+                    case '5':
+                        $user->aluno = '1';            
+                        break;
+                }
+            }
+            
             $user->generateAuthKey();
             $user->visualizacao_candidatos =  date("Y-m-d H:i:s");
             $user->visualizacao_candidatos_finalizados =  date("Y-m-d H:i:s");
