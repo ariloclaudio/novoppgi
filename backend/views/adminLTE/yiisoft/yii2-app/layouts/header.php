@@ -1,9 +1,65 @@
 <?php
 use yii\helpers\Html;
 
+use app\models\Edital;
+use app\models\Candidato;
+
 /* @var $this \yii\web\View */
 /* @var $content string */
+
+
+$ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos;
+$candidato = Candidato::find()->where("inicio > '".$ultima_visualizacao."'")->all(); 
+$count_candidatos = count($candidato);
+
+
 ?>
+
+<script>
+
+    setInterval(function(){
+
+                                var xhttp = new XMLHttpRequest();
+                                xhttp.onreadystatechange = function() {
+                                    if (xhttp.readyState == 4 && xhttp.status == 200) {
+                                        var class1 = document.getElementsByClassName("quantidadeCandidatos");
+                                        class1[0].innerHTML = xhttp.responseText;
+                                        class1[1].innerHTML = xhttp.responseText;
+                                    }
+                                };
+                                    xhttp.open("GET", "index.php?r=edital/quantidadecandidatos", true);
+                                    xhttp.send();
+
+                                var xhttp2 = new XMLHttpRequest();
+                                xhttp2.onreadystatechange = function() {
+                                    if (xhttp2.readyState == 4 && xhttp2.status == 200) {
+                                        document.getElementById("listaCandidatos").innerHTML = xhttp2.responseText;
+                                    }
+                                };
+                                    xhttp2.open("GET", "index.php?r=edital/listacandidatos", true);
+                                    xhttp2.send();
+                            }, 1000
+    );
+
+
+    function zerarNotificacao(){
+
+        var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "index.php?r=edital/zerarnotificacao", true);
+            xhttp.send();
+
+    }
+
+
+
+</script>
+
+
+
+
+
+
+
 
 <header class="main-header">
 
@@ -23,19 +79,16 @@ use yii\helpers\Html;
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
-                        <span class="label label-success">4</span>
+                        <span class="label label-success"> <div class="quantidadeCandidatos"> </div> </span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 4 messages</li>
+                        <li class="header"> <div style="display: inline" class="quantidadeCandidatos"> </div> Novos Candidatos</b></li>
                         <li>
                             <!-- inner menu: contains the actual data -->
-                            <ul class="menu">
+                            <ul id="listaCandidatos" class="menu">
+
                                 <li><!-- start message -->
                                     <a href="#">
-                                        <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
-                                                 alt="User Image"/>
-                                        </div>
                                         <h4>
                                             Support Team
                                             <small><i class="fa fa-clock-o"></i> 5 mins</small>
@@ -47,8 +100,8 @@ use yii\helpers\Html;
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="<?= $directoryAsset ?>/img/user3-128x128.jpg" class="img-circle"
-                                                 alt="user image"/>
+                                            <img src='../web/img/candidato.png' class='img-circle'
+                                                 alt='user image'/>
                                         </div>
                                         <h4>
                                             AdminLTE Design Team
@@ -98,7 +151,7 @@ use yii\helpers\Html;
                                 </li>
                             </ul>
                         </li>
-                        <li class="footer"><a href="#">See All Messages</a></li>
+                        <li class="footer"><a href="#" onclick = "zerarNotificacao()"> Zerar Notificação </a></li>
                     </ul>
                 </li>
                 <li class="dropdown notifications-menu">
@@ -230,7 +283,7 @@ use yii\helpers\Html;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs">Alexander Pierce</span>
+                        <span class="hidden-xs"> <?php echo Yii::$app->user->identity->nome; ?> </span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -239,30 +292,18 @@ use yii\helpers\Html;
                                  alt="User Image"/>
 
                             <p>
-                                Alexander Pierce - Web Developer
+                                <?php echo Yii::$app->user->identity->nome; ?>
                                 <small>Member since Nov. 2012</small>
                             </p>
-                        </li>
-                        <!-- Menu Body -->
-                        <li class="user-body">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
-                            </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(
-                                    'Sign out',
+                                    'Sair',
                                     ['/site/logout'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>
@@ -271,10 +312,7 @@ use yii\helpers\Html;
                     </ul>
                 </li>
 
-                <!-- User Account: style can be found in dropdown.less -->
-                <li>
-                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                </li>
+
             </ul>
         </div>
     </nav>

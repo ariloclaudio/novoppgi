@@ -15,6 +15,8 @@ class SignupForm extends Model
     public $password;
     public $password_repeat;
 
+    public $visualizacao_candidatos;
+
     /**
      * @inheritdoc
      */
@@ -66,6 +68,7 @@ public function attributeLabels()
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
+            $user->visualizacao_candidatos =  date("Y-m-d H:i:s");
             if ($user->save()) {
                 return $user;
             }
@@ -73,4 +76,18 @@ public function attributeLabels()
 
         return null;
     }
+
+
+    protected function findModel($id)
+    {
+        if (($model = SignupForm::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+
+
+
 }

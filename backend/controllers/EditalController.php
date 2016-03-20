@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Edital;
+use common\models\User;
 use app\models\Candidato;
 use app\models\SearchEdital;
 use yii\web\Controller;
@@ -54,9 +55,6 @@ class EditalController extends Controller
         $searchModel = new SearchEdital();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        //$x = $dataProvider->getModels();
-        //print_r($x[0]->candidato[0]);
-        //exit;   
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -81,6 +79,61 @@ class EditalController extends Controller
             'model' => $model,
         ]);
     }
+
+
+
+
+
+
+//funções responsáveis pelas notificações de novas INSCRIÇÕES
+    public function actionListacandidatos()
+    {       
+
+            $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos;
+            $candidato = Candidato::find()->where("inicio > '".$ultima_visualizacao."'")->orderBy("inicio DESC")->all(); 
+
+            for ($i=0; $i<count($candidato); $i++){
+                echo "<li><a href='#'>";
+                echo "<div class='pull-left'>
+                <img src='../web/img/candidato.png' class='img-circle'
+                alt='user image'/>
+                </div>";
+                echo("<p>"."Email: ".$candidato[$i]->email)."<br>";
+                echo("Data: ".$candidato[$i]->inicio)."</p></a></li>";
+            }
+
+    }
+
+    public function actionQuantidadecandidatos()
+    {       
+
+            $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos;
+            $candidato = Candidato::find()->where("inicio > '".$ultima_visualizacao."'")->all(); 
+
+            echo count($candidato);
+
+    }
+
+    public function actionZerarnotificacao()
+    {       
+
+            $usuario = new User();
+            $usuario = $usuario->findIdentity(Yii::$app->user->identity->id);
+            $usuario->visualizacao_candidatos = date("Y-m-d H:i:s");
+            $usuario->save();
+
+    }
+    
+
+//fim das funções responsáveis pelas notificações de novas INSCRIÇÕES
+
+
+
+
+
+
+
+
 
     /**
      * Creates a new Edital model.
