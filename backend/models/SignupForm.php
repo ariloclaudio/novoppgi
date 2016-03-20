@@ -14,6 +14,7 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $password_repeat;
+    public $nome;
 
     public $visualizacao_candidatos;
 
@@ -25,6 +26,8 @@ class SignupForm extends Model
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
+            ['nome', 'required'],
+            ['nome', 'string'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Já existe usuário cadastrado com esse CPF'],
             [['username'], CpfValidator::className(), 'message' => 'CPF Inválido'],
             ['username', 'string'],
@@ -32,6 +35,7 @@ class SignupForm extends Model
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
+            ['nome', 'string', 'max' => 255],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
 
@@ -66,6 +70,7 @@ public function attributeLabels()
             $user = new User();
             $user->username = $this->username;
             $user->email = $this->email;
+            $user->nome = $this->nome;
             $user->setPassword($this->password);
             $user->generateAuthKey();
             $user->visualizacao_candidatos =  date("Y-m-d H:i:s");

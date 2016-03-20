@@ -25,8 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
+                <?= $form->field($model, 'nome')->label("<font color='#FF0000'>*</font> <b>Nome Completo:</b>") ?>
 
-        <?= $form->field($model, 'username')->widget(MaskedInput::className(), [
+                <?= $form->field($model, 'username')->widget(MaskedInput::className(), [
                 'mask' => '999.999.999-99'])->label("<font color='#FF0000'>*</font> <b>CPF:</b>") ?>   
 
                 <?= $form->field($model, 'email')->label("<font color='#FF0000'>*</font> <b>E-mail:</b>") ?>

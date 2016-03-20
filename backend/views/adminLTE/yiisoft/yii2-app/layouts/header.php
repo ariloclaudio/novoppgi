@@ -8,9 +8,11 @@ use app\models\Candidato;
 /* @var $content string */
 
 
+if(!Yii::$app->user->isGuest){
 $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos;
 $candidato = Candidato::find()->where("inicio > '".$ultima_visualizacao."'")->all(); 
 $count_candidatos = count($candidato);
+}
 
 
 ?>
@@ -283,7 +285,7 @@ $count_candidatos = count($candidato);
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs"> <?php echo Yii::$app->user->identity->nome; ?> </span>
+                        <span class="hidden-xs"> <?php if(!Yii::$app->user->isGuest){ echo Yii::$app->user->identity->nome;} ?> </span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -292,7 +294,7 @@ $count_candidatos = count($candidato);
                                  alt="User Image"/>
 
                             <p>
-                                <?php echo Yii::$app->user->identity->nome; ?>
+                                <?php if(!Yii::$app->user->isGuest){ echo Yii::$app->user->identity->nome;}?>
                                 <small>Member since Nov. 2012</small>
                             </p>
                         </li>
