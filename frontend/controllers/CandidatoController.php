@@ -100,8 +100,9 @@ class CandidatoController extends Controller
             if($model->passoatual == 1){
                 $model->passoatual = 2;
             }
+            $retorno_xml = $model->uploadXml(UploadedFile::getInstance($model, 'publicacoesFile')); 
 
-            if($model->uploadXml(UploadedFile::getInstance($model, 'publicacoesFile')) && $model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))) {
+            if($retorno_xml && $model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))) {
                 if($model->save(false) && $model->salvaExperienciaAcademica()){
                     $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
                     if(isset($_POST['enviar']))
@@ -111,8 +112,12 @@ class CandidatoController extends Controller
                 }
             }
             else{
-                //return var_dump($model->getErrors());
-                $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
+                    if($retorno_xml != true){
+                        $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
+                    }
+                    else{
+                        $this->mensagens('success', 'Extração dos dados realizada com sucesso', 'As informações do arquivo XML foram salvas');
+                    }
             }
         }
         else if( $model->passoatual == 0){
