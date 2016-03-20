@@ -12,28 +12,13 @@ BootboxAsset::registerWithOverride($this);
 
 $this->title = "Proposta de Trabalho e Documentos";
 
-
-//$linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->all(), 'id', 'nome');
-//$linhasPesquisas = ['1' => '12'];
-
-
 $uploadRealizados = 0;
 
-$labelProposta = "<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b></b><br>Arquivo contendo sua Proposta:";
-if(isset($model->proposta)){
-    $labelProposta .= "<a href=index.php?r=candidato/pdf&documento=".$model->proposta."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
+if(isset($model->proposta))
     $uploadRealizados = 1;
-}else{
-    $labelProposta .= " <i>Nenhum arquivo com Proposta carregado.</i>";
-}
 
-$labelComprovante = "<font color='#FF0000'>*</font> <b>Comprovante de Pagamento da taxa de inscrição (Comprovante emitido por bancos e lotéricas):</b><br>Arquivo contendo seu Comprovante de Pagamento:";
-if(isset($model->comprovantepagamento)){
-    $labelComprovante .= "<a href=index.php?r=candidato/pdf&documento=".$model->comprovantepagamento."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a>";
+if(isset($model->comprovantepagamento))
     $uploadRealizados += 2;
-}else{
-    $labelComprovante .= " <i>Nenhum arquivo de Comprovante carregado.</i>";
-}
 
 if(!isset($model->cartaNome[0]) || $model->cartaNome[0] == ""){
     $hideCartaRecomendacao0 = 'none';
@@ -92,7 +77,7 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
             <?= $form->field($model, 'cartaNome[0]', ['options' => ['class' => 'col-md-5']])->textInput()->label("<b>Nome:</b>") ?>
 
             <?= $form->field($model, 'cartaEmail[0]', ['options' => ['class' => 'col-md-5']])->textInput()->label("<b>Email:</b>") ?>
-
+    
             <?= Html::button("<span class='glyphicon glyphicon-remove'></span>", ['id' => 'removerCartaRecomendacao0', 'class' => 'btn btn-danger col-md-1 col-xs-12', 'style' => 'margin-top: 25px;']); ?>
         </div>
         <div class="row" id="divCartaRecomendacao1" style="display: <?= $hideCartaRecomendacao1?>">
@@ -120,86 +105,57 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
     </div>
 
     <div class="row">
-
-    <div style="padding: 3px 3px 3px 3px">
         <?php 
-        if(!isset($model->proposta)){
-            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
-            echo "<div style= padding: 3px 3px 3px 3px'> <b>Proposta de Trabalho:</b> 
-                Você já fez o upload deste Arquivo, clique no icone ao lado para visualizá-lo: <a href=index.php?r=candidato/pdf&documento=".$model->proposta."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br> ";
-            echo $form->field($model, 'propostaUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-            'pluginOptions' => [
-                'onText' => 'Sim',
-                'offText' => 'Não',
-                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
-        }
-        else{
-
-            echo $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b><br>");
-        }
+            if(isset($model->proposta)){
+                  echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'><b><b>Proposta de Trabalho:</b><br>Você já fez o upload da sua proposta, <a href=index.php?r=candidato/pdf&documento=".$model->proposta.">clique aqui </a>para visualizá-la.</b><br></div>";
+                echo $form->field($model, 'propostaUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                'pluginOptions' => [
+                    'onText' => 'Sim',
+                    'offText' => 'Não',
+                    ]])->label("<font color='#FF0000'>*</font> Deseja mudar o arquivo?");
+            }else{
+                echo $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> Proposta de Trabalho:");
+            }
         ?>
-        <br><br><br>
-        <div id="divPropostaFile" style="display: none">
-        <br>
-        <?= $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label(false) ?>
-        <div style='border-bottom:solid 1px'> </div>
-        <?php echo "</div>"; ?>
+    </div>
+    <?php if(isset($model->proposta)){ ?>
+        <div class="row" id="divPropostaFile" style="display: none; margin-bottom: 5px;">
+            <?= $form->field($model, 'propostaFile')->FileInput(['accept' => '.pdf'])->label(false);?>
+            <div style='border-bottom:solid 1px'></div>
         </div>
-    </div>
-
-    <br>
-
-    </div>
-
+    <?php } ?>
 
     <div class="row">
-
-    <div style="padding: 3px 3px 3px 3px">
         <?php 
-        if(!isset($model->comprovante)){
-            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
-            echo "<div style= padding: 3px 3px 3px 3px'> <b>Proposta de Trabalho:</b> 
-                Você já fez o upload deste Arquivo, clique no icone ao lado para visualizá-lo: <a href=index.php?r=candidato/pdf&documento=".$model->proposta."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br> ";
+        if(isset($model->comprovantepagamento)){
+             echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'><b><b>Comprovante de Pagamento da taxa de inscrição (Comprovante emitido por bancos e lotéricas):</b><br>Você já fez o upload do seu comprovante de pagamento, <a href=index.php?r=candidato/pdf&documento=".$model->comprovantepagamento.">clique aqui </a>para visualizá-lo.</b><br></div>";
+            
             echo $form->field($model, 'comprovanteUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
             'pluginOptions' => [
                 'onText' => 'Sim',
                 'offText' => 'Não',
-                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
-        }
-        else{
-
-            echo $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Proposta de Trabalho:</b><br>");
+                ]])->label("<font color='#FF0000'>*</font> Deseja mudar o arquivo?");
+        }else{
+            echo $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b>");
         }
         ?>
-
-        <div id="divComprovanteFile" style="display: none">
-        <br><br><br><br>
-        <?= $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label(false) ?>
-        <div style='border-bottom:solid 1px'> </div>
-        <?php echo "</div>"; ?>
+    </div>
+    <?php if(isset($model->comprovantepagamento)){ ?>
+        <div id="divComprovanteFile" style="display: none; margin-bottom: 5px;">
+            <?= $form->field($model, 'comprovanteFile')->FileInput(['accept' => '.pdf'])->label(false);?>
+            <div style='border-bottom:solid 1px;'></div>
         </div>
-    </div>
+    <?php } ?>
 
-    <br>
-    </div>
-
-
-    <div style="clear: both;"><legend>Declaração de Veracidade de Informações</legend></div>
-    <div align="justify">
-    <div class="row">
-         <?= $form->field($model, 'declaracao')->checkBoxList(['1' => 'Declaro a veracidade das informações fornecidas neste formulário e nos documentos enviados, e desde já autorizo a verificação dos dados.'])->label(false) ?>
-    </div>
-     </div>
-    <p>
     <div class="form-group">
-        <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo2'], ['class' => 'btn btn-default col-md-4']) ?>
-        <?= Html::submitButton('<img src="img/save.png" border="0" height="32" width="32"><br><b>Salvar</b>', ['class' => 'btn btn-default col-md-4', 'name' => 'salvar']) ?>
+        <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo2'], ['class' => 'btn btn-default col-md-4 col-xs-12']) ?>
+        <?= Html::submitButton('<img src="img/save.png" border="0" height="32" width="32"><br><b>Salvar</b>', ['class' => 'btn btn-default col-md-4 col-xs-12', 'name' => 'salvar']) ?>
 
-        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Finalizar</b>', ['class' => 'btn btn-default col-md-4',
+        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Finalizar</b>', ['name' => 'finalizar', 'class' => 'btn btn-default col-md-4 col-xs-12',
             'data' => [
                 'confirm' => 'Finalizar Inscrição? Após esse passo seus dados serão submetidos para avaliação e não poderão ser alterados, sob pena de exclusão do
             Curso.',
-            ],'name' => 'finalizar']) ?>
+            ]]) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

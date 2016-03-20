@@ -92,8 +92,8 @@ if($model->instituicaoacademica3 == ""){
         <?php 
         if(isset($model->historico)){
             //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
-            echo "<div style= padding: 3px 3px 3px 3px'> <b>Histórico Escolar (mesmo que incompleto para os formandos):<br> 
-                Você já fez o upload deste Arquivo, clique no icone ao lado para visualizá-lo: <a href=index.php?r=candidato/pdf&documento=".$model->historico."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br> ";
+            echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Histórico Escolar (mesmo que incompleto para os formandos):<br> 
+                Você já fez o upload do seu histórico, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-lo.</b><br></div>";
             
             echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
             'pluginOptions' => [
@@ -107,44 +107,34 @@ if($model->instituicaoacademica3 == ""){
             echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b>");
         }
         ?>
-
-<br><br><br>
-        <div id="divHistoricoFile" style="display: none">
-        <br>
-        <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label(false); ?>
-        <div style='border-bottom:solid 1px'> </div>
-        <?php echo "</div>"; ?>
+        <?php if(isset($model->historico)){ ?>
+            <div id="divHistoricoFile" style="display: none; clear: both;">
+                <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label(false); ?>
+                <div style='border-bottom:solid 1px'> </div>
+            </div>
+        <?php } ?>
     </div>
 
-    <br>
-
-
-    <div style="padding: 3px 3px 3px 3px">
+    <div>
         <?php 
         if(isset($model->curriculum)){
-            //echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label($labelHistorico) ;
-            echo "<div style= padding: 3px 3px 3px 3px'> <b><b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b><br>Arquivo contendo seu Curriculum: <a href=index.php?r=candidato/pdf&documento=".$model->curriculum."><img src='img/icon_pdf.gif' border='0' height='16' width='16'></a></b><br>";
+            echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'><b><b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b><br>Você já fez o upload do seu curriculum, <a href=index.php?r=candidato/pdf&documento=".$model->curriculum.">clique aqui </a>para visualizá-lo.</b><br></div>";
             
             echo $form->field($model, 'curriculumUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
             'pluginOptions' => [
                 'onText' => 'Sim',
                 'offText' => 'Não',
                 ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
-        }
-
-
-        else{
+        }else{
             echo $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Curriculum Vittae PDF (no formato Lattes - http://lattes.cnpq.br):</b>");
         }
         ?>
-
-<br><br><br><br>
-
-        <div id="divCurriculumFile" style="display: none">
-
-        <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label(false);?>
-        <div style='border-bottom:solid 1px'>
-        </div>
+        <?php if(isset($model->curriculum)){ ?>
+            <div id="divCurriculumFile" style="display: none; clear: both;">
+                <?= $form->field($model, 'curriculumFile')->FileInput(['accept' => '.pdf'])->label(false);?>
+                <div style='border-bottom:solid 1px'></div>
+            </div>
+        <?php } ?>
 
     </div>
 
@@ -219,8 +209,8 @@ if($model->instituicaoacademica3 == ""){
     </p>
     
     <div class="form-group">
-        <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo1'], ['class' => 'btn btn-default col-md-6']) ?>
-        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Continuar</b>', ['class' => 'btn btn-default col-md-6', 'name' => 'enviar']) ?>
+        <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo1'], ['class' => 'btn btn-default col-md-6 col-xs-12']) ?>
+        <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Continuar</b>', ['class' => 'btn btn-default col-md-6 col-xs-12', 'name' => 'enviar']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
