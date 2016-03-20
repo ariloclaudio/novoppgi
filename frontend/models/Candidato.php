@@ -291,25 +291,24 @@ class Candidato extends \yii\db\ActiveRecord
     }
     
     public function uploadPasso2($historicoFile, $curriculumFile){
+        //obtenção o ID do usuário pelo meio de sessão
+        $id = Yii::$app->session->get('candidato');
+        //fim da obtenção
+        //método que gera o diretório, retornando o caminho do diretório
+        $caminho = $this->gerarDiretorio($id,$this->idEdital);
+        //fim do método que gera o diretório
 
-        if (isset($historicoFile) && isset($curriculumFile)) {
-
-            //obtenção o ID do usuário pelo meio de sessão
-            $id = Yii::$app->session->get('candidato');
-            //fim da obtenção
-
-            //método que gera o diretório, retornando o caminho do diretório
-            $caminho = $this->gerarDiretorio($id,$this->idEdital);
-            //fim do método que gera o diretório
-
+        if (isset($historicoFile)) {
             $this->historico = "Historico.".$historicoFile->extension;
-            $this->curriculum = "Curriculum.".$curriculumFile->extension;
-
             $historicoFile->saveAs($caminho.$this->historico);
-            $curriculumFile->saveAs($caminho.$this->curriculum);
+        }
 
-             return true;
-        } else if(isset($this->historico) && isset($this->curriculum)){
+        if(isset($curriculumFile)){
+            $this->curriculum = "Curriculum.".$curriculumFile->extension;
+            $curriculumFile->saveAs($caminho.$this->curriculum);
+        }
+
+        if(isset($this->historico) && isset($this->curriculum)){
             return true;
         }else{
             return false;
@@ -318,24 +317,25 @@ class Candidato extends \yii\db\ActiveRecord
 
     public function uploadPasso3($propostaFile, $comprovanteFile, $idEdital)
     {
-        if (isset($propostaFile) && isset($comprovanteFile)) {
+        //obtenção o ID do usuário pelo meio de sessão
+        $id = Yii::$app->session->get('candidato');
+        //fim da obtenção
 
-            //obtenção o ID do usuário pelo meio de sessão
-            $id = Yii::$app->session->get('candidato');
-            //fim da obtenção
+        //método que gera o diretório, retornando o caminho do diretório
+        $caminho = $this->gerarDiretorio($id,$idEdital);
+        //fim do método que gera o diretório
 
-            //método que gera o diretório, retornando o caminho do diretório
-            $caminho = $this->gerarDiretorio($id,$idEdital);
-            //fim do método que gera o diretório
-
+        if (isset($propostaFile)) {
             $this->proposta = "Proposta.".$propostaFile->extension;
-            $this->comprovantepagamento = "Comprovante.".$comprovanteFile->extension;
-
             $propostaFile->saveAs($caminho.$this->proposta);
-            $comprovanteFile->saveAs($caminho.$this->comprovantepagamento);
+        }
 
-            return true;
-        } else if(isset($this->proposta) && isset($this->comprovantepagamento)){
+        if(isset($comprovanteFile)){
+            $this->comprovantepagamento = "Comprovante.".$comprovanteFile->extension;
+            $comprovanteFile->saveAs($caminho.$this->comprovantepagamento);
+        }
+
+        if(isset($this->proposta) && isset($this->comprovantepagamento)){
             return true;
         } else {
             return false;

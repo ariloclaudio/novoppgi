@@ -28,15 +28,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['signup'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -81,12 +76,12 @@ class SiteController extends Controller
     }
 
     public function actionCadastroppgi(){
+        /*if(Yii::$app->session->get('candidato') !== null)
+        $this->redirect(['candidato/passo1']);*/
         
-    $this->layout = '@app/views/layouts/main-login.php';
-    
-    $model = new Candidato();
-
-    //$model->idEdital = $id;    
+        $this->layout = '@app/views/layouts/main-login.php';
+        
+        $model = new Candidato();  
 
         if ($model->load(Yii::$app->request->post())){                
 
@@ -167,33 +162,6 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    
-    /*
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
-
-*/
     public function actionSignup()
     {
 
@@ -221,7 +189,7 @@ class SiteController extends Controller
 
                 return $this->goHome();
             } else {
-                $this->mensagens('warning', 'Erro ao Enviar Email', 'Desculpe, o email não pode ser enviado. Verique sua conexão ou contate o admin');
+                $this->mensagens('warning', 'Erro ao Enviar Email', 'Desculpe, o email não pode ser enviado. Verique sua conexão ou contate o administrador');
             }
         }
 
