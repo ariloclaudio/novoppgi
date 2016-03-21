@@ -84,6 +84,8 @@ class CandidatoController extends Controller
      */
     public function actionPasso2()
     {
+        $btnEnviar = isset($_POST['enviar']);
+
         $this->layout = '@app/views/layouts/main2.php';
 
         $itensPeriodicos = array();
@@ -91,33 +93,29 @@ class CandidatoController extends Controller
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
-        $model = $this->findModel($id);
-
-        
+        $model = $this->findModel($id);        
 
         if ($model->load(Yii::$app->request->post())){
 
             if($model->passoatual == 1){
                 $model->passoatual = 2;
             }
-            $retorno_xml = $model->uploadXml(UploadedFile::getInstance($model, 'publicacoesFile')); 
-
-            if($retorno_xml && $model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'))) {
-                if($model->save(false) && $model->salvaExperienciaAcademica()){
-                    $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
-                    if(isset($_POST['enviar']))
-                        return $this->redirect(['passo3']);
+            
+            if($model->uploadXml(UploadedFile::getInstance($model, 'publicacoesFile'))) {
+                if($model->uploadPasso2(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'curriculumFile'), $btnEnviar)){
+                    if($model->save(false) && $model->salvaExperienciaAcademica()){
+                        $this->mensagens('success', 'Alterações Salvas com Sucesso', 'Suas informações Histórico Acadêmico/Profissional foram salvas');
+                        if(isset($_POST['prosseguir'])){
+                            return $this->redirect(['passo3']);
+                        }
+                    }else{
+                        $this->mensagens('danger', 'Erro ao salvar informações', 'Ocorreu um erro ao salvar as informações. Contate o adminstrador do sistema.');
+                    }
                 }else{
-                    $this->mensagens('danger', 'Erro ao salvar informações', 'Ocorreu um erro ao salvar as informações. Contate o adminstrador do sistema.');
+                    $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');   
                 }
-            }
-            else{
-                    if($retorno_xml != true){
-                        $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
-                    }
-                    else{
-                        $this->mensagens('success', 'Extração dos dados realizada com sucesso', 'As informações do arquivo XML foram salvas');
-                    }
+            }else{
+                $this->mensagens('danger', 'Erro ao Salvar as Publicações', 'Ocorreu ao Extrair as informações do arquivo XML.');
             }
         }
         else if( $model->passoatual == 0){

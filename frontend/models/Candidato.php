@@ -23,7 +23,6 @@ class Candidato extends \yii\db\ActiveRecord
     public $curriculumUpload;
     public $propostaUpload;
     public $comprovanteUpload;
-    //public $declaracao;
     
     /*Cartas de recomendação Obrigatórias*/
     public $cartaNomeReq1;
@@ -290,7 +289,7 @@ class Candidato extends \yii\db\ActiveRecord
         return $caminho;
     }
     
-    public function uploadPasso2($historicoFile, $curriculumFile){
+    public function uploadPasso2($historicoFile, $curriculumFile, $enviar){
         //obtenção o ID do usuário pelo meio de sessão
         $id = Yii::$app->session->get('candidato');
         //fim da obtenção
@@ -308,7 +307,7 @@ class Candidato extends \yii\db\ActiveRecord
             $curriculumFile->saveAs($caminho.$this->curriculum);
         }
 
-        if(isset($this->historico) && isset($this->curriculum)){
+        if($enviar || (isset($this->historico) && isset($this->curriculum))){
             return true;
         }else{
             return false;
@@ -340,6 +339,7 @@ class Candidato extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+        return true;
     }
 
     /*Busca nas tabelas de recomendações e experiencias acadêmicas para atribuir aos campos do formulário*/
@@ -456,66 +456,66 @@ class Candidato extends \yii\db\ActiveRecord
 
     /*Extração dos periódicos e conferências e salvamento no banco*/
     public function uploadXml($xmlFile) {
-        if(isset($xmlFile)){
+        if(!isset($xmlFile))
+            
+            return true;
+        
+        else{
             if($xmlFile->type == 'text/xml'){
                 $caminho = $this->gerarDiretorio($this->id,$this->idEdital);
                 $xmlFile->saveAs($caminho."publicacao.xml");
                 if($xml = simplexml_load_file($this->diretorio.'publicacao.xml')){
 
-                CandidatoPublicacoes::deleteAll('idCandidato = \''.$this->id.'\' AND tipo = 1');
-                CandidatoPublicacoes::deleteAll('idCandidato = \''.$this->id.'\' AND tipo = 2');
+                    CandidatoPublicacoes::deleteAll('idCandidato = \''.$this->id.'\' AND tipo = 1');
+                    CandidatoPublicacoes::deleteAll('idCandidato = \''.$this->id.'\' AND tipo = 2');
 
-                foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'} as $publicacao) {
-                    
-                    for ($i=0; $i < count($publicacao); $i++) {
+                    foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'ARTIGOS-PUBLICADOS'} as $publicacao) {
                         
-                        $candidatoPublicacoes = new CandidatoPublicacoes();
-                        $candidatoPublicacoes->idCandidato = $this->id;
-                        
-                        $candidatoPublicacoes->titulo = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
-                        $candidatoPublicacoes->local = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DETALHAMENTO-DO-ARTIGO'}['TITULO-DO-PERIODICO-OU-REVISTA'];
-                        $candidatoPublicacoes->ano = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO'];
-                        $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA']));
-                        $candidatoPublicacoes->tipo = 2;
-                        $candidatoPublicacoes->autores = "";
-                        foreach ($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'AUTORES'} as $autor) {
-                            $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                        for ($i=0; $i < count($publicacao); $i++) {
+                            
+                            $candidatoPublicacoes = new CandidatoPublicacoes();
+                            $candidatoPublicacoes->idCandidato = $this->id;
+                            
+                            $candidatoPublicacoes->titulo = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
+                            $candidatoPublicacoes->local = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DETALHAMENTO-DO-ARTIGO'}['TITULO-DO-PERIODICO-OU-REVISTA'];
+                            $candidatoPublicacoes->ano = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO'];
+                            $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA']));
+                            $candidatoPublicacoes->tipo = 2;
+                            $candidatoPublicacoes->autores = "";
+                            foreach ($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'AUTORES'} as $autor) {
+                                $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                            }
+                            
+                            if(!$candidatoPublicacoes->save())
+                                return false;
                         }
-                        
-                        if(!$candidatoPublicacoes->save())
-                            return false;
                     }
-                }
-                
-                foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TRABALHOS-EM-EVENTOS'} as $publicacao) {
                     
-                    for ($i=0; $i < count($publicacao); $i++) {
-
-                        $candidatoPublicacoes = new CandidatoPublicacoes();
-                        $candidatoPublicacoes->idCandidato = $this->id;
+                    foreach ($xml->{'PRODUCAO-BIBLIOGRAFICA'}->{'TRABALHOS-EM-EVENTOS'} as $publicacao) {
                         
-                        $candidatoPublicacoes->titulo = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO'];
-                        $candidatoPublicacoes->local = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DETALHAMENTO-DO-TRABALHO'}['NOME-DO-EVENTO'];
-                        $candidatoPublicacoes->ano = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DO-TRABALHO']; 
-                        $candidatoPublicacoes->tipo = 1;
-                        $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'])); 
-                        $candidatoPublicacoes->autores = "";
-                        foreach ($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'AUTORES'} as $autor) {
-                            $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                        for ($i=0; $i < count($publicacao); $i++) {
+
+                            $candidatoPublicacoes = new CandidatoPublicacoes();
+                            $candidatoPublicacoes->idCandidato = $this->id;
+                            
+                            $candidatoPublicacoes->titulo = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO'];
+                            $candidatoPublicacoes->local = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DETALHAMENTO-DO-TRABALHO'}['NOME-DO-EVENTO'];
+                            $candidatoPublicacoes->ano = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DO-TRABALHO']; 
+                            $candidatoPublicacoes->tipo = 1;
+                            $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'])); 
+                            $candidatoPublicacoes->autores = "";
+                            foreach ($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'AUTORES'} as $autor) {
+                                $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                            }
+                            
+                            if(!$candidatoPublicacoes->save())
+                                return false;
                         }
-                        
-                        if(!$candidatoPublicacoes->save())
-                            return false;
                     }
+                    return true;
                 }
-                return true;
-            }else
-                    $error = 'Erro ao Salvar Arquivo';
-        }else
-            $error = 'Arquivo deve ter formato XML.';
-    }else
-        return true;
-
-    return false;
+            }
+        }
+        return false;
     }
 }

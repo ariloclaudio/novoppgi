@@ -12,8 +12,6 @@ function colocarRequired(){
     alert(x);
 }
 
-
-
 </script>
 
 <?php
@@ -41,10 +39,10 @@ if(count($itensPeriodicos) + count($itensConferencias) > 0){
     $hideInputPublicacoes = 'block';
 }
 
-if(isset($model->historico)){
+if(isset($model->historico))
     $uploadRealizados = 1;
 
-if(isset($model->curriculum)){
+if(isset($model->curriculum))
     $uploadRealizados += 2;
 
 if($model->instituicaoacademica2 == ""){
@@ -155,7 +153,7 @@ if($model->instituicaoacademica3 == ""){
     <div class="row">
         <?= $form->field($model, 'publicacoesFile', ['options' => ['class' => 'col-md-6']])->FileInput(['accept' => '.xml'])->label("<div><font color='#FF0000'>*</font> <b>Curriculum Vittae XML (no formato Lattes - http://lattes.cnpq.br):</b></div>") ?>
 
-        <?= Html::submitButton('Enviar', ['onclick' =>  'tirarRequired()' , 'class' => 'btn btn-primary col-md-2', 'name' => 'salvar']) ?>
+        <?= Html::submitButton('Enviar', ['onclick' =>  'tirarRequired()' , 'class' => 'btn btn-primary col-md-2', 'name' => 'enviar']) ?>
     </div>
 
     <div id="divPublicacoes" style="display: <?= $hidePublicacoes ?>;">
@@ -223,7 +221,7 @@ if($model->instituicaoacademica3 == ""){
     <div class="form-group">
         <?= Html::a('<img src="img/back.gif" border="0" height="32" width="32"><br><b> Passo Anterior</b>', ['candidato/passo1'], ['class' => 'btn btn-default col-md-6 col-xs-12']) ?>
         <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Continuar</b>', 
-        ['onclick' => 'colocarRequired()' ,'class' => 'btn btn-default col-md-6 col-xs-12', 'name' => 'enviar']) ?>
+        ['onclick' => 'colocarRequired()' ,'class' => 'btn btn-default col-md-6 col-xs-12', 'name' => 'prosseguir']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
