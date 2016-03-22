@@ -7,8 +7,13 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Candidato */
 
 $this->title = $model->nome;
-$this->params['breadcrumbs'][] = ['label' => 'Candidatos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['edital/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get('idEdital'), 
+    'url' => ['edital/view','id' => Yii::$app->request->get('idEdital') ]];
+$this->params['breadcrumbs'][] = ['label' => 'Candidato com Inscrição Encerrada', 
+    'url' => ['candidatos/index','id' => Yii::$app->request->get('idEdital') ]];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="candidato-view">
 
@@ -38,7 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
                      'format'=>'raw',
                      'value' => $model->fim != null ? date("d/m/Y", strtotime($model->fim)).' às '.date("H:i:s", strtotime($model->fim)) : null
                 ],
-            'passoatual',
             'nome',
             'endereco',
             'bairro',
@@ -83,6 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'anoposcomp',
             'notaposcomp',
             'solicitabolsa',
+            'cotas',
+            'deficiencia',
 //            'vinculoemprego',
 //            'empregador',
 //            'cargo',
@@ -96,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                      'attribute' => 'tituloproposta',
                      'label'=> 'Título da Proposta',
                 ],
-            'diploma:ntext',
+            //'diploma:ntext',
             //'historico:ntext',
             'motivos:ntext',
             //'proposta:ntext',
@@ -107,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'instituicaograd',
 //            'crgrad',
             'egressograd',
-            'dataformaturagrad',
+//            'dataformaturagrad',
 //            'cursoesp',
 //            'instituicaoesp',
 //            'egressoesp',
@@ -117,11 +123,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'tipopos',
 //            'mediapos',
             'egressopos',
+/*
             'dataformaturapos',
+
             'periodicosinternacionais',
             'periodicosnacionais',
             'conferenciasinternacionais',
             'conferenciasnacionais',
+*/
 /*
             'instituicaoingles',
             'duracaoingles',
@@ -148,7 +157,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'periodoacademico2',
             'periodoacademico3',
 */  
-            'resultado',
+//            'resultado',
 //            'periodo',
         ],
     ]) ?>

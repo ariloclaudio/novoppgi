@@ -2,13 +2,30 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Breadcrumbs;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CandidatosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Candidatos';
+$this->title = 'Candidatos com inscrição finalizada';
+
+$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['edital/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get('id'), 
+    'url' => ['edital/view','id' => Yii::$app->request->get('id') ]];
 $this->params['breadcrumbs'][] = $this->title;
+
+/*
+echo   Breadcrumbs::widget([
+      'homeLink' => [ 
+                      'label' => Yii::t('yii', 'Número: '.Yii::$app->request->get('id')),
+                      'url' => 'index.php?r=edital/view&id='.Yii::$app->request->get('id'),
+                 ],
+      'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+   ]);
+*/
+
 ?>
 <div class="candidato-index">
 
@@ -23,11 +40,16 @@ function goBack() {
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'id',
+            [   'label' => 'Nº de Inscrição',
+                'attribute' => 'id',
+                'value' => function ($model) {
+                     return $model->idEdital.'-'.$model->id;
+                },
+            ],
             //'senha',
             //'inicio',
             //'fim',
@@ -54,6 +76,7 @@ function goBack() {
             // 'telcelular',
             // 'nomepai',
             // 'nomemae',
+
             [   'label' => 'Curso Desejado',
                 'attribute' => 'cursodesejado',
                 'value' => function ($model) {
@@ -131,9 +154,17 @@ function goBack() {
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{download} {view} {delete} {update}',
                 'buttons'=>[
-                  'download' => function ($url, $model) {     
+                  'download' => function ($url, $model) {  
+
                     return Html::a('<span class="glyphicon glyphicon-download"></span>', ['candidatos/downloads', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'target' => '_blank','title' => Yii::t('yii', 'Download do Edital'),
+                    ]);                                
+
+                  },
+                  'view' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['candidatos/view', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                            'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);                                
 
                   }

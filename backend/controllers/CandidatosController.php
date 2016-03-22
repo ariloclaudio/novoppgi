@@ -71,7 +71,9 @@ class CandidatosController extends Controller
         //obtendo o nome linha de pesquisa através do id da linha de pesquisa
         $linhaPesquisa = new LinhaPesquisa();
         $linhaPesquisa = $linhaPesquisa->getLinhaPesquisaNome($model->idLinhaPesquisa);
-        $model->idLinhaPesquisa = $linhaPesquisa->nome;
+        if ($linhaPesquisa != null){
+            $model->idLinhaPesquisa = $linhaPesquisa->nome;
+        }
         //fim de obter nome da linha de pesquisa
 
         return $this->render('view', [
