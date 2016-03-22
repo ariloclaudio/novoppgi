@@ -19,6 +19,8 @@ $fieldOptions2 = [
     'options' => ['class' => 'form-group has-feedback'],
     'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
 ];
+
+echo Yii::$app->view->renderFile('@app/views/layouts/mensagemFlash.php');
 ?>
 
 <div class="login-box">
@@ -58,7 +60,6 @@ $fieldOptions2 = [
         <?php ActiveForm::end(); ?>
 
         <p><?= Html::a('Eu Esqueci minha senha', ['site/request-password-reset'])?></p>
-        <p><?= Html::a('Registrar um novo Usuário', ['site/signup']) ?></p>
 
     </div>
     <!-- /.login-box-body -->

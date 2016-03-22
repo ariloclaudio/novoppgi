@@ -16,7 +16,7 @@ $count_candidatos = count($candidato);
 
 
 ?>
-
+<?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->perfil != 5){ ?>
 <script>
 
     setInterval(function(){
@@ -114,7 +114,7 @@ $count_candidatos = count($candidato);
 
 </script>
 
-
+<?php } ?>
 
 
 
@@ -134,7 +134,7 @@ $count_candidatos = count($candidato);
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-
+                <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->perfil != 5){ ?>
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -195,13 +195,13 @@ $count_candidatos = count($candidato);
                     </ul>
                 </li>
 
-
+                <?php } ?>
                 <!-- User Account: style can be found in dropdown.less -->
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs"> <?php if(!Yii::$app->user->isGuest){ echo Yii::$app->user->identity->nome;} ?> </span>
+                        <span class="hidden-xs"> <?= !Yii::$app->user->isGuest ? Yii::$app->user->identity->nome : "Visitante" ?> </span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
@@ -210,19 +210,27 @@ $count_candidatos = count($candidato);
                                  alt="User Image"/>
 
                             <p>
-                                <?php if(!Yii::$app->user->isGuest){ echo Yii::$app->user->identity->nome;}?>
-                                <small>Member since Nov. 2012</small>
+                                <?= !Yii::$app->user->isGuest ? Yii::$app->user->identity->nome : "Visitante" ?>
+                                <?= !Yii::$app->user->isGuest ? "<small>Criado em ".Yii::$app->user->identity->created_at."</small>" : ""?>
                             </p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                <?php if(!Yii::$app->user->isGuest) echo Html::a(
+                                    'Perfil',
+                                    ['user/perfil'],
+                                    ['class' => 'btn btn-default btn-flat']
+                                ) ?>
                             </div>
                             <div class="pull-right">
-                                <?= Html::a(
+                                <?= !Yii::$app->user->isGuest ? Html::a(
                                     'Sair',
                                     ['/site/logout'],
+                                    ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
+                                ) : Html::a(
+                                    'Login',
+                                    ['site/login'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>
                             </div>

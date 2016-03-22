@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = '';
+$this->title = 'Início';
 ?>
 <div class="site-index">
 
@@ -10,9 +10,8 @@ $this->title = '';
         <h2> Programa de Pós Gradução em Informática - PPGI</h2>
         <br><br>
         <p class="lead">Seja Bem Vindo ao Sistema do PPGI</p>
+        <p class="lead">Selecione um das Opções na barra a esquerda.</p>
         <br><br>
-
-        <p><a class="btn btn-lg btn-success" href="index.php?r=edital"> Visualizar Editais</a></p>
     </div>
 
     <div class="body-content">

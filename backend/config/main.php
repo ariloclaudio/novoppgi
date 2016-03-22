@@ -21,15 +21,21 @@ return [
             'enableAutoLogin' => true,
         ],
 
+       'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+            'itemFile' => '@console/rbac/items.php',
+            'assignmentFile' => '@console/rbac/assignment.php',
+        ],
 
-    'view' => [
-         'theme' => [
-             'pathMap' => [
-                //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/'
-                '@app/views' => '@backend/views/adminLTE/yiisoft/yii2-app/'
+
+        'view' => [
+             'theme' => [
+                 'pathMap' => [
+                    //'@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/'
+                    '@app/views' => '@backend/views/adminLTE/yiisoft/yii2-app/'
+                 ],
              ],
-         ],
-    ],
+        ],
         
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

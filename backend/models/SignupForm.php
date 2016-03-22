@@ -112,8 +112,4 @@ public function attributeLabels()
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
-
-
-
 }

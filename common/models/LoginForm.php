@@ -77,6 +77,11 @@ class LoginForm extends Model
             $this->_user = User::findByEmailAndPerfil($this->email, User::descricaoPerfil($this->perfil));
         }
 
+        if($this->_user !== null){
+            $this->_user->perfil = $this->perfil;
+            $this->_user->save(false);
+        }
+
         return $this->_user;
     }
 }

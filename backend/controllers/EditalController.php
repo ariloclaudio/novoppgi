@@ -28,14 +28,16 @@ class EditalController extends Controller
         return [
             'access' => [
                         'class' => \yii\filters\AccessControl::className(),
-                        'only' => ['index','create','update','view'],
+                        'only' => ['index','create','update','view', 'quantidadecandidatos', 'listacandidatos', 'listaencerrados', 
+                            'quantidadeencerrados', 'cartasrespondidas', 'quantidadecartasrecebidas'],
                         'rules' => [
-                            // allow authenticated users
                             [
                                 'allow' => true,
                                 'roles' => ['@'],
+                                'matchCallback' => function ($rule, $action) {
+                                       return Yii::$app->user->identity->perfil != 5;
+                                }
                             ],
-                            // everything else is denied
                         ],
                     ], 
             'verbs' => [
@@ -53,10 +55,9 @@ class EditalController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new SearchEdital();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -207,11 +208,6 @@ class EditalController extends Controller
 
 
 //fim das funções responsáveis pelas notificações das cartas respondidas
-
-
-
-
-
 
     /**
      * Creates a new Edital model.

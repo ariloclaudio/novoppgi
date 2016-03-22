@@ -37,10 +37,19 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors(){
         return [
-            TimestampBehavior::className(),
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
+                ],
+                'value' => function($event) {
+                    $format = "d/m/Y"; // any format you wish
+                    return date($format); 
+                }
+            ],
         ];
     }
 
@@ -189,15 +198,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function descricaoPerfil(){
         switch ($this->perfil) {
             case '1':
-                return 'administrador';
+                return 'Administrador';
             case '2':
-                return 'coordenador';
+                return 'Coordenador';
             case '3':
-                return 'secretaria';
+                return 'Secretaria';
             case '4':
-                return 'professor';
+                return 'Professor';
             case '5':
-                return 'aluno';
+                return 'Aluno';
         }
     }
 }

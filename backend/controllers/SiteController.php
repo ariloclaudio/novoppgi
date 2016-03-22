@@ -9,6 +9,7 @@ use backend\models\SignupForm;
 use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
 
 /**
  * Site controller
@@ -25,7 +26,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['signup', 'request-password-reset', 'reset-password', 'captcha'],
+                        'actions' => ['request-password-reset', 'reset-password', 'captcha'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -37,6 +38,14 @@ class SiteController extends Controller
                         'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity->perfil == 1;
+                        }
                     ],
                 ],
             ],
@@ -72,6 +81,7 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
+
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -80,7 +90,7 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             $this->mensagens('success', 'Autentição', 'Seu login foi efetuado com sucesso.');
-            return $this->redirect('index.php?r=edital');
+            return $this->goHome();
 
         } else {
             return $this->render('login', [
@@ -97,10 +107,8 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->redirect('index.php?r=edital');
-                    //return $this->goHome();
-                }
+                $this->mensagens('success', 'Usuário Cadastrado', 'Usuário Foi salvo com sucesso');
+                return $this->goHome();
             }else{
                 $this->mensagens('danger', 'Erro ao Cadastrar', 'Ocorreu um erro ao Cadastar Usuário. Verifique os campos e tente novamente');
             }
@@ -152,7 +160,7 @@ class SiteController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password was saved.');
+            $this->mensagens('success','Senha Alterada',  'Nova senha salva com Sucesso.');
 
             return $this->goHome();
         }
@@ -168,7 +176,7 @@ class SiteController extends Controller
         Yii::$app->session->setFlash($tipo, [
             'type' => $tipo,
             'icon' => 'home',
-            'duration' => 10000,
+            'duration' => 5000,
             'message' => $mensagem,
             'title' => $titulo,
             'positonY' => 'top',
