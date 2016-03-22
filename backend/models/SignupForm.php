@@ -15,9 +15,8 @@ class SignupForm extends Model
     public $password;
     public $password_repeat;
     public $nome;
-
+    
     public $perfil;
-    public $perfilAtual;
     public $administrador;
     public $coordenador;
     public $secretaria;
@@ -35,17 +34,12 @@ class SignupForm extends Model
     {
         return [
             ['username', 'filter', 'filter' => 'trim'],
-            ['perfil', 'required'],
             ['username', 'required'],
             ['nome', 'required'],
             ['nome', 'string'],
             
             ['perfil', 'safe'],
-            ['administrador', 'string'],
-            ['coordenador', 'string'],
-            ['secretaria', 'string'],
-            ['professor', 'string'],
-            ['aluno', 'string'],
+            [['administrador', 'coordenador', 'secretaria', 'professor', 'aluno'], 'string'],
 
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Já existe usuário cadastrado com esse CPF'],
             [['username'], CpfValidator::className(), 'message' => 'CPF Inválido'],
@@ -91,27 +85,11 @@ public function attributeLabels()
             $user->email = $this->email;
             $user->nome = $this->nome;
             $user->setPassword($this->password);
-
-            foreach ($this->perfil as $value) {
-                switch ($value) {
-                    case '1':
-                        $user->administrador = '1';            
-                        break;
-                    case '2':
-                        $user->coordenador = '1';            
-                        break;
-                    case '3':
-                        $user->secretaria = '1';
-                        break;
-                    case '4':
-                        $user->professor = '1';            
-                        break;
-                    case '5':
-                        $user->aluno = '1';            
-                        break;
-                }
-            }
-            
+            $user->administrador = $this->administrador;
+            $user->coordenador = $this->coordenador;
+            $user->secretaria = $this->secretaria;
+            $user->professor = $this->professor;
+            $user->aluno = $this->aluno;
             $user->generateAuthKey();
             $user->visualizacao_candidatos =  date("Y-m-d H:i:s");
             $user->visualizacao_candidatos_finalizados =  date("Y-m-d H:i:s");

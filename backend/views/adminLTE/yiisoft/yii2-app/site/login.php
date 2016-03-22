@@ -48,7 +48,7 @@ $fieldOptions2 = [
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
             </div>
             <!-- /.col -->
-            <div class="col-xs-4">
+            <div class="col-xs-12" style="margin-bottom: 12px;">
                 <?= Html::submitButton('Entrar', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
             <!-- /.col -->
@@ -57,9 +57,8 @@ $fieldOptions2 = [
 
         <?php ActiveForm::end(); ?>
 
-
-        <a href="#">Eu Esqueci minha senha</a><br>
-        <a href="index.php?r=site/signup" class="text-center">Registrar um novo Usuário</a>
+        <p><?= Html::a('Eu Esqueci minha senha', ['site/request-password-reset'])?></p>
+        <p><?= Html::a('Registrar um novo Usuário', ['site/signup']) ?></p>
 
     </div>
     <!-- /.login-box-body -->

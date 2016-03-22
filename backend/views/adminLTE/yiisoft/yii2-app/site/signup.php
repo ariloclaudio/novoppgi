@@ -7,6 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\widgets\MaskedInput;
+use kartik\widgets\SwitchInput;
 
 $perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4' => 'Professor', '5' => 'Aluno'];
 
@@ -38,8 +39,43 @@ $this->title = 'Cadastro';
 
                 <?= $form->field($model, 'password_repeat')->passwordInput()->label("<font color='#FF0000'>*</font> <b>Repetir Senha:</b>")  ?>
 
-                <?= $form->field($model, 'perfil')->checkBoxList($perfis) ?>
+                <div style="margin-bottom: 20px;"><b><font color='#FF0000'>*</font> Escolha o(s) perfil(s) correspondente a este usuário</b></div>
 
+                <div class = "row">
+                    <?= $form->field($model, 'administrador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]]) ?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'coordenador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]]) ?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'secretaria', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]])?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'professor', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]])?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'aluno', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]]) ?>
+                </div>
                 <div class="form-group">
                     <?= Html::submitButton('Cadastrar-se', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>

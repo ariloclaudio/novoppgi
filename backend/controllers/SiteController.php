@@ -6,6 +6,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
 use backend\models\SignupForm;
+use backend\models\PasswordResetRequestForm;
+use backend\models\ResetPasswordForm;
 use yii\filters\VerbFilter;
 
 /**
@@ -23,7 +25,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'request-password-reset', 'reset-password'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -55,6 +57,10 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : 'asdadasdasdasd',
             ],
         ];
     }
@@ -95,6 +101,8 @@ class SiteController extends Controller
                     return $this->redirect('index.php?r=edital');
                     //return $this->goHome();
                 }
+            }else{
+                $this->mensagens('danger', 'Erro ao Cadastrar', 'Ocorreu um erro ao Cadastar Usuário. Verifique os campos e tente novamente');
             }
         }
 
@@ -110,7 +118,51 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-            /* Envio de mensagens para views
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                $this->mensagens('success', 'Email Enviado com Sucesso.', 'Verifique sua conta de email');
+
+                return $this->goHome();
+            } else {
+                $this->mensagens('warning', 'Erro ao Enviar Email', 'Desculpe, o email não pode ser enviado. Verique sua conexão ou contate o administrador');
+            }
+        }
+
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'New password was saved.');
+
+            return $this->goHome();
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
+    }
+
+    /* Envio de mensagens para views
        Tipo: success, danger, warning*/
     protected function mensagens($tipo, $titulo, $mensagem){
         Yii::$app->session->setFlash($tipo, [
