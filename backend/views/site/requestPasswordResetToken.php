@@ -19,11 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
 
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email')->label("<font color='#FF0000'>*</font> Email") ?>
 
                 <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
                     'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                ])->label("<font color='#FF0000'>*</font> Código de Verificação (Clique na imagem para trocar o código)") ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Enviar', ['class' => 'btn btn-primary']) ?>

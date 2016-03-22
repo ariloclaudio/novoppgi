@@ -25,7 +25,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['signup', 'request-password-reset', 'reset-password'],
+                        'actions' => ['signup', 'request-password-reset', 'reset-password', 'captcha'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -60,7 +60,7 @@ class SiteController extends Controller
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : 'asdadasdasdasd',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }
