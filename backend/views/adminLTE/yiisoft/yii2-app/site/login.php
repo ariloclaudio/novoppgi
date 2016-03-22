@@ -43,7 +43,7 @@ echo Yii::$app->view->renderFile('@app/views/layouts/mensagemFlash.php');
             ->label(false)
             ->passwordInput(['placeholder' => $model->getAttributeLabel('senha')]) ?>
 
-        <?= $form->field($model, 'perfil')->radioList($perfis) ?>
+        <?= $form->field($model, 'perfil')->dropDownList($perfis, ['prompt' => 'Selecione um perfil']) ?>
 
         <div class="row">
             <div class="col-xs-8">
