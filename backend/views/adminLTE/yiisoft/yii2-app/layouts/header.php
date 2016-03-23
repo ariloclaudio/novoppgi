@@ -200,7 +200,9 @@ $count_candidatos = count($candidato);
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+                        
+                        <img src="img/<?= !Yii::$app->user->isGuest ? strtolower(Yii::$app->user->identity->descricaoPerfil()) : "guest" ?>.png" class="img-circle" width="25px" height="25px" alt="User Image"/>
+
                         <span class="hidden-xs"> <?= !Yii::$app->user->isGuest ? Yii::$app->user->identity->nome : "Visitante" ?> </span>
                     </a>
                     <ul class="dropdown-menu">

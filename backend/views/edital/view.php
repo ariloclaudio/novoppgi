@@ -37,8 +37,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             'datainicio',
             'datafim',
-            'documento',
-            'curso',
+                [
+                     'attribute' => 'documento',
+                     'format'=>'raw',
+                     'value' => "<a href='editais/".$model->documento."' target = '_blank'> Clique aqui para Baixar </a>"
+                ],
+                [
+                     'attribute' => 'curso',
+                     'format'=>'raw',
+                     'value' => $model->curso == 1 ? 'Mestrado' : 'Doutorado'
+                ]
         ],
     ]) ?>
 

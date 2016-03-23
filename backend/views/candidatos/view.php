@@ -86,9 +86,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'inscricaoposcomp',
             'anoposcomp',
             'notaposcomp',
-            'solicitabolsa',
-            'cotas',
-            'deficiencia',
+                [
+                     'attribute' => 'solicitabolsa',
+                     'format'=>'raw',
+                     'value' => $model->solicitabolsa == 1 ? 'Sim' : 'Não'
+                ],
+                [
+                     'attribute' => 'cotas',
+                     'format'=>'raw',
+                     'value' => $model->cotas == 1 ? 'Sim' : 'Não'
+                ],
+                [
+                     'attribute' => 'deficiencia',
+                     'format'=>'raw',
+                     'value' => $model->deficiencia == 1 ? 'Sim' : 'Não'
+                ],
 //            'vinculoemprego',
 //            'empregador',
 //            'cargo',
