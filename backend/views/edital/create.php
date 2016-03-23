@@ -12,6 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="edital-create">
 
+	<p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['edital/index', 'id' => $model->numero], ['class' => 'btn btn-warning']) ?>
+    </p>
+
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

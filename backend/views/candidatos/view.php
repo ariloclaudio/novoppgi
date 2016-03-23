@@ -18,14 +18,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="candidato-view">
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['candidatos/index', 'id' => $model->idEdital], ['class' => 'btn btn-warning']) ?>  
+    <?php
+        /*
+        echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
+
+        echo Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]);
+        */
+    ?>
     </p>
 
     <?= DetailView::widget([
@@ -115,12 +121,33 @@ $this->params['breadcrumbs'][] = $this->title;
                      'label'=> 'Título da Proposta',
                 ],
             //'diploma:ntext',
-            //'historico:ntext',
             'motivos:ntext',
-            //'proposta:ntext',
-            //'curriculum:ntext',
-            //'cartaempregador:ntext',
-            //'comprovantepagamento:ntext',
+                [
+                     'attribute' => 'historico',
+                     'label' => 'Histórico Escolar',
+                     'format'=>'raw',
+                     'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->historico."' target = '_blank'> Baixar </a>"
+                ],
+
+                [
+                     'attribute' => 'proposta',
+                     'label' => 'Proposta de Trabalho',
+                     'format'=>'raw',
+                     'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->proposta."' target = '_blank'> Baixar </a>"
+                ],
+                [
+                     'attribute' => 'curriculum',
+                     'label' => 'Curriculum',
+                     'format'=>'raw',
+                     'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->curriculum."' target = '_blank'> Baixar </a>"
+                ],
+                [
+                     'attribute' => 'comprovantepagamento',
+                     'label' => 'Comprovante de Pagamento',
+                     'format'=>'raw',
+                     'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->comprovantepagamento."' target = '_blank'> Baixar </a>"
+                ],
+
             'cursograd',
             'instituicaograd',
 //            'crgrad',

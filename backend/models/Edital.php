@@ -48,11 +48,14 @@ class Edital extends \yii\db\ActiveRecord
             }"],
             [['doutorado', 'mestrado'], 'integer'],
             [['numero', 'curso'], 'string'],
+            ['numero', 'checkNumero'],
+            ['numero', 'unique','message' => 'Já existe edital cadastrado com esse Número.'],
             [['numero'], 'unique', 'message' => 'Edital já criado'],
             [['vagas_mestrado','vagas_doutorado', 'cotas_mestrado', 'cotas_doutorado'], 'integer', 'min' => 0],
             [['datainicio', 'datafim', 'documentoFile'], 'safe'],
             [['documentoFile'], 'file', 'extensions' => 'pdf'],
-            [['documento'], 'string', 'max' => 100]
+            [['documento'], 'string', 'max' => 100],
+
         ];
     }
 
@@ -68,8 +71,21 @@ class Edital extends \yii\db\ActiveRecord
             'documento' => 'Documento',
             'cartarecomendacao' => 'Carta de Recomendação',
             'curso' => 'Curso',
-            'documentoFile' => 'Edital PDF',
+            'documentoFile' => 'Edital (PDF)',
         ];
+    }
+
+public function checkNumero($attribute, $params)
+    {
+        
+        $conta = strlen($this->numero);
+
+        if(strpos($this->numero, '_') == true){
+            return $this->addError('numero', 'Você deve entrar com 8 números.');
+        }
+        else{
+            return true;
+        }
     }
 
     public function afterFind(){
@@ -103,9 +119,22 @@ class Edital extends \yii\db\ActiveRecord
         }
     }
 
+    public function getNomeCurso()
+    {
 
+        if ($this->curso == 1){
+            return "Mestrado";
+        }
+        else if ($this->curso == 2){
+            return "Doutorado";
+        }
+        else{
+            return "Mestrado e Doutorado";
+        }
 
-    public function getQuantidadeInscritos($id)
+    }
+
+    public function getQuantidadeInscritos()
     {
 
         $results1 = Candidato::find()->where("idEdital = '".$this->numero."'")->count(); 
@@ -113,7 +142,7 @@ class Edital extends \yii\db\ActiveRecord
         return $results1;
     }
 
-    public function getQuantidadeInscritosFinalizados($id)
+    public function getQuantidadeInscritosFinalizados()
     {
 
         $results2 = Candidato::find()->where("passoatual = 4 AND idEdital = '".$this->numero."'")->count(); 

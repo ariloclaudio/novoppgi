@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
+use yii\widgets\MaskedInput;
 
 ?>
 
@@ -15,7 +16,9 @@ use kartik\widgets\SwitchInput;
 	    	<input type='hidden' id = 'form_doutorado' value =<?= $model->doutorado?> />
 
 		    <div class="row">
-		    	<?= $form->field($model, 'numero', ['options' => ['class' => 'col-md-4']])->textInput() ?>
+            <?= $form->field($model, 'numero', ['options' => ['class' => 'col-md-4']])->widget(MaskedInput::className(), [
+        'mask' => '9999-9999'])->hint('Ex.: 0001-2016, sendo o <b>\'0001\'</b> o número do edital e <b>\'2016\'</b> o ano')->textInput()->label("<font color='#FF0000'>*</font> <b>Número:</b>") ?> 
+
 		     </div>
 
 		    <div class="row" style ="border:1px">
@@ -23,7 +26,7 @@ use kartik\widgets\SwitchInput;
 		    </div>
 
 		    <div class="row">
-		        <?= $form->field($model, 'datainicio', ['options' => ['class' => 'col-md-2']])->widget(DatePicker::classname(), [
+		        <?= $form->field($model, 'datainicio', ['options' => ['class' => 'col-md-4']])->widget(DatePicker::classname(), [
 		            'pluginOptions' => [
 		                'format' => 'dd/mm/yyyy',
 		                'autoclose'=>true
@@ -31,7 +34,7 @@ use kartik\widgets\SwitchInput;
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Inicial</b>")
 		    ?>
 
-		        <?= $form->field($model, 'datafim', ['options' => ['class' => 'col-md-2']])->widget(DatePicker::classname(), [
+		        <?= $form->field($model, 'datafim', ['options' => ['class' => 'col-md-4']])->widget(DatePicker::classname(), [
 		            'pluginOptions' => [
 		                'format' => 'dd/mm/yyyy',
 		                'autoclose'=>true
@@ -53,9 +56,9 @@ use kartik\widgets\SwitchInput;
 			    ]])->label("<font color='#FF0000'>*</font> <b>Mestrado?</b>") ?>
 			</div>
 			<div class="row" id="divVagasMestrado" style="display:none">
-		    	<?= $form->field($model, 'vagas_mestrado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Mestrado:</b>") ?>
+		    	<?= $form->field($model, 'vagas_mestrado', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Mestrado:</b>") ?>
 
-		    	<?= $form->field($model, 'cotas_mestrado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
+		    	<?= $form->field($model, 'cotas_mestrado', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
 		    </div>
 			<div class="row">
 			    <?= $form->field($model, 'doutorado', ['options' => ['class' => 'col-md-2']])->widget(SwitchInput::classname(), [
@@ -66,9 +69,9 @@ use kartik\widgets\SwitchInput;
 			</div>
 
 		    <div class="row" id="divVagasDoutorado" style="display:none">
-		    	<?= $form->field($model, 'vagas_doutorado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Doutorado:</b>") ?>
+		    	<?= $form->field($model, 'vagas_doutorado', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Doutorado:</b>") ?>
 
-		    	<?= $form->field($model, 'cotas_doutorado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
+		    	<?= $form->field($model, 'cotas_doutorado', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
 		     </div>
 
 		    <div class="form-group">

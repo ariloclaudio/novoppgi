@@ -207,9 +207,7 @@ $count_candidatos = count($candidato);
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
-                        <li class="user-header">
-                            <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
-                                 alt="User Image"/>
+                        <li class="user-header" style="height: 80px">
 
                             <p>
                                 <?= !Yii::$app->user->isGuest ? Yii::$app->user->identity->nome : "Visitante" ?>

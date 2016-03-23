@@ -30,23 +30,54 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'numero',
+            'datainicio',
+            'datafim',
+                [
+                     'attribute' => 'quantidadeinscritos',
+                     'label' => "Nº de Inscrições Iniciadas",
+                     'format'=>'raw',
+                     'value' => $model->quantidadeInscritos
+                ],
+                [
+                     'attribute' => 'quantidadeinscritosfinalizados',
+                     'label' => "Nº de Inscrições Encerradas",
+                     'format'=>'raw',
+                     'value' => $model->quantidadeinscritosfinalizados
+                ],
                 [
                      'attribute' => 'cartarecomendacao',
                      'format'=>'raw',
                      'value' => $model->cartarecomendacao == 1 ? 'Sim' : 'Não'
                 ],
-            'datainicio',
-            'datafim',
                 [
-                     'attribute' => 'documento',
+                     'attribute' => 'nomecurso',
+                     'label' => "Curso",
                      'format'=>'raw',
-                     'value' => "<a href='editais/".$model->documento."' target = '_blank'> Clique aqui para Baixar </a>"
                 ],
                 [
-                     'attribute' => 'curso',
+                     'attribute' => 'vagasmestrado',
+                     'label' => "Vagas para Mestrado",
                      'format'=>'raw',
-                     'value' => $model->curso == 1 ? 'Mestrado' : 'Doutorado'
-                ]
+
+                ],
+                [
+                     'attribute' => 'vagasdoutorado',
+                     'label' => "Vagas para Doutorado",
+                     'format'=>'raw',
+
+                ],
+                [
+                     'attribute' => 'datacriacao',
+                     'format'=>'raw',
+                     'label' => 'Data da Criação no sistema',
+                     'value' => date('d-m-Y',strtotime($model->datacriacao))." às ".date('H:m:s',strtotime($model->datacriacao))
+                ],
+                [
+                     'attribute' => 'documento',
+                     'label' => 'Edital em PDF',
+                     'format'=>'raw',
+                     'value' => "<a href='editais/".$model->documento."' target = '_blank'> Baixar </a>"
+                ],
         ],
     ]) ?>
 

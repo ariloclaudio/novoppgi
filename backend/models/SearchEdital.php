@@ -43,8 +43,11 @@ class SearchEdital extends Edital
      */
     public function search($params)
     {
-        $query = Edital::find()->select(['*','COUNT(idEdital) as quantidadeinscritos','COUNT(idEdital) as quantidadeinscritosfinalizados'])->leftJoin("j17_candidatos","idEdital = numero")->groupBy('numero')->orderBy('datacriacao DESC');
+        $query = Edital::find()->select(['datainicio', 'datafim', 'numero', 'vagas_mestrado', '(vagas_mestrado + cotas_mestrado) as vagasmestrado', 'vagas_doutorado', '(vagas_doutorado + cotas_doutorado) as vagasdoutorado', 'cotas_mestrado', 'cotas_doutorado' ,'idEdital' ,'COUNT(idEdital) as quantidadeinscritos','COUNT(idEdital) as quantidadeinscritosfinalizados'])->leftJoin("j17_candidatos","idEdital = numero")->groupBy('numero');
 
+        if(!isset ($params['sort'])){
+           $query = $query->orderBy('datacriacao DESC');
+        }
 
         // add conditions that should always apply here
 
@@ -67,6 +70,16 @@ class SearchEdital extends Edital
                 $dataProvider->sort->attributes['quantidadeinscritosfinalizados'] = [
         'asc' => ['quantidadeinscritosfinalizados' => SORT_ASC],
         'desc' => ['quantidadeinscritosfinalizados' => SORT_DESC],
+        ];
+
+                $dataProvider->sort->attributes['vagasmestrado'] = [
+        'asc' => ['vagasmestrado' => SORT_ASC],
+        'desc' => ['vagasmestrado' => SORT_DESC],
+        ];
+
+                $dataProvider->sort->attributes['vagasdoutorado'] = [
+        'asc' => ['vagasdoutorado' => SORT_ASC],
+        'desc' => ['vagasdoutorado' => SORT_DESC],
         ];
 
         // grid filtering conditions

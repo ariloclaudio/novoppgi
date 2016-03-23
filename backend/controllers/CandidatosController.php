@@ -196,6 +196,30 @@ class CandidatosController extends Controller
     }
 
 
+    public function actionPdf($documento){
+
+        $id = Yii::$app->request->get('id');
+        $model = $this->findModel($id);
+
+        $mudarDiretorioParaFrontEnd = "../../frontend/web/";
+
+        $localArquivo = $mudarDiretorioParaFrontEnd.$model->getDiretorio().$documento;
+
+       if(!file_exists($localArquivo))
+            throw new NotFoundHttpException('A Página solicitada não existe.');
+
+        header('Content-Description: File Transfer');
+        header('Content-Disposition: attachment; filename="'.$documento.'"');
+        header('Content-Type: application/pdf');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($mudarDiretorioParaFrontEnd.$model->getDiretorio().$documento));
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Expires: 0');
+
+        readfile($localArquivo);
+    }
+
 
     /**
      * Finds the Candidato model based on its primary key value.

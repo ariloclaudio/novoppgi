@@ -158,4 +158,16 @@ class Candidato extends \yii\db\ActiveRecord
         return Candidato::findOne(['id' => $idCandidato]);
     }
 
+    public function getDiretorio(){
+        $salt1 = "programadeposgraduacaoufamicompPPGI";
+        $salt2 = $this->id * 777;
+        $id = $this->id;
+        $idCriptografado = md5($salt1+$id+$salt2);
+        //definição de um caminho padrão, baseado no ID do candidato
+        $caminho = 'documentos/'.$this->idEdital.'/'.$idCriptografado.'/';
+        //fim da definição do caminho padrão
+        return $caminho;
+
+    }
+
 }
