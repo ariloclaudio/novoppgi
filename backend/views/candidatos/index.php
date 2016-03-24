@@ -44,7 +44,7 @@ function goBack() {
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
             'rowOptions'=> function($model){
-                    if($model->cartas_respondidas < 2){
+                    if($model->cartas_respondidas < 2 && $model->carta_recomendacao == 1){
                         return ['class' => 'danger'];
                     }
                     else{

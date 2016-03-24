@@ -11,6 +11,7 @@ class Candidato extends \yii\db\ActiveRecord
         public $qtd_cartas;
         public $cartas_pendentes;
         public $cartas_respondidas;
+        public $carta_recomendacao;
     /**
      * @inheritdoc
      */
