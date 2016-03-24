@@ -37,10 +37,20 @@ function goBack() {
 
 <?= Html::a('Voltar', ['edital/view', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-warning']) ?>
 
+<?= Html::a(' <span class="glyphicon glyphicon-download"></span> Baixar Documentação ', ['candidatos/downloadscompletos', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-success']) ?>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
+            'rowOptions'=> function($model){
+                    if($model->cartas_respondidas < 2){
+                        return ['class' => 'danger'];
+                    }
+                    else{
+                        return ['class' => 'success'];
+                    }
+            },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -60,7 +70,19 @@ function goBack() {
             // 'cidade',
             // 'uf',
             // 'cep',
-             'email:email',
+            // 'email:email',
+             ['attribute' => 'qtd_cartas',
+              'label' => 'Cartas Emitidas',
+              'value' => function ($model){
+                       return $model->qtd_cartas;
+              }
+             ],
+             ['attribute' => 'cartas_respondidas',
+              'label' => 'Cartas Respondidas',
+              'value' => function ($model){
+                       return $model->cartas_respondidas;
+              }
+             ],
             // 'datanascimento',
             // 'nacionalidade',
             // 'pais',
@@ -157,7 +179,7 @@ function goBack() {
                   'download' => function ($url, $model) {  
 
                     return Html::a('<span class="glyphicon glyphicon-download"></span>', ['candidatos/downloads', 'id' => $model->id, 'idEdital' => $model->idEdital], [
-                            'target' => '_blank','title' => Yii::t('yii', 'Download do Edital'),
+                            'target' => '_blank','title' => Yii::t('yii', 'Download da Documentação'),
                     ]);                                
 
                   },

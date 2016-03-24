@@ -8,6 +8,9 @@ class Candidato extends \yii\db\ActiveRecord
 {
 
         public $nomeLinhaPesquisa;
+        public $qtd_cartas;
+        public $cartas_pendentes;
+        public $cartas_respondidas;
     /**
      * @inheritdoc
      */

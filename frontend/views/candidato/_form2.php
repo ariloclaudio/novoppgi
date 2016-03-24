@@ -3,13 +3,11 @@
 function tirarRequired(){
     document.getElementById("ignorarRequired").value = 1;
     var x = document.getElementById("ignorarRequired").value;
-    alert(x);
 }
 
 function colocarRequired(){
     document.getElementById("ignorarRequired").value = 0;
     var x = document.getElementById("ignorarRequired").value;
-    alert(x);
 }
 
 </script>
