@@ -1,18 +1,17 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\widgets\MaskedInput;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4' => 'Professor', '5' => 'Aluno'];
-
-$this->title = 'Sign In';
+$this->title = 'Login';
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
+    'inputTemplate' => "{input}<span class='glyphicon glyphicon-user form-control-feedback'></span>"
 ];
 
 $fieldOptions2 = [
@@ -34,16 +33,15 @@ echo Yii::$app->view->renderFile('@app/views/layouts/mensagemFlash.php');
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
         <?= $form
-            ->field($model, 'email', $fieldOptions1)
-            ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
+            ->field($model, 'username', $fieldOptions1)
+            ->label("CPF")
+            ->widget(MaskedInput::className(), [
+            'mask' => '999.999.999-99']) ?>  
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)
-            ->label(false)
-            ->passwordInput(['placeholder' => $model->getAttributeLabel('senha')]) ?>
-
-        <?= $form->field($model, 'perfil')->dropDownList($perfis, ['prompt' => 'Selecione um perfil']) ?>
+            ->label("Senha")
+            ->passwordInput() ?>
 
         <div class="row">
             <div class="col-xs-8">

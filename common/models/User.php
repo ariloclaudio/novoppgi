@@ -7,20 +7,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
-/**
- * User model
- *
- * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
- */
 class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
@@ -81,14 +67,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds user by Email
+     * Finds user by Username
      *
-     * @param string $email
+     * @param string $username
      * @return static|null
      */
-    public static function findByEmailAndPerfil($email, $perfil)
+    public static function findByUsername($username)
     {
-        return static::findOne(['email' => $email, $perfil => '1', 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -193,20 +179,5 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
-    }
-
-    public function descricaoPerfil(){
-        switch ($this->perfil) {
-            case '1':
-                return 'Administrador';
-            case '2':
-                return 'Coordenador';
-            case '3':
-                return 'Secretaria';
-            case '4':
-                return 'Professor';
-            case '5':
-                return 'Aluno';
-        }
     }
 }

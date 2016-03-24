@@ -21,10 +21,8 @@ return [
             'enableAutoLogin' => true,
         ],
 
-       'authManager' => [
-            'class' => 'yii\rbac\PhpManager',
-            'itemFile' => '@console/rbac/items.php',
-            'assignmentFile' => '@console/rbac/assignment.php',
+        'authManager' => [
+           'class' => 'yii\rbac\DbManager',
         ],
 
 

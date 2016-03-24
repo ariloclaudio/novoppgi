@@ -162,7 +162,7 @@ class CandidatoController extends Controller
                 if($model->save(false) && $model->salvaCartaRecomendacao()){
                     if(isset($_POST['finalizar'])){
                         //ENVIAR EMAILS CADASTRADOS*
-                        //$this->notificarCartasRecomendacao($model);
+                        $this->notificarCartasRecomendacao($model);
                         
                         return $this->redirect(['passo4']);
                     }
@@ -713,7 +713,7 @@ function actionComprovanteinscricao() {
 
         foreach ($recomendacoesArray as $recomendacoes) {
             echo "<script>console.log('$recomendacoes->nome')</script>";
-            $link = "http://localhost/MyProjects/ppgi/frontend/web/index.php?r=candidato/cartaderecomendacao&token=".$recomendacoes->token;
+            $link = "http://localhost/MyProjects/ppgi/frontend/web/index.php?r=recomendacoes/create&token=".$recomendacoes->token;
             // subject
             $subject  = "[PPGI/UFAM] Solicitacao de Carta de Recomendacao para ".$model->nome;
 

@@ -3,6 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
+use yiibr\brvalidator\CpfValidator;
 
 /**
  * Login form
@@ -13,7 +14,6 @@ class LoginForm extends Model
     public $password;
     public $email;
     public $rememberMe = true;
-    public $perfil;
 
     private $_user;
 
@@ -25,14 +25,25 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['password', 'email', 'perfil'], 'required'],
+            [['password', 'username'], 'required'],
             [['email'], 'email'],
-            [['perfil'], 'string'],
+            [['username'], CpfValidator::className(), 'message' => 'CPF Inválido'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
+    }
+
+    public function attributeLabels()
+    {
+
+        return [
+            'username' => 'CPF',
+            'password' => 'Senha',
+            'password_repeat' => 'Senha novamente',
+            'email' => 'E-mail',
+         ];
     }
 
     /**
@@ -47,7 +58,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Login, Senha ou Perfil incorretos. ');
+                $this->addError($attribute, 'Login ou Senha incorretos. ');
             }
         }
     }
@@ -74,12 +85,7 @@ class LoginForm extends Model
     {
 
         if ($this->_user === null) {
-            $this->_user = User::findByEmailAndPerfil($this->email, User::descricaoPerfil($this->perfil));
-        }
-
-        if($this->_user !== null){
-            $this->_user->perfil = $this->perfil;
-            $this->_user->save(false);
+            $this->_user = User::findByUsername($this->username);
         }
 
         return $this->_user;

@@ -35,7 +35,7 @@ class EditalController extends Controller
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function ($rule, $action) {
-                                       return Yii::$app->user->identity->perfil != 5;
+                                       return Yii::$app->user->can('edital');
                                 }
                             ],
                         ],

@@ -10,7 +10,7 @@ $this->title = 'Início';
         <h2> Programa de Pós Gradução em Informática - PPGI</h2>
         <br><br>
         <p class="lead">Seja Bem Vindo ao Sistema do PPGI</p>
-        <p class="lead">Selecione um das Opções na barra a esquerda.</p>
+        <p class="lead">Selecione uma das Opções na barra a esquerda.</p>
         <br><br>
     </div>
 

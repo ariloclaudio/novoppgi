@@ -44,7 +44,7 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            return Yii::$app->user->identity->perfil == 1;
+                            return Yii::$app->user->can('usuarios');
                         }
                     ],
                 ],

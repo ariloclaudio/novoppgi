@@ -16,7 +16,7 @@ $count_candidatos = count($candidato);
 
 
 ?>
-<?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->perfil != 5){ ?>
+<?php if(Yii::$app->user->can('notificacoesselecao')){ ?>
 <script>
 
     setInterval(function(){
@@ -134,7 +134,7 @@ $count_candidatos = count($candidato);
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-                <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->perfil != 5){ ?>
+                <?php if(Yii::$app->user->can('notificacoesselecao')){ ?>
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -201,7 +201,7 @@ $count_candidatos = count($candidato);
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         
-                        <img src="img/<?= !Yii::$app->user->isGuest ? strtolower(Yii::$app->user->identity->descricaoPerfil()) : "guest" ?>.png" class="img-circle" width="25px" height="25px" alt="User Image"/>
+                        <img src="img/<?= !Yii::$app->user->isGuest ? "administrador" : "guest" ?>.png" class="img-circle" width="25px" height="25px" alt="User Image"/>
 
                         <span class="hidden-xs"> <?= !Yii::$app->user->isGuest ? Yii::$app->user->identity->nome : "Visitante" ?> </span>
                     </a>
@@ -237,8 +237,6 @@ $count_candidatos = count($candidato);
                         </li>
                     </ul>
                 </li>
-
-
             </ul>
         </div>
     </nav>
