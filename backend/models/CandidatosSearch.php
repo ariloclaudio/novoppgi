@@ -42,9 +42,10 @@ class CandidatosSearch extends Candidato
     public function search($params)
     {
         $idEdital = $params['id'];
-        $query = Candidato::find()->select("j17_edital.cartarecomendacao as carta_recomendacao ,j17_linhaspesquisa.nome as nomeLinhaPesquisa, candidato1.*, qtd_cartas, cartas_pendentes, (qtd_cartas-cartas_pendentes) as cartas_respondidas ")->leftJoin("j17_linhaspesquisa","candidato1.idLinhaPesquisa =   j17_linhaspesquisa.id")->innerJoin("j17_edital")
-        ->leftJoin("j17_recomendacoes","j17_recomendacoes.idCandidato = candidato1.id")->alias('candidato1')
+        $query = Candidato::find()->select("j17_edital.cartarecomendacao as carta_recomendacao ,j17_linhaspesquisa.nome as nomeLinhaPesquisa, candidato1.*, qtd_cartas, cartas_pendentes, (qtd_cartas-cartas_pendentes) as cartas_respondidas
 
+            ")->leftJoin("j17_linhaspesquisa","candidato1.idLinhaPesquisa =   j17_linhaspesquisa.id")->innerJoin("j17_edital")
+        ->leftJoin("j17_recomendacoes","j17_recomendacoes.idCandidato = candidato1.id")->alias('candidato1')
 
         ->leftJoin("(SELECT idCandidato, if(dataResposta = '0000-00-00 00:00:00', count(dataResposta),0) as cartas_pendentes from j17_recomendacoes group by idCandidato, dataResposta) recomendacao1"," candidato1.id = recomendacao1.idCandidato")
 
@@ -76,6 +77,11 @@ class CandidatosSearch extends Candidato
         $dataProvider->sort->attributes['cartas_respondidas'] = [
         'asc' => ['cartas_respondidas' => SORT_ASC],
         'desc' => ['cartas_respondidas' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['fase'] = [
+        'asc' => ['resultado' => SORT_ASC],
+        'desc' => ['resultado' => SORT_DESC],
         ];
 
         $this->load($params);
