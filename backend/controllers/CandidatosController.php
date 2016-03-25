@@ -6,6 +6,7 @@ use Yii;
 use app\models\Candidato;
 use app\models\CandidatosSearch;
 use common\models\LinhaPesquisa;
+use common\models\Recomendacoes;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -191,6 +192,63 @@ class CandidatosController extends Controller
             readfile($zipFile);
             unlink($zipFile);
 
+    }
+
+    public function actionAprovar($id,$idEdital)
+    {
+        $model = $this->findModel($id);
+
+        $cartas_respondidas = new Recomendacoes();
+        $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
+
+        if($cartas_respondidas <2){
+            $this->mensagens('warning', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
+            return $this->redirect(['candidatos/index','id'=>$idEdital]);
+        }
+
+        if($model->resultado === 1){
+            $this->mensagens('warning', 'Candidato Aprovado', 'Este Candidato já foi Aprovado');
+            return $this->redirect(['candidatos/index','id'=>$idEdital]);
+        }
+
+        $model->resultado = 1;
+
+        if ($model->save(false)){
+            $this->mensagens('success', 'Candidato Aprovado', 'Candidato Aprovado com sucesso.');
+        }
+        else{
+            $this->mensagens('warning', 'Erro no servidor', 'Consulte o administrador do sistema');
+        }
+
+        return $this->redirect(['candidatos/index','id'=>$idEdital]);
+    }
+
+    public function actionReprovar($id,$idEdital)
+    {   
+        $model = $this->findModel($id);
+
+        $cartas_respondidas = new Recomendacoes();
+        $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
+
+        if($cartas_respondidas <2){
+            $this->mensagens('warning', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
+            return $this->redirect(['candidatos/index','id'=>$idEdital]);
+        }
+
+        if($model->resultado === 0){
+            $this->mensagens('warning', 'Candidato Reprovado', 'Este Candidato já foi reprovado');
+            return $this->redirect(['candidatos/index','id'=>$idEdital]);
+        }
+
+        $model->resultado = 0;
+        if ($model->save(false)){
+            $this->mensagens('success', 'Candidato Reprovado', 'Candidato Reprovado com sucesso.');
+        }
+        else{
+            $this->mensagens('warning', 'Erro no servidor', 'Consulte o administrador do sistema');
+        }
+
+        return $this->redirect(['candidatos/index','id'=>$idEdital]);
     }
 
 

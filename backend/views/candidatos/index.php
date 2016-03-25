@@ -45,10 +45,16 @@ function goBack() {
 //        'filterModel' => $searchModel,
             'rowOptions'=> function($model){
                     if($model->cartas_respondidas < 2 && $model->carta_recomendacao == 1){
+                        return ['class' => 'warning'];
+                    }
+                    else if($model->resultado === 1) {
+                        return ['class' => 'success'];
+                    }
+                    else if($model->resultado === 0) {
                         return ['class' => 'danger'];
                     }
                     else{
-                        return ['class' => 'success'];
+                        return ['class' => 'info'];
                     }
             },
         'columns' => [
@@ -119,7 +125,26 @@ function goBack() {
             [   'label' => 'Linha Pesquisa',
                 'attribute' => 'nomeLinhaPesquisa',
             ],
-    
+
+
+            [   'label' => 'Fase',
+                'attribute' => 'fase',
+                'value' => function ($model) {
+
+                    if($model->resultado === 1){
+                        return "Aprovado";
+                    }
+                    else if($model->resultado === 0){
+
+                        return "Reprovado";
+                    }
+                    else{
+                        return "Não Julgado";
+                    }
+                },
+            ],
+
+
             // 'tituloproposta',
             // 'diploma:ntext',
             // 'historico:ntext',
@@ -174,7 +199,7 @@ function goBack() {
             // 'periodo',
 
             ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{download} {view} {delete} {update}',
+              'template'=>'{download} {view} {aprovar} {reprovar}',
                 'buttons'=>[
                   'download' => function ($url, $model) {  
 
@@ -187,6 +212,22 @@ function goBack() {
 
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['candidatos/view', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
+                    ]);                                
+
+                  },
+                  'aprovar' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-ok-sign"></span>', ['candidatos/aprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                            'title' => Yii::t('yii', 'Aprovar Aluno'),
+                            'data-confirm' => \Yii::t('yii', 'Você deseja APROVAR este candidato?'),
+                    ]);                                
+
+                  },
+                  'reprovar' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['candidatos/reprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                            'title' => Yii::t('yii', 'Reprovar Aluno'),
+                            'data-confirm' => \Yii::t('yii', 'Você deseja REPROVAR este candidato?'),
                     ]);                                
 
                   }

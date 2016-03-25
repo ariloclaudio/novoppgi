@@ -65,5 +65,15 @@ class Recomendacoes extends \yii\db\ActiveRecord
     }
 
 
+    public function getCartasRespondidas($id){
+
+
+        $cartas_respondidas = Recomendacoes::find()->where("idCandidato = ". $id)->andWhere("dataResposta != '0000-00-00 00:00:00' ")->count();
+
+        return $cartas_respondidas;
+
+    }
+
+
 
 }

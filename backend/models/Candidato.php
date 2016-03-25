@@ -12,6 +12,8 @@ class Candidato extends \yii\db\ActiveRecord
         public $cartas_pendentes;
         public $cartas_respondidas;
         public $carta_recomendacao;
+        public $fase;
+
     /**
      * @inheritdoc
      */
@@ -26,32 +28,9 @@ class Candidato extends \yii\db\ActiveRecord
     public function rules()
     {
 
-
-        // MODEL RELACIONADO AO BACK END !
-
-
         return [
-            [['senha', 'periodo'], 'required'],
-            [['inicio', 'fim'], 'safe'],
-            [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'egressograd', 'egressoesp', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'duracaoingles', 'resultado'], 'integer'],
-            [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'cartaempregador', 'comprovantepagamento'], 'string'],
-            [['senha', 'cidade'], 'string', 'max' => 40],
-            [['nome', 'nomepai', 'nomemae'], 'string', 'max' => 60],
-            [['endereco'], 'string', 'max' => 160],
-            [['bairro', 'email', 'empregador', 'cargo', 'convenio', 'cursograd', 'instituicaograd', 'instituicaoesp', 'cursopos', 'instituicaopos', 'instituicaoingles', 'nomeexame', 'empresa1', 'empresa2', 'empresa3', 'cargo1', 'cargo2', 'cargo3', 'instituicaoacademica1', 'instituicaoacademica2', 'instituicaoacademica3', 'atividade1', 'atividade2', 'atividade3'], 'string', 'max' => 50],
-            [['uf'], 'string', 'max' => 2],
-            [['cep'], 'string', 'max' => 9],
-            [['datanascimento', 'rg', 'orgaoexpedidor', 'dataexpedicao', 'crgrad', 'dataformaturagrad', 'dataformaturaesp', 'mediapos', 'dataformaturapos', 'dataexame', 'notaexame', 'periodo'], 'string', 'max' => 10],
-            [['pais', 'passaporte', 'inscricaoposcomp'], 'string', 'max' => 20],
-            [['estadocivil', 'periodoprofissional1', 'periodoprofissional2', 'periodoprofissional3'], 'string', 'max' => 15],
-            [['cpf'], 'string', 'max' => 14],
-            [['sexo'], 'string', 'max' => 1],
-            [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
-            [['notaposcomp'], 'string', 'max' => 5],
-            [['solicitabolsa', 'vinculoemprego', 'vinculoconvenio'], 'string', 'max' => 3],
-            [['tituloproposta'], 'string', 'max' => 100],
-            [['cursoesp'], 'string', 'max' => 70],
-            [['periodoacademico1', 'periodoacademico2', 'periodoacademico3'], 'string', 'max' => 30],
+
+
         ];
     }
 
@@ -157,6 +136,26 @@ class Candidato extends \yii\db\ActiveRecord
     }
 
 
+
+    /*Inicio dos Relacionamentos*/
+    public function getEdital()
+    {
+        return $this->hasOne(Edital::className(), ['numero' => 'idEdital']);
+    }
+
+    public function getlinhaPesquisa()
+    {
+        return $this->hasOne(LinhaPesquisa::className(), ['id' => 'idLinhaPesquisa']);
+    }
+
+    public function getRecomendacoes()
+    {
+        return $this->hasMany(Recomendacoes::className(), ['idCandidato' => 'id']);
+    }
+
+    /*Fim dos Relacionamentos*/
+
+
     public function download($idCandidato,$idEdital){
 
         return Candidato::findOne(['id' => $idCandidato]);
@@ -173,5 +172,6 @@ class Candidato extends \yii\db\ActiveRecord
         return $caminho;
 
     }
+
 
 }
