@@ -25,12 +25,10 @@ class CandidatosController extends Controller
                         'class' => \yii\filters\AccessControl::className(),
                         'only' => ['index','create','update','view','downloads','downloadscompletos'],
                         'rules' => [
-                            // allow authenticated users
                             [
                                 'allow' => true,
                                 'roles' => ['@'],
                             ],
-                            // everything else is denied
                         ],
                     ], 
             'verbs' => [

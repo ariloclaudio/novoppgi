@@ -14,7 +14,11 @@ return [
     'bootstrap' => ['log'],
     'sourceLanguage' => 'en',
     'language' => 'pt-br',
-    'modules' => [],
+    'modules' => [
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+        ]
+    ],
     'components' => [
         'user' => [
             'identityClass' => 'common\models\User',

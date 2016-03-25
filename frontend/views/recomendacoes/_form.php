@@ -7,7 +7,7 @@ use yii\web\JsExpression;
 
 $titulacao = ['1' => 'Mestrado', '2' => 'Doutorado', '3' => 'Epecialização', '4' => 'Graduação', '5' => 'Ensino Médio'];
 $atributos = ['1' => '1 - Fraco', '2' => '2 - Regular', '3' => '3 - Bom', '4' => '4 - Muito Bom', '5' => '5 - Excelente', '6' => 'X - Sem Condições de Informar'];
-$funcoesCarta = ['1' => 'Orientador', '2' => 'Professor', '3' => 'Empregador', '4' => 'Coordenador',  '5' => 'Colega de Curso', '6' => 'Colega de Trabalho', '7' => 'Outras Funções'];
+$funcoesCarta = ['1' => 'Orientador', '2' => 'Professor', '3' => 'Empregador', '4' => 'Coordenador',  '5' => 'Colega de Curso', '6' => 'Colega de Trabalho', '7' => 'Outros'];
 $conheceLista = ['1' => 'Curso Graduação', '2' => 'Curso de Pós-Graduação', '3' => 'Empresa', '4' => 'Outros'];
 
 echo 
@@ -30,7 +30,7 @@ label{
     <div class="row">
         <?= $form->field($model, 'instituicaoTitulacao', ['options' =>['class' => 'col-md-8']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Instituição:</b>") ?>
 
-        <?= $form->field($model, 'anoTitulacao', ['options' =>['class' => 'col-md-4']])->textInput()->label("<font color='#FF0000'>*</font> <b>Ano de Titulação:</b>") ?>
+        <?= $form->field($model, 'anoTitulacao', ['options' =>['class' => 'col-md-4']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Ano de Titulação:</b>") ?>
     </div>
     <div class="row">
         <?= $form->field($model, 'instituicaoAtual', ['options' =>['class' => 'col-md-8']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Instituição Atual:</b>") ?>
@@ -40,26 +40,21 @@ label{
     
     <div class="row">
         
-        <?= $form->field($model, 'anoContato', ['options' =>['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Eu o(a) conheço desde o ano:</b>") ?>
+        <?= $form->field($model, 'anoContato', ['options' =>['class' => 'col-md-2']])->textInput()->label("<font color='#FF0000'>*</font> <b>Conheço desde o ano:</b>") ?>
 
-        <?= $form->field($model, 'conhece')->checkboxList($conheceLista)->label("<font color='#FF0000'>*</font> <b>Por Meio de :</b>") ?>
+        <?= $form->field($model, 'conhece', ['options' =>['class' => 'col-md-6']])->checkboxList($conheceLista)->label("<font color='#FF0000'>*</font> <b>Por Meio de :</b>") ?>
 
-        <?= $form->field($model, 'outrosLugares', ['options' =>['class' => 'col-md-5', 'style' => 'display: none', 'id' => 'outroslugarestexto']])->textInput()->label("<b>Especifique quais outros: </b>") ?>
+        <?= $form->field($model, 'outrosLugares', ['options' =>['class' => 'col-md-3', 'style' => 'display: none', 'id' => 'outroslugarestexto']])->textInput()->label("<b>Especifique quais outros: </b>") ?>
     </div>
     <div class="row">
-        <div>
-            <font color='#FF0000'>*</font> <b>Com relação ao candidato, fui seu:</b>
-        </div>
-        <div style="margin-top:10px; " class="col-md-12">
-
-        <?= $form->field($model, 'funcoesCartaArray')->checkboxList($funcoesCarta)->label(false) ?>
+        <?= $form->field($model, 'funcoesCartaArray', ['options' =>['class' => 'col-md-8']])->checkboxList($funcoesCarta)->label("<font color='#FF0000'>*</font> <b>Com relação ao candidato, fui seu:</b>") ?>
 
 
-        <?= $form->field($model, 'outrasFuncoes', ['options' =>['class' => 'col-md-4', 'style' => 'display: none', 'id' => 'outrasfuncoestexto']])->textInput()->label('<b>Especifique quais outras:<b>') ?>
-        </div>
+        <?= $form->field($model, 'outrasFuncoes', ['options' =>['class' => 'col-md-3', 'style' => 'display: none', 'id' => 'outrasfuncoestexto']])->textInput()->label('<b>Especifique quais outras:</b>') ?>
     </div>
     <div  class="row" class="col-md-12">
         <p align="justify"><b>Como classifica o candidato quanto aos atributos indicados no quadro abaixo:</b></p>
+
         <div class="col-md-8">
             <font color='#FF0000'>*</font> <b>Domínio em sua área de conhecimento cientifico</b>
         </div>

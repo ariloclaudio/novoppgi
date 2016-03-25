@@ -80,7 +80,6 @@ class RecomendacoesController extends Controller
 
         if ($model->load(Yii::$app->request->post())){            
             if(isset($_POST['enviar']))
-                $model->setDataEnvio();
                 $model->setDataResposta();
                 $model->setCheckbox();
                 if($model->save()){
