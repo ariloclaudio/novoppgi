@@ -85,8 +85,15 @@ class AlunoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+                     var_dump($model->getErrors());
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+
+
+                     var_dump($model->getErrors());
+
             return $this->render('update', [
                 'model' => $model,
             ]);

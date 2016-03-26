@@ -4,7 +4,10 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Candidato;
+use app\models\Aluno;
+use common\models\User;
 use app\models\CandidatosSearch;
+use backend\models\SignupForm;
 use common\models\LinhaPesquisa;
 use common\models\Recomendacoes;
 use yii\web\Controller;
@@ -194,7 +197,113 @@ class CandidatosController extends Controller
 
     }
 
-    public function actionAprovar($id,$idEdital)
+    public function actionAprovar($id,$idEdital){
+
+
+        $model_usuario = new User();
+        $model_candidato = $this->findModel($id);
+
+        $model_usuario->nome = $model_candidato->nome;
+        $model_usuario->username = $model_candidato->cpf; //CPF
+        $model_usuario->password = $model_candidato->senha;
+        $model_usuario->administrador =  0;
+        $model_usuario->coordenador =  0;
+        $model_usuario->secretaria =  0;
+        $model_usuario->professor = 0;
+        $model_usuario->aluno = 1;
+
+        $salvou = $model_usuario->save();
+
+        /************************************************************************
+        *************************************************************************
+        *************************************************************************
+        *************************************************************************
+
+
+
+        //tem de tratar o Integrity constraint violation – yii\db\IntegrityException
+
+
+
+
+        *************************************************************************
+        *************************************************************************
+        *************************************************************************
+        *************************************************************************
+        */
+
+        if($salvou == true){    
+            return $this->actionAprovar1($id,$idEdital);
+        }
+        else{
+            $this->mensagens('warning', 'Erro', 'Erro ao Aprovar Candidato. Entre com contato com o administrador do sistema.');
+
+        }
+
+        return $this->redirect(['candidatos/index','id'=>$idEdital]);
+
+    }
+
+
+
+    
+    public function actionAprovar1($id,$idEdital){
+
+        $model_candidato = $this->findModel($id);
+        $model_aluno = new Aluno();
+
+         $model_aluno->senha  = $model_candidato->senha;
+         $model_aluno->nome  = $model_candidato->nome;
+         $model_aluno->endereco  = $model_candidato->endereco;
+         $model_aluno->bairro  = $model_candidato->bairro;
+         $model_aluno->cidade  = $model_candidato->cidade;
+         $model_aluno->uf  = $model_candidato->uf; 
+         $model_aluno->cep  = $model_candidato->cep;
+         $model_aluno->email  = $model_candidato->email;
+         $model_aluno->datanascimento  = $model_candidato->datanascimento;
+         $model_aluno->nacionalidade  = $model_candidato->nacionalidade;
+         $model_aluno->pais  = $model_candidato->pais;
+         $model_aluno->cpf  = $model_candidato->cpf; 
+         $model_aluno->sexo  = $model_candidato->sexo;
+         $model_aluno->telresidencial  = $model_candidato->telresidencial;
+         $model_aluno->telcelular  = $model_candidato->telcelular;
+         $model_aluno->regime  = $model_candidato->regime;
+         $model_aluno->cursograd  = $model_candidato->cursograd;
+         $model_aluno->instituicaograd  = $model_candidato->instituicaograd;
+         $model_aluno->egressograd  = $model_candidato->egressograd;
+         $model_aluno->dataformaturagrad  = $model_candidato->dataformaturagrad;
+         $model_aluno->status  = $model_candidato->status;
+
+         //mudança de atributos
+         $model_aluno->area  = $model_candidato->idLinhaPesquisa;
+         $model_aluno->curso  = $model_candidato->cursodesejado;
+
+
+        if ($model_aluno->load(Yii::$app->request->post()) && $model_aluno->save()) {
+
+
+                     var_dump($model_aluno->getErrors());
+
+
+
+            return $this->redirect(['/aluno/view', 'id' => $model_aluno->id]);
+        } else {
+
+
+                     var_dump($model_aluno->getErrors());
+
+
+
+            return $this->render('/aluno/create', [
+                'model' => $model_aluno,
+            ]);
+        }
+
+    }
+
+
+
+    public function actionAprovar2($id,$idEdital)
     {
         $model = $this->findModel($id);
 
