@@ -207,13 +207,13 @@ $( window ).load(function() {
       $(".caracteres").text(caracteresRestantes);
     }
 
-    if($("input[name='Recomendacoes[conhece][]']")[3].checked == true){
+    if($("input[name='Recomendacoes[conhece][]']").length && $("input[name='Recomendacoes[conhece][]']")[3].checked == true){
       $('#outroslugarestexto').css('display', 'block');
     }else{
       $('#outroslugarestexto').css('display', 'none');
     }
 
-    if($("input[name='Recomendacoes[funcoesCartaArray][]']" )[6].checked == true){
+    if($("input[name='Recomendacoes[funcoesCartaArray][]']" ).length && $("input[name='Recomendacoes[funcoesCartaArray][]']" )[6].checked == true){
         $('#outrasfuncoestexto').css('display', 'block');
     }else{
       $('#outrasfuncoestexto').css('display', 'none');
@@ -231,8 +231,6 @@ $( window ).load(function() {
         $('#divEstrangeiro').css('display', 'block');
         $('#divBrasileiro').css('display', 'none');
     }
-
-    if()
 });
 
 
