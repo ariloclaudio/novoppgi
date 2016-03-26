@@ -217,18 +217,18 @@ function goBack() {
                   },
                   'aprovar' => function ($url, $model) {  
 
-                    return Html::a('<span class="glyphicon glyphicon-ok-sign"></span>', ['candidatos/aprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                    return $model->resultado === null ? Html::a('<span class="glyphicon glyphicon-ok-sign"></span>', ['candidatos/aprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'title' => Yii::t('yii', 'Aprovar Aluno'),
                             'data-confirm' => \Yii::t('yii', 'Você deseja APROVAR este candidato?'),
-                    ]);                                
+                    ]) : '';                               
 
                   },
                   'reprovar' => function ($url, $model) {  
 
-                    return Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['candidatos/reprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                    return $model->resultado === null ? Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['candidatos/reprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'title' => Yii::t('yii', 'Reprovar Aluno'),
                             'data-confirm' => \Yii::t('yii', 'Você deseja REPROVAR este candidato?'),
-                    ]);                                
+                    ]) : '';                     
 
                   }
               ]                            

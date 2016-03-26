@@ -201,39 +201,46 @@ class CandidatosController extends Controller
 
 
         $model_usuario = new User();
+
         $model_candidato = $this->findModel($id);
 
-        $model_usuario->nome = $model_candidato->nome;
-        $model_usuario->username = $model_candidato->cpf; //CPF
-        $model_usuario->password = $model_candidato->senha;
-        $model_usuario->administrador =  0;
-        $model_usuario->coordenador =  0;
-        $model_usuario->secretaria =  0;
-        $model_usuario->professor = 0;
-        $model_usuario->aluno = 1;
 
-        $salvou = $model_usuario->save();
-
-        /************************************************************************
-        *************************************************************************
-        *************************************************************************
-        *************************************************************************
+        if($model_candidato != null){
+            $usuario_ja_existe = User::find()->select("id")->where("username = '".$model_candidato->cpf."'")->one();
+        }
 
 
+        if($usuario_ja_existe != null){
+            $model_usuario_existente = User::findOne($usuario_ja_existe->id);
+            $model_usuario_existente->aluno = 1;
+            $model_usuario_existente->status = 10;
+            $salvou = $model_usuario_existente->save();
 
-        //tem de tratar o Integrity constraint violation – yii\db\IntegrityException
+            $id_usuario = $model_usuario_existente->id;
 
+        }
+        else{
 
+            $model_usuario->nome = $model_candidato->nome;
+            $model_usuario->username = $model_candidato->cpf;
+            $model_usuario->password = $model_candidato->senha;
+            $model_usuario->email = $model_candidato->email;
+            $model_usuario->administrador =  0;
+            $model_usuario->coordenador =  0;
+            $model_usuario->secretaria =  0;
+            $model_usuario->professor = 0;
+            $model_usuario->aluno = 1;
+            $model_usuario->auth_key = Yii::$app->security->generateRandomString();
 
+            $salvou = $model_usuario->save();
 
-        *************************************************************************
-        *************************************************************************
-        *************************************************************************
-        *************************************************************************
-        */
+            $id_usuario = $model_usuario->id;
+
+        }
+
 
         if($salvou == true){    
-            return $this->actionAprovar1($id,$idEdital);
+            return $this->actionAprovar1($id,$idEdital,$id_usuario);
         }
         else{
             $this->mensagens('warning', 'Erro', 'Erro ao Aprovar Candidato. Entre com contato com o administrador do sistema.');
@@ -247,7 +254,7 @@ class CandidatosController extends Controller
 
 
     
-    public function actionAprovar1($id,$idEdital){
+    public function actionAprovar1($id,$idEdital,$id_usuario){
 
         $model_candidato = $this->findModel($id);
         $model_aluno = new Aluno();
@@ -274,15 +281,18 @@ class CandidatosController extends Controller
          $model_aluno->dataformaturagrad  = $model_candidato->dataformaturagrad;
          $model_aluno->status  = $model_candidato->status;
 
+         $model_candidato->resultado = 1;
+
          //mudança de atributos
          $model_aluno->area  = $model_candidato->idLinhaPesquisa;
          $model_aluno->curso  = $model_candidato->cursodesejado;
+         $model_aluno->idUser = $id_usuario;
 
 
         if ($model_aluno->load(Yii::$app->request->post()) && $model_aluno->save()) {
 
 
-                     var_dump($model_aluno->getErrors());
+                     $model_candidato->save();
 
 
 

@@ -84,7 +84,8 @@ class Aluno extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['nome', 'email', 'senha', 'matricula', 'area', 'curso', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'agencia', 'pais', 'resumoQual2', 'resumoTese', 'idUser', 'orientador', 'anoconclusao'], 'required'],
+            //[['nome', 'email', 'senha', 'matricula', 'area', 'curso', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'agencia', 'pais', 'resumoQual2', 'resumoTese'], 'required'],
+            [['idUser', 'orientador', 'anoconclusao','matricula'], 'required'],
             [['area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
             [['resumoQual2', 'resumoTese'], 'string'],
             [['anoconclusao'], 'safe'],
