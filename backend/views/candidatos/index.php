@@ -16,16 +16,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get
     'url' => ['edital/view','id' => Yii::$app->request->get('id') ]];
 $this->params['breadcrumbs'][] = $this->title;
 
-/*
-echo   Breadcrumbs::widget([
-      'homeLink' => [ 
-                      'label' => Yii::t('yii', 'Número: '.Yii::$app->request->get('id')),
-                      'url' => 'index.php?r=edital/view&id='.Yii::$app->request->get('id'),
-                 ],
-      'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-   ]);
-*/
-
 ?>
 <div class="candidato-index">
 
@@ -42,7 +32,6 @@ function goBack() {
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
             'rowOptions'=> function($model){
                     if($model->cartas_respondidas < 2 && $model->carta_recomendacao == 1){
                         return ['class' => 'warning'];
@@ -66,17 +55,7 @@ function goBack() {
                      return $model->idEdital.'-'.$model->id;
                 },
             ],
-            //'senha',
-            //'inicio',
-            //'fim',
-            //'passoatual',
              'nome',
-            // 'endereco',
-            // 'bairro',
-            // 'cidade',
-            // 'uf',
-            // 'cep',
-            // 'email:email',
              ['attribute' => 'qtd_cartas',
               'label' => 'Cartas Emitidas',
               'value' => function ($model){
@@ -89,44 +68,15 @@ function goBack() {
                        return $model->cartas_respondidas;
               }
              ],
-            // 'datanascimento',
-            // 'nacionalidade',
-            // 'pais',
-            // 'estadocivil',
-            // 'rg',
-            // 'orgaoexpedidor',
-            // 'dataexpedicao',
-            // 'passaporte',
-            // 'cpf',
-            // 'sexo',
-            // 'telresidencial',
-            // 'telcomercial',
-            // 'telcelular',
-            // 'nomepai',
-            // 'nomemae',
-
             [   'label' => 'Curso Desejado',
                 'attribute' => 'cursodesejado',
                 'value' => function ($model) {
-                     return $model->cursodesejado == 0 ? 'Mestrado' : 'Doutorado';
+                     return $model->cursodesejado == 1 ? 'Mestrado' : 'Doutorado';
                 },
             ],
-            // 'regime',
-            // 'inscricaoposcomp',
-            // 'anoposcomp',
-            // 'notaposcomp',
-            // 'solicitabolsa',
-            // 'vinculoemprego',
-            // 'empregador',
-            // 'cargo',
-            // 'vinculoconvenio',
-            // 'convenio',
-
             [   'label' => 'Linha Pesquisa',
                 'attribute' => 'nomeLinhaPesquisa',
             ],
-
-
             [   'label' => 'Fase',
                 'attribute' => 'fase',
                 'value' => function ($model) {
@@ -144,62 +94,8 @@ function goBack() {
                 },
             ],
 
-
-            // 'tituloproposta',
-            // 'diploma:ntext',
-            // 'historico:ntext',
-            // 'motivos:ntext',
-            // 'proposta:ntext',
-            // 'curriculum:ntext',
-            // 'cartaempregador:ntext',
-            // 'comprovantepagamento:ntext',
-            // 'cursograd',
-            // 'instituicaograd',
-            // 'crgrad',
-            // 'egressograd',
-            // 'dataformaturagrad',
-            // 'cursoesp',
-            // 'instituicaoesp',
-            // 'egressoesp',
-            // 'dataformaturaesp',
-            // 'cursopos',
-            // 'instituicaopos',
-            // 'tipopos',
-            // 'mediapos',
-            // 'egressopos',
-            // 'dataformaturapos',
-            // 'periodicosinternacionais',
-            // 'periodicosnacionais',
-            // 'conferenciasinternacionais',
-            // 'conferenciasnacionais',
-            // 'instituicaoingles',
-            // 'duracaoingles',
-            // 'nomeexame',
-            // 'dataexame',
-            // 'notaexame',
-            // 'empresa1',
-            // 'empresa2',
-            // 'empresa3',
-            // 'cargo1',
-            // 'cargo2',
-            // 'cargo3',
-            // 'periodoprofissional1',
-            // 'periodoprofissional2',
-            // 'periodoprofissional3',
-            // 'instituicaoacademica1',
-            // 'instituicaoacademica2',
-            // 'instituicaoacademica3',
-            // 'atividade1',
-            // 'atividade2',
-            // 'atividade3',
-            // 'periodoacademico1',
-            // 'periodoacademico2',
-            // 'periodoacademico3',
-            // 'resultado',
-            // 'periodo',
-
             ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{download} {view} {aprovar} {reprovar}',
+              'template'=>'{download} {view} {aprovar} {reprovar} {reenviar}',
                 'buttons'=>[
                   'download' => function ($url, $model) {  
 
@@ -228,7 +124,15 @@ function goBack() {
                     return $model->resultado === null ? Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['candidatos/reprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'title' => Yii::t('yii', 'Reprovar Aluno'),
                             'data-confirm' => \Yii::t('yii', 'Você deseja REPROVAR este candidato?'),
-                    ]) : '';                     
+                    ]) : '';                   
+
+                  },
+                  'reenviar' => function ($url, $model) {  
+
+                    return $model->qtd_cartas > $model->cartas_respondidas ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                            'title' => Yii::t('yii', 'Reenviar Cartas'),
+                            'data-confirm' => \Yii::t('yii', 'Você deseja Reenviar cartas de recomendação deste candidato?'),
+                    ]) : '';                   
 
                   }
               ]                            

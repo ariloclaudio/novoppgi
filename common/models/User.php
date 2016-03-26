@@ -180,4 +180,20 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function checarAcesso($permissao){
+        switch ($permissao) {
+            case 'administrador':
+                return $this->administrador;
+            case 'coordenacao':
+                return $this->coordenador || $this->secretaria;
+            case 'professor':
+                return $this->professor;
+            case 'aluno':
+                return $this->aluno;
+            default:
+                return false;
+        }
+    }
+
 }

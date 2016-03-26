@@ -19,6 +19,13 @@ $(document).ready( function() {
             $('#form_doutorado').val('');
         }
     });
+
+    $('input[name="Edital[editalUpload]"]').on('switchChange.bootstrapSwitch', function (data, state) {
+    	if (state)
+    		$('#divDocumentoFile').css('display', 'block');
+    	else
+    		$('#divDocumentoFile').css('display', 'none');
+    });
 });
 
 

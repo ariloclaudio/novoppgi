@@ -28,15 +28,17 @@ class CandidatosController extends Controller
     {
         return [
             'access' => [
-                        'class' => \yii\filters\AccessControl::className(),
-                        'only' => ['index','create','update','view','downloads','downloadscompletos'],
-                        'rules' => [
-                            [
-                                'allow' => true,
-                                'roles' => ['@'],
-                            ],
-                        ],
-                    ], 
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                               return Yii::$app->user->identity->checarAcesso('coordenacao');
+                        }
+                    ],
+                ],
+            ], 
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -462,7 +464,59 @@ class CandidatosController extends Controller
             $pdf->output();
     }
 
+    public function actionReenviarcartas($id, $idEdital){
+        $recomendacoesArray = Recomendacoes::findAll(['idCandidato' => $id, 'dataResposta' => '0000-00-00 00:00:00']);
 
+        for ($i=0; $i < count($recomendacoesArray); $i++) { 
+            $recomendacoesArray[$i]->prazo = date("Y-m-d", strtotime('+5 days'));
+            if(!$recomendacoesArray[$i]->save()){
+                $this->mensagens('danger', 'Erro ao Reenviar Cartas', 'As cartas de Recomendações não poderam ser enviadas.');
+                return $this->redirect(['candidatos/index','id'=>$idEdital]);
+            }
+        }
+
+        $this->notificarCartasRecomendacao($recomendacoesArray, $id);
+
+        $this->mensagens('success', 'Cartas de Recomendações Reenviadas', 'As cartas de Recomendações foram reenviadas.');
+        return $this->redirect(['candidatos/index','id'=>$idEdital]);
+    }
+
+    public function notificarCartasRecomendacao($recomendacoesArray, $id){
+
+        $model = Candidato::findOne(['id' => $id]);
+
+        foreach ($recomendacoesArray as $recomendacoes) {
+            echo "<script>console.log('$recomendacoes->nome')</script>";
+            $link = "http://localhost/MyProjects/ppgi/frontend/web/index.php?r=recomendacoes/create&token=".$recomendacoes->token;
+            // subject
+            $subject  = "[PPGI/UFAM] Solicitacao de Carta de Recomendacao para ".$model->nome;
+
+            $mime_boundary = "<<<--==-->>>";
+            $message = '';
+            // message
+            $message .= "Caro(a) ".$recomendacoes->nome.", \r\n\n";
+            $message .= "Você foi requisitado(a) por ".$model->nome." (email: ".$model->email.") para escrever uma carta de recomendação para o processo de seleção do Programa de Pós-Graduação em Informática (PPGI) da Universidade Federal do Amazonas (UFAM).\r\n";
+            $message .= "\nPara isso, a carta deve ser preenchida eletronicamente utilizando o link: \n ".$link."\r\n";
+            $message .= "O prazo para preenchimento da carta é ".$recomendacoes->prazo.".\r\n";
+            $message .= "Em caso de dúvidas, por favor nos contate. Agradecemos sua colaboração.\r\n";
+            $message .= "\nCoordenação do PPGI - ".date(DATE_RFC822)."\r\n";
+            $message .= $mime_boundary."\r\n";
+
+            /*Envio das cartas de Email*/
+           try{
+               Yii::$app->mailer->compose()
+                ->setFrom("secretariappgi@icomp.ufam.edu.br")
+                ->setTo($recomendacoes->email)
+                ->setSubject($subject)
+                ->setTextBody($message)
+                ->send();
+            }catch(Exception $e){
+                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Solicitações de Cartas de Recomendação.
+                    Tente novamente ou contate o adminstrador do sistema');
+            }
+        }
+    }
+    
     /**
      * Finds the Candidato model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -479,6 +533,8 @@ class CandidatosController extends Controller
         }
     }
 
+
+
         /* Envio de mensagens para views
        Tipo: success, danger, warning*/
     protected function mensagens($tipo, $titulo, $mensagem){
@@ -493,7 +549,5 @@ class CandidatosController extends Controller
             'showProgressbar' => true,
         ]);
     }
-
-
 
 }

@@ -20,6 +20,18 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                               return Yii::$app->user->identity->checarAcesso('administrador');
+                        }
+                    ],
+                ],
+            ], 
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -100,7 +112,7 @@ class UserController extends Controller
         if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('A página solicitada não existe.');
         }
     }
 }
