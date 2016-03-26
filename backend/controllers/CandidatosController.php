@@ -204,23 +204,28 @@ class CandidatosController extends Controller
         $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
 
         if($cartas_respondidas <2){
-            $this->mensagens('warning', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
+            $this->mensagens('danger', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
 
-        if($model->resultado === 1){
-            $this->mensagens('warning', 'Candidato Aprovado', 'Este Candidato já foi Aprovado');
+        if($model->resultado === 0 || $model->resultado === 1 ){
+            $this->mensagens('danger', 'Candidato Reprovado', 'Este Candidato já foi Avaliado');
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
 
-        $model->resultado = 1;
+            $sql = "INSERT INTO `j17_aluno`(`senha`, `nome`, `endereco`, `bairro`, `cidade`, `uf`, `cep`, `email`, `datanascimento`, `nacionalidade`, `pais`,  `cpf`, `sexo`, `telresidencial`, `telcelular`, `regime`,  `cursograd`, `instituicaograd`, `egressograd`, `dataformaturagrad`, `status`) 
+            SELECT `senha`, `nome`, `endereco`, `bairro`, `cidade`, `uf`, `cep`, `email`, `datanascimento`, `nacionalidade`, `pais`,  `cpf`, `sexo`, `telresidencial`, `telcelular`, `regime`,  `cursograd`, `instituicaograd`, `egressograd`, `dataformaturagrad`, `status` FROM j17_candidatos WHERE id = ".$id;
 
-        if ($model->save(false)){
-            $this->mensagens('success', 'Candidato Aprovado', 'Candidato Aprovado com sucesso.');
-        }
-        else{
-            $this->mensagens('warning', 'Erro no servidor', 'Consulte o administrador do sistema');
-        }
+            Yii::$app->db->createCommand($sql)->execute();
+
+            $model->resultado = 1;
+
+            if($model->save(false)){
+                $this->mensagens('success', 'Candidato Aprovado', 'Candidato Aprovado com sucesso.');
+            }
+            else{
+                $this->mensagens('warning', 'Erro', 'Erro ao Aprovar Candidato. Entre com contato com o administrador do sistema.');
+            }
 
         return $this->redirect(['candidatos/index','id'=>$idEdital]);
     }
@@ -233,22 +238,23 @@ class CandidatosController extends Controller
         $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
 
         if($cartas_respondidas <2){
-            $this->mensagens('warning', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
+            $this->mensagens('danger', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
 
-        if($model->resultado === 0){
-            $this->mensagens('warning', 'Candidato Reprovado', 'Este Candidato já foi reprovado');
+        if($model->resultado === 0 || $model->resultado === 1){
+            $this->mensagens('danger', 'Candidato Avaliado', 'Este Candidato já foi Avaliado');
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
 
-        $model->resultado = 0;
-        if ($model->save(false)){
-            $this->mensagens('success', 'Candidato Reprovado', 'Candidato Reprovado com sucesso.');
-        }
-        else{
-            $this->mensagens('warning', 'Erro no servidor', 'Consulte o administrador do sistema');
-        }
+            $model->resultado = 0;
+
+            if($model->save(false)){
+                $this->mensagens('success', 'Candidato Reprovado', 'Candidato Reprovado com sucesso.');
+            }
+            else{
+                $this->mensagens('warning', 'Erro', 'Erro ao Aprovar Candidato. Entre com contato com o administrador do sistema.');
+            }
 
         return $this->redirect(['candidatos/index','id'=>$idEdital]);
     }

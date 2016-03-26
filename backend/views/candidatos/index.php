@@ -48,13 +48,13 @@ function goBack() {
                         return ['class' => 'warning'];
                     }
                     else if($model->resultado === 1) {
-                        return ['class' => 'success'];
+                        return ['class' => 'info'];
                     }
                     else if($model->resultado === 0) {
                         return ['class' => 'danger'];
                     }
                     else{
-                        return ['class' => 'info'];
+                        return ['class' => 'success'];
                     }
             },
         'columns' => [
