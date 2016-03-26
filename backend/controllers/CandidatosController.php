@@ -423,7 +423,7 @@ class CandidatosController extends Controller
 
     public function actionPdfcartas($id){
 
-            $pdf = new mPDF('utf-8','A4','','','15','15','37','30');
+            $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
 
             $pdf->SetHTMLHeader('
                 <table style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
@@ -451,17 +451,104 @@ class CandidatosController extends Controller
                 </table>
             ');
 
-
-
             $model_cartas = new Recomendacoes();
-            $model_cartas = $model_cartas->getCartas($id);
+            $candidato = $this->findModel($id);
+            $recomendacao = $model_cartas->getCartas($id);
 
-            var_dump($model_cartas[0]);
-            exit;
+            $i=0;
+
+    while($i<count($recomendacao)){
+
+
+            $pontos = array (1 => "Fraco",2 => "Regular",3 => "Bom",4 => "Muito bom",5 => "Excelente",6 => "Sem condições para afirmar");
+               $classificacao = array (1 => "entre os 50% mais aptos",2 => "entre os 30% mais aptos",3 => "entre os 10% mais aptos",4 => "entre os 5% mais aptos");
+            $orientador = array (0 => "",1 => "Orientador; ");
+            $professor = array (0 => "",1 => "Professor em Disciplina; ");
+            $empregador = array (0 => "",1 => "Empregador; ");
+            $coordenador = array (0 => "",1 => "Coordenador; ");
+            $colegaCurso = array (0 => "",1 => "Colega em Curso Superior; ");
+            $colegaTrabalho = array (0 => "",1 => "Colega de Profissão; ");
+            $outrosContatos = array (0 => "",1 => "Outras Funções; ");
+            $conheceGraduacao = array (0 => "",1 => "Curso de Graduação; ");
+            $conhecePos = array (0 => "",1 => "Curso de Pós-Graduação; ");
+            $conheceEmpresa = array (0 => "",1 => "Empresa; ");
+            $conheceOutros = array (0 => "",1 => "Outros; ");
+
+
+            $atributos = array(
+                                       array('Atributos do Candidato'=>'Domínio em sua área de conhecimento científico','Nível'=>$pontos[$recomendacao[$i]->dominio])
+                                       ,array('Atributos do Candidato'=>'Facilidade de aprendizado capacidade intelectual','Nível'=>$pontos[$recomendacao[$i]->aprendizado])
+                                       ,array('Atributos do Candidato'=>'Assiduidade, perseverança','Nível'=>$pontos[$recomendacao[$i]->assiduidade])
+                                       ,array('Atributos do Candidato'=>'Relacionamento com colegas e superiores','Nível'=>$pontos[$recomendacao[$i]->relacionamento])
+                                       ,array('Atributos do Candidato'=>'Iniciativa, desembaraço, originalidade e liderança','Nível'=>$pontos[$recomendacao[$i]->iniciativa])
+                                       ,array('Atributos do Candidato'=>'Capacidade de expressão escrita','Nível'=>$pontos[$recomendacao[$i]->expressao])
+                                       ,array('Atributos do Candidato'=>'Conhecimento em Inglês','Nível'=>$pontos[$recomendacao[$i]->ingles])
+            );
+            
+
+            $pdf->writeHTML('
+
+                <div style ="text-align:center"> <b>CARTA DE RECOMENDAÇÃO</b> </div>
+                <hr>
+                <div style ="text-align:center;"> <b>DADOS DO CANDIDATO</b> </div>
+                <p style ="text-align:left"> <b>Nome do Candidato:</b> '.$candidato->nome.' </p>
+                <p style ="text-align:left"> <b>Graduado em: </b> '.$candidato->cursograd.' - '.$candidato->instituicaograd.'
+                </p>
+                
+                <hr>
+                <div style ="text-align:center;"> <b>AVALIADOR DO CANDIDATO</b> </div>
+
+                <p style ="text-align:left"> <b>Nome: </b>'.$recomendacao[$i]->nome.' </p>
+                <p style ="text-align:left"> <b>Titulação: </b>'.$recomendacao[$i]->titulacao.' </p>
+                <p style ="text-align:left"> <b>Instituição: </b>'.$recomendacao[$i]->instituicaoTitulacao.' </p>
+                <p style ="text-align:left"> <b>Ano da Titulação: </b>'.$recomendacao[$i]->anoTitulacao.' </p>
+                <p style ="text-align:left"> <b>Instituição/Empresa onde atua: </b>'.$recomendacao[$i]->instituicaoAtual.' </p>
+                <p style ="text-align:left"> <b>Cargo: </b>'.($recomendacao[$i]->cargo).' </p>
+
+                <hr>
+                <div style ="text-align:center;"> <b>AVALIAÇÃO DO CANDIDATO</b> </div>
+
+                <p style ="text-align:left"> <b> Conheço o candidato desde: </b>'.$recomendacao[$i]->anoContato. ' em ' .$conheceGraduacao[$recomendacao[$i]->conheceGraduacao]."".$conhecePos[$recomendacao[$i]->conhecePos]."".$conheceEmpresa[$recomendacao[$i]->conheceEmpresa]."".$conheceOutros[$recomendacao[$i]->conheceOutros].'
+                </p>
+
+                <p style ="text-align:left"> <b> Com relação ao candidato, fui seu(sua): </b>'.$orientador[$recomendacao[$i]->orientador]."".$professor[$recomendacao[$i]->professor]."".$empregador[$recomendacao[$i]->empregador]."".$coordenador[$recomendacao[$i]->coordenador]."".$colegaCurso[$recomendacao[$i]->colegaCurso]."".$colegaTrabalho[$recomendacao[$i]->colegaTrabalho]."".$outrosContatos[$recomendacao[$i]->outrosContatos].'
+                </p>
+
+                <p> Como classifica o candidato em relação aos atributos abaixo:</p>
+
+                <p> Domínio em sua área de conhecimento científico - Nível: '.$pontos[$recomendacao[$i]->dominio].'</p>
+                <p> Facilidade de aprendizado capacidade intelectual - Nível: '.$pontos[$recomendacao[$i]->aprendizado].'</p>
+                <p> Assiduidade, perseverança - Nível: '.$pontos[$recomendacao[$i]->assiduidade].'</p>
+                <p> Relacionamento com colegas e superiores - Nível: '.$pontos[$recomendacao[$i]->relacionamento].'</p>
+                <p> Atributos do Candidato'.'Iniciativa, desembaraço, originalidade e liderança - Nível: '.$pontos[$recomendacao[$i]->iniciativa].'</p>
+                <p> Atributos do Candidato'.'Capacidade de expressão escrita - Nível: '.$pontos[$recomendacao[$i]->expressao].'</p>
+                <p> Atributos do Candidato'.'Conhecimento em Inglês - Nível: '.$pontos[$recomendacao[$i]->ingles].'</p>
+
+                <p> <b>Comparando este candidato com outros alunos ou profissionais, com similar nível de educação e experiência, que conheceu nos últimos 2 anos, classifique a sua aptidão para realizar estudos avançados e pesquisas: </b> </p>
+
+                <p>'.$classificacao[$recomendacao[$i]->classificacao].' </p>
+
+                <p> <b>Informações Adicionais:</b> </p>
+
+                <p>'. $recomendacao[$i]->informacoes.'</p>
 
 
 
-            $pdf->output();
+
+                
+            ');
+
+
+        $i++;
+
+        if($i < count($recomendacao)){
+            $pdf->addPage();
+        }
+
+    }
+
+           $pdf->output();
+
     }
 
     public function actionReenviarcartas($id, $idEdital){
