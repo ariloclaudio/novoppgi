@@ -148,6 +148,12 @@ $this->params['breadcrumbs'][] = $this->title;
                      'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->comprovantepagamento."' target = '_blank'> Baixar </a>"
                 ],
 
+                [
+                     'label' => 'Cartas de Recomendação',
+                     'format'=>'raw',
+                     'value' => "<a href='index.php?r=candidatos/pdfcartas&id=".$model->id."' target = '_blank'> Baixar </a>"
+                ],
+
             'cursograd',
             'instituicaograd',
 //            'crgrad',

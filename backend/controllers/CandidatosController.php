@@ -13,6 +13,8 @@ use common\models\Recomendacoes;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use mPDF;
+
 
 /**
  * CandidatosController implements the CRUD actions for Candidato model.
@@ -200,6 +202,22 @@ class CandidatosController extends Controller
     public function actionAprovar($id,$idEdital){
 
 
+        $model = $this->findModel($id);
+
+        $cartas_respondidas = new Recomendacoes();
+        $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
+
+        if($cartas_respondidas <2){
+            $this->mensagens('danger', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
+            return $this->redirect(['candidatos/index','id'=>$idEdital]);
+        }
+
+        if($model->resultado === 0 || $model->resultado === 1 ){
+            $this->mensagens('danger', 'Candidato Reprovado', 'Este Candidato já foi Avaliado');
+            return $this->redirect(['candidatos/index','id'=>$idEdital]);
+        }
+
+
         $model_usuario = new User();
 
         $model_candidato = $this->findModel($id);
@@ -312,7 +330,6 @@ class CandidatosController extends Controller
     }
 
 
-
     public function actionAprovar2($id,$idEdital)
     {
         $model = $this->findModel($id);
@@ -399,6 +416,50 @@ class CandidatosController extends Controller
         header('Expires: 0');
 
         readfile($localArquivo);
+
+    }
+
+    public function actionPdfcartas($id){
+
+            $pdf = new mPDF('utf-8','A4','','','15','15','37','30');
+
+            $pdf->SetHTMLHeader('
+                <table style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
+                    <tr>
+                        <td width="20%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 175%;"> <img src = "../../frontend/web/img/logo-brasil.jpg" height="90px" width="90px"> </td>
+                        <td width="60%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 135%;">  PODER EXECUTIVO <br> UNIVERSIDADE FEDERAL DO AMAZONAS <br> INSTITUTO DE COMPUTAÇÃO <br> PROGRAMA DE PÓS-GRADUAÇÃO EM INFORMÁTICA </td>
+                        <td width="20%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 175%;"> <img src = "../../frontend/web/img/ufam.jpg" height="90px" width="70px"> </td>
+                    </tr>
+                </table>
+                <hr>
+            ');
+
+            $pdf->SetHTMLFooter('
+
+                <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
+                    <tr>
+                        <td  colspan = "3" align="center" ><span style="font-weight: bold"> Av. Rodrigo Otávio, 6.200 - Campus Universitário Senador Arthur Virgílio Filho - CEP 69077-000 - Manaus, AM, Brasil </span></td>
+                    </tr>
+                    <tr>
+                        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">  Tel. (092) 3305-1193/2808/2809</td>
+                        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">  E-mail: secretaria@icomp.ufam.edu.br</td>
+
+                        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">  http://www.icomp.ufam.edu.br </td>
+                    </tr>
+                </table>
+            ');
+
+
+
+            $model_cartas = new Recomendacoes();
+            $model_cartas = $model_cartas->getCartas($id);
+
+            var_dump($model_cartas[0]);
+            exit;
+
+
+
+            $pdf->output();
     }
 
 
