@@ -44,7 +44,7 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            return Yii::$app->user->can('usuarios');
+                            return Yii::$app->user->identity->checarAcesso('administrador');
                         }
                     ],
                 ],

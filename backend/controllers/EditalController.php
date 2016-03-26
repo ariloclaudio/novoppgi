@@ -28,14 +28,12 @@ class EditalController extends Controller
         return [
             'access' => [
                         'class' => \yii\filters\AccessControl::className(),
-                        'only' => ['index','create','update','view', 'quantidadecandidatos', 'listacandidatos', 'listaencerrados', 
-                            'quantidadeencerrados', 'cartasrespondidas', 'quantidadecartasrecebidas'],
                         'rules' => [
                             [
                                 'allow' => true,
                                 'roles' => ['@'],
                                 'matchCallback' => function ($rule, $action) {
-                                       return Yii::$app->user->can('edital');
+                                       return Yii::$app->user->identity->checarAcesso('coordenacao');
                                 }
                             ],
                         ],
@@ -75,8 +73,8 @@ class EditalController extends Controller
 
         $model = $this->findModel($id);
 
-        $model->datainicio = date("d-m-Y", strtotime($model->datainicio));
-        $model->datafim = date("d-m-Y", strtotime($model->datafim));
+        $model->datainicio = date("d-M-Y", strtotime($model->datainicio));
+        $model->datafim = date("d-M-Y", strtotime($model->datafim));
 
         return $this->render('view', [
             'model' => $model,
@@ -233,14 +231,6 @@ class EditalController extends Controller
             else
                 $model->curso = '0';
 
-            $diainicio = explode("/", $model->datainicio);
-
-            if (count($diainicio) != 1){
-                $model->datainicio = $diainicio[2]."-".$diainicio[1]."-".$diainicio[0];                
-                $diafim = explode("/", $model->datafim);
-                $model->datafim =$diafim[2]."-".$diafim[1]."-".$diafim[0];
-            }
-
             if($model->uploadDocumento(UploadedFile::getInstance($model, 'documentoFile'))){
                 if($model->save())
                     return $this->redirect(['view', 'id' => $model->numero]);
@@ -268,6 +258,9 @@ class EditalController extends Controller
     {
         $model = $this->findModel($id);
 
+        $model->datainicio = date('d-M-Y', strtotime($model->datainicio));
+        $model->datafim =  date('d-M-Y', strtotime($model->datafim));
+
         if ($model->load(Yii::$app->request->post())) {
             //return $model->mestrado." ".$model->doutorado;
             if($model->mestrado == 1 && $model->doutorado == 1)
@@ -279,13 +272,6 @@ class EditalController extends Controller
             else
                 $model->curso = '0';
 
-            $diainicio = explode("/", $model->datainicio);
-
-            if (count($diainicio) != 1){
-                $model->datainicio = $diainicio[2]."-".$diainicio[1]."-".$diainicio[0];                
-                $diafim = explode("/", $model->datafim);
-                $model->datafim =$diafim[2]."-".$diafim[1]."-".$diafim[0];
-            }
 
             if($model->uploadDocumento(UploadedFile::getInstance($model, 'documentoFile'))){
                 if($model->save()){
@@ -298,17 +284,6 @@ class EditalController extends Controller
                 }
             }
         } else {
-
-            //modelo de conversão de data
-            // este modelo de conversão, difere dos demais
-            $diainicio = explode("-", $model->datainicio);
-            $model->datainicio = $diainicio[2]."/".$diainicio[1]."/".$diainicio[0];
-
-            $diafim = explode("-", $model->datafim);
-            $model->datafim =$diafim[2]."/".$diafim[1]."/".$diafim[0];
-
-            //fim do modelo de conversão de data
-
             return $this->render('update', [
                 'model' => $model,
             ]);

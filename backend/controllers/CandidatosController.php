@@ -26,15 +26,17 @@ class CandidatosController extends Controller
     {
         return [
             'access' => [
-                        'class' => \yii\filters\AccessControl::className(),
-                        'only' => ['index','create','update','view','downloads','downloadscompletos'],
-                        'rules' => [
-                            [
-                                'allow' => true,
-                                'roles' => ['@'],
-                            ],
-                        ],
-                    ], 
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                               return Yii::$app->user->identity->checarAcesso('coordenacao');
+                        }
+                    ],
+                ],
+            ], 
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

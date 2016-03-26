@@ -6,6 +6,12 @@ use kartik\widgets\DatePicker;
 use kartik\widgets\SwitchInput;
 use yii\widgets\MaskedInput;
 
+$uploadEdital = 0;
+
+if(isset($model->documento))
+	$uploadEdital = 1;
+	
+
 ?>
 
 <div class="edital-form">
@@ -14,31 +20,56 @@ use yii\widgets\MaskedInput;
 
 	    	<input type='hidden' id = 'form_mestrado' value =<?= $model->mestrado ?> />
 	    	<input type='hidden' id = 'form_doutorado' value =<?= $model->doutorado?> />
+	    	<input type="hidden" id = "form_upload" value = '<?=$uploadEdital?>' />
 
 		    <div class="row">
             <?= $form->field($model, 'numero', ['options' => ['class' => 'col-md-4']])->widget(MaskedInput::className(), [
         'mask' => '9999-9999'])->hint('Ex.: 0001-2016, sendo o <b>\'0001\'</b> o número do edital e <b>\'2016\'</b> o ano')->textInput()->label("<font color='#FF0000'>*</font> <b>Número:</b>") ?> 
 
 		     </div>
+		     <div class="row">
+				<?php 
+		        if(isset($model->documento)){
+		            echo "<div class='col-md-8'> <b>Edital em formato PDF:<br> 
+		                Você já fez o upload do edital, <a href='editais/".$model->documento."' >clique aqui </a>para visualizá-lo.</b><br></div>";
+		            
+		            echo $form->field($model, 'editalUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+		            'pluginOptions' => [
+		                'onText' => 'Sim',
+		                'offText' => 'Não',
+		                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
 
-		    <div class="row" style ="border:1px">
-				<?= $form->field($model, 'documentoFile', ['options' => ['class' => 'col-md-4']])->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Selecionar o Edital em formato PDF:</b>") ?>
-		    </div>
+		        }
+		        else{
+		            echo $form->field($model, 'documentoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Edital em formato PDF:</b>");
+		        }
+		        ?>
+
+		        <?php if(isset($model->documento)){ ?>
+		            <div id="divDocumentoFile" style="display: none; clear: both;">
+		                <?= $form->field($model, 'documentoFile')->FileInput(['accept' => '.pdf'])->label(false); ?>
+		            </div>
+		        <?php } ?>
+	        </div>
 
 		    <div class="row">
 		        <?= $form->field($model, 'datainicio', ['options' => ['class' => 'col-md-4']])->widget(DatePicker::classname(), [
-		            'pluginOptions' => [
-		                'format' => 'dd/mm/yyyy',
-		                'autoclose'=>true
-		            ]
+	                'language' => Yii::$app->language,
+	                'options' => ['placeholder' => 'Selecione a Data de Início ...',],
+				    'pluginOptions' => [
+				        'format' => 'dd-M-yyyy',
+				        'todayHighlight' => true
+				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Inicial</b>")
 		    ?>
 
 		        <?= $form->field($model, 'datafim', ['options' => ['class' => 'col-md-4']])->widget(DatePicker::classname(), [
-		            'pluginOptions' => [
-		                'format' => 'dd/mm/yyyy',
-		                'autoclose'=>true
-		            ]
+	                'language' => Yii::$app->language,
+	                'options' => ['placeholder' => 'Selecione a Data de Término ...',],
+				    'pluginOptions' => [
+				        'format' => 'dd-M-yyyy',
+				        'todayHighlight' => true
+				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Final</b>")
 		    ?>
 		    </div>

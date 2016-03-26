@@ -14,19 +14,11 @@ return [
     'bootstrap' => ['log'],
     'sourceLanguage' => 'en',
     'language' => 'pt-br',
-    'modules' => [
-        'admin' => [
-            'class' => 'mdm\admin\Module',
-        ]
-    ],
+    'modules' => [],
     'components' => [
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-        ],
-
-        'authManager' => [
-           'class' => 'yii\rbac\DbManager',
         ],
 
 

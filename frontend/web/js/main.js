@@ -231,6 +231,8 @@ $( window ).load(function() {
         $('#divEstrangeiro').css('display', 'block');
         $('#divBrasileiro').css('display', 'none');
     }
+
+    if()
 });
 
 

@@ -9,14 +9,14 @@ use app\models\Candidato;
 
 
 if(!Yii::$app->user->isGuest){
-$ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos;
-$candidato = Candidato::find()->where("inicio > '".$ultima_visualizacao."'")->all(); 
-$count_candidatos = count($candidato);
+    $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos;
+    $candidato = Candidato::find()->where("inicio > '".$ultima_visualizacao."'")->all(); 
+    $count_candidatos = count($candidato);
 }
 
 
 ?>
-<?php if(Yii::$app->user->can('notificacoesselecao')){ ?>
+<?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->checarAcesso('coordenacao')){ ?>
 <script>
 
     setInterval(function(){
@@ -117,10 +117,6 @@ $count_candidatos = count($candidato);
 <?php } ?>
 
 
-
-
-
-
 <header class="main-header">
 
     <?= Html::a('<span class="logo-mini">APP</span><span class="logo-lg">' . Yii::$app->name . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
@@ -134,7 +130,7 @@ $count_candidatos = count($candidato);
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-                <?php if(Yii::$app->user->can('notificacoesselecao')){ ?>
+                <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->checarAcesso('coordenacao')){ ?>
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -197,46 +193,43 @@ $count_candidatos = count($candidato);
 
                 <?php } ?>
                 <!-- User Account: style can be found in dropdown.less -->
-
+                <?php  if(!Yii::$app->user->isGuest){ ?>
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         
-                        <img src="img/<?= !Yii::$app->user->isGuest ? "administrador" : "guest" ?>.png" class="img-circle" width="25px" height="25px" alt="User Image"/>
+                        <img src="img/administrador.png" class="img-circle" width="25px" height="25px" alt="User Image"/>
 
-                        <span class="hidden-xs"> <?= !Yii::$app->user->isGuest ? Yii::$app->user->identity->nome : "Visitante" ?> </span>
+                        <span class="hidden-xs"> <?= Yii::$app->user->identity->nome ?> </span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header" style="height: 80px">
 
                             <p>
-                                <?= !Yii::$app->user->isGuest ? Yii::$app->user->identity->nome : "Visitante" ?>
-                                <?= !Yii::$app->user->isGuest ? "<small>Criado em ".Yii::$app->user->identity->created_at."</small>" : ""?>
+                                <?= Yii::$app->user->identity->nome ?>
+                                <?= "<small>Criado em ".Yii::$app->user->identity->created_at."</small>"?>
                             </p>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <?php if(!Yii::$app->user->isGuest) echo Html::a(
+                                <?= Html::a(
                                     'Perfil',
                                     ['user/perfil'],
                                     ['class' => 'btn btn-default btn-flat']
                                 ) ?>
                             </div>
                             <div class="pull-right">
-                                <?= !Yii::$app->user->isGuest ? Html::a(
+                                <?= Html::a(
                                     'Sair',
                                     ['/site/logout'],
-                                    ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
-                                ) : Html::a(
-                                    'Login',
-                                    ['site/login'],
                                     ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
                                 ) ?>
                             </div>
                         </li>
                     </ul>
                 </li>
+                <?php }else{ echo Html::a('Login', ['site/login'], ['data-method' => 'post', 'class' => 'btn btn-info btn-lg']); } ?>
             </ul>
         </div>
     </nav>

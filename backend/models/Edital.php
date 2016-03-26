@@ -19,6 +19,7 @@ class Edital extends \yii\db\ActiveRecord
     public $documentoFile;
     public $mestrado;
     public $doutorado;
+    public $editalUpload;
     
 
     /**
@@ -36,7 +37,9 @@ class Edital extends \yii\db\ActiveRecord
     {
         return [
             [['numero', 'datainicio', 'datafim', 'cartarecomendacao'], 'required'],
-            [['documentoFile'], 'required', 'when' => function($model){ return !isset($model->documento);}],
+            [['documentoFile'], 'required', 'when' => function($model){ return !isset($model->documento);}, 'whenClient' => "function (attribute, value) {
+                return $('#form_upload').val() == 0;
+            }"],
             [['vagas_mestrado'], 'required', 'when' => function($model){ return $model->curso == 1 || $model->curso == 3; },'whenClient' => "function (attribute, value) {
                 return $('#form_mestrado').val() == 1;
             }"],
@@ -67,7 +70,7 @@ class Edital extends \yii\db\ActiveRecord
         return [
             'numero' => 'Número',
             'datainicio' => 'Data Ínicio',
-            'datafim' => 'Data Fim',
+            'datafim' => 'Data Final',
             'documento' => 'Documento',
             'cartarecomendacao' => 'Carta de Recomendação',
             'curso' => 'Curso',
@@ -75,7 +78,7 @@ class Edital extends \yii\db\ActiveRecord
         ];
     }
 
-public function checkNumero($attribute, $params)
+    public function checkNumero($attribute, $params)
     {
         
         $conta = strlen($this->numero);
@@ -86,6 +89,13 @@ public function checkNumero($attribute, $params)
         else{
             return true;
         }
+    }
+
+    public function beforeSave(){
+        $this->datainicio = date('Y-m-d', strtotime($this->datainicio));
+        $this->datafim =  date('Y-m-d', strtotime($this->datafim));
+
+        return true;
     }
 
     public function afterFind(){
@@ -114,7 +124,9 @@ public function checkNumero($attribute, $params)
             $this->documento = "edital-".date('dmYHisu') . '.' . $documentoFile->extension;
             $documentoFile->saveAs('editais/' . $this->documento);
             return true;
-        } else {
+        } else if(isset($this->documento)){
+            return true;
+        }else{
             return false;
         }
     }
