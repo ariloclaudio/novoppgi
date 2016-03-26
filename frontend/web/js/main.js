@@ -25,11 +25,6 @@ $(document).ready( function() {
    });
 
 
-
-
-
-
-
     $('input[name="Candidato[historicoUpload]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
         if(state){
               $('#divHistoricoFile').css('display','block');
@@ -63,18 +58,6 @@ $(document).ready( function() {
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
    $('#candidato-nacionalidade').click(function(){
    		if($( "input[name='Candidato[nacionalidade]']:checked" ).val() == 1){
    			$('#divBrasileiro').css('display', 'block');
@@ -87,23 +70,20 @@ $(document).ready( function() {
    });
 
   /*Inicio dos campos com radiobutton com campos Ocultos da Carta de Recomendação (VIA EMAIL)*/
-   $('#recomendacoes-conheceoutros').click(function(){
-      if($("input[name='Recomendacoes[conheceOutros][]']" ).val() == 1){
-        $("input[name='Recomendacoes[conheceOutros][]']").val(0);
-        $('#outroslugarestexto').fadeToggle('slow');
+   $("input[name='Recomendacoes[conhece][]']" ).change(function(){
+      if($("input[name='Recomendacoes[conhece][]']")[3].checked == true){
+        $('#outroslugarestexto').css('display', 'block');
       }else{
-        $("input[name='Recomendacoes[conheceOutros][]']").val(1);
-        $('#outroslugarestexto').fadeToggle('slow');
+        $('#outroslugarestexto').val('12');
+        $('#outroslugarestexto').css('display', 'none');
       }
    });
 
-  $('#recomendacoes-outroscontatos').click(function(){
-      if($("input[name='Recomendacoes[outrosContatos][]']" ).val() == 1){
-        $("input[name='Recomendacoes[outrosContatos][]']").val(0);
-        $('#outrasfuncoestexto').fadeToggle('slow');
+  $("input[name='Recomendacoes[funcoesCartaArray][]']").change(function(){
+      if($("input[name='Recomendacoes[funcoesCartaArray][]']" )[6].checked == true){
+        $('#outrasfuncoestexto').css('display', 'block');
       }else{
-        $("input[name='Recomendacoes[outrosContatos][]']").val(1);
-        $('#outrasfuncoestexto').fadeToggle('slow');
+        $('#outrasfuncoestexto').css('display', 'none');
       }
   });
   /*Inicio dos campos com radiobutton com campos Ocultos da Carta de Recomendação (VIA EMAIL)*/
@@ -227,16 +207,16 @@ $( window ).load(function() {
       $(".caracteres").text(caracteresRestantes);
     }
 
-    if($("input[name='Recomendacoes[conheceOutros][]']" ).val() == 1){       
-        $('#outroslugarestexto').css('display', 'block');
+    if($("input[name='Recomendacoes[conhece][]']")[3].checked == true){
+      $('#outroslugarestexto').css('display', 'block');
     }else{
-        $('#outroslugarestexto').css('display', 'none');
+      $('#outroslugarestexto').css('display', 'none');
     }
 
-    if($("input[name='Recomendacoes[outrosContatos][]']" ).val() == 1){
-        $('#outroslugarestexto').css('display', 'block');
+    if($("input[name='Recomendacoes[funcoesCartaArray][]']" )[6].checked == true){
+        $('#outrasfuncoestexto').css('display', 'block');
     }else{
-        $('#outroslugarestexto').css('display', 'none');
+      $('#outrasfuncoestexto').css('display', 'none');
     }
 
     if($( "input[name='Candidato[vinculoemprego]']:checked" ).val() == "SIM"){

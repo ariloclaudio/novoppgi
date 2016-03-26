@@ -11,7 +11,7 @@ use yii\base\Exception;
 
 class Candidato extends \yii\db\ActiveRecord
 {
-    /*Varaiáveis intermediarias para uploads*/
+    /*Variáveis intermediarias para uploads*/
     public $recomendacoes;
     public $historicoFile;
     public $curriculumFile;
@@ -142,7 +142,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['publicacoesFile'], 'file', 'extensions' => 'xml'],
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'tipopos', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
-            [['anoposcomp', 'egressograd', 'egressopos'], 'integer', 'min' => 1800, 'max' => 2099],
+            [['anoposcomp', 'egressograd', 'egressopos'], 'integer', 'min' => 1900, 'max' => 2099],
             [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
             [['cidade'], 'string', 'max' => 40],
             [['motivos'], 'string', 'max' => 1000],
@@ -439,8 +439,8 @@ class Candidato extends \yii\db\ActiveRecord
             for ($i=0; $i < count($cartas['nome']); $i++) {
                 $recomendacao = new Recomendacoes();
                 $recomendacao->idCandidato = $this->id;
-                $recomendacao->dataEnvio = '0000-00-00 00:00:00';
-                $recomendacao->prazo = date("Y-m-d", strtotime('+1 days'));
+                $recomendacao->dataResposta = '0000-00-00 00:00:00';
+                $recomendacao->prazo = date("Y-m-d", strtotime('+5 days'));
                 $recomendacao->nome = $cartas['nome'][$i];
                 $recomendacao->email = $cartas['email'][$i];
                 $recomendacao->token = md5($this->id.$cartas['email'][$i].time());

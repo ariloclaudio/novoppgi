@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'email')->label("<font color='#FF0000'>*</font> Email") ?>
 
                 <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                    'template' => '<div class="row"><div class="col-lg-4 col-md-4">{image}</div><div class="col-lg-6 col-md-4">{input}</div></div>',
                 ])->label("<font color='#FF0000'>*</font> Código de Verificação (Clique na imagem para trocar o código)") ?>
 
                 <div class="form-group">

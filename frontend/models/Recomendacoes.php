@@ -22,9 +22,10 @@ class Recomendacoes extends \yii\db\ActiveRecord
     public function rules()
     {
             return [
-            [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes', 'funcoesCartaArray', 'conhece'], 'required',
+            [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes', 'anoContato', 'funcoesCartaArray', 'conhece'], 'required',
             'when' => function($model){ return $model->passo == 2;},],
-            [['anoTitulacao', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'anoContato'], 'integer'],
+            [['dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao'], 'integer'],
+            [['anoContato', 'anoTitulacao'], 'integer', 'min' => 1900, 'max' => 2099],
             [['dataEnvio', 'prazo'], 'safe'],
             [['informacoes'], 'string'],
             [['nome', 'email', 'instituicaoTitulacao', 'instituicaoAtual'], 'string', 'max' => 100],
@@ -40,30 +41,28 @@ class Recomendacoes extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'idCandidato' => 'Id Candidato',
-            'dataEnvio' => 'Data Envio',
+            'dataResposta' => 'Data de Resposta',
             'prazo' => 'Prazo',
             'nome' => 'Nome',
             'email' => 'Email',
             'token' => 'Token',
-            'titulacao' => 'Titulacao',
+            'titulacao' => 'Titulacão',
             'cargo' => 'Cargo',
-            'instituicaoTitulacao' => 'Instituicao Titulacao',
-            'anoTitulacao' => 'Ano Titulacao',
-            'instituicaoAtual' => 'Instituicao Atual',
-            'dominio' => 'Dominio',
+            'instituicaoTitulacao' => 'Instituicão de Titulacão',
+            'anoTitulacao' => 'Ano Titulacão',
+            'instituicaoAtual' => 'Instituicão Atual',
+            'dominio' => 'Domínio',
             'aprendizado' => 'Aprendizado',
             'assiduidade' => 'Assiduidade',
             'relacionamento' => 'Relacionamento',
             'iniciativa' => 'Iniciativa',
-            'expressao' => 'Expressao',
-            'ingles' => 'Ingles',
-            'classificacao' => 'Classificacao',
-            'informacoes' => 'Informacoes',
+            'expressao' => 'Expressão',
+            'ingles' => 'Inglês',
+            'classificacao' => 'Classificacão',
+            'informacoes' => 'Informacões',
             'anoContato' => 'Ano Contato',
-            'conheceGraduacao' => 'Conhece Graduacao',
-            'conhecePos' => 'Conhece Pos',
+            'conheceGraduacao' => 'Conhece Graduacão',
+            'conhecePos' => 'Conhece Pós',
             'conheceEmpresa' => 'Conhece Empresa',
             'conheceOutros' => 'Conhece Outros',
             'outrosLugares' => 'Outros Lugares',
@@ -75,6 +74,8 @@ class Recomendacoes extends \yii\db\ActiveRecord
             'colegaTrabalho' => 'Colega Trabalho',
             'outrosContatos' => 'Outros Contatos',
             'outrasFuncoes' => 'Outras Funcoes',
+            'funcoesCartaArray' => 'Fui seu',
+            'conhece' => 'Por meio de'
         ];
     }
 
@@ -163,13 +164,13 @@ class Recomendacoes extends \yii\db\ActiveRecord
             $this->outrosContatos = '0';
     }
 
-    /*Retorna erro da relacionado a status da carta
+    /*Retorna erro relacionado a status da carta
         0 - Sem Erros
         1 - Carta Já Enviada
         2 - Carta Fora do Prazo
     */
     public function erroCartaRecomendacao(){
-        if($this->dataEnvio == '0000-00-00 00:00:00')
+        if($this->dataResposta == '0000-00-00 00:00:00')
             if($this->prazo >= date('Y-m-d'))
                 return 0;
             else
@@ -178,9 +179,6 @@ class Recomendacoes extends \yii\db\ActiveRecord
         return 1;
     }
 
-    public function setDataEnvio(){
-        $this->dataEnvio = date('Y-m-d H:i:s');
-    }
     public function setDataResposta(){
         $this->dataResposta = date('Y-m-d H:i:s');
     }
