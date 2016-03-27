@@ -13,6 +13,7 @@ use common\models\Recomendacoes;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use mPDF;
 
 
@@ -320,10 +321,11 @@ class CandidatosController extends Controller
         } else {
 
 
-
+        $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
 
             return $this->render('/aluno/create', [
                 'model' => $model_aluno,
+                'linhasPesquisas' => $linhasPesquisas,
             ]);
         }
 

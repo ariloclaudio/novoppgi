@@ -2,49 +2,71 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\widgets\SwitchInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Aluno */
 /* @var $form yii\widgets\ActiveForm */
+$divRow = "<div class='row' style=\"margin-bottom:10px\">";
+$divFechar = "</div>";
+
 ?>
 
 <div class="aluno-form">
 
+<div class="container">
+
+  
     <?php $form = ActiveForm::begin(); ?>
 
     <?php
 
-    echo $form->field($model, 'nome')->textInput(['maxlength' => true]);
+    echo $divRow;
 
-    echo $form->field($model, 'email')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'nome' , ['options' => ['class' => 'col-md-6']] )->textInput(['maxlength' => true]);
 
-    //echo $form->field($model, 'senha')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'email' , ['options' => ['class' => 'col-md-4']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'matricula')->textInput(['maxlength' => true]);
+    echo $divFechar;
 
-    echo $form->field($model, 'area')->textInput();
+    echo $divRow;
 
-    echo $form->field($model, 'curso')->textInput();
+        echo $form->field($model, 'endereco' , ['options' => ['class' => 'col-md-6']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'endereco')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'bairro' , ['options' => ['class' => 'col-md-4']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'bairro')->textInput(['maxlength' => true]);
+    echo $divFechar;
 
-    echo $form->field($model, 'cidade')->textInput(['maxlength' => true]);
+    echo $divRow;
 
-    echo $form->field($model, 'uf')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'cidade' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'cep')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'uf' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'datanascimento')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'cep' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'sexo')->textInput(['maxlength' => true]);
+    echo $divFechar;
 
-    echo $form->field($model, 'nacionalidade')->textInput();
+    echo $divRow;
+
+        echo $form->field($model, 'datanascimento' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
+
+        echo $form->field($model, 'sexo' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
+
+        echo $form->field($model, 'nacionalidade' , ['options' => ['class' => 'col-md-3']] )->dropDownList(['1' => 'Brasileira', '2' => 'Estrangeira']);
+
+    echo $divFechar;
 
     //echo $form->field($model, 'estadocivil')->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'cpf')->textInput(['maxlength' => true]);
+    echo $divRow;
+        echo $form->field($model, 'cpf' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
+
+        echo $form->field($model, 'pais' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("País");
+
+    echo $divFechar;
+
+
 
     //echo $form->field($model, 'rg')->textInput(['maxlength' => true]);
 
@@ -52,27 +74,39 @@ use yii\widgets\ActiveForm;
 
     //echo $form->field($model, 'dataexpedicao')->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'telresidencial')->textInput(['maxlength' => true]);
+    echo $divRow;
 
-    //echo $form->field($model, 'telcomercial')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'telresidencial' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'telcelular')->textInput(['maxlength' => true]);
+        //echo $form->field($model, 'telcomercial')->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'nomepai')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'telcelular' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'nomemae')->textInput(['maxlength' => true]);
+    echo $divFechar;
 
-    echo $form->field($model, 'regime')->textInput();
+    echo $divRow;
 
-    echo $form->field($model, 'bolsista')->textInput(['maxlength' => true]);
+    echo $form->field($model, 'nomepai' , ['options' => ['class' => 'col-md-4']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'agencia')->textInput(['maxlength' => true]);
+    echo $form->field($model, 'nomemae' , ['options' => ['class' => 'col-md-4']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'pais')->textInput(['maxlength' => true]);
+    echo $divFechar;
 
-    echo $form->field($model, 'status')->textInput();
+    echo $divRow;
 
-    echo $form->field($model, 'anoingresso')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'regime' , ['options' => ['class' => 'col-md-2']] )->dropDownList(['1' => 'Integral', '2' => 'Parcial']);
+
+        echo $form->field($model, 'bolsista' , ['options' => ['class' => 'col-md-2']] )->widget(SwitchInput::classname(), [
+            'pluginOptions' => [
+                'onText' => 'Sim',
+                'offText' => 'Não',
+        ]])->label("Bolsista?");
+
+        echo $form->field($model, 'agencia' , ['options' => ['class' => 'col-md-4']]  )->textInput(['maxlength' => true])->label("Se sim, Qual Agência ?");
+
+    echo $divFechar;
+
+        //echo $form->field($model, 'status')->textInput();
 
     /*
 
@@ -116,30 +150,55 @@ use yii\widgets\ActiveForm;
 
     echo $form->field($model, 'conceitoQual1')->textInput(['maxlength' => true]);
 */
-    echo $form->field($model, 'cursograd')->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'instituicaograd')->textInput(['maxlength' => true]);
+    echo $divRow;
 
-    //echo $form->field($model, 'crgrad')->textInput(['maxlength' => true]);
+        echo $form->field($model, 'cursograd' , ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'egressograd')->textInput();
+        echo $form->field($model, 'instituicaograd' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'dataformaturagrad')->textInput(['maxlength' => true]);
+        //echo $form->field($model, 'crgrad')->textInput(['maxlength' => true]);
 
-    echo $form->field($model, 'idUser')->textInput();
+        echo $form->field($model, 'egressograd' , ['options' => ['class' => 'col-md-2']] )->textInput();
 
-    echo $form->field($model, 'orientador')->textInput();
+    echo $divFechar;
 
-    echo $form->field($model, 'anoconclusao')->textInput();
+    echo $divRow;
 
-    echo $form->field($model, 'sede')->textInput(['maxlength' => true]) 
+        echo $form->field($model, 'anoconclusao' , ['options' => ['class' => 'col-md-2']] )->textInput();
+
+        echo $form->field($model, 'dataformaturagrad' , ['options' => ['class' => 'col-md-2']] )->textInput(['maxlength' => true]);
+
+    echo $divFechar;
+
+    //echo $form->field($model, 'idUser')->textInput();
+
+    echo $divRow;
+
+        echo $form->field($model, 'area' , ['options' => ['class' => 'col-md-4']] )->dropDownlist($linhasPesquisas, ['prompt' => 'Selecione uma Linha de Pesquisa']);
+
+        echo $form->field($model, 'curso' , ['options' => ['class' => 'col-md-3']])->textInput();
+
+        echo $form->field($model, 'anoingresso' , ['options' => ['class' => 'col-md-3']])->textInput();        
+
+    echo $divFechar;
+
+    echo $divRow;
+
+        echo $form->field($model, 'matricula' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true]);
+
+        echo $form->field($model, 'orientador' , ['options' => ['class' => 'col-md-5']] )->textInput();
+
+    echo $divFechar;
+
+    //echo $form->field($model, 'sede')->textInput(['maxlength' => true]) 
 
    ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Salvar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']); ?>
     </div>
-
     <?php ActiveForm::end(); ?>
+</div>
 
 </div>
