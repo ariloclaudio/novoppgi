@@ -6,13 +6,17 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidato */
 
-$this->title = $model->nome;
+$this->title = "Detalhes do Candidato";
 $this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['edital/index']];
 $this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get('idEdital'), 
     'url' => ['edital/view','id' => Yii::$app->request->get('idEdital') ]];
 $this->params['breadcrumbs'][] = ['label' => 'Candidato com Inscrição Encerrada', 
     'url' => ['candidatos/index','id' => Yii::$app->request->get('idEdital') ]];
 $this->params['breadcrumbs'][] = $this->title;
+
+
+$resultado = array(null => "Não Julgado", 0 => "Reprovado", 1 => "Aprovado");
+$tipoPos = array (null => 'Não Registrado' ,'0' => 'Mestrado Acadêmico', '1' => 'Mestrado Profissional', '2' => 'Doutorado');
 
 ?>
 <div class="candidato-view">
@@ -37,8 +41,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            //'id',
-            //'senha',
+
+            'nome',
                 [
                      'attribute' => 'inicio',
                      'format'=>'raw',
@@ -49,7 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
                      'format'=>'raw',
                      'value' => $model->fim != null ? date("d/m/Y", strtotime($model->fim)).' às '.date("H:i:s", strtotime($model->fim)) : null
                 ],
-            'nome',
             'endereco',
             'bairro',
             'cidade',
@@ -57,17 +60,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'cep',
             'email:email',
             'datanascimento',
+
                 [
                      'attribute' => 'nacionalidade',
                      'format'=>'raw',
                      'value' => $model->nacionalidade == 1 ? 'Brasileira' : 'Estrangeira'
                 ],
-            'pais',
-//            'estadocivil',
-//            'rg',
-//            'orgaoexpedidor',
-//            'dataexpedicao',
-            'passaporte',
+                [
+                    'attribute' => 'pais',
+                    'format' => 'raw',
+                    'value' => $model->nacionalidade == 1 ? 'Brasil' : $model->pais,
+                ],
+
+                [
+                    'attribute' => 'passaporte',
+                    'format' => 'raw',
+                    'visible'=> $model->nacionalidade != 1 ,
+                    'value' => $model->nacionalidade == 1 ? "<b> Não Registrado </b>" : $model->passaporte,
+                ],
+
             'cpf',
                 [
                      'attribute' => 'sexo',
@@ -76,9 +87,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             'telresidencial',
 //            'telcomercial',
-            'telcelular',
-//            'nomepai',
-//            'nomemae',
+            [
+                'attribute' => 'telcelular',
+                'format' => 'raw',
+                'value' => $model->telcelular == null ? "<b>Não Registrado</b>" : $model->telcelular,
+            ],
+
+
                 [
                      'attribute' => 'cursodesejado',
                      'format'=>'raw',
@@ -151,7 +166,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                      'label' => 'Cartas de Recomendação',
                      'format'=>'raw',
-                     'value' => "<a href='index.php?r=candidatos/pdfcartas&id=".$model->id."' target = '_blank'> Baixar </a>"
+                     'value' => $model->qtdcartasrespondidas > 0 ? "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=Cartas.pdf' target = '_blank'> Baixar </a>" : "Cartas Pendentes de Resposta"
+
                 ],
 
             'cursograd',
@@ -163,11 +179,31 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'instituicaoesp',
 //            'egressoesp',
 //            'dataformaturaesp',
-            'cursopos',
-            'instituicaopos',
-            'tipopos',
+
+            [
+            'attribute' => 'cursopos',
+            'format' => 'html',
+            'value' => $model->cursopos == null ? "<b>Não Registrado</b>" : $model->cursopos,
+            ],
+
+            [
+            'attribute' => 'tipopos',
+            'format' => 'html',
+            'value' => '<b>'.$tipoPos[$model->tipopos].'</b>',
+            ],
+            [
+            'attribute' => 'instituicaopos',
+            'format' => 'raw',
+            'value' => $model->instituicaopos == null ? "<b>Não Registrado</b>" : $model->instituicaopos,
+            ],
+            [
+            'attribute' => 'egressopos',
+            'format' => 'raw',
+            'value' => $model->egressopos == null ? "<b>Não Registrado</b>" : $model->egressopos,
+            ],
+
+
 //            'mediapos',
-            'egressopos',
 /*
             'dataformaturapos',
 
@@ -202,7 +238,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'periodoacademico2',
             'periodoacademico3',
 */  
-//            'resultado',
+            [
+            'attribute' =>'resultado',
+            'label' => 'Resultado da Avaliação',
+            'format' => 'html',
+            'value' => '<b>'.$resultado[$model->resultado].'</b>',
+
+            ],
 //            'periodo',
         ],
     ]) ?>

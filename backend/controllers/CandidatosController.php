@@ -73,7 +73,7 @@ class CandidatosController extends Controller
     {
 
         $model = $this->findModel($id);
-        
+
         //obtendo o nome linha de pesquisa através do id da linha de pesquisa
         $linhaPesquisa = new LinhaPesquisa();
         $linhaPesquisa = $linhaPesquisa->getLinhaPesquisaNome($model->idLinhaPesquisa);

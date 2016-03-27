@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use common\models\Recomendacoes;
+
 
 class Candidato extends \yii\db\ActiveRecord
 {
@@ -171,6 +173,11 @@ class Candidato extends \yii\db\ActiveRecord
         //fim da definição do caminho padrão
         return $caminho;
 
+    }
+
+    public function getQtdCartasRespondidas(){
+        $recomedacoes = new Recomendacoes();
+        return $recomedacoes->getCartasRespondidas($this->id);
     }
 
 
