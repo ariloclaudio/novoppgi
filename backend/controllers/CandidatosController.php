@@ -316,7 +316,7 @@ class CandidatosController extends Controller
 
 
 
-            return $this->redirect(['/aluno/view', 'id' => $model_aluno->id]);
+            return $this->redirect(['index', 'id' => $idEdital]);
         } else {
 
 
@@ -461,7 +461,9 @@ class CandidatosController extends Controller
 
 
             $pontos = array (1 => "Fraco",2 => "Regular",3 => "Bom",4 => "Muito bom",5 => "Excelente",6 => "Sem condições para afirmar");
-               $classificacao = array (1 => "entre os 50% mais aptos",2 => "entre os 30% mais aptos",3 => "entre os 10% mais aptos",4 => "entre os 5% mais aptos");
+
+            $classificacao = array (1 => "entre os 50% mais aptos",2 => "entre os 30% mais aptos",3 => "entre os 10% mais aptos",4 => "entre os 5% mais aptos");
+
             $orientador = array (0 => "",1 => "Orientador; ");
             $professor = array (0 => "",1 => "Professor em Disciplina; ");
             $empregador = array (0 => "",1 => "Empregador; ");
@@ -490,52 +492,77 @@ class CandidatosController extends Controller
 
                 <div style ="text-align:center"> <b>CARTA DE RECOMENDAÇÃO</b> </div>
                 <hr>
-                <div style ="text-align:center;"> <b>DADOS DO CANDIDATO</b> </div>
-                <p style ="text-align:left"> <b>Nome do Candidato:</b> '.$candidato->nome.' </p>
-                <p style ="text-align:left"> <b>Graduado em: </b> '.$candidato->cursograd.' - '.$candidato->instituicaograd.'
+                <div style ="text-align:center;margin-bottom:10px"> <b>DADOS DO CANDIDATO</b> </div>
+                <div style ="text-align:left"> <b>Nome do Candidato:</b> '.$candidato->nome.' </div>
+                <div style ="text-align:left"> <b>Graduado em: </b> '.$candidato->cursograd.' - '.$candidato->instituicaograd.' </div>
                 </p>
                 
                 <hr>
                 <div style ="text-align:center;"> <b>AVALIADOR DO CANDIDATO</b> </div>
 
-                <p style ="text-align:left"> <b>Nome: </b>'.$recomendacao[$i]->nome.' </p>
-                <p style ="text-align:left"> <b>Titulação: </b>'.$recomendacao[$i]->titulacao.' </p>
-                <p style ="text-align:left"> <b>Instituição: </b>'.$recomendacao[$i]->instituicaoTitulacao.' </p>
-                <p style ="text-align:left"> <b>Ano da Titulação: </b>'.$recomendacao[$i]->anoTitulacao.' </p>
-                <p style ="text-align:left"> <b>Instituição/Empresa onde atua: </b>'.$recomendacao[$i]->instituicaoAtual.' </p>
-                <p style ="text-align:left"> <b>Cargo: </b>'.($recomendacao[$i]->cargo).' </p>
+                <div style ="text-align:left"> <b>Nome: </b>'.$recomendacao[$i]->nome.' </div>
+                <div style ="text-align:left"> <b>Titulação: </b>'.$recomendacao[$i]->titulacao.' </div>
+                <div style ="text-align:left"> <b>Instituição: </b>'.$recomendacao[$i]->instituicaoTitulacao.' </div>
+                <div style ="text-align:left"> <b>Ano da Titulação: </b>'.$recomendacao[$i]->anoTitulacao.' </div>
+                <div style ="text-align:left"> <b>Instituição/Empresa onde atua: </b>'.$recomendacao[$i]->instituicaoAtual.' </div>
+                <div style ="text-align:left"> <b>Cargo: </b>'.($recomendacao[$i]->cargo).' </div>
 
                 <hr>
-                <div style ="text-align:center;"> <b>AVALIAÇÃO DO CANDIDATO</b> </div>
+                <div style ="text-align:center;margin-bottom:10px"> <b>AVALIAÇÃO DO CANDIDATO</b> </div>
 
-                <p style ="text-align:left"> <b> Conheço o candidato desde: </b>'.$recomendacao[$i]->anoContato. ' em ' .$conheceGraduacao[$recomendacao[$i]->conheceGraduacao]."".$conhecePos[$recomendacao[$i]->conhecePos]."".$conheceEmpresa[$recomendacao[$i]->conheceEmpresa]."".$conheceOutros[$recomendacao[$i]->conheceOutros].'
-                </p>
+                <div style ="text-align:left"> <b> Conheço o candidato desde: </b>'.$recomendacao[$i]->anoContato. ' em ' .$conheceGraduacao[$recomendacao[$i]->conheceGraduacao]."".$conhecePos[$recomendacao[$i]->conhecePos]."".$conheceEmpresa[$recomendacao[$i]->conheceEmpresa]."".$conheceOutros[$recomendacao[$i]->conheceOutros].'
+                </div>
 
-                <p style ="text-align:left"> <b> Com relação ao candidato, fui seu(sua): </b>'.$orientador[$recomendacao[$i]->orientador]."".$professor[$recomendacao[$i]->professor]."".$empregador[$recomendacao[$i]->empregador]."".$coordenador[$recomendacao[$i]->coordenador]."".$colegaCurso[$recomendacao[$i]->colegaCurso]."".$colegaTrabalho[$recomendacao[$i]->colegaTrabalho]."".$outrosContatos[$recomendacao[$i]->outrosContatos].'
-                </p>
+                <div style ="text-align:left"> <b> Com relação ao candidato, fui seu(sua): </b>'.$orientador[$recomendacao[$i]->orientador]."".$professor[$recomendacao[$i]->professor]."".$empregador[$recomendacao[$i]->empregador]."".$coordenador[$recomendacao[$i]->coordenador]."".$colegaCurso[$recomendacao[$i]->colegaCurso]."".$colegaTrabalho[$recomendacao[$i]->colegaTrabalho]."".$outrosContatos[$recomendacao[$i]->outrosContatos].'
+                </div>
 
-                <p> Como classifica o candidato em relação aos atributos abaixo:</p>
+                <p> <b> Como classifica o candidato em relação aos atributos abaixo: </b> </p>
 
-                <p> Domínio em sua área de conhecimento científico - Nível: '.$pontos[$recomendacao[$i]->dominio].'</p>
-                <p> Facilidade de aprendizado capacidade intelectual - Nível: '.$pontos[$recomendacao[$i]->aprendizado].'</p>
-                <p> Assiduidade, perseverança - Nível: '.$pontos[$recomendacao[$i]->assiduidade].'</p>
-                <p> Relacionamento com colegas e superiores - Nível: '.$pontos[$recomendacao[$i]->relacionamento].'</p>
-                <p> Atributos do Candidato'.'Iniciativa, desembaraço, originalidade e liderança - Nível: '.$pontos[$recomendacao[$i]->iniciativa].'</p>
-                <p> Atributos do Candidato'.'Capacidade de expressão escrita - Nível: '.$pontos[$recomendacao[$i]->expressao].'</p>
-                <p> Atributos do Candidato'.'Conhecimento em Inglês - Nível: '.$pontos[$recomendacao[$i]->ingles].'</p>
+                <table style="border: solid; width: 100%; text-align:center">
+                    <tr style="background-color:#848484">
+                        <th>
+                                Área
+                        </th>
+                        <th>
+                                Nível
+                        </th>
+                    </tr>
+                    <tr style="background-color:#F2F5A9">
+                        <td style="text-align:left"> Domínio em sua área de conhecimento científico </td> 
+                        <td> '.$pontos[$recomendacao[$i]->dominio].'</td>
+                    <tr style="background-color:#D8D8D8">
+                        <td style="text-align:left"> Facilidade de aprendizado capacidade intelectual </td>
+                        <td>'.$pontos[$recomendacao[$i]->aprendizado].'</td>
+                    </tr>
+                    <tr style="background-color:#F2F5A9">
+                        <td style="text-align:left"> Assiduidade, perseverança </td>
+                        <td> '.$pontos[$recomendacao[$i]->assiduidade].'</td>
+                    </tr>
+                    <tr style="background-color:#D8D8D8">
+                        <td style="text-align:left"> Relacionamento com colegas e superiores </td>
+                        <td> '.$pontos[$recomendacao[$i]->relacionamento].'</td>
+                    </td>
+                    <tr style="background-color:#F2F5A9">
+                        <td style="text-align:left"> '.'Iniciativa, desembaraço, originalidade e liderança </td>
+                        <td> '.$pontos[$recomendacao[$i]->iniciativa].'</td>
+                    </tr>
+                    <tr style="background-color:#D8D8D8">
+                        <td style="text-align:left"> '.'Capacidade de expressão escrita </td>
+                        <td> '.$pontos[$recomendacao[$i]->expressao].'</td>
+                    </tr>
+                    <tr style="background-color:#F2F5A9">
+                        <td style="text-align:left" > '.'Conhecimento em Inglês </td>
+                        <td> '.$pontos[$recomendacao[$i]->ingles].'</td>
+                    </tr>
 
-                <p> <b>Comparando este candidato com outros alunos ou profissionais, com similar nível de educação e experiência, que conheceu nos últimos 2 anos, classifique a sua aptidão para realizar estudos avançados e pesquisas: </b> </p>
+                </table>
 
-                <p>'.$classificacao[$recomendacao[$i]->classificacao].' </p>
+                <p> <div style=" display:inline; text-align: justify; font-weight:bold"> Comparando este candidato com outros alunos ou profissionais, com similar nível de educação e experiência, que conheceu nos últimos 2 anos, classifique a sua aptidão para realizar estudos avançados e pesquisas: '.$classificacao[$recomendacao[$i]->classificacao].'.</div> </p>
 
                 <p> <b>Informações Adicionais:</b> </p>
 
                 <p>'. $recomendacao[$i]->informacoes.'</p>
 
-
-
-
-                
             ');
 
 
