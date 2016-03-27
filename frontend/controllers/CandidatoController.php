@@ -4,8 +4,8 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\Candidato;
-use app\models\Candidato;
-use frontend\models\Candidato;
+//use app\models\Candidato;
+//use frontend\models\Candidato;
 use app\models\LinhaPesquisa;
 use app\models\CandidatoPublicacoes;
 use app\models\Edital;
@@ -351,7 +351,7 @@ function actionComprovanteinscricao() {
             }
         // fim da geração html das tabela de experiências acadêmicas
 
-            $pdf = new mPDF('utf-8','A4','','','15','15','37','30');
+            $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
 
     
     $sexo = array ('M' => "Masculino",'F' => "Feminimo");

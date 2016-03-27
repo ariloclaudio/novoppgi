@@ -320,8 +320,6 @@ class CandidatosController extends Controller
         } else {
 
 
-                     var_dump($model_aluno->getErrors());
-
 
 
             return $this->render('/aluno/create', [
@@ -574,7 +572,9 @@ class CandidatosController extends Controller
 
     }
 
-           $pdf->output();
+        $mudarDiretorioParaFrontEnd = "../../frontend/web/";
+        $localArquivo = $mudarDiretorioParaFrontEnd.$candidato->getDiretorio();
+        $pdf->output($localArquivo."Cartas.pdf","F");
 
     }
 
