@@ -180,5 +180,10 @@ class Candidato extends \yii\db\ActiveRecord
         return $recomedacoes->getCartasRespondidas($this->id);
     }
 
+    public function getQtdCartasEmitidas(){
+        $recomedacoes = new Recomendacoes();
+        return $recomedacoes->getCartasEmitidas($this->id);
+    }
+
 
 }

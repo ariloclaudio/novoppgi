@@ -15,8 +15,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Candidato com Inscrição Encerrad
 $this->params['breadcrumbs'][] = $this->title;
 
 
-$resultado = array(null => "Não Julgado", 0 => "Reprovado", 1 => "Aprovado");
-$tipoPos = array (null => 'Não Registrado' ,'0' => 'Mestrado Acadêmico', '1' => 'Mestrado Profissional', '2' => 'Doutorado');
+$resultado = array(null => " <div style=\"color:red; font-weight:bold\"> Não Julgado <div>" , 0 => "Reprovado", 1 => "Aprovado");
+$tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Registrado </div>" ,'0' => 'Mestrado Acadêmico', '1' => 'Mestrado Profissional', '2' => 'Doutorado');
+
+
 
 ?>
 <div class="candidato-view">
@@ -76,7 +78,7 @@ $tipoPos = array (null => 'Não Registrado' ,'0' => 'Mestrado Acadêmico', '1' =
                     'attribute' => 'passaporte',
                     'format' => 'raw',
                     'visible'=> $model->nacionalidade != 1 ,
-                    'value' => $model->nacionalidade == 1 ? "<b> Não Registrado </b>" : $model->passaporte,
+                    'value' => $model->nacionalidade == 1 ? "<div style=\"color:red; font-weight:bold\"> Não Registrado</div>" : $model->passaporte,
                 ],
 
             'cpf',
@@ -90,7 +92,7 @@ $tipoPos = array (null => 'Não Registrado' ,'0' => 'Mestrado Acadêmico', '1' =
             [
                 'attribute' => 'telcelular',
                 'format' => 'raw',
-                'value' => $model->telcelular == null ? "<b>Não Registrado</b>" : $model->telcelular,
+                'value' => $model->telcelular == null ? "<div style=\"color:red; font-weight:bold\"> Não Registrado </div>" : $model->telcelular,
             ],
 
 
@@ -139,37 +141,48 @@ $tipoPos = array (null => 'Não Registrado' ,'0' => 'Mestrado Acadêmico', '1' =
             'motivos:ntext',
                 [
                      'attribute' => 'historico',
-                     'label' => 'Histórico Escolar',
+                     'label' => 'Histórico Escolar (PDF)',
                      'format'=>'raw',
                      'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->historico."' target = '_blank'> Baixar </a>"
                 ],
 
                 [
                      'attribute' => 'proposta',
-                     'label' => 'Proposta de Trabalho',
+                     'label' => 'Proposta de Trabalho (PDF)',
                      'format'=>'raw',
                      'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->proposta."' target = '_blank'> Baixar </a>"
                 ],
                 [
                      'attribute' => 'curriculum',
-                     'label' => 'Curriculum',
+                     'label' => 'Curriculum (PDF)',
                      'format'=>'raw',
                      'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->curriculum."' target = '_blank'> Baixar </a>"
                 ],
                 [
                      'attribute' => 'comprovantepagamento',
-                     'label' => 'Comprovante de Pagamento',
+                     'label' => 'Comprovante de Pagamento (PDF)',
                      'format'=>'raw',
                      'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->comprovantepagamento."' target = '_blank'> Baixar </a>"
                 ],
 
                 [
-                     'label' => 'Cartas de Recomendação',
+                     'label' => 'Cartas de Recomendação (PDF)',
                      'format'=>'raw',
                      'value' => $model->qtdcartasrespondidas > 0 ? "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=Cartas.pdf' target = '_blank'> Baixar </a>" : "Cartas Pendentes de Resposta"
 
                 ],
+                [
+                     'label' => 'Nº de Cartas de Recomendação (Emitidas)',
+                     'format'=>'raw',
+                     'value' => $model->qtdcartasemitidas,
 
+                ],
+                [
+                     'label' => 'Nº de Cartas de Recomendação (Respondidas)',
+                     'format'=>'raw',
+                     'value' => $model->qtdcartasrespondidas,
+
+                ],
             'cursograd',
             'instituicaograd',
 //            'crgrad',
@@ -183,23 +196,23 @@ $tipoPos = array (null => 'Não Registrado' ,'0' => 'Mestrado Acadêmico', '1' =
             [
             'attribute' => 'cursopos',
             'format' => 'html',
-            'value' => $model->cursopos == null ? "<b>Não Registrado</b>" : $model->cursopos,
+            'value' => $model->cursopos == null ? "<div style=\"color:red; font-weight:bold\"> Não Registrado</div>" : $model->cursopos,
             ],
 
             [
             'attribute' => 'tipopos',
-            'format' => 'html',
-            'value' => '<b>'.$tipoPos[$model->tipopos].'</b>',
+            'format' => 'raw',
+            'value' => $tipoPos[$model->tipopos],
             ],
             [
             'attribute' => 'instituicaopos',
             'format' => 'raw',
-            'value' => $model->instituicaopos == null ? "<b>Não Registrado</b>" : $model->instituicaopos,
+            'value' => $model->instituicaopos == null ? "<div style=\"color:red; font-weight:bold\"> Não Registrado</div>" : $model->instituicaopos,
             ],
             [
             'attribute' => 'egressopos',
             'format' => 'raw',
-            'value' => $model->egressopos == null ? "<b>Não Registrado</b>" : $model->egressopos,
+            'value' => $model->egressopos == null ? "<div style=\"color:red; font-weight:bold\"> Não Registrado</div>" : $model->egressopos,
             ],
 
 

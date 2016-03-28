@@ -81,6 +81,15 @@ class Recomendacoes extends \yii\db\ActiveRecord
 
     }
 
+    public function getCartasEmitidas($id){
+
+
+        $cartas_emitidas = Recomendacoes::find()->where("idCandidato = ". $id)->count();
+
+        return $cartas_emitidas;
+
+    }
+
 
 
 }
