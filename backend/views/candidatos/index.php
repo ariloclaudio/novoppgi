@@ -33,14 +33,14 @@ function goBack() {
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
             'rowOptions'=> function($model){
-                    if($model->cartas_respondidas < 2 && $model->carta_recomendacao == 1){
-                        return ['class' => 'warning'];
-                    }
-                    else if($model->resultado === 1) {
+                    if($model->resultado === 1) {
                         return ['class' => 'info'];
                     }
                     else if($model->resultado === 0) {
                         return ['class' => 'danger'];
+                    }
+                    else if($model->cartas_respondidas < 2 && $model->carta_recomendacao == 1){
+                        return ['class' => 'warning'];
                     }
                     else{
                         return ['class' => 'success'];

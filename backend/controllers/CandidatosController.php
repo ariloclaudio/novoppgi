@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use app\models\Candidato;
 use app\models\Aluno;
+use app\models\Edital;
 use common\models\User;
 use app\models\CandidatosSearch;
 use backend\models\SignupForm;
@@ -210,7 +211,10 @@ class CandidatosController extends Controller
         $cartas_respondidas = new Recomendacoes();
         $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
 
-        if($cartas_respondidas <2){
+        $edital_carta_recomendacao = new Edital();
+        $edital_carta_recomendacao = $edital_carta_recomendacao->getCartaRecomendacao($idEdital);
+
+        if($cartas_respondidas <2 && $edital_carta_recomendacao == 1){
             $this->mensagens('danger', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
@@ -331,52 +335,12 @@ class CandidatosController extends Controller
 
     }
 
-
-    public function actionAprovar2($id,$idEdital)
-    {
-        $model = $this->findModel($id);
-
-        $cartas_respondidas = new Recomendacoes();
-        $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
-
-        if($cartas_respondidas <2){
-            $this->mensagens('danger', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
-            return $this->redirect(['candidatos/index','id'=>$idEdital]);
-        }
-
-        if($model->resultado === 0 || $model->resultado === 1 ){
-            $this->mensagens('danger', 'Candidato Reprovado', 'Este Candidato já foi Avaliado');
-            return $this->redirect(['candidatos/index','id'=>$idEdital]);
-        }
-
-            $sql = "INSERT INTO `j17_aluno`(`senha`, `nome`, `endereco`, `bairro`, `cidade`, `uf`, `cep`, `email`, `datanascimento`, `nacionalidade`, `pais`,  `cpf`, `sexo`, `telresidencial`, `telcelular`, `regime`,  `cursograd`, `instituicaograd`, `egressograd`, `dataformaturagrad`, `status`) 
-            SELECT `senha`, `nome`, `endereco`, `bairro`, `cidade`, `uf`, `cep`, `email`, `datanascimento`, `nacionalidade`, `pais`,  `cpf`, `sexo`, `telresidencial`, `telcelular`, `regime`,  `cursograd`, `instituicaograd`, `egressograd`, `dataformaturagrad`, `status` FROM j17_candidatos WHERE id = ".$id;
-
-            Yii::$app->db->createCommand($sql)->execute();
-
-            $model->resultado = 1;
-
-            if($model->save(false)){
-                $this->mensagens('success', 'Candidato Aprovado', 'Candidato Aprovado com sucesso.');
-            }
-            else{
-                $this->mensagens('warning', 'Erro', 'Erro ao Aprovar Candidato. Entre com contato com o administrador do sistema.');
-            }
-
-        return $this->redirect(['candidatos/index','id'=>$idEdital]);
-    }
-
     public function actionReprovar($id,$idEdital)
     {   
         $model = $this->findModel($id);
 
         $cartas_respondidas = new Recomendacoes();
         $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
-
-        if($cartas_respondidas <2){
-            $this->mensagens('danger', 'Cartas de Recomendação', 'Não foi possível avaliar o candidato, pois faltam cartas a serem respondidas.');
-            return $this->redirect(['candidatos/index','id'=>$idEdital]);
-        }
 
         if($model->resultado === 0 || $model->resultado === 1){
             $this->mensagens('danger', 'Candidato Avaliado', 'Este Candidato já foi Avaliado');

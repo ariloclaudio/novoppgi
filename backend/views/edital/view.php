@@ -30,8 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'numero',
-            'datainicio',
-            'datafim',
+            [
+                'label' => 'Data início',
+                'attribute' => 'datainicio',
+                'value' => date("d-m-Y", strtotime($model->datainicio)),
+
+            ],
+            [
+                'label' => 'Data fim',
+                'attribute' => 'datafim',
+                'value' => date("d-m-Y", strtotime($model->datafim)),
+
+            ],
                 [
                      'attribute' => 'quantidadeinscritos',
                      'label' => "Nº de Inscrições Iniciadas",

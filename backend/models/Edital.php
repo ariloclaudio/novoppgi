@@ -146,6 +146,15 @@ class Edital extends \yii\db\ActiveRecord
 
     }
 
+    public function getCartaRecomendacao($numero){
+
+
+
+        $resultado = Edital::find()->select("cartarecomendacao")->where("numero ='".$numero."'")->one();
+        return $resultado->cartarecomendacao;
+
+    }
+
     public function getQuantidadeInscritos()
     {
 

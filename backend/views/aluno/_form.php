@@ -3,11 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\SwitchInput;
+use kartik\widgets\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Aluno */
 /* @var $form yii\widgets\ActiveForm */
-$divRow = "<div class='row' style=\"margin-bottom:10px\">";
+$divRow = "<div class='row' style=\"margin-bottom:10px;\">";
 $divFechar = "</div>";
 
 ?>
@@ -177,9 +178,16 @@ $divFechar = "</div>";
 
         echo $form->field($model, 'area' , ['options' => ['class' => 'col-md-4']] )->dropDownlist($linhasPesquisas, ['prompt' => 'Selecione uma Linha de Pesquisa']);
 
-        echo $form->field($model, 'curso' , ['options' => ['class' => 'col-md-3']])->textInput();
+        echo $form->field($model, 'curso' , ['options' => ['class' => 'col-md-3']])->dropDownList(['1' => 'Mestrado', '2' => 'Doutorado']);
 
-        echo $form->field($model, 'anoingresso' , ['options' => ['class' => 'col-md-3']])->textInput();        
+        echo $form->field($model, 'anoingresso', ['options' => ['class' => 'col-md-4']])->widget(DatePicker::classname(), [
+        'language' => Yii::$app->language,
+        'options' => ['placeholder' => 'Selecione a Data de Início ...',],
+        'pluginOptions' => [
+            'format' => 'dd-M-yyyy',
+            'todayHighlight' => true
+        ]
+                ])->label("<font color='#FF0000'>*</font> <b>Data Ingresso</b>");
 
     echo $divFechar;
 
