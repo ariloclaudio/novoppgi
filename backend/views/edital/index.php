@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use xj\bootbox\BootboxAsset;
+
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SearchEdital */

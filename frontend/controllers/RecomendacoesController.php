@@ -88,9 +88,8 @@ class RecomendacoesController extends Controller
                     if(isset($_POST['enviar'])){
 
                         $this->actionPdfcartas($model->idCandidato);
-                        $this->avisarCartaRecomendacaoRespondida($model);
-
-                        return $this->render('cartarecomendacaomsg', ['model' => $model,]);
+                        if($this->avisarCartaRecomendacaoRespondida($model))
+                            return $this->render('cartarecomendacaomsg', ['model' => $model,]);
                     }
                     else{
                         $this->mensagens('success', 'Salvo com sucesso', 'As informações da carta de recomendação foram salvas com sucesso.');
@@ -107,7 +106,7 @@ class RecomendacoesController extends Controller
     
     public function avisarCartaRecomendacaoRespondida($model){
         
-        $candidato = Candidato::findOne(['id' => $model->id]);
+        $candidato = Candidato::findOne(['id' => $model->idCandidato]);
 
             // subject
             $subject  = "[PPGI/UFAM] Resposta de Carta de Recomendacao para ".$candidato->nome;

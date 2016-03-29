@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Candidato */
 
@@ -24,20 +25,7 @@ $tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Reg
 <div class="candidato-view">
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['candidatos/index', 'id' => $model->idEdital], ['class' => 'btn btn-warning']) ?>  
-    <?php
-        /*
-        echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']);
-
-        echo Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]);
-        */
-    ?>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['candidatos/index', 'id' => $model->idEdital], ['class' => 'btn btn-warning']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -124,11 +112,6 @@ $tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Reg
                      'format'=>'raw',
                      'value' => $model->deficiencia == 1 ? 'Sim' : 'Não'
                 ],
-//            'vinculoemprego',
-//            'empregador',
-//            'cargo',
-//            'vinculoconvenio',
-//           'convenio',
                 [
                      'attribute' => 'idLinhaPesquisa',
                      'label'=> 'Linha de Pesquisa',
@@ -137,7 +120,6 @@ $tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Reg
                      'attribute' => 'tituloproposta',
                      'label'=> 'Título da Proposta',
                 ],
-            //'diploma:ntext',
             'motivos:ntext',
                 [
                      'attribute' => 'historico',
@@ -185,13 +167,7 @@ $tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Reg
                 ],
             'cursograd',
             'instituicaograd',
-//            'crgrad',
             'egressograd',
-//            'dataformaturagrad',
-//            'cursoesp',
-//            'instituicaoesp',
-//            'egressoesp',
-//            'dataformaturaesp',
 
             [
             'attribute' => 'cursopos',
@@ -213,44 +189,7 @@ $tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Reg
             'attribute' => 'egressopos',
             'format' => 'raw',
             'value' => $model->egressopos == null ? "<div style=\"color:red; font-weight:bold\"> Não Registrado</div>" : $model->egressopos,
-            ],
-
-
-//            'mediapos',
-/*
-            'dataformaturapos',
-
-            'periodicosinternacionais',
-            'periodicosnacionais',
-            'conferenciasinternacionais',
-            'conferenciasnacionais',
-*/
-/*
-            'instituicaoingles',
-            'duracaoingles',
-            'nomeexame',
-            'dataexame',
-            'notaexame',
-            'empresa1',
-            'empresa2',
-            'empresa3',
-            'cargo1',
-            'cargo2',
-            'cargo3',
-            'periodoprofissional1',
-            'periodoprofissional2',
-            'periodoprofissional3',
-
-            'instituicaoacademica1',
-            'instituicaoacademica2',
-            'instituicaoacademica3',
-            'atividade1',
-            'atividade2',
-            'atividade3',
-            'periodoacademico1',
-            'periodoacademico2',
-            'periodoacademico3',
-*/  
+            ], 
             [
             'attribute' =>'resultado',
             'label' => 'Resultado da Avaliação',
@@ -258,7 +197,6 @@ $tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Reg
             'value' => '<b>'.$resultado[$model->resultado].'</b>',
 
             ],
-//            'periodo',
         ],
     ]) ?>
 

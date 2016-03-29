@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use xj\bootbox\BootboxAsset;
+
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Edital */

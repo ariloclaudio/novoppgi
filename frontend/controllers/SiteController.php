@@ -89,7 +89,7 @@ class SiteController extends Controller
             $model->passoatual = 0;
             $model->repetirSenha = $model->senha = Yii::$app->security->generatePasswordHash($model->senha);
             $model->status = 10;
-            
+
             try{
                 if(!$model->save()){
                     $this->mensagens('warning', 'Candidato Já Inscrito', 'Candidato Informado Já se Encontra cadastrado para este edital, Efetue o seu Login.');

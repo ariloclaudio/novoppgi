@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Breadcrumbs;
+use xj\bootbox\BootboxAsset;
+
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 
 /* @var $this yii\web\View */
@@ -52,7 +56,7 @@ function goBack() {
             [   'label' => 'Nº de Inscrição',
                 'attribute' => 'id',
                 'value' => function ($model) {
-                     return $model->idEdital.'-'.$model->id;
+                     return $model->idEdital.'-'.str_pad($model->posicaoEdital, 3, "0", STR_PAD_LEFT);;
                 },
             ],
              'nome',
@@ -129,7 +133,7 @@ function goBack() {
                   },
                   'reenviar' => function ($url, $model) {  
 
-                    return $model->qtd_cartas > $model->cartas_respondidas ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                    return $model->carta_recomendacao == 1 && $model->qtd_cartas > $model->cartas_respondidas ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'title' => Yii::t('yii', 'Reenviar Cartas'),
                             'data-confirm' => \Yii::t('yii', 'Você deseja Reenviar cartas de recomendação deste candidato?'),
                     ]) : '';                   

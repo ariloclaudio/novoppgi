@@ -4,8 +4,6 @@ namespace frontend\controllers;
 
 use Yii;
 use app\models\Candidato;
-//use app\models\Candidato;
-//use frontend\models\Candidato;
 use app\models\LinhaPesquisa;
 use app\models\CandidatoPublicacoes;
 use app\models\Edital;

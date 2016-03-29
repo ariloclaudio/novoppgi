@@ -133,7 +133,7 @@ class Candidato extends \yii\db\ActiveRecord
             }"],
 /*FIM Validações para passo 3*/
 
-            [['cartaNome', 'cotaTipo', 'deficienciaTipo', 'declaracao'], 'string'],
+            [['cartaNome', 'cotaTipo', 'deficienciaTipo', 'posicaoEdital', 'declaracao'], 'string'],
             [['cartaEmail'], 'email'],
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
  
@@ -382,9 +382,10 @@ class Candidato extends \yii\db\ActiveRecord
     /*Validação para identidicar se usuáio já está cadastrado*/
     public function beforeSave()
     {
-        if($this->passoatual != 0 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count())
-            return true;            
-        else
+        if($this->passoatual != 0 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count()){
+            $this->posicaoEdital = (Candidato::find()->where(['idEdital' => $this->idEdital])->count() + 1);
+            return true;
+        }else
             return false;
     }
 
