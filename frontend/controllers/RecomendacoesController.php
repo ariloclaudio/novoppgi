@@ -88,6 +88,7 @@ class RecomendacoesController extends Controller
                     if(isset($_POST['enviar'])){
 
                         $this->actionPdfcartas($model->idCandidato);
+                        $this->avisarCartaRecomendacaoRespondida($model);
 
                         return $this->render('cartarecomendacaomsg', ['model' => $model,]);
                     }
@@ -102,6 +103,40 @@ class RecomendacoesController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+    
+    public function avisarCartaRecomendacaoRespondida($model){
+        
+        $candidato = Candidato::findOne(['id' => $model->id]);
+
+            // subject
+            $subject  = "[PPGI/UFAM] Resposta de Carta de Recomendacao para ".$candidato->nome;
+
+            $mime_boundary = "<<<--==-->>>";
+            $message = '';
+            // message
+            $message .= "Caro(a) ".$candidato->nome.", \r\n\n";
+            $message .= "A carta de recomendação enviada para ".$model->nome." (email: ".$model->email.") foi devidamente respondida.\r\n";
+            $message .= "Em caso de dúvidas, por favor nos contate. Agradecemos sua colaboração.\r\n";
+            $message .= "\nCoordenação do PPGI - ".date(DATE_RFC822)."\r\n";
+            $message .= $mime_boundary."\r\n";
+
+            /*Envio das cartas de Email*/
+           try{
+               Yii::$app->mailer->compose()
+                ->setFrom("secretariappgi@icomp.ufam.edu.br")
+                ->setTo($candidato->email)
+                ->setSubject($subject)
+                ->setTextBody($message)
+                ->send();
+            }catch(Exception $e){
+                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Solicitações de Cartas de Recomendação.
+                    Tente novamente ou contate o adminstrador do sistema');
+                    return false;
+        }
+        
+        return true;
+        
     }
 
     /**
