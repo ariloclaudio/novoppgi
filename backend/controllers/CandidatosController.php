@@ -58,10 +58,12 @@ class CandidatosController extends Controller
     {
         $searchModel = new CandidatosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider2 = $searchModel->search2(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataProvider2' => $dataProvider2,
             'idEdital' => $id,
         ]);
     }

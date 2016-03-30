@@ -150,4 +150,118 @@ class CandidatosSearch extends Candidato
 
         return $dataProvider;
     }
+
+
+public function search2($params)
+    {
+        $idEdital = $params['id'];
+        $query = Candidato::find()->select("j17_edital.cartarecomendacao as carta_recomendacao ,j17_linhaspesquisa.nome as nomeLinhaPesquisa, candidato1.*, qtd_cartas, cartas_pendentes, (qtd_cartas-cartas_pendentes) as cartas_respondidas
+
+            ")->leftJoin("j17_linhaspesquisa","candidato1.idLinhaPesquisa =   j17_linhaspesquisa.id")->innerJoin("j17_edital")
+        ->leftJoin("j17_recomendacoes","j17_recomendacoes.idCandidato = candidato1.id")->alias('candidato1')
+
+        ->leftJoin("(SELECT idCandidato, if(dataResposta = '0000-00-00 00:00:00', count(dataResposta),0) as cartas_pendentes from j17_recomendacoes group by idCandidato, dataResposta) recomendacao1"," candidato1.id = recomendacao1.idCandidato")
+
+        ->leftJoin("(SELECT idCandidato, count(idCandidato) as qtd_cartas from j17_recomendacoes group by idCandidato) recomendacao2 "," candidato1.id = recomendacao2.idCandidato")
+
+        ->where('idEdital ="'.$idEdital.'" AND candidato1.passoatual != 4')->groupBy("id");
+
+
+
+        //$query2 = Candidato::find()->leftJoin(" (select * FROM j17_recomendacoes ) as rec ", "rec.idCandidato = j17_candidatos.id ");
+
+        
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+
+        $dataProvider->sort->attributes['nomeLinhaPesquisa'] = [
+        'asc' => ['nomeLinhaPesquisa' => SORT_ASC],
+        'desc' => ['nomeLinhaPesquisa' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['qtd_cartas'] = [
+        'asc' => ['qtd_cartas' => SORT_ASC],
+        'desc' => ['qtd_cartas' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['cartas_respondidas'] = [
+        'asc' => ['cartas_respondidas' => SORT_ASC],
+        'desc' => ['cartas_respondidas' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['fase'] = [
+        'asc' => ['resultado' => SORT_ASC],
+        'desc' => ['resultado' => SORT_DESC],
+        ];
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'inicio' => $this->inicio,
+            'fim' => $this->fim,
+            'passoatual' => $this->passoatual,
+            'nacionalidade' => $this->nacionalidade,
+            'cursodesejado' => $this->cursodesejado,
+            'regime' => $this->regime,
+            'anoposcomp' => $this->anoposcomp,
+            'idLinhaPesquisa' => $this->idLinhaPesquisa,
+            'egressograd' => $this->egressograd,
+            'tipopos' => $this->tipopos,
+            'egressopos' => $this->egressopos,
+            'periodicosinternacionais' => $this->periodicosinternacionais,
+            'periodicosnacionais' => $this->periodicosnacionais,
+            'conferenciasinternacionais' => $this->conferenciasinternacionais,
+            'conferenciasnacionais' => $this->conferenciasnacionais,
+            'resultado' => $this->resultado,
+        ]);
+
+        $query->andFilterWhere(['like', 'senha', $this->senha])
+            ->andFilterWhere(['like', 'nome', $this->nome])
+            ->andFilterWhere(['like', 'endereco', $this->endereco])
+            ->andFilterWhere(['like', 'bairro', $this->bairro])
+            ->andFilterWhere(['like', 'cidade', $this->cidade])
+            ->andFilterWhere(['like', 'uf', $this->uf])
+            ->andFilterWhere(['like', 'cep', $this->cep])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'datanascimento', $this->datanascimento])
+            ->andFilterWhere(['like', 'pais', $this->pais])
+            ->andFilterWhere(['like', 'passaporte', $this->passaporte])
+            ->andFilterWhere(['like', 'cpf', $this->cpf])
+            ->andFilterWhere(['like', 'sexo', $this->sexo])
+            ->andFilterWhere(['like', 'telresidencial', $this->telresidencial])
+            ->andFilterWhere(['like', 'telcelular', $this->telcelular])
+            ->andFilterWhere(['like', 'inscricaoposcomp', $this->inscricaoposcomp])
+            ->andFilterWhere(['like', 'notaposcomp', $this->notaposcomp])
+            ->andFilterWhere(['like', 'solicitabolsa', $this->solicitabolsa])
+            ->andFilterWhere(['like', 'tituloproposta', $this->tituloproposta])
+            ->andFilterWhere(['like', 'diploma', $this->diploma])
+            ->andFilterWhere(['like', 'historico', $this->historico])
+            ->andFilterWhere(['like', 'motivos', $this->motivos])
+            ->andFilterWhere(['like', 'proposta', $this->proposta])
+            ->andFilterWhere(['like', 'curriculum', $this->curriculum])
+            ->andFilterWhere(['like', 'comprovantepagamento', $this->comprovantepagamento])
+            ->andFilterWhere(['like', 'cursograd', $this->cursograd])
+            ->andFilterWhere(['like', 'instituicaograd', $this->instituicaograd])
+            ->andFilterWhere(['like', 'dataformaturagrad', $this->dataformaturagrad])
+            ->andFilterWhere(['like', 'cursopos', $this->cursopos])
+            ->andFilterWhere(['like', 'instituicaopos', $this->instituicaopos])
+            ->andFilterWhere(['like', 'dataformaturapos', $this->dataformaturapos])
+            ->andFilterWhere(['like', 'periodo', $this->periodo]);
+
+            //
+
+        return $dataProvider;
+    }
+
 }
