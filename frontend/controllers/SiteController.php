@@ -93,7 +93,9 @@ class SiteController extends Controller
     public function actionTesteplanilha(){
         
     //link: frontend/web/index.php?r=site/testeplanilha
-        
+    
+    $model_candidato = Candidato::find()->all();
+    
     $objPHPExcel = new \PHPExcel();
     
     // Definimos o estilo da fonte
@@ -101,16 +103,24 @@ class SiteController extends Controller
     
     // Criamos as colunas
     $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', 'Listagem de Credenciamento' )
+                ->setCellValue('A1', 'Listagem de Candidatos' )
                 ->setCellValue('B1', "Nome " )
-                ->setCellValue("C1", "Sobrenome" )
-                ->setCellValue("D1", "E-mail" );
+                ->setCellValue("C1", "coluna" )
+                ->setCellValue("D1", "coluna" );
     
     // Podemos configurar diferentes larguras paras as colunas como padrão
     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(90);
     $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
     $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
     $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+    
+    for($i=0; $i<count($model_candidato); $i++){
+        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(1, $i+2, $model_candidato[$i]->nome );
+        
+        
+    }
+    
+    
     
     // Também podemos escolher a posição exata aonde o dado será inserido (coluna, linha, dado);
     $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(1, 2, "Fulano");
