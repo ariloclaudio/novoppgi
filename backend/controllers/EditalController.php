@@ -207,11 +207,7 @@ class EditalController extends Controller
 
 //fim das funções responsáveis pelas notificações das cartas respondidas
 
-    /**
-     * Creates a new Edital model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+
     public function actionCreate()
     {
         $model = new Edital();
@@ -241,8 +237,6 @@ class EditalController extends Controller
             }
         }
 
-
-
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -258,8 +252,8 @@ class EditalController extends Controller
     {
         $model = $this->findModel($id);
 
-        $model->datainicio = date('d-M-Y', strtotime($model->datainicio));
-        $model->datafim =  date('d-M-Y', strtotime($model->datafim));
+        $model->datainicio = date('d-m-Y', strtotime($model->datainicio));
+        $model->datafim =  date('d-m-Y', strtotime($model->datafim));
 
         if ($model->load(Yii::$app->request->post())) {
             //return $model->mestrado." ".$model->doutorado;
@@ -299,6 +293,18 @@ class EditalController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+
+    /*Apenas para para evitar a listagem dos editais*/
+    public function actionDelete2($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = 0;
+
+        $model->salve();
 
         return $this->redirect(['index']);
     }

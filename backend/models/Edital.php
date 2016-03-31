@@ -46,9 +46,7 @@ class Edital extends \yii\db\ActiveRecord
             [['vagas_doutorado'], 'required','when' => function($model){ return $model->curso == 2 || $model->curso == 3; },'whenClient' => "function (attribute, value) {
                 return $('#form_doutorado').val() == 1;
             }"],
-            [['doutorado', 'mestrado'], 'required', 'when' => function($model){ return $model->curso == 0; }, 'whenClient' => "function (attribute, value){ 
-                return $('#form_mestrado').val() != '1' || $('#form_doutorado').val() != '1';
-            }"],
+            [['doutorado', 'mestrado'], 'validaCurso', 'when' => function($model){ return $model->curso == 0; }],
             [['doutorado', 'mestrado'], 'integer'],
             [['numero', 'curso'], 'string'],
             ['numero', 'checkNumero'],
@@ -56,6 +54,8 @@ class Edital extends \yii\db\ActiveRecord
             [['numero'], 'unique', 'message' => 'Edital já criado'],
             [['vagas_mestrado','vagas_doutorado', 'cotas_mestrado', 'cotas_doutorado'], 'integer', 'min' => 0],
             [['datainicio', 'datafim', 'documentoFile'], 'safe'],
+            [['datainicio'], 'validarDataInicio'],
+            [['datafim'], 'validarDataFim'],
             [['documentoFile'], 'file', 'extensions' => 'pdf'],
             [['documento'], 'string', 'max' => 100],
 
@@ -76,6 +76,25 @@ class Edital extends \yii\db\ActiveRecord
             'curso' => 'Curso',
             'documentoFile' => 'Edital (PDF)',
         ];
+    }
+
+    public function validarDataInicio($attribute, $params){
+        if (!$this->hasErrors()) {
+            if ($this->datainicio < date('d-m-Y')) {
+                $this->addError($attribute, 'Informe uma data igual ou posterior a '.date('d-m-Y'));
+            }
+        }
+    }
+    public function validarDataFim($attribute, $params){
+        if (!$this->hasErrors()) {
+            if (date("Y-m-d", strtotime($this->datainicio)) > date("Y-m-d", strtotime($this->datafim))) {
+                $this->addError($attribute, 'Informe uma data igual ou posterior a '.date("d-m-Y", strtotime($this->datainicio))." ".date("d-m-Y", strtotime($this->datafim)));
+            }
+        }
+    }
+
+    public function validaCurso($attribute, $params){
+        $this->addError($attribute, "Escoha um dos cursos");
     }
 
     public function checkNumero($attribute, $params)
