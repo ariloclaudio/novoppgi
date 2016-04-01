@@ -1,12 +1,5 @@
 Options -Indexes
 
-<IfModule mod_rewrite.c> 
-  RewriteEngine on
-
-  RewriteCond %{REQUEST_URI} !^public
-  RewriteRule ^(.*)$ frontend/web/$1 [L] 
-</IfModule>
-
 # Deny accessing below extensions
 <Files ~ "(.json|.lock|.git)">
 Order allow,deny

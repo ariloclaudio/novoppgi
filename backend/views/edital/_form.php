@@ -57,7 +57,7 @@ if(isset($model->documento))
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Início ...',],
 				    'pluginOptions' => [
-				        'format' => 'dd-M-yyyy',
+				        'format' => 'dd-mm-yyyy',
 				        'todayHighlight' => true
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Inicial</b>")
@@ -67,7 +67,7 @@ if(isset($model->documento))
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Término ...',],
 				    'pluginOptions' => [
-				        'format' => 'dd-M-yyyy',
+				        'format' => 'dd-mm-yyyy',
 				        'todayHighlight' => true
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Final</b>")

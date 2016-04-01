@@ -94,8 +94,16 @@ $this->params['breadcrumbs'][] = $this->title;
                   'download' => function ($url, $model) {     
                     return Html::a('<span class="glyphicon glyphicon-download"></span>', 'editais/'.$model->documento, [
                             'target' => '_blank','title' => Yii::t('yii', 'Download do Edital'),
-                    ]);                                
-
+                    ]);
+                  },
+                  'delete' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['delete', 'id' => $model->numero], [
+                            'data' => [
+                                'confirm' => 'Remover o edital \''.$model->numero.'\'?',
+                                'method' => 'post',
+                            ],
+                            'title' => Yii::t('yii', 'Remover Edital'),
+                    ]);   
                   }
               ]                            
                 ],
