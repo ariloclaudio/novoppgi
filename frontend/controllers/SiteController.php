@@ -72,6 +72,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+
+        $this->actionTesteplanilha();
+
+
         $this->layout = '@app/views/layouts/main-login.php';
         $model = new Candidato();
         return $this->render('opcoes',['model' => $model,
@@ -79,13 +83,51 @@ class SiteController extends Controller
     }
     
     
+    public function planilhaCandidatoFormatacao($objPHPExcel){
+
+    //definindo a altura das linhas
+
+    for ($i=1; $i<999; $i++){
+        $objPHPExcel->getActiveSheet()->getRowDimension(''.$i.'')->setRowHeight(20);
+    }
+
+    // Centralizando o valor nas colunas
+
+        $objPHPExcel->getActiveSheet()->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $objPHPExcel->getActiveSheet()->getStyle( "B3:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle( "B3:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+    //auto break line
+        
+        $objPHPExcel->getActiveSheet()
+            ->getStyle('A1:K999')
+            ->getAlignment()
+            ->setWrapText(true);
+
+    // Configurando diferentes larguras para as colunas
+    $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(18);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(12);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(14);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(14);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(12);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(14);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(40);
+
+    }
     
+    //método responsável por preencher na planilha os títulos: NOME/INSCRIÇÃO/LINHA/NÍVEL/COMPROVANTE/ ETC.
     
-    public function planilhaHeaderCandidato ($objPHPExcel,$arrayColunas){
+    public function planilhaHeaderCandidato ($objPHPExcel,$arrayColunas,$curso,$intervaloHeader){
     
         // Criamos as colunas
         $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue($arrayColunas[0], "Mestrado" )
+                ->setCellValue($arrayColunas[0], $curso )
                 ->setCellValue($arrayColunas[1], "Nome" )
                 ->setCellValue($arrayColunas[2], "Inscrição" )
                 ->setCellValue($arrayColunas[3], "Linha" )
@@ -97,177 +139,162 @@ class SiteController extends Controller
                 ->setCellValue($arrayColunas[9], "Cartas \n(2 no mínimo)" )
                 ->setCellValue($arrayColunas[10], "Homologado" )
                 ->setCellValue($arrayColunas[11], "Observações");
+
+        //mesclando celulas
+
+        $objPHPExcel->getActiveSheet()->mergeCells($intervaloHeader);
+
+        //colocando os títulos em Negrito
+
+        $objPHPExcel->getActiveSheet()->getStyle($intervaloHeader)->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle($arrayColunas[1].":".$arrayColunas[11])->getFont()->setBold(true);
+
+        $objPHPExcel->getActiveSheet()
+            ->getStyle($intervaloHeader)
+            ->getFill()
+            ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('FF808080');
+
+        $objPHPExcel->getActiveSheet()->getStyle($intervaloHeader)->getFont()->getColor()->setRGB('FFFFFF');
+
+
                 
     }
-    
 
+    //método responsável por preencher na planilha dados provenientes do banco: NOME/INSCRIÇÃO/LINHA/NÍVEL
+
+    public function planilhaCandidatoPreencherDados($objPHPExcel,$model_candidato_doutorado,$linhasPesquisas,$arrayCurso,$i,$j){
+
+
+        for($j=0; $j<count($model_candidato_doutorado); $j++){
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(0, $i+3, $model_candidato_doutorado[$j]->nome);
+            
+            $objPHPExcel->getActiveSheet()
+                ->setCellValueByColumnAndRow(1, $i+3, ($model_candidato_doutorado[$j]->idEdital.'-'.str_pad($model_candidato_doutorado[$j]->posicaoEdital, 3, "0", STR_PAD_LEFT)));
+            
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, $i+3, $linhasPesquisas[$model_candidato_doutorado[$j]->idLinhaPesquisa]);
+
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, $i+3, $arrayCurso[$model_candidato_doutorado[$j]->cursodesejado]);   
+
+            $i++;
+        }
+
+        return $i;
+
+
+    }
     
-    
-    
-    
-    
-    
-    
-    
+   
     public function actionTesteplanilha(){
 
-    $arrayCurso = array(1 => "Mestrado", 2 => "Doutorado");
-    $arrayColunas = array(
-        0 => "A1", 1 => "A2", 2 => "B2", 3 => "C2", 4 => "D2", 
-        5 => "E2", 6 => "F2", 7 => "G2", 8 => "H2", 9 => "I2", 
-        10 => "J2", 11 => "K2");
-
-    $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
-
-    $objPHPExcel = new \PHPExcel();
-
-    for ($i=3; $i<999; $i++){
-        $objPHPExcel->getActiveSheet()->getRowDimension(''.$i.'')->setRowHeight(40);
-    }
-
-    
-    $model_candidato_mestrado = Candidato::find()->where("cursodesejado = 1")->all();
-    $model_candidato_doutorado = Candidato::find()->where("cursodesejado = 2")->all();
-    
-    
-    // Definimos o estilo da fonte
-
-        $objPHPExcel->getActiveSheet()->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
-        $objPHPExcel->getActiveSheet()->getStyle( "B3:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle( "B3:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        
-        $objPHPExcel->getActiveSheet()->getStyle( "A" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
-        $objPHPExcel->getActiveSheet()
-            ->getStyle('A1:K999')
-            ->getAlignment()
-            ->setWrapText(true);
-
-    $objPHPExcel->getActiveSheet()->getStyle("C3:C999")->getFont()->setSize(9);
-    $objPHPExcel->getActiveSheet()->mergeCells('A1:K1');
-    $objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFont()->setBold(true);
-    
-    $this->planilhaHeaderCandidato($objPHPExcel,$arrayColunas);
-
-    // Podemos configurar diferentes larguras paras as colunas como padrão
-    $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(18);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(10);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(12);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(8);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(8);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(12);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(40);
-
-    $objPHPExcel->getActiveSheet()->getRowDimension("1")->setRowHeight(50);
-    $objPHPExcel->getActiveSheet()->getRowDimension("2")->setRowHeight(40);
-
-
-    for($i=0; $i<count($model_candidato_mestrado); $i++){
-        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(0, $i+3, $model_candidato_mestrado[$i]->nome);
-        
-        /*
-        $objPHPExcel->getActiveSheet()
-            ->setCellValueByColumnAndRow(1, $i+3, ($model_candidato_mestrado[$i]->idEdital.'-'.str_pad($model_candidato_mestrado[$i]->posicaoEdital, 3, "0", STR_PAD_LEFT)));
-        */
-        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, $i+3, $linhasPesquisas[$model_candidato_mestrado[$i]->idLinhaPesquisa]);
-
-        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, $i+3, $arrayCurso[$model_candidato_mestrado[$i]->cursodesejado]);   
-
-
-    }
-
-
-
-    //parte referente ao doutorado
-
-        $j = $i;
-
-    $objPHPExcel->getActiveSheet()->getRowDimension($j+1)->setRowHeight(50);
-    $objPHPExcel->getActiveSheet()->getRowDimension($j+2)->setRowHeight(40);
-
-        $k = $j+4;
-        $l = $j+3;
-
-
-
-        $objPHPExcel->getActiveSheet()->mergeCells('A'.$l.':K'.$l.'');
-
+        $arrayCurso = array(1 => "Mestrado", 2 => "Doutorado");
         $arrayColunas = array(
-            0 => "A".$l, 1 => "A".$k, 2 => "B".$k, 3 => "C".$k, 4 => "D".$k, 
-            5 => "E".$k, 6 => "F".$k, 7 => "G".$k, 8 => "H".$k, 9 => "I".$k, 
-            10 => "J".$k, 11 => "K".$k);
-            
-        $this->planilhaHeaderCandidato($objPHPExcel,$arrayColunas);
+            0 => "A1", 1 => "A2", 2 => "B2", 3 => "C2", 4 => "D2", 
+            5 => "E2", 6 => "F2", 7 => "G2", 8 => "H2", 9 => "I2", 
+            10 => "J2", 11 => "K2");
 
+        $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('sigla')->all(), 'id', 'sigla');
 
-    for($i=0; $i<count($model_candidato_doutorado); $i++){
-        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(0, $j+5, $model_candidato_doutorado[$i]->nome);
+        $model_candidato_mestrado = Candidato::find()->where("cursodesejado = 1 AND passoatual = 4")->orderBy("nome")->all();
+        $model_candidato_doutorado = Candidato::find()->where("cursodesejado = 2 AND passoatual = 4")->orderBy("nome")->all();
+
+        //instanciando objeto Excel
+
+        $objPHPExcel = new \PHPExcel();
+
+        //função responsável pela formatação da planilha
         
-        /*$objPHPExcel->getActiveSheet()
-            ->setCellValueByColumnAndRow(1, $j+5, ($model_candidato_doutorado[$i]->idEdital.'-'.str_pad($model_candidato_doutorado[$i]->posicaoEdital, 3, "0", STR_PAD_LEFT)));
-        */
-        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, $j+5, $linhasPesquisas[$model_candidato_doutorado[$i]->idLinhaPesquisa]);
+        $this->planilhaCandidatoFormatacao($objPHPExcel);
 
-        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, $j+5, $arrayCurso[$model_candidato_doutorado[$i]->cursodesejado]);   
+        //função responsável pelo Header da planilha
+
+        $intervaloHeader = 'A1:K1';
+        $objPHPExcel->getActiveSheet()->getRowDimension("2")->setRowHeight(40);
+        $this->planilhaHeaderCandidato($objPHPExcel,$arrayColunas,$arrayCurso[1],$intervaloHeader);
+
+        //parte referente ao mestrado (preenchimento da tabela a partir do banco)
+
+        $i = $this->planilhaCandidatoPreencherDados($objPHPExcel,$model_candidato_mestrado,$linhasPesquisas,$arrayCurso,0,0);
+
+        //fim da parte referente ao mestrado
+
+        //parte referente ao doutorado (preenchimento da tabela a partir do banco)
+
+            $j = $i;
+
+            $objPHPExcel->getActiveSheet()->getRowDimension($j+4)->setRowHeight(40);
+
+            $k = $j+4;
+            $l = $j+3;
+
+            $intervaloHeader = 'A'.$l.':K'.$l.'';
+
+            $arrayColunas = array(
+                0 => "A".$l, 1 => "A".$k, 2 => "B".$k, 3 => "C".$k, 4 => "D".$k, 
+                5 => "E".$k, 6 => "F".$k, 7 => "G".$k, 8 => "H".$k, 9 => "I".$k, 
+                10 => "J".$k, 11 => "K".$k);
+                
+            $this->planilhaHeaderCandidato($objPHPExcel,$arrayColunas,$arrayCurso[2],$intervaloHeader);
+
+            $this->planilhaCandidatoPreencherDados($objPHPExcel,$model_candidato_doutorado,$linhasPesquisas,$arrayCurso,$i+2,$j);
+
+        //fim da parte referente ao doutorado
 
 
-        $j++;
+        $objWorkSheet = $objPHPExcel->createSheet(1);
+
+
+
+
+
+
+
+
+        //Write cells
+        $objWorkSheet->setCellValue('A1', "='Candidato'!A1")
+                ->setCellValue('A2', "='Candidato'!A2")
+                ->setCellValue('A3', "='Candidato'!A3")
+                ->setCellValue('A4', "='Candidato'!A4")
+                ->setCellValue('A5', "='Candidato'!A5");
+
+        // Rename sheet
+        $objWorkSheet->setTitle("Provas");
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
+        // Podemos renomear o nome das planilha atual, lembrando que um único arquivo pode ter várias planilhas
+        $objPHPExcel->getActiveSheet()->setTitle('Candidato');
+        
+        // Acessamos o 'Writer' para poder salvar o arquivo
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        
+        // Salva diretamente no output, poderíamos mudar arqui para um nome de arquivo em um diretório ,caso não quisessemos jogar na tela
+
+            header('Content-type: application/vnd.ms-excel');
+
+            header('Content-Disposition: attachment; filename="file.xls"');
+
+            $objWriter->save('php://output');
+            $objWriter->save('ARQUIVO.xls');
+
+        
+        echo "ok";
+        
+        
     }
 
-    //fim da parte referente ao doutorado
-
-
-    
-    // Também podemos escolher a posição exata aonde o dado será inserido (coluna, linha, dado);
-    /*
-    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(1, 2, "Fulano");
-    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, 2, " da Silva");
-    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, 2, "fulano@exemplo.com.br");
-    
-    // Exemplo inserindo uma segunda linha, note a diferença no segundo parâmetro
-    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(1, 3, "Beltrano");
-    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, 3, " da Silva Sauro");
-    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, 3, "beltrando@exemplo.com.br");
-    */
-    
-    // Podemos renomear o nome das planilha atual, lembrando que um único arquivo pode ter várias planilhas
-    $objPHPExcel->getActiveSheet()->setTitle('Candidato');
-    
-    // Acessamos o 'Writer' para poder salvar o arquivo
-    $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-    
-    // Salva diretamente no output, poderíamos mudar arqui para um nome de arquivo em um diretório ,caso não quisessemos jogar na tela
-    $objWriter->save("arquivo.xls");
-    
-    echo "ok";
-        
-        
-        
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     public function actionCadastroppgi(){
         /*if(Yii::$app->session->get('candidato') !== null)
