@@ -83,28 +83,37 @@ class SiteController extends Controller
     }
     
     
-    public function planilhaCandidatoFormatacao($objPHPExcel){
+    public function planilhaCandidatoFormatacao($objPHPExcel,$intervalo_tamanho){
 
     //definindo a altura das linhas
 
-    for ($i=1; $i<999; $i++){
+    $qtd_linhas = $objPHPExcel->getActiveSheet()->getHighestRow();
+
+    for ($i=1; $i<=$qtd_linhas; $i++){
         $objPHPExcel->getActiveSheet()->getRowDimension(''.$i.'')->setRowHeight(20);
     }
 
     // Centralizando o valor nas colunas
 
-        $objPHPExcel->getActiveSheet()->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
-        $objPHPExcel->getActiveSheet()->getStyle( "B3:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objPHPExcel->getActiveSheet()->getStyle( "B3:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle( $intervalo_tamanho )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle( $intervalo_tamanho )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
     //auto break line
         
         $objPHPExcel->getActiveSheet()
-            ->getStyle('A1:K999')
+            ->getStyle($intervalo_tamanho)
             ->getAlignment()
             ->setWrapText(true);
+
+
+          $BStyle = array(
+              'borders' => array(
+                  'allborders' => array(
+                      'style' => \PHPExcel_Style_Border::BORDER_THIN
+                  )
+              )
+          );
+        $objPHPExcel->getActiveSheet()->getStyle($intervalo_tamanho)->applyFromArray($BStyle);
 
     // Configurando diferentes larguras para as colunas
     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(40);
@@ -186,8 +195,6 @@ class SiteController extends Controller
     public function planilhaProvas($objWorkSheet,$linhaAtual,$ultimaLinha){
 
         $objWorkSheet->mergeCells("A1:C1");
-
-        $objWorkSheet->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $objWorkSheet->getStyle("A1:C2")->getFont()->setBold(true);
 
@@ -285,9 +292,6 @@ class SiteController extends Controller
             ->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
         $planilhaPropostas->mergeCells("A1:E1");
-
-
-        $planilhaPropostas->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $planilhaPropostas->getStyle("A1:E2")->getFont()->setBold(true);
 
@@ -392,8 +396,6 @@ class SiteController extends Controller
 
         $planilhaTitulos->mergeCells("I2:I3");
         $planilhaTitulos->mergeCells("J2:J3");
-
-        $planilhaTitulos->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $planilhaTitulos->getStyle("A1:J2")->getFont()->setBold(true);
 
@@ -534,8 +536,6 @@ class SiteController extends Controller
         $planilhaCartas->getColumnDimension('A')->setWidth(40);
         $planilhaCartas->getColumnDimension('X')->setWidth(20);
 
-
-        $planilhaCartas->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         $planilhaCartas->getStyle("A1:X2")->getFont()->setBold(true);
 
@@ -852,20 +852,6 @@ class SiteController extends Controller
 
         $objPHPExcel = new \PHPExcel();
 
-          $styleArray = array(
-              'borders' => array(
-                  'allborders' => array(
-                      'style' => \PHPExcel_Style_Border::BORDER_THIN
-                  )
-              )
-          );
-        $objPHPExcel->getDefaultStyle()->applyFromArray($styleArray);
-
-
-
-        //função responsável pela formatação da planilha
-        
-        $this->planilhaCandidatoFormatacao($objPHPExcel);
 
         //função responsável pelo Header da planilha
 
@@ -904,6 +890,11 @@ class SiteController extends Controller
 
 // Podemos renomear o nome das planilha atual, lembrando que um único arquivo pode ter várias planilhas
         $objPHPExcel->getActiveSheet()->setTitle('Candidato');
+
+        //função responsável pela formatação da planilha
+        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(0)->calculateWorksheetDimension();
+
+        $this->planilhaCandidatoFormatacao($objPHPExcel,$intervalo_tamanho);
 
         
         //cria planilha de PROVAS
