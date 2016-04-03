@@ -26,6 +26,24 @@ $(document).ready( function() {
     	else
     		$('#divDocumentoFile').css('display', 'none');
     });
+
+    $('input[name="Aluno[bolsista]"]').on('switchChange.bootstrapSwitch', function (data, state) {
+        if (state)
+            $('#divAgencia').css('display', 'block');
+        else
+            $('#divAgencia').css('display', 'none');
+    });
+
+    $('#aluno-nacionalidade').click(function(){
+        if($( "input[name='Aluno[nacionalidade]']:checked" ).val() == 1){
+            $('#divBrasileiro').css('display', 'block');
+            $('#divEstrangeiro').css('display', 'none');
+
+        }else{
+            $('#divEstrangeiro').css('display', 'block');
+            $('#divBrasileiro').css('display', 'none');
+        }
+   });
 });
 
 
@@ -39,4 +57,13 @@ $( window ).load(function(){
 	if($('#form_doutorado').val() == 1)
 		$('#divVagasDoutorado').css('display', 'block');
 /*Fim das exibições das vagas e cotas do Edital*/
+    
+    if($("input[name='Aluno[nacionalidade]']:checked" ).val() == 1){
+        $('#divBrasileiro').css('display', 'block');
+        $('#divEstrangeiro').css('display', 'none');
+
+    }else if($( "input[name='Aluno[nacionalidade]']:checked" ).val() == 2){
+        $('#divEstrangeiro').css('display', 'block');
+        $('#divBrasileiro').css('display', 'none');
+    }
 });

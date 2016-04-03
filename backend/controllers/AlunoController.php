@@ -4,10 +4,12 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Aluno;
+use app\models\LinhaPesquisa;
 use app\models\AlunoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * AlunoController implements the CRUD actions for Aluno model.
@@ -64,12 +66,15 @@ class AlunoController extends Controller
     public function actionCreate()
     {
         $model = new Aluno();
+        
+        $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'linhasPesquisas' => $linhasPesquisas,
             ]);
         }
     }
