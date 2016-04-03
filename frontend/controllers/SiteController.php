@@ -519,6 +519,306 @@ class SiteController extends Controller
         $planilhaTitulos->setTitle("Títulos");
 
     }
+
+    public function planilhaCartas($planilhaCartas,$linhaAtual,$ultimaLinha){
+
+        $planilhaCartas->mergeCells("B1:L1");
+        $planilhaCartas->mergeCells("M1:W1");
+
+        $planilhaCartas->getColumnDimension('A')->setWidth(40);
+        $planilhaCartas->getColumnDimension('X')->setWidth(20);
+
+
+        $planilhaCartas->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $planilhaCartas->getStyle("A1:X2")->getFont()->setBold(true);
+
+        for ($k=1; $k<999; $k++){
+            $planilhaCartas->getRowDimension(''.$k.'')->setRowHeight(20);
+        }
+
+        //definindo altura da linha do header
+        $planilhaCartas->getRowDimension(1)->setRowHeight(20);
+        $planilhaCartas->getRowDimension(2)->setRowHeight(40);
+
+        $planilhaCartas->getStyle( "A1:X999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaCartas->getStyle( "A1:X999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+
+
+        $planilhaCartas
+                ->setCellValue("A1", "Mestrado" )
+                ->setCellValue("B1", "Avaliador 1" )
+                ->setCellValue("M1", "Avaliador 2" )
+                ->setCellValue("A2", "Candidato" )
+                ->setCellValue("B2", "Dom" )
+                ->setCellValue("C2", "Facil" )
+                ->setCellValue("D2", "Assid" )
+                ->setCellValue("E2", "Relac" )
+                ->setCellValue("F2", "Iniciativa" )
+                ->setCellValue("G2", "Escrita" )
+                ->setCellValue("H2", "Inglês" )
+                ->setCellValue("I2", "AC" )
+                ->setCellValue("J2", "RA" )
+                ->setCellValue("K2", "PI" )
+                ->setCellValue("L2", "NICR" )
+                ->setCellValue("M2", "Dom" )
+                ->setCellValue("N2", "Facil" )
+                ->setCellValue("O2", "Assid" )
+                ->setCellValue("P2", "Relac" )
+                ->setCellValue("Q2", "Iniciativa" )
+                ->setCellValue("R2", "Escrita" )
+                ->setCellValue("S2", "Inglês" )
+                ->setCellValue("T2", "AC" )
+                ->setCellValue("U2", "RA" )
+                ->setCellValue("V2", "PI" )
+                ->setCellValue("W2", "NICR" )
+                ->setCellValue("X2", "Média Final" );
+
+
+        //Write cells
+        for ($i=0; $i< $linhaAtual; $i++){
+
+            $formulaAC = "=SUM(".'B'.($i+3).':H'.($i+3).")";
+            $formulaAC2 = "=SUM(".'M'.($i+3).':S'.($i+3).")";
+            $formulaNICR = "=((I".($i+3)." * J".($i+3).")/10)+K".($i+3);
+            $formulaNICR2 = "=((T".($i+3)." * U".($i+3).")/10)+V".($i+3);
+
+            $planilhaCartas
+                ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
+                ->setCellValue('I'.($i+3), $formulaAC)
+                ->setCellValue('L'.($i+3), $formulaNICR)
+                ->setCellValue('T'.($i+3), $formulaAC2)
+                ->setCellValue('W'.($i+3), $formulaNICR2)
+                ->setCellValue('X'.($i+3), '=(L'.($i+3).' + W'.($i+3).')')
+                ;
+        }
+
+        $i = $i+4;
+
+
+        $planilhaCartas
+                ->setCellValue("A".($i-1), "Doutorado" )
+                ->setCellValue("B".($i-1), "Avaliador 1" )
+                ->setCellValue("M".($i-1), "Avaliador 2" )
+                ->setCellValue("A".($i), "Candidato" )
+                ->setCellValue("B".($i), "Dom" )
+                ->setCellValue("C".($i), "Facil" )
+                ->setCellValue("D".($i), "Assid" )
+                ->setCellValue("E".($i), "Relac" )
+                ->setCellValue("F".($i), "Iniciativa" )
+                ->setCellValue("G".($i), "Escrita" )
+                ->setCellValue("H".($i), "Inglês" )
+                ->setCellValue("I".($i), "AC" )
+                ->setCellValue("J".($i), "RA" )
+                ->setCellValue("K".($i), "PI" )
+                ->setCellValue("L".($i), "NICR" )
+                ->setCellValue("M".($i), "Dom" )
+                ->setCellValue("N".($i), "Facil" )
+                ->setCellValue("O".($i), "Assid" )
+                ->setCellValue("P".($i), "Relac" )
+                ->setCellValue("Q".($i), "Iniciativa" )
+                ->setCellValue("R".($i), "Escrita" )
+                ->setCellValue("S".($i), "Inglês" )
+                ->setCellValue("T".($i), "AC" )
+                ->setCellValue("U".($i), "RA" )
+                ->setCellValue("V".($i), "PI" )
+                ->setCellValue("W".($i), "NICR" )
+                ->setCellValue("X".($i), "Média Final" );
+
+        $planilhaCartas->getStyle("A".($i-1).":X".$i)->getFont()->setBold(true);
+
+        $planilhaCartas->mergeCells("B".($i-1).":L".($i-1));
+        $planilhaCartas->mergeCells("M".($i-1).":W".($i-1));
+
+        //definindo altura da linha do header
+
+        $planilhaCartas->getRowDimension($i-1)->setRowHeight(20);
+        $planilhaCartas->getRowDimension($i)->setRowHeight(40);
+
+        //definindo a cor de fundo e cor da fonte do título do header: mestrado
+
+        $planilhaCartas
+            ->getStyle("A1")
+            ->getFill()
+            ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('FF808080');
+
+        $planilhaCartas->getStyle("A1")->getFont()->getColor()->setRGB('FFFFFF');
+
+        $planilhaCartas
+            ->getStyle("B1:W1")
+            ->getFill()
+            ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('DEB887');
+
+        $planilhaCartas->getStyle("A1")->getFont()->getColor()->setRGB('FFFFFF');
+
+        //definindo a cor de fundo e cor da fonte do título do header: doutorado
+
+
+        $planilhaCartas
+            ->getStyle("A".($i-1))
+            ->getFill()
+            ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('FF808080');
+
+        $planilhaCartas->getStyle("A".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
+
+        $planilhaCartas
+            ->getStyle("B".($i-1).":W".($i-1))
+            ->getFill()
+            ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('DEB887');
+
+        $planilhaCartas->getStyle("B".($i-1).":W".($i-1))->getFont()->getColor()->setRGB('000000');
+
+
+
+        //Write cells
+        for ($i=$i+1; $i< $ultimaLinha+3; $i++){
+
+            $formulaAC = "=SUM(".'B'.$i.':H'.$i.")";
+            $formulaAC2 = "=SUM(".'M'.$i.':S'.$i.")";
+            $formulaNICR = "=((I".($i)." * J".($i).")/10)+K".($i);
+            $formulaNICR2 = "=((T".($i)." * U".($i).")/10)+V".($i);
+
+            $planilhaCartas
+                ->setCellValue('A'.($i), "='Candidato'!A".($i))
+                ->setCellValue('I'.($i), $formulaAC)
+                ->setCellValue('L'.($i), $formulaNICR)
+                ->setCellValue('T'.($i), $formulaAC2)
+                ->setCellValue('W'.($i), $formulaNICR2)
+                ->setCellValue('X'.($i), '=(L'.($i).' + W'.($i).')');
+        }
+
+        $planilhaCartas->setTitle("Cartas");
+
+
+    }
+
+    public function planilhaMediaFinal($planilhaMediaFinal,$linhaAtual,$ultimaLinha){
+
+
+
+
+        $planilhaMediaFinal->mergeCells("A1:E1");
+
+
+        $planilhaMediaFinal->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+        $planilhaMediaFinal->getStyle("A1:E2")->getFont()->setBold(true);
+
+        for ($k=1; $k<999; $k++){
+            $planilhaMediaFinal->getRowDimension(''.$k.'')->setRowHeight(20);
+        }
+
+        //definindo altura da linha do header
+        $planilhaMediaFinal->getRowDimension(1)->setRowHeight(20);
+        $planilhaMediaFinal->getRowDimension(2)->setRowHeight(40);
+
+        $planilhaMediaFinal->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaMediaFinal->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+
+
+        $planilhaMediaFinal->getColumnDimension('A')->setWidth(40);
+        $planilhaMediaFinal->getColumnDimension('B')->setWidth(18);
+        $planilhaMediaFinal->getColumnDimension('C')->setWidth(18);
+        $planilhaMediaFinal->getColumnDimension('D')->setWidth(18);
+        $planilhaMediaFinal->getColumnDimension('E')->setWidth(18);
+
+        $planilhaMediaFinal
+                ->setCellValue("A1", "Mestrado" )
+                ->setCellValue("A2", "Candidato" )
+                ->setCellValue("B2", "Prova" )
+                ->setCellValue("C2", "Proposta" )
+                ->setCellValue("D2", "Títulos + Carta" )
+                ->setCellValue("E2", "Média" );
+
+
+        //Write cells
+        for ($i=0; $i< $linhaAtual; $i++){
+
+            $planilhaMediaFinal
+                ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
+                ->setCellValue('B'.($i+3), "='Provas'!C".($i+3))
+                ->setCellValue('C'.($i+3), "='Propostas'!E".($i+3))
+                ->setCellValue('D'.($i+3), "=AVERAGE('Títulos'!J".($i+4).",Cartas!X".($i+3).")");
+          }
+
+
+          //verificar erro no planilha do Professor !
+          
+
+        $i = $i+4;
+
+        $planilhaMediaFinal
+                ->setCellValue("A".($i-1), "Doutorado" )
+                ->setCellValue("A".($i), "Candidato" )
+                ->setCellValue("B".($i), "Prova" )
+                ->setCellValue("C".($i), "Proposta" )
+                ->setCellValue("D".($i), "Títulos + Carta" )
+                ->setCellValue("E".($i), "Média" );
+
+        $planilhaMediaFinal->getStyle("A".($i-1).":E".$i)->getFont()->setBold(true);
+
+        $planilhaMediaFinal->mergeCells("A".($i-1).":E".($i-1));
+
+        //definindo altura da linha do header
+
+        $planilhaMediaFinal->getRowDimension($i-1)->setRowHeight(20);
+        $planilhaMediaFinal->getRowDimension($i)->setRowHeight(40);
+
+        //definindo a cor de fundo e cor da fonte do título do header: mestrado
+
+        $planilhaMediaFinal
+            ->getStyle("A1:C1")
+            ->getFill()
+            ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('FF808080');
+
+        $planilhaMediaFinal->getStyle("A1:C1")->getFont()->getColor()->setRGB('FFFFFF');
+
+        //definindo a cor de fundo e cor da fonte do título do header: doutorado
+
+
+        $planilhaMediaFinal
+            ->getStyle("A".($i-1).":C".($i-1))
+            ->getFill()
+            ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('FF808080');
+
+        $planilhaMediaFinal->getStyle("A".($i-1).":C".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
+
+
+
+        //Write cells
+        for ($i=$i+1; $i< $ultimaLinha+3; $i++){
+
+            $planilhaMediaFinal
+                ->setCellValue('A'.($i), "='Candidato'!A".($i))
+                ->setCellValue('B'.($i), "='Provas'!C".($i))
+                ->setCellValue('C'.($i), "='Propostas'!E".($i))
+                ->setCellValue('D'.($i), "=AVERAGE('Títulos'!J".($i+1).",Cartas!X".($i).")");
+          
+          //verificar erro no planilha do Professor !
+
+
+
+        }
+
+        $planilhaMediaFinal->setTitle("Média Final");
+
+
+
+
+    }
     
    
     public function actionTesteplanilha(){
@@ -593,7 +893,15 @@ class SiteController extends Controller
         //Cria planilhas de Títulos
         $planilhaTitulos = $objPHPExcel->createSheet(3);
         $this->planilhaTitulos($planilhaTitulos,$i,$j);
-        
+
+        //Cria planilhas de Cartas
+        $planilhaCartas = $objPHPExcel->createSheet(4);
+        $this->planilhaCartas($planilhaCartas,$i,$j);
+
+        //Cria planilhas de Cartas
+        $planilhaMediaFinal = $objPHPExcel->createSheet(5);
+        $this->planilhaMediaFinal($planilhaMediaFinal,$i,$j);
+
         // Acessamos o 'Writer' para poder salvar o arquivo
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         
