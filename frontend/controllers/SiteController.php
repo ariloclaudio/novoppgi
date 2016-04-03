@@ -435,8 +435,14 @@ class SiteController extends Controller
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
 
+            $soma1 = "SUM(".'B'.($i+4).':E'.($i+4).")";
+            $soma2 = "SUM(".'F'.($i+4).':H'.($i+4).")";
+
             $planilhaTitulos
-                ->setCellValue('A'.($i+4), "='Candidato'!A".($i+3));
+                ->setCellValue('A'.($i+4), "='Candidato'!A".($i+3))
+                ->setCellValue('J'.($i+4), '=5+((5 * I'.($i+4).')/100)')
+                ->setCellValue('I'.($i+4), '=IF('.$soma1.'>30,30,'.$soma1.')'.' + IF('.$soma2.'>70,70,'.$soma2.')');
+
         }
 
         $i = $i+5;
@@ -498,12 +504,15 @@ class SiteController extends Controller
         $planilhaTitulos->getStyle("A".($i-1).":C".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
 
 
-
         //Write cells
         for ($i; $i< $ultimaLinha+3; $i++){
 
+            $soma1 = "SUM(".'B'.($i+2).':E'.($i+2).")";
+            $soma2 = "SUM(".'F'.($i+2).':H'.($i+2).")";
+
             $planilhaTitulos
-                ->setCellValue('A'.($i+2), "='Candidato'!A".($i));
+                ->setCellValue('A'.($i+2), "='Candidato'!A".($i))
+                ->setCellValue('I'.($i+2), '=IF('.$soma1.'>30,30,'.$soma1.')'.' + IF('.$soma2.'>70,70,'.$soma2.')');;
         }
 
         // Rename sheet
