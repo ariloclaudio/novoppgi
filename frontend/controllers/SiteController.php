@@ -278,6 +278,12 @@ class SiteController extends Controller
 
     public function planilhaPropostas($planilhaPropostas,$linhaAtual,$ultimaLinha){
 
+
+        //define a página como formato em RETRATO
+
+        $planilhaPropostas->getPageSetup()
+            ->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
         $planilhaPropostas->mergeCells("A1:E1");
 
 
@@ -298,10 +304,10 @@ class SiteController extends Controller
 
 
         $planilhaPropostas->getColumnDimension('A')->setWidth(40);
-        $planilhaPropostas->getColumnDimension('B')->setWidth(18);
-        $planilhaPropostas->getColumnDimension('C')->setWidth(18);
-        $planilhaPropostas->getColumnDimension('D')->setWidth(18);
-        $planilhaPropostas->getColumnDimension('E')->setWidth(18);
+        $planilhaPropostas->getColumnDimension('B')->setWidth(13);
+        $planilhaPropostas->getColumnDimension('C')->setWidth(13);
+        $planilhaPropostas->getColumnDimension('D')->setWidth(13);
+        $planilhaPropostas->getColumnDimension('E')->setWidth(13);
 
         $planilhaPropostas
                 ->setCellValue("A1", "Mestrado" )
@@ -704,14 +710,18 @@ class SiteController extends Controller
     public function planilhaMediaFinal($planilhaMediaFinal,$linhaAtual,$ultimaLinha){
 
 
+        //define a página como formato em RETRATO
 
+        $planilhaMediaFinal->getPageSetup()
+            ->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
+        //MESCLAGEM DE CELULAS
         $planilhaMediaFinal->mergeCells("A1:E1");
 
-
-        $planilhaMediaFinal->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-
+        //INSERE NEGRITO
         $planilhaMediaFinal->getStyle("A1:E2")->getFont()->setBold(true);
+
+        //DEFINE A ALTURAS DAS CÉLULAS
 
         for ($k=1; $k<999; $k++){
             $planilhaMediaFinal->getRowDimension(''.$k.'')->setRowHeight(20);
@@ -721,16 +731,18 @@ class SiteController extends Controller
         $planilhaMediaFinal->getRowDimension(1)->setRowHeight(20);
         $planilhaMediaFinal->getRowDimension(2)->setRowHeight(40);
 
+        //DEFINE ALINHAMENTO CENTRAL
         $planilhaMediaFinal->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $planilhaMediaFinal->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-
+        //DEFINE O TAMANHO DAS LARGURAS DAS COLUNAS
         $planilhaMediaFinal->getColumnDimension('A')->setWidth(40);
-        $planilhaMediaFinal->getColumnDimension('B')->setWidth(18);
-        $planilhaMediaFinal->getColumnDimension('C')->setWidth(18);
-        $planilhaMediaFinal->getColumnDimension('D')->setWidth(18);
-        $planilhaMediaFinal->getColumnDimension('E')->setWidth(18);
+        $planilhaMediaFinal->getColumnDimension('B')->setWidth(10);
+        $planilhaMediaFinal->getColumnDimension('C')->setWidth(10);
+        $planilhaMediaFinal->getColumnDimension('D')->setWidth(15);
+        $planilhaMediaFinal->getColumnDimension('E')->setWidth(10);
 
+        //INSERE VALORES NAS COLUNAS
         $planilhaMediaFinal
                 ->setCellValue("A1", "Mestrado" )
                 ->setCellValue("A2", "Candidato" )
@@ -740,7 +752,7 @@ class SiteController extends Controller
                 ->setCellValue("E2", "Média" );
 
 
-        //Write cells
+        //ESCREVE VALORES NAS CÉLULAS
         for ($i=0; $i< $linhaAtual; $i++){
 
             $planilhaMediaFinal
@@ -750,12 +762,11 @@ class SiteController extends Controller
                 ->setCellValue('D'.($i+3), "=AVERAGE('Títulos'!J".($i+4).",Cartas!X".($i+3).")");
           }
 
-
           //verificar erro no planilha do Professor !
-          
 
         $i = $i+4;
 
+        //DEFININDO VALORES PARA AS COLUNAS
         $planilhaMediaFinal
                 ->setCellValue("A".($i-1), "Doutorado" )
                 ->setCellValue("A".($i), "Candidato" )
@@ -764,8 +775,10 @@ class SiteController extends Controller
                 ->setCellValue("D".($i), "Títulos + Carta" )
                 ->setCellValue("E".($i), "Média" );
 
+        //COLOCANDO NEGRITO
         $planilhaMediaFinal->getStyle("A".($i-1).":E".$i)->getFont()->setBold(true);
 
+        //REALIZANDO MESCLAGEM
         $planilhaMediaFinal->mergeCells("A".($i-1).":E".($i-1));
 
         //definindo altura da linha do header
@@ -798,7 +811,7 @@ class SiteController extends Controller
 
 
 
-        //Write cells
+        //INSERINDO VALORES NAS CÉLULAS
         for ($i=$i+1; $i< $ultimaLinha+3; $i++){
 
             $planilhaMediaFinal
@@ -812,10 +825,11 @@ class SiteController extends Controller
 
 
         }
+        $planilhaMediaFinal->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(2,2);
 
+
+        //DEFININDO O NOME DA PLANILHA
         $planilhaMediaFinal->setTitle("Média Final");
-
-
 
 
     }
@@ -837,6 +851,17 @@ class SiteController extends Controller
         //instanciando objeto Excel
 
         $objPHPExcel = new \PHPExcel();
+
+          $styleArray = array(
+              'borders' => array(
+                  'allborders' => array(
+                      'style' => \PHPExcel_Style_Border::BORDER_THIN
+                  )
+              )
+          );
+        $objPHPExcel->getDefaultStyle()->applyFromArray($styleArray);
+
+
 
         //função responsável pela formatação da planilha
         
