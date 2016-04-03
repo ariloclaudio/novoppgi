@@ -3,71 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yiibr\brvalidator\CpfValidator;
 
-/**
- * This is the model class for table "j17_aluno".
- *
- * @property integer $id
- * @property string $nome
- * @property string $email
- * @property string $senha
- * @property string $matricula
- * @property integer $area
- * @property integer $curso
- * @property string $endereco
- * @property string $bairro
- * @property string $cidade
- * @property string $uf
- * @property string $cep
- * @property string $datanascimento
- * @property string $sexo
- * @property integer $nacionalidade
- * @property string $estadocivil
- * @property string $cpf
- * @property string $rg
- * @property string $orgaoexpeditor
- * @property string $dataexpedicao
- * @property string $telresidencial
- * @property string $telcomercial
- * @property string $telcelular
- * @property string $nomepai
- * @property string $nomemae
- * @property integer $regime
- * @property string $bolsista
- * @property string $agencia
- * @property string $pais
- * @property integer $status
- * @property string $anoingresso
- * @property string $idiomaExameProf
- * @property string $conceitoExameProf
- * @property string $dataExameProf
- * @property string $tituloQual2
- * @property string $dataQual2
- * @property string $conceitoQual2
- * @property string $tituloTese
- * @property string $dataTese
- * @property string $conceitoTese
- * @property string $horarioQual2
- * @property string $localQual2
- * @property string $resumoQual2
- * @property string $horarioTese
- * @property string $localTese
- * @property string $resumoTese
- * @property string $tituloQual1
- * @property integer $numDefesa
- * @property string $dataQual1
- * @property string $examinadorQual1
- * @property string $conceitoQual1
- * @property string $cursograd
- * @property string $instituicaograd
- * @property string $crgrad
- * @property integer $egressograd
- * @property string $dataformaturagrad
- * @property integer $idUser
- * @property integer $orientador
- * @property string $anoconclusao
- * @property string $sede
- */
+
 class Aluno extends \yii\db\ActiveRecord
 {
     /**
@@ -85,11 +23,11 @@ class Aluno extends \yii\db\ActiveRecord
     {
         return [
             //[['nome', 'email', 'senha', 'curso', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'agencia', 'pais', 'resumoQual2', 'resumoTese'], 'required'],
-            [['idUser', 'orientador', 'anoconclusao','matricula','area'], 'required'],
+            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'anoingresso', 'curso', 'area', 'nacionalidade'], 'required'],
             [['area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
             [['resumoQual2', 'resumoTese'], 'string'],
-            [['anoconclusao'], 'safe'],
-            [['nome', 'email', 'nomepai', 'nomemae', 'examinadorQual1'], 'string', 'max' => 60],
+            [['nome', 'nomepai', 'nomemae', 'examinadorQual1'], 'string', 'max' => 60],
+            [['email'],'email'],
             [['cidade'], 'string', 'max' => 40],
             [['senha'], 'string', 'max' => 255],
             [['matricula', 'estadocivil'], 'string', 'max' => 15],
@@ -99,11 +37,11 @@ class Aluno extends \yii\db\ActiveRecord
             [['cep', 'conceitoExameProf', 'conceitoQual2', 'conceitoTese', 'conceitoQual1'], 'string', 'max' => 9],
             [['datanascimento', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'dataExameProf', 'dataQual2', 'dataTese', 'horarioQual2', 'horarioTese', 'dataQual1', 'crgrad', 'dataformaturagrad'], 'string', 'max' => 10],
             [['sexo'], 'string', 'max' => 1],
-            [['cpf'], 'string', 'max' => 14],
+            [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
             [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
             [['bolsista'], 'string', 'max' => 3],
             [['agencia', 'pais'], 'string', 'max' => 30],
-            [['anoingresso'], 'string', 'max' => 11],
+            [['anoingresso', 'anoconclusao'], 'integer', 'min' => 1900,'max' => 2099],
             [['idiomaExameProf'], 'string', 'max' => 20],
             [['tituloQual2', 'tituloTese', 'tituloQual1'], 'string', 'max' => 180],
             [['localQual2', 'localTese', 'cursograd', 'instituicaograd'], 'string', 'max' => 100],
@@ -117,37 +55,32 @@ class Aluno extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'nome' => 'Nome',
             'email' => 'Email',
             'senha' => 'Senha',
-            'matricula' => 'Matricula',
-            'area' => 'Area',
+            'matricula' => 'Matrícula',
+            'area' => 'Linha de Pesquisa',
             'curso' => 'Curso',
-            'endereco' => 'Endereco',
+            'endereco' => 'Endereço',
             'bairro' => 'Bairro',
             'cidade' => 'Cidade',
-            'uf' => 'Uf',
-            'cep' => 'Cep',
-            'datanascimento' => 'Datanascimento',
+            'uf' => 'UF',
+            'cep' => 'CEP',
+            'datanascimento' => 'Data de Nascimento',
             'sexo' => 'Sexo',
             'nacionalidade' => 'Nacionalidade',
-            'estadocivil' => 'Estadocivil',
-            'cpf' => 'Cpf',
-            'rg' => 'Rg',
-            'orgaoexpeditor' => 'Orgaoexpeditor',
-            'dataexpedicao' => 'Dataexpedicao',
-            'telresidencial' => 'Telresidencial',
-            'telcomercial' => 'Telcomercial',
-            'telcelular' => 'Telcelular',
-            'nomepai' => 'Nomepai',
-            'nomemae' => 'Nomemae',
+            'cpf' => 'CPF',
+            'rg' => 'RG',
+            'telresidencial' => 'Telefone Principal',
+            'telcelular' => 'Telefone Alternativo',
+            'nomepai' => 'Nome do Pai',
+            'nomemae' => 'Nome da Mãe',
             'regime' => 'Regime',
             'bolsista' => 'Bolsista',
-            'agencia' => 'Agencia',
-            'pais' => 'Pais',
+            'agencia' => 'Agência',
+            'pais' => 'País',
             'status' => 'Status',
-            'anoingresso' => 'Anoingresso',
+            'anoingresso' => 'Ano de Ingresso',
             'idiomaExameProf' => 'Idioma Exame Prof',
             'conceitoExameProf' => 'Conceito Exame Prof',
             'dataExameProf' => 'Data Exame Prof',
@@ -168,15 +101,14 @@ class Aluno extends \yii\db\ActiveRecord
             'dataQual1' => 'Data Qual1',
             'examinadorQual1' => 'Examinador Qual1',
             'conceitoQual1' => 'Conceito Qual1',
-            'cursograd' => 'Cursograd',
-            'instituicaograd' => 'Instituicaograd',
-            'crgrad' => 'Crgrad',
-            'egressograd' => 'Egressograd',
-            'dataformaturagrad' => 'Dataformaturagrad',
-            'idUser' => 'Id User',
+            'cursograd' => 'Curso da Graduação',
+            'instituicaograd' => 'Instituicão da Graduação',
+            'egressograd' => 'Egresso Graduação',
+            'dataformaturagrad' => 'Data da Formatura',
             'orientador' => 'Orientador',
-            'anoconclusao' => 'Anoconclusao',
+            'anoconclusao' => 'Ano de Conclusão',
             'sede' => 'Sede',
+
         ];
     }
 }
