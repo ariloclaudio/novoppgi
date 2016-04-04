@@ -192,22 +192,16 @@ class SiteController extends Controller
         return $i;
     }
 
-    public function planilhaProvas($objWorkSheet,$linhaAtual,$ultimaLinha){
+    public function planilhaProvasFormatacao($objWorkSheet,$intervalo_tamanho){
+
 
         $objWorkSheet->mergeCells("A1:C1");
 
         $objWorkSheet->getStyle("A1:C2")->getFont()->setBold(true);
 
-        for ($k=1; $k<999; $k++){
-            $objWorkSheet->getRowDimension(''.$k.'')->setRowHeight(20);
-        }
 
-        //definindo altura da linha do header
-        $objWorkSheet->getRowDimension(1)->setRowHeight(20);
-        $objWorkSheet->getRowDimension(2)->setRowHeight(40);
-
-        $objWorkSheet->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objWorkSheet->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objWorkSheet->getStyle( $intervalo_tamanho )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objWorkSheet->getStyle( $intervalo_tamanho )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 
         $objWorkSheet->getColumnDimension('A')->setWidth(40);
@@ -221,11 +215,28 @@ class SiteController extends Controller
                 ->setCellValue("C2", "Nota Final" );
 
 
+          $BStyle = array(
+              'borders' => array(
+                  'allborders' => array(
+                      'style' => \PHPExcel_Style_Border::BORDER_THIN
+                  )
+              )
+          );
+        $objWorkSheet->getStyle($intervalo_tamanho)->applyFromArray($BStyle);
+    }
+
+    public function planilhaProvas($objWorkSheet,$linhaAtual,$ultimaLinha){
+
+
+        //definindo altura da linha do header
+        $objWorkSheet->getRowDimension(2)->setRowHeight(40);
+
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
 
             $objWorkSheet
-                ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3));
+                ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
+                ->setCellValue('B'.($i+3), "='Candidato'!B".($i+3));
         }
 
         $i = $i+4;
@@ -239,11 +250,6 @@ class SiteController extends Controller
         $objWorkSheet->getStyle("A".($i-1).":C".$i)->getFont()->setBold(true);
 
         $objWorkSheet->mergeCells("A".($i-1).":C".($i-1));
-
-        //definindo altura da linha do header
-
-        $objWorkSheet->getRowDimension($i-1)->setRowHeight(20);
-        $objWorkSheet->getRowDimension($i)->setRowHeight(40);
 
         //definindo a cor de fundo e cor da fonte do título do header: mestrado
 
@@ -268,7 +274,8 @@ class SiteController extends Controller
 
         $objWorkSheet->getStyle("A".($i-1).":C".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
 
-
+        //definindo a linha do segundo header!
+        $linhaSegundoHeader = $i;
 
         //Write cells
         for ($i=$i+1; $i< $ultimaLinha+3; $i++){
@@ -278,13 +285,23 @@ class SiteController extends Controller
                 ->setCellValue('B'.($i), "='Candidato'!B".($i));
         }
 
+        //definindo tamanho das linhas
+        $qtd_linhas = $objWorkSheet->getHighestRow();
+        for ($k=1; $k<=$qtd_linhas; $k++){
+            $objWorkSheet->getRowDimension(''.$k.'')->setRowHeight(20);
+            
+        }
+
+        //definindo altura da linha do header
+        $objWorkSheet->getRowDimension(2)->setRowHeight(40);
+        $objWorkSheet->getRowDimension($linhaSegundoHeader)->setRowHeight(40);
+
         // Rename sheet
         $objWorkSheet->setTitle("Provas");
 
     }
 
-    public function planilhaPropostas($planilhaPropostas,$linhaAtual,$ultimaLinha){
-
+    public function planilhaPropostasFormatacao($planilhaPropostas,$intervalo_tamanho){
 
         //define a página como formato em RETRATO
 
@@ -295,16 +312,13 @@ class SiteController extends Controller
 
         $planilhaPropostas->getStyle("A1:E2")->getFont()->setBold(true);
 
-        for ($k=1; $k<999; $k++){
-            $planilhaPropostas->getRowDimension(''.$k.'')->setRowHeight(20);
-        }
 
         //definindo altura da linha do header
         $planilhaPropostas->getRowDimension(1)->setRowHeight(20);
         $planilhaPropostas->getRowDimension(2)->setRowHeight(40);
 
-        $planilhaPropostas->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $planilhaPropostas->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaPropostas->getStyle( $intervalo_tamanho )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaPropostas->getStyle( $intervalo_tamanho )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 
         $planilhaPropostas->getColumnDimension('A')->setWidth(40);
@@ -320,6 +334,21 @@ class SiteController extends Controller
                 ->setCellValue("C2", "Avaliador 2" )
                 ->setCellValue("D2", "Avaliador 3" )
                 ->setCellValue("E2", "Média Final" );
+
+
+          $BStyle = array(
+              'borders' => array(
+                  'allborders' => array(
+                      'style' => \PHPExcel_Style_Border::BORDER_THIN
+                  )
+              )
+          );
+        $planilhaPropostas->getStyle($intervalo_tamanho)->applyFromArray($BStyle);
+
+    }
+
+    public function planilhaPropostas($planilhaPropostas,$linhaAtual,$ultimaLinha){
+
 
 
         //Write cells
@@ -344,11 +373,6 @@ class SiteController extends Controller
 
         $planilhaPropostas->mergeCells("A".($i-1).":E".($i-1));
 
-        //definindo altura da linha do header
-
-        $planilhaPropostas->getRowDimension($i-1)->setRowHeight(20);
-        $planilhaPropostas->getRowDimension($i)->setRowHeight(40);
-
         //definindo a cor de fundo e cor da fonte do título do header: mestrado
 
         $planilhaPropostas
@@ -372,7 +396,7 @@ class SiteController extends Controller
 
         $planilhaPropostas->getStyle("A".($i-1).":C".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
 
-
+        $linhaSegundoHeader = $i;
 
         //Write cells
         for ($i=$i+1; $i< $ultimaLinha+3; $i++){
@@ -382,11 +406,23 @@ class SiteController extends Controller
                 ->setCellValue('E'.($i), '=AVERAGE(B'.($i).':D'.($i).')');
         }
 
+
+        //definindo tamanho das linhas
+        $qtd_linhas = $planilhaPropostas->getHighestRow();
+        for ($k=1; $k<=$qtd_linhas; $k++){
+            $planilhaPropostas->getRowDimension(''.$k.'')->setRowHeight(20);
+        }
+
+        //definindo altura da linha do header
+
+        $planilhaPropostas->getRowDimension($linhaSegundoHeader)->setRowHeight(40);
+
         $planilhaPropostas->setTitle("Propostas");
 
     }
 
-    public function planilhaTitulos($planilhaTitulos,$linhaAtual,$ultimaLinha){
+    public function planilhaTitulosFormatacao($planilhaTitulos,$intervalo_tamanho){
+
 
         $planilhaTitulos->mergeCells("A1:J1");
         $planilhaTitulos->mergeCells("A2:A3");
@@ -399,9 +435,6 @@ class SiteController extends Controller
 
         $planilhaTitulos->getStyle("A1:J2")->getFont()->setBold(true);
 
-        for ($k=1; $k<999; $k++){
-            $planilhaTitulos->getRowDimension(''.$k.'')->setRowHeight(20);
-        }
 
         $planilhaTitulos->getRowDimension(3)->setRowHeight(40);
 
@@ -409,13 +442,13 @@ class SiteController extends Controller
         $planilhaTitulos->getRowDimension(1)->setRowHeight(20);
         $planilhaTitulos->getRowDimension(2)->setRowHeight(20);
 
-        $planilhaTitulos->getStyle( "A1:K999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $planilhaTitulos->getStyle( "A1:K999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaTitulos->getStyle( $intervalo_tamanho )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaTitulos->getStyle( $intervalo_tamanho )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
         //auto break line
         
         $planilhaTitulos
-            ->getStyle('A1:K999')
+            ->getStyle( $intervalo_tamanho )
             ->getAlignment()
             ->setWrapText(true);
 
@@ -438,6 +471,19 @@ class SiteController extends Controller
                 ->setCellValue("H3", "B3 a B5" )
                 ->setCellValue("I2", "Nota" )
                 ->setCellValue("J2", "NAC" );
+
+          $BStyle = array(
+              'borders' => array(
+                  'allborders' => array(
+                      'style' => \PHPExcel_Style_Border::BORDER_THIN
+                  )
+              )
+          );
+        $planilhaTitulos->getStyle($intervalo_tamanho)->applyFromArray($BStyle);
+
+    }
+
+    public function planilhaTitulos($planilhaTitulos,$linhaAtual,$ultimaLinha){
 
 
         //Write cells
@@ -481,11 +527,9 @@ class SiteController extends Controller
 
         $planilhaTitulos->mergeCells("F".($i).":H".($i)); 
 
-        //definindo altura da linha do header
+        //definindo qual linha da planilha se encontra o proximo header
 
-        $planilhaTitulos->getRowDimension($i-1)->setRowHeight(20);
-        $planilhaTitulos->getRowDimension($i)->setRowHeight(20);
-        $planilhaTitulos->getRowDimension($i+1)->setRowHeight(40);
+        $linhaSegundoHeader = $i+1;
 
         //definindo a cor de fundo e cor da fonte do título do header: mestrado
 
@@ -523,12 +567,24 @@ class SiteController extends Controller
                 ->setCellValue('I'.($i+2), '=IF('.$soma1.'>30,30,'.$soma1.')'.' + IF('.$soma2.'>70,70,'.$soma2.')');;
         }
 
+
+        $qtd_linhas = $planilhaTitulos->getHighestRow();
+
+       
+        for ($k=1; $k<=$qtd_linhas; $k++){
+            $planilhaTitulos->getRowDimension(''.$k.'')->setRowHeight(20);
+        }
+
+        //definindo altura da linha do header
+        $planilhaTitulos->getRowDimension($linhaSegundoHeader)->setRowHeight(40);
+
+
         // Rename sheet
         $planilhaTitulos->setTitle("Títulos");
 
     }
 
-    public function planilhaCartas($planilhaCartas,$linhaAtual,$ultimaLinha){
+    public function planilhaCartasFormatacao($planilhaCartas,$intervalo_tamanho){
 
         $planilhaCartas->mergeCells("B1:L1");
         $planilhaCartas->mergeCells("M1:W1");
@@ -539,16 +595,8 @@ class SiteController extends Controller
 
         $planilhaCartas->getStyle("A1:X2")->getFont()->setBold(true);
 
-        for ($k=1; $k<999; $k++){
-            $planilhaCartas->getRowDimension(''.$k.'')->setRowHeight(20);
-        }
-
-        //definindo altura da linha do header
-        $planilhaCartas->getRowDimension(1)->setRowHeight(20);
-        $planilhaCartas->getRowDimension(2)->setRowHeight(40);
-
-        $planilhaCartas->getStyle( "A1:X999" )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $planilhaCartas->getStyle( "A1:X999" )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaCartas->getStyle( $intervalo_tamanho )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $planilhaCartas->getStyle( $intervalo_tamanho )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 
 
@@ -580,6 +628,19 @@ class SiteController extends Controller
                 ->setCellValue("V2", "PI" )
                 ->setCellValue("W2", "NICR" )
                 ->setCellValue("X2", "Média Final" );
+
+          $BStyle = array(
+              'borders' => array(
+                  'allborders' => array(
+                      'style' => \PHPExcel_Style_Border::BORDER_THIN
+                  )
+              )
+          );
+        $planilhaCartas->getStyle($intervalo_tamanho)->applyFromArray($BStyle);
+
+    }
+
+    public function planilhaCartas($planilhaCartas,$linhaAtual,$ultimaLinha){
 
 
         //Write cells
@@ -637,10 +698,9 @@ class SiteController extends Controller
         $planilhaCartas->mergeCells("B".($i-1).":L".($i-1));
         $planilhaCartas->mergeCells("M".($i-1).":W".($i-1));
 
-        //definindo altura da linha do header
+        //definindo linha do segundo header
+        $linhaSegundoHeader = $i;
 
-        $planilhaCartas->getRowDimension($i-1)->setRowHeight(20);
-        $planilhaCartas->getRowDimension($i)->setRowHeight(40);
 
         //definindo a cor de fundo e cor da fonte do título do header: mestrado
 
@@ -702,12 +762,22 @@ class SiteController extends Controller
                 ->setCellValue('X'.($i), '=(L'.($i).' + W'.($i).')');
         }
 
+
+        $qtd_linhas = $planilhaCartas->getHighestRow();
+
+        for ($k=1; $k<=$qtd_linhas; $k++){
+            $planilhaCartas->getRowDimension(''.$k.'')->setRowHeight(20);
+        }
+
+        $planilhaCartas->getRowDimension($linhaSegundoHeader)->setRowHeight(40);
+        $planilhaCartas->getRowDimension(2)->setRowHeight(40);
+
         $planilhaCartas->setTitle("Cartas");
 
 
     }
 
-    public function planilhaMediaFinal($planilhaMediaFinal,$linhaAtual,$ultimaLinha){
+    public function planilhaMediaFinalFormatacao($planilhaMediaFinal,$intervalo_tamanho){
 
 
         //define a página como formato em RETRATO
@@ -720,12 +790,6 @@ class SiteController extends Controller
 
         //INSERE NEGRITO
         $planilhaMediaFinal->getStyle("A1:E2")->getFont()->setBold(true);
-
-        //DEFINE A ALTURAS DAS CÉLULAS
-
-        for ($k=1; $k<999; $k++){
-            $planilhaMediaFinal->getRowDimension(''.$k.'')->setRowHeight(20);
-        }
 
         //definindo altura da linha do header
         $planilhaMediaFinal->getRowDimension(1)->setRowHeight(20);
@@ -750,6 +814,21 @@ class SiteController extends Controller
                 ->setCellValue("C2", "Proposta" )
                 ->setCellValue("D2", "Títulos + Carta" )
                 ->setCellValue("E2", "Média" );
+
+          $BStyle = array(
+              'borders' => array(
+                  'allborders' => array(
+                      'style' => \PHPExcel_Style_Border::BORDER_THIN
+                  )
+              )
+          );
+        $planilhaMediaFinal->getStyle($intervalo_tamanho)->applyFromArray($BStyle);
+
+    }
+
+    public function planilhaMediaFinal($planilhaMediaFinal,$linhaAtual,$ultimaLinha){
+
+
 
 
         //ESCREVE VALORES NAS CÉLULAS
@@ -809,6 +888,7 @@ class SiteController extends Controller
 
         $planilhaMediaFinal->getStyle("A".($i-1).":C".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
 
+        $linhaSegundoHeader = $i;
 
 
         //INSERINDO VALORES NAS CÉLULAS
@@ -825,6 +905,19 @@ class SiteController extends Controller
 
 
         }
+
+        //DEFINE A ALTURAS DAS CÉLULAS
+
+        $qtd_linhas = $planilhaMediaFinal->getHighestRow();
+
+       for ($k=1; $k<=$qtd_linhas; $k++){
+            $planilhaMediaFinal->getRowDimension(''.$k.'')->setRowHeight(20);
+        }
+
+        $planilhaMediaFinal->getRowDimension($linhaSegundoHeader)->setRowHeight(40);
+        $planilhaMediaFinal->getRowDimension(2)->setRowHeight(40);
+
+        //repetir cabeçalho
         $planilhaMediaFinal->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(2,2);
 
 
@@ -856,7 +949,6 @@ class SiteController extends Controller
         //função responsável pelo Header da planilha
 
         $intervaloHeader = 'A1:K1';
-        $objPHPExcel->getActiveSheet()->getRowDimension("2")->setRowHeight(40);
         $this->planilhaHeaderCandidato($objPHPExcel,$arrayColunas,$arrayCurso[1],$intervaloHeader);
 
         //parte referente ao mestrado (preenchimento da tabela a partir do banco)
@@ -871,15 +963,13 @@ class SiteController extends Controller
 
             $objPHPExcel->getActiveSheet()->getRowDimension($j+4)->setRowHeight(40);
 
-            $k = $j+4;
-            $l = $j+3;
 
-            $intervaloHeader = 'A'.$l.':K'.$l.'';
+            $intervaloHeader = 'A'.($j+3).':K'.($j+3).'';
 
             $arrayColunas = array(
-                0 => "A".$l, 1 => "A".$k, 2 => "B".$k, 3 => "C".$k, 4 => "D".$k, 
-                5 => "E".$k, 6 => "F".$k, 7 => "G".$k, 8 => "H".$k, 9 => "I".$k, 
-                10 => "J".$k, 11 => "K".$k);
+                0 => "A".($j+3), 1 => "A".($j+4), 2 => "B".($j+4), 3 => "C".($j+4), 4 => "D".($j+4), 
+                5 => "E".($j+4), 6 => "F".($j+4), 7 => "G".($j+4), 8 => "H".($j+4), 9 => "I".($j+4), 
+                10 => "J".($j+4), 11 => "K".($j+4));
                 
             $this->planilhaHeaderCandidato($objPHPExcel,$arrayColunas,$arrayCurso[2],$intervaloHeader);
 
@@ -891,32 +981,47 @@ class SiteController extends Controller
 // Podemos renomear o nome das planilha atual, lembrando que um único arquivo pode ter várias planilhas
         $objPHPExcel->getActiveSheet()->setTitle('Candidato');
 
-        //função responsável pela formatação da planilha
+        //obtem intervalo referente ao tamanho da tabela (ex.: A1:k10)
         $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(0)->calculateWorksheetDimension();
-
+        //função responsável pela formatação da planilha
         $this->planilhaCandidatoFormatacao($objPHPExcel,$intervalo_tamanho);
+
+        //define o tamanho das linhas do header da planilha de candidatos
+        $objPHPExcel->getActiveSheet()->getRowDimension("2")->setRowHeight(40);
+        $objPHPExcel->getActiveSheet()->getRowDimension($i+4)->setRowHeight(40);
 
         
         //cria planilha de PROVAS
         $planilhaProvas = $objPHPExcel->createSheet(1);
         $this->planilhaProvas($planilhaProvas,$i,$j);
-
+        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(1)->calculateWorksheetDimension();
+        $this->planilhaProvasFormatacao($planilhaProvas,$intervalo_tamanho);
 
         //cria planilhas Propostas
         $planilhaPropostas = $objPHPExcel->createSheet(2);
         $this->planilhaPropostas($planilhaPropostas,$i,$j);
+        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(2)->calculateWorksheetDimension();
+        $this->planilhaPropostasFormatacao($planilhaPropostas,$intervalo_tamanho);
 
         //Cria planilhas de Títulos
         $planilhaTitulos = $objPHPExcel->createSheet(3);
         $this->planilhaTitulos($planilhaTitulos,$i,$j);
+        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(3)->calculateWorksheetDimension();
+        $this->planilhaTitulosFormatacao($planilhaTitulos,$intervalo_tamanho);
 
         //Cria planilhas de Cartas
         $planilhaCartas = $objPHPExcel->createSheet(4);
         $this->planilhaCartas($planilhaCartas,$i,$j);
+        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(4)->calculateWorksheetDimension();
+        $this->planilhaCartasFormatacao($planilhaCartas,$intervalo_tamanho);
 
         //Cria planilhas de Cartas
         $planilhaMediaFinal = $objPHPExcel->createSheet(5);
         $this->planilhaMediaFinal($planilhaMediaFinal,$i,$j);
+        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(5)->calculateWorksheetDimension();
+        $this->planilhaMediaFinalFormatacao($planilhaMediaFinal,$intervalo_tamanho);
+
+
 
         // Acessamos o 'Writer' para poder salvar o arquivo
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
