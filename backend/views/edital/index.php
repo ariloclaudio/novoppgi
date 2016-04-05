@@ -51,28 +51,28 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'numero',
             [
-                'label' => 'Data início',
+                'label' => 'Início inscrições',
                 'attribute' => 'datainicio',
                 'value' => function ($model) {
                         return date("d-m-Y", strtotime($model->datainicio));
                 },
             ],
             [
-                'label' => 'Data fim',
+                'label' => 'Término inscrições',
                 'attribute' => 'datafim',
                 'value' => function ($model) {
                         return date("d-m-Y", strtotime($model->datafim));
                 },
             ],
             [
-                'label' => 'Inscrições Iniciadas',
+                'label' => '#Inscrições Iniciadas',
                 'attribute' => 'quantidadeinscritos',
                 'value' => function ($model) {
                             return $model->getQuantidadeInscritos($model->numero);
                 },
             ],
             [
-                'label' => 'Inscrições Encerradas',
+                'label' => '#Inscrições Encerradas',
                 'attribute' => 'quantidadeinscritosfinalizados',
                 'value' => function ($model) {
                             return $model->getQuantidadeInscritosFinalizados($model->numero);

@@ -54,6 +54,7 @@ class SiteController extends Controller
      */
     public function actions()
     {
+        $this->layout = '@app/views/layouts/main-login.php';
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -995,8 +996,8 @@ class SiteController extends Controller
 
         /*Redirecionamento para o formulário caso candidato esteja "logado"*/
         
-        /*if(Yii::$app->session->get('candidato') !== null)
-            $this->redirect(['candidato/passo1']);*/
+        if(Yii::$app->session->get('candidato'))
+            $this->redirect(['candidato/passo1']);
 
 
         $model = new LoginForm();
@@ -1028,7 +1029,8 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
-        Yii::$app->session->destroy();
+        $session = Yii::$app->session;
+        $session->set('candidato',null);
 
         return $this->goHome();
     }

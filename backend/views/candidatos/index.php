@@ -13,7 +13,7 @@ BootboxAsset::registerWithOverride($this);
 /* @var $searchModel app\models\CandidatosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Candidatos com inscrição finalizada';
+$this->title = 'Candidatos';
 
 $this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['edital/index']];
 $this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get('id'), 
@@ -63,12 +63,14 @@ function goBack() {
              'nome',
              ['attribute' => 'qtd_cartas',
               'label' => 'Cartas Emitidas',
+              'visible' => $cartarecomendacao,
               'value' => function ($model){
-                       return $model->qtd_cartas;
+                return $model->qtd_cartas;
               }
              ],
              ['attribute' => 'cartas_respondidas',
               'label' => 'Cartas Respondidas',
+              'visible' => $cartarecomendacao,
               'value' => function ($model){
                        return $model->cartas_respondidas;
               }
@@ -179,12 +181,14 @@ function goBack() {
              'nome',
              ['attribute' => 'qtd_cartas',
               'label' => 'Cartas Emitidas',
+              'visible' => $cartarecomendacao,
               'value' => function ($model){
                        return $model->qtd_cartas;
               }
              ],
              ['attribute' => 'cartas_respondidas',
               'label' => 'Cartas Respondidas',
+              'visible' => $cartarecomendacao,
               'value' => function ($model){
                        return $model->cartas_respondidas;
               }
@@ -198,21 +202,8 @@ function goBack() {
             [   'label' => 'Linha Pesquisa',
                 'attribute' => 'nomeLinhaPesquisa',
             ],
-            [   'label' => 'Fase',
-                'attribute' => 'fase',
-                'value' => function ($model) {
-
-                    if($model->resultado === 1){
-                        return "Aprovado";
-                    }
-                    else if($model->resultado === 0){
-
-                        return "Reprovado";
-                    }
-                    else{
-                        return "Não Julgado";
-                    }
-                },
+            [   'label' => 'Etapa da Inscrição',
+                'attribute' => 'passoatual',
             ],
 
             ['class' => 'yii\grid\ActionColumn',

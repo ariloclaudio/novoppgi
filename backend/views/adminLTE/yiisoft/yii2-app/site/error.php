@@ -24,7 +24,7 @@ $this->title = $name;
 
             <p>
                 O erro acima ocorreu enquanto o servidor processava seu pedido.
-                Você pode <a href='<?= Yii::$app->homeUrl ?>'>retornar para sua dashboard</a>.
+                Você pode <a href='<?= Yii::$app->homeUrl ?>'>retornar para o início</a>.
             </p>
         </div>
     </div>

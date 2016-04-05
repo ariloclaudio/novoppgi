@@ -192,7 +192,7 @@ class User extends ActiveRecord implements IdentityInterface
             case 'aluno':
                 return $this->aluno;
             default:
-                return false;
+                return 0;
         }
     }
 

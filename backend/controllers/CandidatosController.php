@@ -59,12 +59,15 @@ class CandidatosController extends Controller
         $searchModel = new CandidatosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider2 = $searchModel->search2(Yii::$app->request->queryParams);
+        $edital = $this->findEdital($id);
+        $cartarecomendacao = $edital->cartarecomendacao;
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'dataProvider2' => $dataProvider2,
             'idEdital' => $id,
+            'cartarecomendacao' => $cartarecomendacao,
         ]);
     }
 
@@ -611,13 +614,19 @@ class CandidatosController extends Controller
         if (($model = Candidato::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('A Página solicitada não foi encontrada');
         }
     }
 
+    protected function findEdital($id){
+        if(($edital = Edital::findOne($id)) !== null){
+            return $edital;
+        }else{
+            throw new NotFoundHttpException('A Página solicitada não foi encontrada');
+        }
+    }
 
-
-        /* Envio de mensagens para views
+    /* Envio de mensagens para views
        Tipo: success, danger, warning*/
     protected function mensagens($tipo, $titulo, $mensagem){
         Yii::$app->session->setFlash($tipo, [

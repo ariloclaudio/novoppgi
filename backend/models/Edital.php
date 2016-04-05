@@ -68,9 +68,9 @@ class Edital extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'numero' => 'Número',
-            'datainicio' => 'Data Ínicio',
-            'datafim' => 'Data Final',
+            'numero' => 'Nº edital',
+            'datainicio' => 'Ínicio das inscrições',
+            'datafim' => 'Término das inscrições',
             'documento' => 'Documento',
             'cartarecomendacao' => 'Carta de Recomendação',
             'curso' => 'Curso',

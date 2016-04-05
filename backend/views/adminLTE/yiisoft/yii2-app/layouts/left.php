@@ -29,13 +29,13 @@
                 ],
                 ['label' => 'Coordenação PPGI', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('coordenacao')],
                 [
-                    'label' => 'Edital',
+                    'label' => 'Seleções PPGI',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
                     'visible' => Yii::$app->user->identity->checarAcesso('coordenacao'),
                     'items' => [
-                        ['label' => 'Criar Edital', 'icon' => 'fa fa-file-code-o', 'url' => ['edital/create'],],
-                        ['label' => 'Listar Editais', 'icon' => 'fa fa-list', 'url' => ['edital/index'],],
+                        ['label' => 'Criar Edital de Seleção', 'icon' => 'fa fa-file-code-o', 'url' => ['edital/create'],],
+                        ['label' => 'Listar Editais de Seleção', 'icon' => 'fa fa-list', 'url' => ['edital/index'],],
                     ],
                 ],
                 ['label' => 'Professor', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('professor')],

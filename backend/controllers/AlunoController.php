@@ -59,27 +59,6 @@ class AlunoController extends Controller
     }
 
     /**
-     * Creates a new Aluno model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Aluno();
-        
-        $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'linhasPesquisas' => $linhasPesquisas,
-            ]);
-        }
-    }
-
-    /**
      * Updates an existing Aluno model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -90,9 +69,6 @@ class AlunoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-
-
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
 
