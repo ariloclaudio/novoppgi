@@ -179,20 +179,7 @@ function goBack() {
                 },
             ],
              'nome',
-             ['attribute' => 'qtd_cartas',
-              'label' => 'Cartas Emitidas',
-              'visible' => $cartarecomendacao,
-              'value' => function ($model){
-                       return $model->qtd_cartas;
-              }
-             ],
-             ['attribute' => 'cartas_respondidas',
-              'label' => 'Cartas Respondidas',
-              'visible' => $cartarecomendacao,
-              'value' => function ($model){
-                       return $model->cartas_respondidas;
-              }
-             ],
+             'email',
             [   'label' => 'Curso Desejado',
                 'attribute' => 'cursodesejado',
                 'value' => function ($model) {
@@ -204,6 +191,9 @@ function goBack() {
             ],
             [   'label' => 'Etapa da Inscrição',
                 'attribute' => 'passoatual',
+                'value' => function ($model) {
+                     return $model->passoatual."/4";
+                },
             ],
 
             ['class' => 'yii\grid\ActionColumn',

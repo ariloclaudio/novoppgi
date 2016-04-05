@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
         <?= Html::a(' <span class="glyphicon glyphicon-list-alt"></span> Lista de Inscritos  ', ['candidatos/index', 'id' => $model->numero], ['class' => 'btn btn-primary']) ?>
 
+        <?= Html::a(' <span class="glyphicon glyphicon-list-alt"></span> Planilha para Avaliação (Excel) ', ['edital/gerarplanilha', 'idEdital' => $model->numero], ['class' => 'btn btn-success']) ?>
+
     </p>
 
     <?= DetailView::widget([
