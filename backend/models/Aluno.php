@@ -23,7 +23,7 @@ class Aluno extends \yii\db\ActiveRecord
     {
         return [
             //[['nome', 'email', 'senha', 'curso', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'agencia', 'pais', 'resumoQual2', 'resumoTese'], 'required'],
-            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'anoingresso', 'curso', 'area', 'nacionalidade'], 'required'],
+            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'anoingresso', 'curso', 'area', 'nacionalidade', 'anoconclusao'], 'required'],
             [['area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
             [['resumoQual2', 'resumoTese'], 'string'],
             [['nome', 'nomepai', 'nomemae', 'examinadorQual1'], 'string', 'max' => 60],

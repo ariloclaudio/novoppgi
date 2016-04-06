@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\SwitchInput;
 use kartik\widgets\DatePicker;
 use yii\widgets\MaskedInput;
+use kartik\widgets\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Aluno */
@@ -25,6 +26,8 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 
   
     <?php $form = ActiveForm::begin(); ?>
+    
+    <input type="hidden" id = "form_bolsista" value = '<?= $model->bolsista?>'/>
 
     <?php
 
@@ -183,7 +186,13 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 
         echo $form->field($model, 'matricula' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Matricula:</b>");
 
-        echo $form->field($model, 'orientador' , ['options' => ['class' => 'col-md-4']] )->textInput()->label("<font color='#FF0000'>*</font> <b>Orientador:</b>");
+        echo $form->field($model, 'orientador', ['options' => ['class' => 'col-md-4']])->widget(Select2::classname(), [
+            'data' => $orientadores,
+            'options' => ['placeholder' => 'Selecione um orientador ...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ])->label("<font color='#FF0000'>*</font> <b>Orientador:</b>");
 
         echo $form->field($model, 'anoingresso', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Ano de Ingresso:</b>");
 
