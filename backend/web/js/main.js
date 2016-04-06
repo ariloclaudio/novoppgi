@@ -66,4 +66,8 @@ $( window ).load(function(){
         $('#divEstrangeiro').css('display', 'block');
         $('#divBrasileiro').css('display', 'none');
     }
+
+    if ($("#form_bolsista").val() == '1') {
+        $('#divAgencia').css('display', 'block');
+    }
 });

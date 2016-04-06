@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Breadcrumbs;
 use xj\bootbox\BootboxAsset;
+use yii\bootstrap\Collapse;
 
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
@@ -146,15 +147,15 @@ function goBack() {
             ],
         ],
     ]); ?>
-
-
-
-<div style = "width:100%; border: solid 1px; color:gray"></div>
-
-<h2> Inscrições Em Andamento </h2>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider2,
+    
+<?php
+echo Collapse::widget([
+    'items' => [
+        // equivalent to the above
+        [
+            'label' => 'Inscrições Em Andamento',
+            'content' => GridView::widget([
+            'dataProvider' => $dataProvider2,
             'rowOptions'=> function($model){
                     if($model->resultado === 1) {
                         return ['class' => 'info'];
@@ -240,15 +241,12 @@ function goBack() {
               ]                            
             ],
         ],
-    ]); ?>
+    ]),
+            // open its content by default
+            'contentOptions' => ['class' => 'in']
+        ],
+    ]
+]);
 
-
-
-
-
-
-
-
-
-
+?>
 </div>

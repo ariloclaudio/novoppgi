@@ -310,6 +310,7 @@ class CandidatosController extends Controller
          $model_aluno->egressograd  = $model_candidato->egressograd;
          $model_aluno->dataformaturagrad  = $model_candidato->dataformaturagrad;
          $model_aluno->status  = $model_candidato->status;
+         $model_aluno->bolsista  = $model_candidato->solicitabolsa;
 
          $model_candidato->resultado = 1;
 
@@ -331,10 +332,12 @@ class CandidatosController extends Controller
 
 
         $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
+        $orientadores = ArrayHelper::map(User::find()->where(['professor' => '1'])->orderBy('nome')->all(), 'id', 'nome');
 
             return $this->render('/aluno/create', [
                 'model' => $model_aluno,
                 'linhasPesquisas' => $linhasPesquisas,
+                'orientadores' => $orientadores, 
             ]);
         }
 
