@@ -514,7 +514,8 @@ class EditalController extends Controller
                 ->setCellValue("F".($i+1), "A" )
                 ->setCellValue("G".($i+1), "B1 a B2" )
                 ->setCellValue("H".($i+1), "B3 a B5" )
-                ->setCellValue("I".($i), "Nota" );
+                ->setCellValue("I".($i), "Nota" )
+                ->setCellValue("J".($i), "Nota" );
 
         $planilhaTitulos->getStyle("A".($i-1).":J".$i)->getFont()->setBold(true);
 
@@ -563,7 +564,8 @@ class EditalController extends Controller
 
             $planilhaTitulos
                 ->setCellValue('A'.($i+2), "='Candidato'!A".($i))
-                ->setCellValue('I'.($i+2), '=IF('.$soma1.'>30,30,'.$soma1.')'.' + IF('.$soma2.'>70,70,'.$soma2.')');;
+                ->setCellValue('I'.($i+2), '=IF('.$soma1.'>30,30,'.$soma1.')'.' + IF('.$soma2.'>70,70,'.$soma2.')')
+                ->setCellValue('J'.($i+2), '=5+((5 * I'.($i+2).')/100)');
         }
 
 
@@ -610,23 +612,23 @@ class EditalController extends Controller
                 ->setCellValue("E2", "Relac" )
                 ->setCellValue("F2", "Iniciativa" )
                 ->setCellValue("G2", "Escrita" )
-                ->setCellValue("H2", "Inglês" )
-                ->setCellValue("I2", "AC" )
-                ->setCellValue("J2", "RA" )
-                ->setCellValue("K2", "PI" )
-                ->setCellValue("L2", "NICR" )
-                ->setCellValue("M2", "Dom" )
-                ->setCellValue("N2", "Facil" )
-                ->setCellValue("O2", "Assid" )
-                ->setCellValue("P2", "Relac" )
-                ->setCellValue("Q2", "Iniciativa" )
-                ->setCellValue("R2", "Escrita" )
-                ->setCellValue("S2", "Inglês" )
-                ->setCellValue("T2", "AC" )
-                ->setCellValue("U2", "RA" )
-                ->setCellValue("V2", "PI" )
-                ->setCellValue("W2", "NICR" )
-                ->setCellValue("X2", "Média Final" );
+
+                ->setCellValue("H2", "AC" )
+                ->setCellValue("I2", "RA" )
+                ->setCellValue("J2", "PI" )
+                ->setCellValue("K2", "NICR" )
+                ->setCellValue("L2", "Dom" )
+                ->setCellValue("M2", "Facil" )
+                ->setCellValue("N2", "Assid" )
+                ->setCellValue("O2", "Relac" )
+                ->setCellValue("P2", "Iniciativa" )
+                ->setCellValue("Q2", "Escrita" )
+                ->setCellValue("R2", "AC" )
+                ->setCellValue("S2", "RA" )
+                ->setCellValue("T2", "PI" )
+                ->setCellValue("U2", "NICR" )
+                ->setCellValue("V2", "Total" )
+                ->setCellValue("W2", "Nota Ponderada" );
 
           $BStyle = array(
               'borders' => array(
@@ -645,19 +647,19 @@ class EditalController extends Controller
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
 
-            $formulaAC = "=SUM(".'B'.($i+3).':H'.($i+3).")";
-            $formulaAC2 = "=SUM(".'M'.($i+3).':S'.($i+3).")";
-            $formulaNICR = "=((I".($i+3)." * J".($i+3).")/10)+K".($i+3);
-            $formulaNICR2 = "=((T".($i+3)." * U".($i+3).")/10)+V".($i+3);
+            $formulaAC = "=SUM(".'B'.($i+3).':G'.($i+3).")";
+            $formulaAC2 = "=SUM(".'L'.($i+3).':Q'.($i+3).")";
+            $formulaNICR = "=((H".($i+3)." * I".($i+3).")/10)+J".($i+3);
+            $formulaNICR2 = "=((R".($i+3)." * S".($i+3).")/10)+T".($i+3);
+            $formulaTotal = "=SUM(".'K'.($i+3).',U'.($i+3).")";
 
             $planilhaCartas
                 ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
-                ->setCellValue('I'.($i+3), $formulaAC)
-                ->setCellValue('L'.($i+3), $formulaNICR)
-                ->setCellValue('T'.($i+3), $formulaAC2)
-                ->setCellValue('W'.($i+3), $formulaNICR2)
-                ->setCellValue('X'.($i+3), '=(L'.($i+3).' + W'.($i+3).')')
-                ;
+                ->setCellValue('H'.($i+3), $formulaAC)
+                ->setCellValue('K'.($i+3), $formulaNICR)
+                ->setCellValue('R'.($i+3), $formulaAC2)
+                ->setCellValue('U'.($i+3), $formulaNICR2)
+                ->setCellValue('V'.($i+3), $formulaTotal);
         }
 
         $i = $i+4;
@@ -674,23 +676,24 @@ class EditalController extends Controller
                 ->setCellValue("E".($i), "Relac" )
                 ->setCellValue("F".($i), "Iniciativa" )
                 ->setCellValue("G".($i), "Escrita" )
-                ->setCellValue("H".($i), "Inglês" )
-                ->setCellValue("I".($i), "AC" )
-                ->setCellValue("J".($i), "RA" )
-                ->setCellValue("K".($i), "PI" )
-                ->setCellValue("L".($i), "NICR" )
-                ->setCellValue("M".($i), "Dom" )
-                ->setCellValue("N".($i), "Facil" )
-                ->setCellValue("O".($i), "Assid" )
-                ->setCellValue("P".($i), "Relac" )
-                ->setCellValue("Q".($i), "Iniciativa" )
-                ->setCellValue("R".($i), "Escrita" )
-                ->setCellValue("S".($i), "Inglês" )
-                ->setCellValue("T".($i), "AC" )
-                ->setCellValue("U".($i), "RA" )
-                ->setCellValue("V".($i), "PI" )
-                ->setCellValue("W".($i), "NICR" )
-                ->setCellValue("X".($i), "Média Final" );
+
+                ->setCellValue("H".($i), "AC" )
+                ->setCellValue("I".($i), "RA" )
+                ->setCellValue("J".($i), "PI" )
+                ->setCellValue("K".($i), "NICR" )
+                ->setCellValue("L".($i), "Dom" )
+                ->setCellValue("M".($i), "Facil" )
+                ->setCellValue("N".($i), "Assid" )
+                ->setCellValue("O".($i), "Relac" )
+                ->setCellValue("P".($i), "Iniciativa" )
+                ->setCellValue("Q".($i), "Escrita" )
+
+                ->setCellValue("R".($i), "AC" )
+                ->setCellValue("S".($i), "RA" )
+                ->setCellValue("T".($i), "PI" )
+                ->setCellValue("U".($i), "NICR" )
+                ->setCellValue("V".($i), "Total" )
+                ->setCellValue("W".($i), "Nota Ponderada" );
 
         $planilhaCartas->getStyle("A".($i-1).":X".$i)->getFont()->setBold(true);
 
@@ -747,18 +750,19 @@ class EditalController extends Controller
         //Write cells
         for ($i=$i+1; $i< $ultimaLinha+3; $i++){
 
-            $formulaAC = "=SUM(".'B'.$i.':H'.$i.")";
-            $formulaAC2 = "=SUM(".'M'.$i.':S'.$i.")";
-            $formulaNICR = "=((I".($i)." * J".($i).")/10)+K".($i);
-            $formulaNICR2 = "=((T".($i)." * U".($i).")/10)+V".($i);
+            $formulaAC = "=SUM(".'B'.$i.':G'.$i.")";
+            $formulaAC2 = "=SUM(".'L'.$i.':Q'.$i.")";
+            $formulaNICR = "=((H".($i)." * I".($i).")/10)+J".($i);
+            $formulaNICR2 = "=((R".($i)." * S".($i).")/10)+T".($i);
+            $formulaTotal = "=SUM(".'K'.$i.',U'.$i.")";
 
             $planilhaCartas
                 ->setCellValue('A'.($i), "='Candidato'!A".($i))
-                ->setCellValue('I'.($i), $formulaAC)
-                ->setCellValue('L'.($i), $formulaNICR)
-                ->setCellValue('T'.($i), $formulaAC2)
-                ->setCellValue('W'.($i), $formulaNICR2)
-                ->setCellValue('X'.($i), '=(L'.($i).' + W'.($i).')');
+                ->setCellValue('H'.($i), $formulaAC)
+                ->setCellValue('K'.($i), $formulaNICR)
+                ->setCellValue('R'.($i), $formulaAC2)
+                ->setCellValue('U'.($i), $formulaNICR2)
+                ->setCellValue('V'.($i), $formulaTotal);
         }
 
 
@@ -837,7 +841,8 @@ class EditalController extends Controller
                 ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
                 ->setCellValue('B'.($i+3), "='Provas'!C".($i+3))
                 ->setCellValue('C'.($i+3), "='Propostas'!E".($i+3))
-                ->setCellValue('D'.($i+3), "=AVERAGE('Títulos'!J".($i+4).",Cartas!X".($i+3).")");
+                ->setCellValue('D'.($i+3), "=AVERAGE('Títulos'!J".($i+4).",Cartas!X".($i+3).")")
+                ->setCellValue('E'.($i+3), "=AVERAGE(C".($i+3).",D".($i+3).")");
           }
 
           //verificar erro no planilha do Professor !
@@ -897,7 +902,8 @@ class EditalController extends Controller
                 ->setCellValue('A'.($i), "='Candidato'!A".($i))
                 ->setCellValue('B'.($i), "='Provas'!C".($i))
                 ->setCellValue('C'.($i), "='Propostas'!E".($i))
-                ->setCellValue('D'.($i), "=AVERAGE('Títulos'!J".($i+1).",Cartas!X".($i).")");
+                ->setCellValue('D'.($i), "=AVERAGE('Títulos'!J".($i+1).",Cartas!X".($i).")")
+                ->setCellValue('E'.($i), "=AVERAGE(C".($i).",D".($i).")");
           
           //verificar erro no planilha do Professor !
 
@@ -1031,7 +1037,7 @@ class EditalController extends Controller
 
             header('Content-Disposition: attachment; filename="Planilha_avaliação_Edital_'.$idEdital.'.xls"');
 
-            //$objWriter->save('php://output');
+            $objWriter->save('php://output');
             $objWriter->save('ARQUIVO.xls');
 
         
