@@ -591,7 +591,7 @@ class EditalController extends Controller
         $planilhaCartas->mergeCells("M1:W1");
 
         $planilhaCartas->getColumnDimension('A')->setWidth(40);
-        $planilhaCartas->getColumnDimension('X')->setWidth(20);
+        $planilhaCartas->getColumnDimension('W')->setWidth(20);
 
 
         $planilhaCartas->getStyle("A1:X2")->getFont()->setBold(true);
@@ -695,6 +695,7 @@ class EditalController extends Controller
                 ->setCellValue("V".($i), "Total" )
                 ->setCellValue("W".($i), "Nota Ponderada" );
 
+
         $planilhaCartas->getStyle("A".($i-1).":X".$i)->getFont()->setBold(true);
 
         $planilhaCartas->mergeCells("B".($i-1).":L".($i-1));
@@ -745,6 +746,20 @@ class EditalController extends Controller
 
         $planilhaCartas->getStyle("B".($i-1).":W".($i-1))->getFont()->getColor()->setRGB('000000');
 
+     
+
+
+
+
+
+        $qtd_linhas = $planilhaCartas->getHighestRow() - 2;
+
+        $formulaNotaPonderada = "=MAX(".'V'.($i+1).',U'.($i+1).")";
+
+
+
+
+
 
 
         //Write cells
@@ -756,13 +771,16 @@ class EditalController extends Controller
             $formulaNICR2 = "=((R".($i)." * S".($i).")/10)+T".($i);
             $formulaTotal = "=SUM(".'K'.$i.',U'.$i.")";
 
+            $formulaNotaPonderada = "=MAX(".'$V$'.(3).':$V$'.($qtd_linhas).")";
+
             $planilhaCartas
                 ->setCellValue('A'.($i), "='Candidato'!A".($i))
                 ->setCellValue('H'.($i), $formulaAC)
                 ->setCellValue('K'.($i), $formulaNICR)
                 ->setCellValue('R'.($i), $formulaAC2)
                 ->setCellValue('U'.($i), $formulaNICR2)
-                ->setCellValue('V'.($i), $formulaTotal);
+                ->setCellValue('V'.($i), $formulaTotal)
+                ->setCellValue('W'.($i), $formulaNotaPonderada);
         }
 
 

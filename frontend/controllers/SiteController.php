@@ -74,7 +74,6 @@ class SiteController extends Controller
     public function actionIndex()
     {
 
-        $this->actionTesteplanilha();
 
 
         $this->layout = '@app/views/layouts/main-login.php';
