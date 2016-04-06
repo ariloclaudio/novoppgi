@@ -752,9 +752,26 @@ class EditalController extends Controller
 
 
 
+
+
+
         $qtd_linhas = $planilhaCartas->getHighestRow() - 2;
 
-        $formulaNotaPonderada = "=MAX(".'V'.($i+1).',U'.($i+1).")";
+        //Write cells
+        for ($i=0; $i< $qtd_linhas-2; $i++){
+
+        $formulaNotaPonderada = "=MAX(".'$V$'.(3).',$V$'.($$qtd_linhas).")";
+
+            $planilhaCartas->setCellValue('W'.($i+3), $formulaTotal);
+        }
+
+
+
+
+
+
+
+
 
 
 
@@ -923,8 +940,6 @@ class EditalController extends Controller
                 ->setCellValue('D'.($i), "=AVERAGE('Títulos'!J".($i+1).",Cartas!X".($i).")")
                 ->setCellValue('E'.($i), "=AVERAGE(C".($i).",D".($i).")");
           
-          //verificar erro no planilha do Professor !
-
 
 
         }
@@ -1053,7 +1068,7 @@ class EditalController extends Controller
 
             header('Content-type: application/vnd.ms-excel');
 
-            header('Content-Disposition: attachment; filename="Planilha_avaliação_Edital_'.$idEdital.'.xls"');
+            header('Content-Disposition: attachment; filename="Planilha_avaliacao_Edital_'.$idEdital.'.xls"');
 
             $objWriter->save('php://output');
             $objWriter->save('ARQUIVO.xls');
