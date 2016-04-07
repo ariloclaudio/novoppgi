@@ -746,38 +746,19 @@ class EditalController extends Controller
 
         $planilhaCartas->getStyle("B".($i-1).":W".($i-1))->getFont()->getColor()->setRGB('000000');
 
-     
-
-
-
-
-
-
-
 
         $qtd_linhas = $planilhaCartas->getHighestRow() - 2;
 
         //Write cells
         for ($i=0; $i< $qtd_linhas-2; $i++){
 
-        $formulaNotaPonderada = "=SUM(".'$V$'.(3).':$V$'.($qtd_linhas).")";
+        $formulaNotaPonderada = "=(V".($i+3)."/MAX(".'$V$'.(3).':$V$'.($qtd_linhas)."))*10";
 
             $planilhaCartas->setCellValue('W'.($i+3), $formulaNotaPonderada);
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-        //Write cells
+       //Write cells
         for ($i=$qtd_linhas+3; $i< $ultimaLinha+3; $i++){
 
             $formulaAC = "=SUM(".'B'.$i.':G'.$i.")";
@@ -786,8 +767,6 @@ class EditalController extends Controller
             $formulaNICR2 = "=((R".($i)." * S".($i).")/10)+T".($i);
             $formulaTotal = "=SUM(".'K'.$i.',U'.$i.")";
 
-            $formulaNotaPonderada = "=MAX(".'$V$'.(3).':$V$'.($qtd_linhas).")";
-
             $planilhaCartas
                 ->setCellValue('A'.($i), "='Candidato'!A".($i))
                 ->setCellValue('H'.($i), $formulaAC)
@@ -795,6 +774,13 @@ class EditalController extends Controller
                 ->setCellValue('R'.($i), $formulaAC2)
                 ->setCellValue('U'.($i), $formulaNICR2)
                 ->setCellValue('V'.($i), $formulaTotal);
+        }
+
+        for ($i=$qtd_linhas; $i< $ultimaLinha; $i++){
+
+        $formulaNotaPonderada = "=(V".($i+3)."/MAX(".'$V$'.($qtd_linhas+3).':$V$'.($ultimaLinha+2)."))*10";
+
+            $planilhaCartas->setCellValue('W'.($i+3), $formulaNotaPonderada);
         }
 
 
