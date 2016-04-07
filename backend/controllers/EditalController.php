@@ -762,7 +762,7 @@ class EditalController extends Controller
 
         $formulaNotaPonderada = "=SUM(".'$V$'.(3).':$V$'.($qtd_linhas).")";
 
-            $planilhaCartas->setCellValue('W'.($i+3), $formulaTotal);
+            $planilhaCartas->setCellValue('W'.($i+3), $formulaNotaPonderada);
         }
 
 
@@ -778,7 +778,7 @@ class EditalController extends Controller
 
 
         //Write cells
-        for ($i=$i+1; $i< $ultimaLinha+3; $i++){
+        for ($i=$qtd_linhas+3; $i< $ultimaLinha+3; $i++){
 
             $formulaAC = "=SUM(".'B'.$i.':G'.$i.")";
             $formulaAC2 = "=SUM(".'L'.$i.':Q'.$i.")";
@@ -794,8 +794,7 @@ class EditalController extends Controller
                 ->setCellValue('K'.($i), $formulaNICR)
                 ->setCellValue('R'.($i), $formulaAC2)
                 ->setCellValue('U'.($i), $formulaNICR2)
-                ->setCellValue('V'.($i), $formulaTotal)
-                ->setCellValue('W'.($i), $formulaNotaPonderada);
+                ->setCellValue('V'.($i), $formulaTotal);
         }
 
 
