@@ -760,12 +760,10 @@ class EditalController extends Controller
         //Write cells
         for ($i=0; $i< $qtd_linhas-2; $i++){
 
-        $formulaNotaPonderada = "=MAX(".'$V$'.(3).',$V$'.($$qtd_linhas).")";
+        $formulaNotaPonderada = "=SUM(".'$V$'.(3).':$V$'.($qtd_linhas).")";
 
             $planilhaCartas->setCellValue('W'.($i+3), $formulaTotal);
         }
-
-
 
 
 
