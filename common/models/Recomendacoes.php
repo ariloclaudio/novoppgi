@@ -90,6 +90,11 @@ class Recomendacoes extends \yii\db\ActiveRecord
 
     }
 
+    public function getEdital()
+    {
+        return $this->hasOne(Edital::className(), ['numero' => 'edital_idEdital']);
+    }
+
 
 
 }

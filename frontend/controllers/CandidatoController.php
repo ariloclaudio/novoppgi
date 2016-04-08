@@ -260,7 +260,7 @@ class CandidatoController extends Controller
         if (($model = Candidato::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('A Página solicitada não existe.');
+            throw new NotFoundHttpException('A Página solicitada não existe.');            
         }
     }
 
