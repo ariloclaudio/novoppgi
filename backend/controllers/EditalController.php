@@ -688,7 +688,6 @@ class EditalController extends Controller
             $planilhaCartas
                 ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
                 ->setCellValue('H'.($i+3), $formulaAC)
-
                 ->setCellValue('K'.($i+3), $formulaNICR)
                 ->setCellValue('R'.($i+3), $formulaAC2)
                 ->setCellValue('U'.($i+3), $formulaNICR2)
