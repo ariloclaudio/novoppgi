@@ -647,28 +647,23 @@ class EditalController extends Controller
 
         for($n=0; $n<count($model_candidato_mestrado); $n++){
 
+            $cont = 0;
+
             for ($p=0; $p<count($model_recomendacoes)  ;$p++){
 
                     if($model_candidato_mestrado[$n]->id == $model_recomendacoes[$p]->idCandidato){
                         
-
-
-
-                        $avaliacao[0] = 
-                            $model_recomendacoes[$p]->dominio+
-                            $model_recomendacoes[$p]->aprendizado+
-                            $model_recomendacoes[$p]->assiduidade+
-                            $model_recomendacoes[$p]->relacionamento+
-                            $model_recomendacoes[$p]->iniciativa+
+                        $avaliacao[$model_recomendacoes[$p]->idCandidato][$cont] = 
+                            $model_recomendacoes[$p]->dominio +
+                            $model_recomendacoes[$p]->aprendizado +
+                            $model_recomendacoes[$p]->assiduidade +
+                            $model_recomendacoes[$p]->relacionamento +
+                            $model_recomendacoes[$p]->iniciativa +
                             $model_recomendacoes[$p]->expressao;
 
 
-                        //falta concluir:
-                        //checar qual os dois maiores valores avaliativos
 
-                            break;
-
-
+                            $cont++;
 
                     }
 
@@ -680,8 +675,6 @@ class EditalController extends Controller
 
         }
 
-            var_dump($avaliacao[0]);
-            exit;
 
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
@@ -695,6 +688,7 @@ class EditalController extends Controller
             $planilhaCartas
                 ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
                 ->setCellValue('H'.($i+3), $formulaAC)
+
                 ->setCellValue('K'.($i+3), $formulaNICR)
                 ->setCellValue('R'.($i+3), $formulaAC2)
                 ->setCellValue('U'.($i+3), $formulaNICR2)
