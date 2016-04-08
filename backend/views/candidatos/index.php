@@ -136,7 +136,7 @@ function goBack() {
                   },
                   'reenviar' => function ($url, $model) {  
 
-                    return $model->carta_recomendacao == 1 && $model->qtd_cartas > $model->cartas_respondidas ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                    return $model->carta_recomendacao == 1 && $model->qtd_cartas > $model->cartas_respondidas && !($model->resultado === 1 || $model->resultado === 0) ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'title' => Yii::t('yii', 'Reenviar Cartas'),
                             'data-confirm' => \Yii::t('yii', 'Você deseja Reenviar cartas de recomendação deste candidato?'),
                     ]) : '';                   

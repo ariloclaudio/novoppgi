@@ -110,12 +110,24 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
                 'offText' => 'Não',
         ]])->label("Bolsista?");
 
-        echo "<div id='divAgencia' style='display: none;'>";
-        echo $form->field($model, 'agencia' , ['options' => ['class' => 'col-md-4']]  )->textInput(['maxlength' => true])->label("Qual Agência ?");
-        echo "</div>";
-
     echo $divFechar;
 
+    echo $divRow;
+
+        echo "<div id='divAgencia' style='display: none;'>";
+        echo $form->field($model, 'agencia' , ['options' => ['class' => 'col-md-3']]  )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> Qual Agência:");
+        echo $form->field($model, 'financiadorbolsa' , ['options' => ['class' => 'col-md-4']]  )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> Financiador da Bolsa: ");
+
+        echo $form->field($model, 'dataimplementacaobolsa', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+            'language' => Yii::$app->language,
+            'pluginOptions' => [
+                'format' => 'dd-mm-yyyy',
+                'todayHighlight' => true
+            ]
+        ])->label("<font color='#FF0000'>*</font> Data de Implementação da Bolsa:");
+
+        echo "</div>";
+    echo $divFechar;
         //echo $form->field($model, 'status')->textInput();
 
     /*
@@ -200,7 +212,7 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
             'format' => 'dd-mm-yyyy',
             'todayHighlight' => true
         ]
-    ])->label("Data de Ingresso:");
+    ])->label("<font color='#FF0000'>*</font> Data de Ingresso:");
 
     echo $divFechar;
 

@@ -551,7 +551,7 @@ class CandidatosController extends Controller
         $recomendacoesArray = Recomendacoes::findAll(['idCandidato' => $id, 'dataResposta' => '0000-00-00 00:00:00']);
 
         for ($i=0; $i < count($recomendacoesArray); $i++) { 
-            $recomendacoesArray[$i]->prazo = date("Y-m-d", strtotime('+5 days'));
+            $recomendacoesArray[$i]->prazo = date("Y-m-d", strtotime('+1 days'));
             if(!$recomendacoesArray[$i]->save()){
                 $this->mensagens('danger', 'Erro ao Reenviar Cartas', 'As cartas de Recomendações não poderam ser enviadas.');
                 return $this->redirect(['candidatos/index','id'=>$idEdital]);

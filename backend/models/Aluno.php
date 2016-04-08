@@ -23,7 +23,10 @@ class Aluno extends \yii\db\ActiveRecord
     {
         return [
             //[['nome', 'email', 'senha', 'curso', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'agencia', 'pais', 'resumoQual2', 'resumoTese'], 'required'],
-            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'dataingresso', 'curso', 'area', 'nacionalidade', 'anoconclusao'], 'required'],
+            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'dataingresso', 'curso', 'area', 'nacionalidade'], 'required'],
+            [['agencia', 'financiadorbolsa', 'dataimplementacaobolsa'], 'required', 'when' => function ($model) { return $model->bolsista; }, 'whenClient' => "function (attribute, value) {
+                    return $('#form_bolsista').val() == '1';
+                }"],
             [['area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
             [['resumoQual2', 'resumoTese'], 'string'],
             [['nome', 'nomepai', 'nomemae', 'examinadorQual1'], 'string', 'max' => 60],
@@ -41,12 +44,13 @@ class Aluno extends \yii\db\ActiveRecord
             [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
             [['bolsista'], 'string', 'max' => 3],
             [['agencia', 'pais'], 'string', 'max' => 30],
+            [['financiadorbolsa'], 'string', 'max' => 45],
             [['anoconclusao'], 'integer', 'min' => 1900,'max' => 2099],
             [['idiomaExameProf'], 'string', 'max' => 20],
             [['tituloQual2', 'tituloTese', 'tituloQual1'], 'string', 'max' => 180],
             [['localQual2', 'localTese', 'cursograd', 'instituicaograd'], 'string', 'max' => 100],
             [['sede'], 'string', 'max' => 2],
-            [['dataingresso'],'safe'],
+            [['dataingresso', 'dataimplementacaobolsa'],'safe'],
         ];
     }
 
@@ -109,6 +113,8 @@ class Aluno extends \yii\db\ActiveRecord
             'orientador' => 'Orientador',
             'anoconclusao' => 'Ano de Conclusão',
             'sede' => 'Sede',
+            'financiadorbolsa' => 'Financiador da Bolsa',
+            'dataimplementacaobolsa' => 'Data de Implementacao',
 
         ];
     }

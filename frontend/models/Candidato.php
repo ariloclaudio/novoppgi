@@ -441,7 +441,7 @@ class Candidato extends \yii\db\ActiveRecord
                 $recomendacao = new Recomendacoes();
                 $recomendacao->idCandidato = $this->id;
                 $recomendacao->dataResposta = '0000-00-00 00:00:00';
-                $recomendacao->prazo = date("Y-m-d", strtotime('+5 days'));
+                $recomendacao->prazo = date('Y-m-d', strtotime($this->edital->datafim. ' + 1 days'));
                 $recomendacao->nome = $cartas['nome'][$i];
                 $recomendacao->email = $cartas['email'][$i];
                 $recomendacao->token = md5($this->id.$cartas['email'][$i].time());

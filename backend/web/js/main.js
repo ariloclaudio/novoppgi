@@ -28,10 +28,13 @@ $(document).ready( function() {
     });
 
     $('input[name="Aluno[bolsista]"]').on('switchChange.bootstrapSwitch', function (data, state) {
-        if (state)
+        if (state){
             $('#divAgencia').css('display', 'block');
-        else
+            $('#form_bolsista').val('1');
+        }else{
             $('#divAgencia').css('display', 'none');
+            $('#form_bolsista').val('');
+        }
     });
 
     $('#aluno-nacionalidade').click(function(){
