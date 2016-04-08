@@ -93,7 +93,7 @@ label{
             <p align="justify"><font color="#FF0000">*</font> <b>Comparando este candidato com outros alunos ou profissionais, com similar n&#237;vel de educa&#231;&#227;o e experi&#234;ncia, que conheceu nos &#250;ltimos 2 anos, classifique a sua aptid&#227;o para realizar estudos avan&#231;ados e pesquisas. O candidato est&#225; entre (indique uma das alternativas):</b></p>
         </div>
         <div class="col-md-12">
-            <?= $form->field($model, 'classificacao')->radioList(['4' => 'os 5% mais aptos', '3' => 'os 10% mais aptos', '2' => 'os 30% mais aptos', '1' => 'os 50% mais aptos'])->label(false) ?>
+            <?= $form->field($model, 'classificacao')->radioList(['3.0' => 'os 5% mais aptos', '2.0' => 'os 10% mais aptos', '1.5' => 'os 30% mais aptos', '1.0' => 'os 50% mais aptos'])->label(false) ?>
         </div>
     </div>    
 

@@ -24,7 +24,8 @@ class Recomendacoes extends \yii\db\ActiveRecord
             return [
             [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes', 'anoContato', 'funcoesCartaArray', 'conhece'], 'required',
             'when' => function($model){ return $model->passo == 2;},],
-            [['dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao'], 'integer'],
+            [['dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles'], 'integer'],
+            [['classificacao'], 'string'],
             [['anoContato', 'anoTitulacao'], 'integer', 'min' => 1900, 'max' => 2099],
             [['dataEnvio', 'prazo'], 'safe'],
             [['informacoes'], 'string'],
@@ -177,6 +178,11 @@ class Recomendacoes extends \yii\db\ActiveRecord
                 return 2;
         
         return 1;
+    }
+
+    public function getEdital()
+    {
+        return $this->hasOne(Edital::className(), ['numero' => 'edital_idEdital']);
     }
 
     public function setDataResposta(){

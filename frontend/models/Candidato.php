@@ -445,6 +445,7 @@ class Candidato extends \yii\db\ActiveRecord
                 $recomendacao->nome = $cartas['nome'][$i];
                 $recomendacao->email = $cartas['email'][$i];
                 $recomendacao->token = md5($this->id.$cartas['email'][$i].time());
+                $recomendacao->edital_idEdital = $this->idEdital;
                 $this->recomendacoes[$i] = $recomendacao;
                 if(!$recomendacao->save())
                     return false;
