@@ -641,8 +641,47 @@ class EditalController extends Controller
 
     }
 
-    public function planilhaCartas($planilhaCartas,$linhaAtual,$ultimaLinha){
+    public function planilhaCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,
+        $model_candidato_doutorado,$linhaAtual,$ultimaLinha){
 
+
+        for($n=0; $n<count($model_candidato_mestrado); $n++){
+
+            for ($p=0; $p<count($model_recomendacoes)  ;$p++){
+
+                    if($model_candidato_mestrado[$n]->id == $model_recomendacoes[$p]->idCandidato){
+                        
+
+
+
+                        $avaliacao[0] = 
+                            $model_recomendacoes[$p]->dominio+
+                            $model_recomendacoes[$p]->aprendizado+
+                            $model_recomendacoes[$p]->assiduidade+
+                            $model_recomendacoes[$p]->relacionamento+
+                            $model_recomendacoes[$p]->iniciativa+
+                            $model_recomendacoes[$p]->expressao;
+
+
+                        //falta concluir:
+                        //checar qual os dois maiores valores avaliativos
+
+                            break;
+
+
+
+                    }
+
+
+
+            }
+
+
+
+        }
+
+            var_dump($avaliacao[0]);
+            exit;
 
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
@@ -962,6 +1001,8 @@ class EditalController extends Controller
         $model_candidato_mestrado = Candidato::find()->where("cursodesejado = 1 AND passoatual = 4 AND idEdital ='".$idEdital."'")->orderBy("nome")->all();
         $model_candidato_doutorado = Candidato::find()->where("cursodesejado = 2 AND passoatual = 4  AND idEdital ='".$idEdital."'")->orderBy("nome")->all();
 
+        $model_recomendacoes = Recomendacoes::find()->all();
+
         //instanciando objeto Excel
 
         $objPHPExcel = new \PHPExcel();
@@ -1032,7 +1073,7 @@ class EditalController extends Controller
 
         //Cria planilhas de Cartas
         $planilhaCartas = $objPHPExcel->createSheet(4);
-        $this->planilhaCartas($planilhaCartas,$i,$j);
+        $this->planilhaCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,$model_candidato_doutorado,$i,$j);
         $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(4)->calculateWorksheetDimension();
         $this->planilhaCartasFormatacao($planilhaCartas,$intervalo_tamanho);
 
