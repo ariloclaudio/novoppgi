@@ -641,40 +641,104 @@ class EditalController extends Controller
 
     }
 
-    public function planilhaCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,
-        $model_candidato_doutorado,$linhaAtual,$ultimaLinha){
+    public function inserirAtributosCartas($planilhaCartas,$dominio,$aprendizado,$assiduidade,$relacionamento,$iniciativa,$expressao,$RA,$classificacao,$n){
+
+                        $planilhaCartas
+                        ->setCellValue('B'.($n+3), $dominio[0])
+                        ->setCellValue('L'.($n+3), $dominio[1] )
+                        ->setCellValue('C'.($n+3), $aprendizado[0] )
+                        ->setCellValue('M'.($n+3), $aprendizado[1] )
+                        ->setCellValue('D'.($n+3), $assiduidade[0] )
+                        ->setCellValue('N'.($n+3), $assiduidade[1] )
+                        ->setCellValue('E'.($n+3), $relacionamento[0] )
+                        ->setCellValue('O'.($n+3), $relacionamento[1] )
+                        ->setCellValue('F'.($n+3), $iniciativa[0] )
+                        ->setCellValue('P'.($n+3), $iniciativa[1] )
+                        ->setCellValue('G'.($n+3), $expressao[0] )
+                        ->setCellValue('Q'.($n+3), $expressao[1] )
+
+                        ->setCellValue('I'.($n+3), $RA[0] )
+                        ->setCellValue('S'.($n+3), $RA[1] )
+
+                        ->setCellValue('J'.($n+3), $classificacao[0] )
+                        ->setCellValue('T'.($n+3), $classificacao[1] );
+
+    }
 
 
-        for($n=0; $n<count($model_candidato_mestrado); $n++){
+
+    public function obterAtributosCartas($planilhaCartas,$model_recomendacoes,$model_candidato,$qtd_linhas,$titulo){
+
+        for($n=0; $n<count($model_candidato); $n++){
 
             $cont = 0;
 
             for ($p=0; $p<count($model_recomendacoes)  ;$p++){
 
-                    if($model_candidato_mestrado[$n]->id == $model_recomendacoes[$p]->idCandidato){
-                        
-                        $avaliacao[$model_recomendacoes[$p]->idCandidato][$cont] = 
-                            $model_recomendacoes[$p]->dominio +
-                            $model_recomendacoes[$p]->aprendizado +
-                            $model_recomendacoes[$p]->assiduidade +
-                            $model_recomendacoes[$p]->relacionamento +
-                            $model_recomendacoes[$p]->iniciativa +
-                            $model_recomendacoes[$p]->expressao;
+                    if($model_candidato[$n]->id == $model_recomendacoes[$p]->idCandidato){
 
+                                    $dominio[$cont] = $model_recomendacoes[$p]->dominio;
+                                    $aprendizado[$cont] = $model_recomendacoes[$p]->aprendizado;
+                                    $assiduidade[$cont] = $model_recomendacoes[$p]->assiduidade;
+                                    $relacionamento[$cont] = $model_recomendacoes[$p]->relacionamento;
+                                    $iniciativa[$cont] = $model_recomendacoes[$p]->iniciativa;
+                                    $expressao[$cont] = $model_recomendacoes[$p]->expressao;
+
+                                    $classificacao[$cont] = $model_recomendacoes[$p]->classificacao; // PI
+
+                                    if($model_recomendacoes[$p]->orientador == 1){
+                                        $RA[$cont] = 1;
+                                    }
+                                    else if ($model_recomendacoes[$p]->professor == 1 && $model_recomendacoes[$p]->titulacao == 2){
+
+                                        $RA[$cont] = 0.85;
+                                    }
+                                    else if ($model_recomendacoes[$p]->professor == 1 && $model_recomendacoes[$p]->titulacao == 1){
+
+                                        $RA[$cont] = 0.70;
+                                    }
+                                    else if ($model_recomendacoes[$p]->coordenador == 1 && $model_recomendacoes[$p]->titulacao == 2){
+
+                                        $RA[$cont] = 0.70;
+                                    }
+                                    else {
+                                        $RA[$cont] = 0.50;
+                                    }
+
+                                    $AC[$cont] = $dominio[$cont] + $aprendizado[$cont] + $assiduidade[$cont] + $relacionamento[$cont] +
+                                                 $iniciativa[$cont] + $expressao[$cont];
+
+                                    $NICR[$cont] = (($AC[$cont] * $RA[$cont])/10) + $classificacao[$cont];
 
 
                             $cont++;
-
                     }
-
-
 
             }
 
+                array_multisort($NICR, SORT_DESC, $dominio,$aprendizado,$assiduidade,$relacionamento,$iniciativa,$expressao,$classificacao,$RA,$AC);
 
+
+                if($titulo == 1){
+                    $this->inserirAtributosCartas(
+                        $planilhaCartas,$dominio,$aprendizado,$assiduidade,$relacionamento,$iniciativa,$expressao,$RA,$classificacao,$n
+                    );
+                }
+                else{
+                    $this->inserirAtributosCartas(
+                        $planilhaCartas,$dominio,$aprendizado,$assiduidade,$relacionamento,$iniciativa,$expressao,$RA,$classificacao,$n+$qtd_linhas
+                    );
+                }
 
         }
 
+
+
+    }
+
+
+    public function planilhaCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,
+        $model_candidato_doutorado,$linhaAtual,$ultimaLinha){
 
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
@@ -816,11 +880,16 @@ class EditalController extends Controller
         }
 
 
+        $this->obterAtributosCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,0,1); //1 é mestrado
+        $this->obterAtributosCartas($planilhaCartas,$model_recomendacoes,$model_candidato_doutorado,$qtd_linhas,2); //2 é doutorado
+
+
         $qtd_linhas = $planilhaCartas->getHighestRow();
 
         for ($k=1; $k<=$qtd_linhas; $k++){
             $planilhaCartas->getRowDimension(''.$k.'')->setRowHeight(20);
         }
+
 
         $planilhaCartas->getRowDimension($linhaSegundoHeader)->setRowHeight(40);
         $planilhaCartas->getRowDimension(2)->setRowHeight(40);
@@ -892,7 +961,7 @@ class EditalController extends Controller
                 ->setCellValue('B'.($i+3), "='Provas'!C".($i+3))
                 ->setCellValue('C'.($i+3), "='Propostas'!E".($i+3))
                 ->setCellValue('D'.($i+3), "=AVERAGE('Títulos'!J".($i+4).",Cartas!X".($i+3).")")
-                ->setCellValue('E'.($i+3), "=AVERAGE(C".($i+3).",D".($i+3).")");
+                ->setCellValue('E'.($i+3), "=AVERAGE(B".($i+3).",D".($i+3).")");
           }
 
           //verificar erro no planilha do Professor !
@@ -953,7 +1022,7 @@ class EditalController extends Controller
                 ->setCellValue('B'.($i), "='Provas'!C".($i))
                 ->setCellValue('C'.($i), "='Propostas'!E".($i))
                 ->setCellValue('D'.($i), "=AVERAGE('Títulos'!J".($i+1).",Cartas!X".($i).")")
-                ->setCellValue('E'.($i), "=AVERAGE(C".($i).",D".($i).")");
+                ->setCellValue('E'.($i), "=AVERAGE(B".($i).",D".($i).")");
           
 
 
