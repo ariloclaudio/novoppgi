@@ -321,15 +321,10 @@ class CandidatosController extends Controller
 
 
         if ($model_aluno->load(Yii::$app->request->post()) && $model_aluno->save()) {
-
-
-                     $model_candidato->save();
-
-
+                $model_candidato->save();
 
             return $this->redirect(['index', 'id' => $idEdital]);
         } else {
-
 
         $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
         $orientadores = ArrayHelper::map(User::find()->where(['professor' => '1'])->orderBy('nome')->all(), 'id', 'nome');

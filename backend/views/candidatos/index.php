@@ -62,18 +62,17 @@ function goBack() {
                 },
             ],
              'nome',
-             ['attribute' => 'qtd_cartas',
-              'label' => 'Cartas Emitidas',
+              ['attribute' => 'qtd_cartas',
+              'label' => 'Cartas',
               'visible' => $cartarecomendacao,
               'value' => function ($model){
-                return $model->qtd_cartas;
-              }
-             ],
-             ['attribute' => 'cartas_respondidas',
-              'label' => 'Cartas Respondidas',
-              'visible' => $cartarecomendacao,
-              'value' => function ($model){
-                       return $model->cartas_respondidas;
+                if(!isset($model->qtd_cartas ))
+                  return "0/0";
+                else if(!isset($model->cartas_respondidas))
+                  return "0/".$model->qtd_cartas;
+                else
+                  return $model->cartas_respondidas."/".$model->qtd_cartas;
+
               }
              ],
             [   'label' => 'Curso Desejado',
@@ -83,7 +82,7 @@ function goBack() {
                 },
             ],
             [   'label' => 'Linha Pesquisa',
-                'attribute' => 'nomeLinhaPesquisa',
+                'attribute' => 'siglaLinhaPesquisa',
             ],
             [   'label' => 'Fase',
                 'attribute' => 'fase',
@@ -188,7 +187,7 @@ echo Collapse::widget([
                 },
             ],
             [   'label' => 'Linha Pesquisa',
-                'attribute' => 'nomeLinhaPesquisa',
+                'attribute' => 'siglaLinhaPesquisa',
             ],
             [   'label' => 'Etapa da Inscrição',
                 'attribute' => 'passoatual',

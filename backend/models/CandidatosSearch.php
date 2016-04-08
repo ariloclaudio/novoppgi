@@ -42,7 +42,7 @@ class CandidatosSearch extends Candidato
     public function search($params)
     {
         $idEdital = $params['id'];
-        $query = Candidato::find()->select("j17_edital.cartarecomendacao as carta_recomendacao ,j17_linhaspesquisa.nome as nomeLinhaPesquisa, candidato1.*, qtd_cartas, cartas_pendentes, (qtd_cartas-cartas_pendentes) as cartas_respondidas
+        $query = Candidato::find()->select("j17_edital.cartarecomendacao as carta_recomendacao ,j17_linhaspesquisa.sigla as siglaLinhaPesquisa, candidato1.*, qtd_cartas, cartas_pendentes, (qtd_cartas-cartas_pendentes) as cartas_respondidas
 
             ")->leftJoin("j17_linhaspesquisa","candidato1.idLinhaPesquisa =   j17_linhaspesquisa.id")->innerJoin("j17_edital")
         ->leftJoin("j17_recomendacoes","j17_recomendacoes.idCandidato = candidato1.id")->alias('candidato1')
@@ -65,9 +65,9 @@ class CandidatosSearch extends Candidato
         ]);
 
 
-        $dataProvider->sort->attributes['nomeLinhaPesquisa'] = [
-        'asc' => ['nomeLinhaPesquisa' => SORT_ASC],
-        'desc' => ['nomeLinhaPesquisa' => SORT_DESC],
+        $dataProvider->sort->attributes['siglaLinhaPesquisa'] = [
+        'asc' => ['siglaLinhaPesquisa' => SORT_ASC],
+        'desc' => ['siglaLinhaPesquisa' => SORT_DESC],
         ];
 
         $dataProvider->sort->attributes['qtd_cartas'] = [
@@ -155,7 +155,7 @@ class CandidatosSearch extends Candidato
 public function search2($params)
     {
         $idEdital = $params['id'];
-        $query = Candidato::find()->select("j17_edital.cartarecomendacao as carta_recomendacao ,j17_linhaspesquisa.nome as nomeLinhaPesquisa, candidato1.*, qtd_cartas, cartas_pendentes, (qtd_cartas-cartas_pendentes) as cartas_respondidas
+        $query = Candidato::find()->select("j17_edital.cartarecomendacao as carta_recomendacao ,j17_linhaspesquisa.nome as siglaLinhaPesquisa, candidato1.*, qtd_cartas, cartas_pendentes, (qtd_cartas-cartas_pendentes) as cartas_respondidas
 
             ")->leftJoin("j17_linhaspesquisa","candidato1.idLinhaPesquisa =   j17_linhaspesquisa.id")->innerJoin("j17_edital")
         ->leftJoin("j17_recomendacoes","j17_recomendacoes.idCandidato = candidato1.id")->alias('candidato1')
@@ -178,9 +178,9 @@ public function search2($params)
         ]);
 
 
-        $dataProvider->sort->attributes['nomeLinhaPesquisa'] = [
-        'asc' => ['nomeLinhaPesquisa' => SORT_ASC],
-        'desc' => ['nomeLinhaPesquisa' => SORT_DESC],
+        $dataProvider->sort->attributes['siglaLinhaPesquisa'] = [
+        'asc' => ['siglaLinhaPesquisa' => SORT_ASC],
+        'desc' => ['siglaLinhaPesquisa' => SORT_DESC],
         ];
 
         $dataProvider->sort->attributes['qtd_cartas'] = [

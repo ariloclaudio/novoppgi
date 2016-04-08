@@ -9,7 +9,7 @@ use common\models\Recomendacoes;
 class Candidato extends \yii\db\ActiveRecord
 {
 
-        public $nomeLinhaPesquisa;
+        public $siglaLinhaPesquisa;
         public $qtd_cartas;
         public $cartas_pendentes;
         public $cartas_respondidas;

@@ -23,7 +23,7 @@ class Aluno extends \yii\db\ActiveRecord
     {
         return [
             //[['nome', 'email', 'senha', 'curso', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'agencia', 'pais', 'resumoQual2', 'resumoTese'], 'required'],
-            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'anoingresso', 'curso', 'area', 'nacionalidade', 'anoconclusao'], 'required'],
+            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'dataingresso', 'curso', 'area', 'nacionalidade', 'anoconclusao'], 'required'],
             [['area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
             [['resumoQual2', 'resumoTese'], 'string'],
             [['nome', 'nomepai', 'nomemae', 'examinadorQual1'], 'string', 'max' => 60],
@@ -41,11 +41,12 @@ class Aluno extends \yii\db\ActiveRecord
             [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
             [['bolsista'], 'string', 'max' => 3],
             [['agencia', 'pais'], 'string', 'max' => 30],
-            [['anoingresso', 'anoconclusao'], 'integer', 'min' => 1900,'max' => 2099],
+            [['anoconclusao'], 'integer', 'min' => 1900,'max' => 2099],
             [['idiomaExameProf'], 'string', 'max' => 20],
             [['tituloQual2', 'tituloTese', 'tituloQual1'], 'string', 'max' => 180],
             [['localQual2', 'localTese', 'cursograd', 'instituicaograd'], 'string', 'max' => 100],
             [['sede'], 'string', 'max' => 2],
+            [['dataingresso'],'safe'],
         ];
     }
 
@@ -80,7 +81,7 @@ class Aluno extends \yii\db\ActiveRecord
             'agencia' => 'Agência',
             'pais' => 'País',
             'status' => 'Status',
-            'anoingresso' => 'Ano de Ingresso',
+            'dataingresso' => 'Data de Ingresso',
             'idiomaExameProf' => 'Idioma Exame Prof',
             'conceitoExameProf' => 'Conceito Exame Prof',
             'dataExameProf' => 'Data Exame Prof',
@@ -110,5 +111,10 @@ class Aluno extends \yii\db\ActiveRecord
             'sede' => 'Sede',
 
         ];
+    }
+
+    public function beforeSave(){
+        $this->dataingresso = date('Y-m-d', strtotime($this->dataingresso));
+        return true;
     }
 }

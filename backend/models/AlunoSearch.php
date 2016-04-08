@@ -19,7 +19,7 @@ class AlunoSearch extends Aluno
     {
         return [
             [['id', 'area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
-            [['nome', 'email', 'senha', 'matricula', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'datanascimento', 'sexo', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'telresidencial', 'telcomercial', 'telcelular', 'nomepai', 'nomemae', 'bolsista', 'agencia', 'pais', 'anoingresso', 'idiomaExameProf', 'conceitoExameProf', 'dataExameProf', 'tituloQual2', 'dataQual2', 'conceitoQual2', 'tituloTese', 'dataTese', 'conceitoTese', 'horarioQual2', 'localQual2', 'resumoQual2', 'horarioTese', 'localTese', 'resumoTese', 'tituloQual1', 'dataQual1', 'examinadorQual1', 'conceitoQual1', 'cursograd', 'instituicaograd', 'crgrad', 'dataformaturagrad', 'anoconclusao', 'sede'], 'safe'],
+            [['nome', 'email', 'senha', 'matricula', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'datanascimento', 'sexo', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'telresidencial', 'telcomercial', 'telcelular', 'nomepai', 'nomemae', 'bolsista', 'agencia', 'pais', 'dataingresso', 'idiomaExameProf', 'conceitoExameProf', 'dataExameProf', 'tituloQual2', 'dataQual2', 'conceitoQual2', 'tituloTese', 'dataTese', 'conceitoTese', 'horarioQual2', 'localQual2', 'resumoQual2', 'horarioTese', 'localTese', 'resumoTese', 'tituloQual1', 'dataQual1', 'examinadorQual1', 'conceitoQual1', 'cursograd', 'instituicaograd', 'crgrad', 'dataformaturagrad', 'anoconclusao', 'sede'], 'safe'],
         ];
     }
 
@@ -96,7 +96,7 @@ class AlunoSearch extends Aluno
             ->andFilterWhere(['like', 'bolsista', $this->bolsista])
             ->andFilterWhere(['like', 'agencia', $this->agencia])
             ->andFilterWhere(['like', 'pais', $this->pais])
-            ->andFilterWhere(['like', 'anoingresso', $this->anoingresso])
+            ->andFilterWhere(['like', 'dataingresso', $this->dataingresso])
             ->andFilterWhere(['like', 'idiomaExameProf', $this->idiomaExameProf])
             ->andFilterWhere(['like', 'conceitoExameProf', $this->conceitoExameProf])
             ->andFilterWhere(['like', 'dataExameProf', $this->dataExameProf])

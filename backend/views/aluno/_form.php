@@ -194,7 +194,13 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
             ],
         ])->label("<font color='#FF0000'>*</font> <b>Orientador:</b>");
 
-        echo $form->field($model, 'anoingresso', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Ano de Ingresso:</b>");
+    echo $form->field($model, 'dataingresso', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+        'language' => Yii::$app->language,
+        'pluginOptions' => [
+            'format' => 'dd-mm-yyyy',
+            'todayHighlight' => true
+        ]
+    ])->label("Data de Ingresso:");
 
     echo $divFechar;
 
