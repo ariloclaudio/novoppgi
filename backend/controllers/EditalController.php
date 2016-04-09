@@ -545,6 +545,8 @@ class EditalController extends Controller
         $i = $i+5;
 
         $planilhaTitulos->mergeCells("I".($i).":"."I".($i+1));
+        $planilhaTitulos->mergeCells("J".($i).":"."J".($i+1));
+
 
         $planilhaTitulos
                 ->setCellValue("A".($i-1), "Doutorado" )
@@ -559,7 +561,7 @@ class EditalController extends Controller
                 ->setCellValue("G".($i+1), "B1 a B2" )
                 ->setCellValue("H".($i+1), "B3 a B5" )
                 ->setCellValue("I".($i), "Nota" )
-                ->setCellValue("J".($i), "Nota" );
+                ->setCellValue("J".($i), "NAC" );
 
         $planilhaTitulos->getStyle("A".($i-1).":J".$i)->getFont()->setBold(true);
 
@@ -1001,7 +1003,14 @@ class EditalController extends Controller
 
     }
 
-    public function planilhaMediaFinal($planilhaMediaFinal,$linhaAtual,$ultimaLinha){
+    public function planilhaMediaFinal($planilhaMediaFinal,$linhaAtual,$ultimaLinha,$possuiCarta){
+
+        if ($possuiCarta == true){
+            $labelTitulosEcartas = "Títulos + Carta";
+        }
+        else{
+            $labelTitulosEcartas = "Títulos";
+        }
 
 
         //INSERE VALORES NAS COLUNAS
@@ -1010,18 +1019,26 @@ class EditalController extends Controller
                 ->setCellValue("A2", "Candidato" )
                 ->setCellValue("B2", "Prova" )
                 ->setCellValue("C2", "Proposta" )
-                ->setCellValue("D2", "Títulos + Carta" )
+                ->setCellValue("D2", $labelTitulosEcartas )
                 ->setCellValue("E2", "Média" );
 
 
         //ESCREVE VALORES NAS CÉLULAS
         for ($i=0; $i< $linhaAtual; $i++){
 
+            if($possuiCarta == true){
+                $formulaTitulosEcartas = "=AVERAGE('Títulos'!J".($i+4).",Cartas!W".($i+3).")";
+
+            }
+            else{
+                $formulaTitulosEcartas = "=('Títulos'!J".($i+4).")";
+            }
+
             $planilhaMediaFinal
                 ->setCellValue('A'.($i+3), "='Candidato'!A".($i+3))
                 ->setCellValue('B'.($i+3), "='Provas'!C".($i+3))
                 ->setCellValue('C'.($i+3), "='Propostas'!E".($i+3))
-                ->setCellValue('D'.($i+3), "=AVERAGE('Títulos'!J".($i+4).",Cartas!X".($i+3).")")
+                ->setCellValue('D'.($i+3), $formulaTitulosEcartas)
                 ->setCellValue('E'.($i+3), "=AVERAGE(B".($i+3).",D".($i+3).")");
           }
 
@@ -1040,7 +1057,7 @@ class EditalController extends Controller
                 ->setCellValue("A".($i), "Candidato" )
                 ->setCellValue("B".($i), "Prova" )
                 ->setCellValue("C".($i), "Proposta" )
-                ->setCellValue("D".($i), "Títulos + Carta" )
+                ->setCellValue("D".($i), $labelTitulosEcartas )
                 ->setCellValue("E".($i), "Média" );
 
         //COLOCANDO NEGRITO
@@ -1088,11 +1105,20 @@ class EditalController extends Controller
         //INSERINDO VALORES NAS CÉLULAS
         for ($i=$i+1; $i< $ultimaLinha+3; $i++){
 
+
+            if($possuiCarta == true){
+                $formulaTitulosEcartas = "=AVERAGE('Títulos'!J".($i+2).",Cartas!W".($i).")";
+
+            }
+            else{
+                $formulaTitulosEcartas = "=('Títulos'!J".($i+2).")";
+            }
+
             $planilhaMediaFinal
                 ->setCellValue('A'.($i), "='Candidato'!A".($i))
                 ->setCellValue('B'.($i), "='Provas'!C".($i))
                 ->setCellValue('C'.($i), "='Propostas'!E".($i))
-                ->setCellValue('D'.($i), "=AVERAGE('Títulos'!J".($i+1).",Cartas!X".($i).")")
+                ->setCellValue('D'.($i), $formulaTitulosEcartas)
                 ->setCellValue('E'.($i), "=AVERAGE(B".($i).",D".($i).")");
           
 
@@ -1135,6 +1161,8 @@ class EditalController extends Controller
         $model_candidato_doutorado = Candidato::find()->where("cursodesejado = 2 AND passoatual = 4  AND idEdital ='".$idEdital."'")->orderBy("nome")->all();
 
         $model_recomendacoes = Recomendacoes::find()->where("edital_idEdital='".$idEdital."'")->all();
+
+        $model_edital = $this->findModel($idEdital);
 
         //instanciando objeto Excel
 
@@ -1204,16 +1232,26 @@ class EditalController extends Controller
         $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(3)->calculateWorksheetDimension();
         $this->planilhaTitulosFormatacao($planilhaTitulos,$intervalo_tamanho);
 
-        //Cria planilhas de Cartas
-        $planilhaCartas = $objPHPExcel->createSheet(4);
-        $this->planilhaCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,$model_candidato_doutorado,$i,$j);
-        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(4)->calculateWorksheetDimension();
-        $this->planilhaCartasFormatacao($planilhaCartas,$intervalo_tamanho);
+
+        $index_planilha_Mediafinal = 5;
+
+        if ($model_edital->cartarecomendacao == 1){
+            //Cria planilhas de Cartas
+            $planilhaCartas = $objPHPExcel->createSheet(4);
+            $this->planilhaCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,$model_candidato_doutorado,$i,$j);
+            $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(4)->calculateWorksheetDimension();
+            $this->planilhaCartasFormatacao($planilhaCartas,$intervalo_tamanho);
+            $possuiCarta = true;
+        }
+        else{
+            $index_planilha_Mediafinal = 4;
+            $possuiCarta = false;
+        }
 
         //Cria planilhas de Cartas
-        $planilhaMediaFinal = $objPHPExcel->createSheet(5);
-        $this->planilhaMediaFinal($planilhaMediaFinal,$i,$j);
-        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex(5)->calculateWorksheetDimension();
+        $planilhaMediaFinal = $objPHPExcel->createSheet($index_planilha_Mediafinal);
+        $this->planilhaMediaFinal($planilhaMediaFinal,$i,$j,$possuiCarta);
+        $intervalo_tamanho = $objPHPExcel->setActiveSheetIndex($index_planilha_Mediafinal)->calculateWorksheetDimension();
         $this->planilhaMediaFinalFormatacao($planilhaMediaFinal,$intervalo_tamanho);
 
 
