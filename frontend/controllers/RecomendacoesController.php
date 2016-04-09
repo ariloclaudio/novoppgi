@@ -92,7 +92,7 @@ class RecomendacoesController extends Controller
                             return $this->render('cartarecomendacaomsg', ['model' => $model,]);
                     }
                     else{
-                        $this->mensagens('success', 'Salvo com sucesso', 'As informações da carta de recomendação foram salvas com sucesso.');
+                        $this->mensagens('success', 'Salvo com sucesso', 'As informações da carta de recomendação foram salvas com sucesso, mas ainda não foram enviadas ao PPGI.');
                     }
                 }else
                     $this->mensagens('danger', 'Erro ao salvar carta', 'Ocorreu um erro ao salvar as informações da carta de recomendação. 

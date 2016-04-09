@@ -125,11 +125,11 @@ class CandidatoController extends Controller
         $publicacoes = CandidatoPublicacoes::find()->where(['idCandidato' => $model->id])->all();
         for ($i=0; $i < count($publicacoes); $i++) {
             if($publicacoes[$i]->tipo == 2)
-                $itensPeriodicos[$i] = ['label' => $publicacoes[$i]->titulo, 
-                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
+                $itensPeriodicos[$i] = ['label' => $publicacoes[$i]->ano.': '.$publicacoes[$i]->titulo, 
+                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local.". ".$publicacoes[$i]->ano."."];
             else
-                $itensConferencias[$i] = ['label' => $publicacoes[$i]->titulo, 
-                    'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local];
+                $itensConferencias[$i] = ['label' => $publicacoes[$i]->ano.': '.$publicacoes[$i]->titulo, 
+					'content' => $publicacoes[$i]->autores.". ".$publicacoes[$i]->titulo.". ".$publicacoes[$i]->local.". ".$publicacoes[$i]->ano."."];
         }
 
         return $this->render('create2', [
@@ -260,7 +260,7 @@ class CandidatoController extends Controller
         if (($model = Candidato::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('A Página solicitada não existe.');            
+            throw new NotFoundHttpException('A Página solicitada não existe.');
         }
     }
 
@@ -293,10 +293,10 @@ function actionComprovanteinscricao() {
                 for ($i=0; $i < sizeof($recomendacoesArray); $i++){
                     $cartasRecomendacoes = $cartasRecomendacoes.'
                             <tr>
-                                <td colspan="1"  style="width:50%">
+                                <td style="width:50%">
                                     <b> Nome:  </b>'.$recomendacoesArray[$i]->nome.'
                                 </td>
-                                <td colspan="1"  style="width:50%">
+                                <td style="width:50%">
                                    <b> Email:  </b>'.$recomendacoesArray[$i]->email.'
                                 </td>
 
@@ -310,13 +310,13 @@ function actionComprovanteinscricao() {
 
                 $experienciasAcademicas = "
                     <tr>
-                        <th>
+                        <th align='left'>
                             Instituição
                         </th>
-                        <th>
+                        <th align='left'>
                             Cargo/Função
                         </th>
-                        <th>
+                        <th align='left'>
                             Período
                         </th>
                     </tr>";
@@ -361,17 +361,17 @@ function actionComprovanteinscricao() {
     $simOuNao = array (0 => "Não", 1 => "Sim");
 
     if ($candidato->cotas == 1){
-        $cota = 'Regime de Cotas ? Sim, <br> Tipo de cota: '.$candidato->cotaTipo;
+        $cota = '<b>Regime de Cotas? </b>Sim, <br> Tipo de cota: '.$candidato->cotaTipo;
     }
     else{
-        $cota = 'Regime de Cotas ? Não.';
+        $cota = '<b>Regime de Cotas? </b>Não.';
     }
 
     if ($candidato->deficiencia == 1){
-        $deficiencia = 'Possui algum tipo de deficiência ? Sim <br> Tipo de deficiência: '.$tipoDeficiencia[$candidato->deficienciaTipo];
+        $deficiencia = '<b>Possui algum tipo de deficiência? </b>Sim <br> Tipo de deficiência: '.$tipoDeficiencia[$candidato->deficienciaTipo];
     }
     else{
-        $deficiencia = 'Possui algum tipo de deficiência ? Não.';
+        $deficiencia = '<b>Possui algum tipo de deficiência? </b>Não.';
     }
 
     if ($candidato->nacionalidade == 1){
@@ -421,7 +421,7 @@ function actionComprovanteinscricao() {
                 $pdf->WriteHTML(' <br>
                     <table style= "margin-top:0px;" width="100%;"> 
                     <tr>
-                        <td colspan = "1" style="text-align:right;">
+                        <td style="text-align:right;">
                             <b> COMPROVANTE DE INSCRIÇÃO </b>
                         </td>   
                         <td align="right" width="35%">
@@ -431,23 +431,20 @@ function actionComprovanteinscricao() {
                     </table>
                     <table width="100%" style="border-top: solid 1px; ">
                     <tr>
-                        <td style= "height:35px;">
+                        <td colspan="2" style= "height:35px;">
                             <b> Dados Pessoais </b>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:50%">
+                        <td colspan="2" style="width:100%">
                             Número da inscrição: '.$candidato->id.'
                         </td>   
-                        <td colspan="2">
-
-                        </td>
-                    </tr>
+s                    </tr>
                     <tr>
-                        <td colspan="2">
+                        <td style="width:50%">
                             Nome: '.$candidato->nome.'
                         </td> 
-                        <td colspan="2">
+                        <td style="width:50%">
                             Nome Social: '.$candidato->nomesocial.'
                         </td>   
                     </tr>
@@ -457,44 +454,44 @@ function actionComprovanteinscricao() {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             CEP: '.$candidato->cep.'
                         </td>
 
-                        <td colspan="2">
+                        <td>
                             Bairro: '.$candidato->bairro.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             Cidade: '.$candidato->cidade.'
                         </td>
-                        <td colspan="2">
+                        <td>
                             País: '.$candidato->pais.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             Data de Nascimento: '.$candidato->datanascimento.'
                         </td>
-                        <td colspan="2">
+                        <td>
                             Sexo: '.$sexo[$candidato->sexo].'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
+                        <td>
                             Nacionalidade: '.$nacionalidade[$candidato->nacionalidade].'
                         </td>
-                        <td colspan="2">
+                        <td>
                             '.$campoCPFouPassaporte.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            Telefone Celular: '.$candidato->telcelular.'
+                        <td>
+                            Telefone Principal: '.$candidato->telresidencial.'
                         </td>
                         <td>
-                            Telefone Residencial: '.$candidato->telresidencial.'
+                            Telefone Alternativo: '.$candidato->telcelular.'
                         </td>
                     </tr>
                     <tr>
@@ -506,46 +503,11 @@ function actionComprovanteinscricao() {
                         <td>
                             Número da Inscrição: '.$candidato->inscricaoposcomp.'
                         </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            Ano: '.$candidato->anoposcomp.'
-                        </td>
-                        <td colspan="2">
-                            Nota: '.$candidato->notaposcomp.'
+                        <td>
+                            Ano: '.$candidato->anoposcomp.'   Nota: '.$candidato->notaposcomp.'
                         </td>                        
                     </tr>
-                    </table>
-                    <table width="100%">
-                    <tr>
-                        <td style= "height:35px">
-                            <b> Dados da Inscrição </b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="1"  style="width:50%">
-                            Curso Desejado:'.$cursoDesejado[$candidato->cursodesejado].' 
-                        </td>
-
-                        <td>
-                            Regime de Dedicação: '.$regimeDedicacao[$candidato->regime].'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Solicita Bolsa de Estudos? '.$simOuNao[$candidato->solicitabolsa].'
-                        </td>
-                        <td>
-                            '.$cota.'
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            '.$deficiencia.'
-                        </td>
-                    </tr>
-
-                </table>');
+                    </table>');
 
   
     $pdf->WriteHTML('
@@ -553,39 +515,36 @@ function actionComprovanteinscricao() {
         <table width="100%" border = "0"> 
 
                     <tr>
-                        <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;border-top: 1px solid #000">
-                            <b> FORMAÇÃO ACADÊMICA / PROFISSIONAL </b>
+                        <td colspan="2" style= "height:55px; text-align:center; border-bottom: 1px solid #000;border-top: 1px solid #000">
+                            <b> FORMAÇÃO ACADÊMICA </b>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:35px;">
+                        <td colspan="2" style= "height:35px;">
                             <b> Curso de Graduação</b>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="1"  style="width:50%">
-                            Curso: '.$candidato->cursograd.'
-                        </td>
                         <td colspan="2">
-                            Instituição: '.$candidato->instituicaograd.'
+                            Curso: '.$candidato->cursograd.'
                         </td>
                     </tr>
                     <tr>
-                        <td>
+                        <td style="width:50%">
+                            Instituição: '.$candidato->instituicaograd.'
+                        </td>
+                        <td style="width:50%">
                             Ano Egresso: '.$candidato->egressograd.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:35px">
+                        <td colspan="2" style= "height:35px">
                             <b> Curso de Pos-Graduação Stricto-Senso </b>
                         </td>
                     </tr>                    
                     <tr>
-                        <td>
+                        <td colspan="2">
                             Curso: '.$candidato->cursopos.'
-                        </td>
-                        <td>
-                            
                         </td>
                     </tr>
                     <tr>
@@ -597,7 +556,21 @@ function actionComprovanteinscricao() {
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px" border = "0">
+                        <td colspan="2" style= "height:55px" border = "0">
+                            <b> Publicações </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                                Em Periódicos: '.count($publicacoes1).'
+                        </td>
+                        <td>
+                                Em Conferências: '.count($publicacoes2).'
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" style= "height:55px" border = "0">
                             <b> Experiência Acadêmica </b>
                         </td>
                     </tr>
@@ -610,62 +583,80 @@ function actionComprovanteinscricao() {
     $pdf->addPage();
 
     $pdf->WriteHTML('
-        <br>
         <table style= "margin-top:0px" width="100%" border = "0"> 
 
                     <tr>
-                        <td colspan="3" style= "height:55px; text-align:center; border-bottom: 1px solid #000;">
+                        <td colspan="2" style= "height:55px; text-align:center; border-bottom: 1px solid #000;">
                             <b> PROPOSTA DE TRABALHO </b>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="2">
                             <b>Título da proposta: </b>'.$candidato->tituloproposta.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3">
+                        <td colspan="2">
                             <b> Linha de pesquisa: </b>'.$candidato->linhaPesquisa->nome.'
                         </td>
                     </tr>
                     <tr>
-                        <td  style= "vertical-align: text-top;" colspan = "3">
-                            <b> Exposição de motivos (exponha resumidamente os motivos que o levaram a se candidatar ao Curso):  </b>
+                        <td colspan="2"><br>
                         </td>
                     </tr>
                     <tr>
-                        <td  style= "border: solid 1px; vertical-align: text-top;" colspan = "3" height = "200px">
+                        <td style="width:50%">
+                            <b>Curso Desejado: </b>'.$cursoDesejado[$candidato->cursodesejado].' 
+                        </td>
+                        <td>
+                            <b>Regime de Dedicação: </b>'.$regimeDedicacao[$candidato->regime].'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Solicita Bolsa de Estudos? </b>'.$simOuNao[$candidato->solicitabolsa].'
+                        </td>
+                        <td>
+                            '.$cota.'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            '.$deficiencia.'
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td  style= "vertical-align: text-top;" colspan = "2">
+                            <b> Exposição de motivos </b>(exponha resumidamente os motivos que o(a) levaram a se candidatar):  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td  style= "border: solid 1px; vertical-align: text-top;" colspan = "2" height = "200px">
                             '.$candidato->motivos.'
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style= "height:55px" border = "0">
+                        <td colspan="2" style= "height:55px" border = "0">
                             <b> Cartas de Recomendação </b>
                         </td>
                     </tr>
 
                     '.$cartasRecomendacoes.'
 
-                    <tr>
-                        <td colspan="2">
-                        <br><br>
-                            OBS: anexar a este documento sua proposta de trabalho e demais documentos inseridos no formulário de inscrição
-                        </td>
-                    </tr>
         </table>
         ');
 
     $pdf->addPage();
 
-
-
         $pdf->Ln(5);
         $pdf->MultiCell(0,6,"PERIÓDICOS",0, 'C');
         $pdf->WriteHTML("<hr>");
         for($i=0 ; $i<count($publicacoes1); $i++){
-
-            $pdf->MultiCell(0,5,$publicacoes1[$i]->titulo, 0, 'L');
-            $pdf->MultiCell(0,5,$publicacoes1[$i]->autores.' '.$publicacoes1[$i]->local,0., 'L');
+            $pdf->MultiCell(0,5,$publicacoes1[$i]->autores.''.$publicacoes1[$i]->titulo.'. '.$publicacoes1[$i]->local.'. '.$publicacoes1[$i]->ano.'.',0., 'L');
             $pdf->WriteHTML("<hr>");
         }
 
@@ -674,8 +665,7 @@ function actionComprovanteinscricao() {
         for($i=0 ; $i<count($publicacoes2); $i++){
 
             $pdf->WriteHTML("<table><tr><td>");
-            $pdf->MultiCell(0,5,$publicacoes2[$i]->titulo, 0, 'L');
-            $pdf->MultiCell(0,5,$publicacoes2[$i]->autores.' '.$publicacoes2[$i]->local,0., 'L');
+			$pdf->MultiCell(0,5,$publicacoes2[$i]->autores.''.$publicacoes2[$i]->titulo.'. '.$publicacoes2[$i]->local.'. '.$publicacoes2[$i]->ano.'.',0., 'L');
             $pdf->WriteHTML("</td></tr></table>");
             $pdf->WriteHTML("<hr>");
         }
@@ -713,7 +703,7 @@ function actionComprovanteinscricao() {
 
         foreach ($recomendacoesArray as $recomendacoes) {
             echo "<script>console.log('$recomendacoes->nome')</script>";
-            $link = "http://localhost/MyProjects/ppgi/frontend/web/index.php?r=recomendacoes/create&token=".$recomendacoes->token;
+            $link = "http://sistemas.icomp.ufam.edu.br/novoppgi/frontend/web/index.php?r=recomendacoes/create&token=".$recomendacoes->token;
             // subject
             $subject  = "[PPGI/UFAM] Solicitacao de Carta de Recomendacao para ".$model->nome;
 
@@ -742,6 +732,7 @@ function actionComprovanteinscricao() {
             }
         }
     }
+
 
     /* Envio de mensagens para views
    Tipo: success, danger, warning*/

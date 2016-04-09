@@ -13,16 +13,15 @@ use app\models\Edital;
 
 <div class="login-box" style="width:70%;">
     <div class="login-logo">
-        <p align="center"><h3> Formulário de Inscrição no Mestrado/Doutorado - PPGI/UFAM</h3></p>
+        <p align="center"><h3> Formulário de Inscrição no Processo Seletivo para Mestrado/Doutorado - PPGI/UFAM</h3></p>
     </div>
 <div class="login-box-body">
         <div style="float:inline; border-bottom: 1px solid; text-align: justify; text-justify: inter-word;">
             <h3  style="text-align:left; margin-top: 0px"> <b>Instruções: </b> </h3>
             <ul>
             <li>Preencha os campos <b>e-mail, senha, repetir senha e escolha um edital</b> para cadastrar um novo candidato.</li>
-
-            <li>O campo Repetir Senha deve ser preenchido com o mesmo valor preenchido no campo Senha.</li>
-
+            <li>O campo <b>Repetir Senha</b> deve ser preenchido com o mesmo valor preenchido no campo <b>Senha</b>.</li>
+            <li>O e-mail de cadastro não pode ser repetido para um mesmo edital. Caso tenha iniciado sua inscrição em um edital, acesse a opção Continuar Inscrição, acessando o botão <b> Voltar</b>.</li>
             <li>Após confirmar o cadastro, você será direcionado ao formulário de inscrição.</li>
             </ul>
 
@@ -62,7 +61,7 @@ use app\models\Edital;
                             echo "</ul>";
                         }
                         else{
-                            echo "<b> Curso: </b> Mestrado e Doutorado <br>";
+                            echo "<b> Cursos: </b> Mestrado e Doutorado <br>";
                             echo "<b> Vagas para Mestrado: </b><br>";
                             echo "<ul style=\" margin-bottom:0px \"> <li> <b> Ampla Concorrência: </b>".$edital[$i]->vagas_mestrado."</li>";
                             echo "<li> <b> Cotista: </b> </b>".$edital[$i]->cotas_mestrado."</li>";
@@ -92,7 +91,7 @@ use app\models\Edital;
                 <div style="color:red; text-align:center;font-size:15px; font-weight: bold; padding: 20px;"> Formulário de Inscrição</div>
                 <hr>
 
-                <?= $form->field($model, 'email')->label("<font color='#FF0000'>*</font> <b>Email:</b>") ?>
+                <?= $form->field($model, 'email')->label("<font color='#FF0000'>*</font> <b>E-mail:</b>") ?>
 
                 <?= $form->field($model, 'senha')->passwordInput(['value' => ""])->label("<font color='#FF0000'>*</font> <b>Senha:</b>") ?>
 

@@ -38,8 +38,8 @@ $cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
     <div class ="row">
         <?= $form->field($model, 'nome', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Nome:</b>") ?>
         
-        <?= $form->field($model, 'datanascimento', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), ['clientOptions' => 
-            ['alias' =>  'date']])->label("<font color='#FF0000'>*</font> <b>Data de Nascimento:</b>")
+        <?= $form->field($model, 'datanascimento', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+          'clientOptions' => ['alias' =>  'date']])->label("<font color='#FF0000'>*</font> <b>Data de Nascimento:</b>")
         ?>
         
         <?= $form->field($model, 'sexo', ['options' => ['class' => 'col-md-3']])->radioList(['M' => 'Masculino', 'F' => 'Feminino'])->label("<font color='#FF0000'>*</font> <b>Sexo:</b>") ?>
@@ -89,11 +89,11 @@ $cotas = ['Indio' => 'Índio', 'Negro' => 'Negro', 'Pardo' => 'Pardo'];
 
     <div style="clear: both;"><legend>Dados do PosComp</legend></div>
     <div class = "row">
-        <?= $form->field($model, 'inscricaoposcomp', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Nº de Inscrição:</b>") ?>
+        <?= $form->field($model, 'inscricaoposcomp', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("Nº de Inscrição:") ?>
 
-        <?= $form->field($model, 'anoposcomp', ['options' => ['class' => 'col-md-4']])->textInput()->label("<font color='#FF0000'>*</font> <b>Ano:</b>") ?>
+        <?= $form->field($model, 'anoposcomp', ['options' => ['class' => 'col-md-4']])->textInput()->label("Ano:") ?>
 
-        <?= $form->field($model, 'notaposcomp', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Nota:</b>") ?>
+        <?= $form->field($model, 'notaposcomp', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("Nota:") ?>
     </div>
 
     <div style="clear: both;"><legend>Dados da Inscrição</legend></div>

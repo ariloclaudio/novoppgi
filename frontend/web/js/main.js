@@ -24,6 +24,22 @@ $(document).ready( function() {
 
    });
 
+    $("#w0").on("beforeSubmit", function (event, messages) {
+        return true;
+    });
+
+    $('#candidato-datanascimento').focusout(function (date) {
+      data = $('#candidato-datanascimento').val();
+      var matches = /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/.exec(data);
+      if (matches == null){ $('#candidato-datanascimento').val(''); return false; }
+      var d = matches[2];
+      var m = matches[1] - 1;
+      var y = matches[3];
+      var composedDate = new Date(y, m, d);
+      if(composedDate.getDate() == d && composedDate.getMonth() == m && composedDate.getFullYear() == y)
+        return true;
+    })
+
 
     $('input[name="Candidato[historicoUpload]"]').on('switchChange.bootstrapSwitch', function(data, state) { 
         if(state){
@@ -231,6 +247,7 @@ $( window ).load(function() {
         $('#divEstrangeiro').css('display', 'block');
         $('#divBrasileiro').css('display', 'none');
     }
+
 });
 
 

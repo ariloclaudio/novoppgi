@@ -76,7 +76,7 @@ class Candidato extends \yii\db\ActiveRecord
 /*FIM Validações para passo 0*/
 /*Inicio Validações para passo 1*/
 
-            [['nome', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'cursodesejado', 'solicitabolsa' , 'cotas', 'regime', 'solicitabolsa', 'inscricaoposcomp', 'anoposcomp', 'notaposcomp', 'deficiencia'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
+            [['nome', 'sexo', 'cep', 'uf',  'cidade', 'endereco', 'bairro' , 'datanascimento', 'nacionalidade', 'telresidencial' , 'cursodesejado', 'solicitabolsa' , 'cotas', 'regime', 'solicitabolsa', 'deficiencia'], 'required', 'when' => function($model){ return $model->passoatual == 1;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_1';
             }"],
@@ -172,13 +172,13 @@ class Candidato extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nome' => 'Nome',
             'nomesocial' => 'Nome Social',
-            'endereco' => 'Endereco',
+            'endereco' => 'Endereço',
             'bairro' => 'Bairro',
             'cidade' => 'Cidade',
             'uf' => 'UF',
             'cep' => 'CEP',
             'email' => 'Email',
-            'datanascimento' => 'Data Nascimento',
+            'datanascimento' => 'Data de Nascimento',
             'nacionalidade' => 'Nacionalidade',
             'pais' => 'Pais',
             'passaporte' => 'Passaporte',
@@ -188,7 +188,7 @@ class Candidato extends \yii\db\ActiveRecord
             'telcelular' => 'Telefone Alternativo',
             'cursodesejado' => 'Curso Desejado',
             'regime' => 'Regime',
-            'inscricaoposcomp' => 'Inscricao PosComp',
+            'inscricaoposcomp' => 'Nº Inscrição PosComp',
             'anoposcomp' => 'Ano PosComp',
             'notaposcomp' => 'Nota PosComp',
             'solicitabolsa' => 'Solicita Bolsa de Estudo',
@@ -223,16 +223,16 @@ class Candidato extends \yii\db\ActiveRecord
             'proposta' => 'Proposta',
             'curriculum' => 'Curriculum',
             'comprovantepagamento' => 'Comprovante de Pagamento',
-            'dataformaturagrad' => 'Dataformaturagrad',
-            'dataformaturapos' => 'Data de Formatura',
+            'dataformaturagrad' => 'Data de formatura da Graduação',
+            'dataformaturapos' => 'Data de Formatura da Pós',
             'resultado' => 'Resultado',
             'periodo' => 'Período',
             'idEdital' => 'Edital',
             'declaracao' => 'Declaração de Veracidade de Informações',
             'cartaNomeReq1' => 'Nome',
             'cartaNomeReq2' => 'Nome',
-            'cartaEmailReq1' => 'Email',
-            'cartaEmailReq2' => 'Email',
+            'cartaEmailReq1' => 'E-mail',
+            'cartaEmailReq2' => 'E-mail',
 
                 'historicoFile' => 'Histórico Escolar',
                 'curriculumFile' => 'Curriculum Vittae',
@@ -442,10 +442,10 @@ class Candidato extends \yii\db\ActiveRecord
                 $recomendacao->idCandidato = $this->id;
                 $recomendacao->dataResposta = '0000-00-00 00:00:00';
                 $recomendacao->prazo = date('Y-m-d', strtotime($this->edital->datafim. ' + 1 days'));
+                $recomendacao->edital_idEdital = $this->idEdital;
                 $recomendacao->nome = $cartas['nome'][$i];
                 $recomendacao->email = $cartas['email'][$i];
                 $recomendacao->token = md5($this->id.$cartas['email'][$i].time());
-                $recomendacao->edital_idEdital = $this->idEdital;
                 $this->recomendacoes[$i] = $recomendacao;
                 if(!$recomendacao->save())
                     return false;

@@ -114,7 +114,7 @@ class Aluno extends \yii\db\ActiveRecord
             'anoconclusao' => 'Ano de Conclusão',
             'sede' => 'Sede',
             'financiadorbolsa' => 'Financiador da Bolsa',
-            'dataimplementacaobolsa' => 'Data de Implementacao',
+            'dataimplementacaobolsa' => 'Data de Implementacão',
 
         ];
     }

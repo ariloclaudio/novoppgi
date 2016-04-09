@@ -153,8 +153,7 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
 
         <?= Html::submitButton('<img src="img/forward.gif" border="0" height="32" width="32"><br><b>Salvar e Finalizar</b>', ['name' => 'finalizar', 'class' => 'btn btn-default col-md-4 col-xs-12',
             'data' => [
-                'confirm' => 'Finalizar Inscrição? Após esse passo seus dados serão submetidos para avaliação e não poderão ser alterados, sob pena de exclusão do
-            Curso.',
+                'confirm' => 'Finalizar a sua inscrição? Após esse passo seus dados serão submetidos para avaliação e não poderão ser alterados.',
             ]]) ?>
     </div>
 

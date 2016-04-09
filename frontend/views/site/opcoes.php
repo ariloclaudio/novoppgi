@@ -8,7 +8,7 @@ use app\models\Edital;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
 
-$this->title = 'Formulário de Inscrição no Mestrado/Doutorado - PPGI/UFAM';
+$this->title = 'Formulário de Inscrição no Processo Seletivo para Mestrado/Doutorado - PPGI/UFAM';
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -51,7 +51,7 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <p align="center"><h3>Formulário de Inscrição no Mestrado/Doutorado - PPGI/UFAM</h3></p>
+        <p align="center"><h3>Formulário de Inscrição no Processo Seletivo para Mestrado/Doutorado - PPGI/UFAM</h3></p>
     </div>
     <div style="margin-bottom: 10px;">    
         <font size="2" style="line-height: 150%">

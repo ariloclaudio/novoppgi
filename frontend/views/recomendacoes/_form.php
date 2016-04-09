@@ -28,7 +28,7 @@ label{
         <?= $form->field($model, 'titulacao', ['options' =>['class' => 'col-md-4']])->dropDownList($titulacao, ['prompt' => 'Selecione uma Titulação'])->label("<font color='#FF0000'>*</font> <b>Titulação:</b>") ?>
     </div>
     <div class="row">
-        <?= $form->field($model, 'instituicaoTitulacao', ['options' =>['class' => 'col-md-8']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Instituição:</b>") ?>
+        <?= $form->field($model, 'instituicaoTitulacao', ['options' =>['class' => 'col-md-8']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Instituição onde obteve o título:</b>") ?>
 
         <?= $form->field($model, 'anoTitulacao', ['options' =>['class' => 'col-md-4']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Ano de Titulação:</b>") ?>
     </div>

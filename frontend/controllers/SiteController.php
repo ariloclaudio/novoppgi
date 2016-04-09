@@ -197,11 +197,11 @@ class SiteController extends Controller
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                $this->mensagens('success', 'Email Enviado com Sucesso.', 'Verifique sua conta de email');
+                $this->mensagens('success', 'E-mail Enviado com Sucesso.', 'Verifique sua conta de email');
 
                 return $this->goHome();
             } else {
-                $this->mensagens('warning', 'Erro ao Enviar Email', 'Desculpe, o email não pode ser enviado. Verique sua conexão ou contate o administrador');
+                $this->mensagens('warning', 'Erro ao Enviar E-mail', 'Desculpe, o email não pode ser enviado. Verique sua conexão ou contate o administrador');
             }
         }
 
@@ -226,7 +226,7 @@ class SiteController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password was saved.');
+            $this->mensagens('success', 'Senha Alterada', 'Nova senha foi salva.');
 
             return $this->goHome();
         }
