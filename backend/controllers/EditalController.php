@@ -82,6 +82,15 @@ class EditalController extends Controller
         ]);
     }
 
+    public function linhaNaoHaCandidatos($objPHPExcel,$i,$intervalo){
+
+            $objPHPExcel->mergeCells($intervalo);
+            $objPHPExcel->setCellValueByColumnAndRow(0, $i+2, "Não há candidatos");
+            $objPHPExcel->getStyle($intervalo)->getFont()->setBold(true);
+            $objPHPExcel->getStyle($intervalo)->getFont()->getColor()->setRGB('FF0000');
+            $objPHPExcel->getRowDimension($i+2)->setRowHeight(30);
+    }
+
     public function planilhaCandidatoFormatacao($objPHPExcel,$intervalo_tamanho){
 
     //definindo a altura das linhas
@@ -172,20 +181,26 @@ class EditalController extends Controller
 
     //método responsável por preencher na planilha dados provenientes do banco: NOME/INSCRIÇÃO/LINHA/NÍVEL
 
-    public function planilhaCandidatoPreencherDados($objPHPExcel,$model_candidato_doutorado,$linhasPesquisas,$arrayCurso,$i,$j){
+    public function planilhaCandidatoPreencherDados($objPHPExcel,$model_candidato,$linhasPesquisas,$arrayCurso,$i,$j){
 
 
-        for($j=0; $j<count($model_candidato_doutorado); $j++){
-            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(0, $i+3, $model_candidato_doutorado[$j]->nome);
+        for($j=0; $j<count($model_candidato); $j++){
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(0, $i+3, $model_candidato[$j]->nome);
             
             $objPHPExcel->getActiveSheet()
-                ->setCellValueByColumnAndRow(1, $i+3, ($model_candidato_doutorado[$j]->idEdital.'-'.str_pad($model_candidato_doutorado[$j]->posicaoEdital, 3, "0", STR_PAD_LEFT)));
+                ->setCellValueByColumnAndRow(1, $i+3, ($model_candidato[$j]->idEdital.'-'.str_pad($model_candidato[$j]->posicaoEdital, 3, "0", STR_PAD_LEFT)));
             
-            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, $i+3, $linhasPesquisas[$model_candidato_doutorado[$j]->idLinhaPesquisa]);
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, $i+3, $linhasPesquisas[$model_candidato[$j]->idLinhaPesquisa]);
 
-            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, $i+3, $arrayCurso[$model_candidato_doutorado[$j]->cursodesejado]);   
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, $i+3, $arrayCurso[$model_candidato[$j]->cursodesejado]);   
 
             $i++;
+        }
+
+        if($model_candidato == NULL){
+            $intervalo = "A".($i+2).":K".($i+2);
+            $this->linhaNaoHaCandidatos($objPHPExcel->getActiveSheet(),$i,$intervalo);
+
         }
 
         return $i;
@@ -207,13 +222,6 @@ class EditalController extends Controller
         $objWorkSheet->getColumnDimension('B')->setWidth(15);
         $objWorkSheet->getColumnDimension('C')->setWidth(18);
 
-        $objWorkSheet
-                ->setCellValue("A1", "Mestrado" )
-                ->setCellValue("A2", "Nome" )
-                ->setCellValue("B2", "Inscrição" )
-                ->setCellValue("C2", "Nota Final" );
-
-
           $BStyle = array(
               'borders' => array(
                   'allborders' => array(
@@ -226,9 +234,15 @@ class EditalController extends Controller
 
     public function planilhaProvas($objWorkSheet,$linhaAtual,$ultimaLinha){
 
-
         //definindo altura da linha do header
         $objWorkSheet->getRowDimension(2)->setRowHeight(40);
+
+
+        $objWorkSheet
+                ->setCellValue("A1", "Mestrado" )
+                ->setCellValue("A2", "Nome" )
+                ->setCellValue("B2", "Inscrição" )
+                ->setCellValue("C2", "Nota Final" );
 
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
@@ -238,13 +252,21 @@ class EditalController extends Controller
                 ->setCellValue('B'.($i+3), "='Candidato'!B".($i+3));
         }
 
+        if($linhaAtual == 0){
+            $intervalo = "A".($i+2).":C".($i+2);
+            $this->linhaNaoHaCandidatos($objWorkSheet,$linhaAtual, $intervalo);
+        } 
+
+
         $i = $i+4;
+
 
         $objWorkSheet
                 ->setCellValue("A".($i-1), "Doutorado" )
                 ->setCellValue("A".($i), "Nome" )
                 ->setCellValue("B".($i), "Inscrição" )
                 ->setCellValue("C".($i), "Nota Final" );
+
 
         $objWorkSheet->getStyle("A".($i-1).":C".$i)->getFont()->setBold(true);
 
@@ -275,6 +297,12 @@ class EditalController extends Controller
 
         //definindo a linha do segundo header!
         $linhaSegundoHeader = $i;
+
+
+        if($i+1 == $ultimaLinha+3){
+            $intervalo = "A".($i).":C".($i+1);
+            $this->linhaNaoHaCandidatos($objWorkSheet,$ultimaLinha, $intervalo);
+        } 
 
         //Write cells
         for ($i=$i+1; $i< $ultimaLinha+3; $i++){
@@ -326,15 +354,6 @@ class EditalController extends Controller
         $planilhaPropostas->getColumnDimension('D')->setWidth(13);
         $planilhaPropostas->getColumnDimension('E')->setWidth(13);
 
-        $planilhaPropostas
-                ->setCellValue("A1", "Mestrado" )
-                ->setCellValue("A2", "Nome" )
-                ->setCellValue("B2", "Avaliador 1" )
-                ->setCellValue("C2", "Avaliador 2" )
-                ->setCellValue("D2", "Avaliador 3" )
-                ->setCellValue("E2", "Média Final" );
-
-
           $BStyle = array(
               'borders' => array(
                   'allborders' => array(
@@ -348,6 +367,13 @@ class EditalController extends Controller
 
     public function planilhaPropostas($planilhaPropostas,$linhaAtual,$ultimaLinha){
 
+        $planilhaPropostas
+                ->setCellValue("A1", "Mestrado" )
+                ->setCellValue("A2", "Nome" )
+                ->setCellValue("B2", "Avaliador 1" )
+                ->setCellValue("C2", "Avaliador 2" )
+                ->setCellValue("D2", "Avaliador 3" )
+                ->setCellValue("E2", "Média Final" );
 
 
         //Write cells
@@ -358,6 +384,12 @@ class EditalController extends Controller
                 ->setCellValue('E'.($i+3), '=AVERAGE(B'.($i+3).':D'.($i+3).')');
         }
 
+        if($linhaAtual == 0){
+            $intervalo = "A".($i+2).":E".($i+2);
+            $this->linhaNaoHaCandidatos($planilhaPropostas,$linhaAtual, $intervalo);
+        } 
+
+
         $i = $i+4;
 
         $planilhaPropostas
@@ -367,6 +399,7 @@ class EditalController extends Controller
                 ->setCellValue("C".($i), "Avaliador 2" )
                 ->setCellValue("D".($i), "Avaliador 3" )
                 ->setCellValue("E".($i), "Média Final" );
+
 
         $planilhaPropostas->getStyle("A".($i-1).":E".$i)->getFont()->setBold(true);
 
@@ -397,6 +430,12 @@ class EditalController extends Controller
 
         $linhaSegundoHeader = $i;
 
+
+        if($i+1 == $ultimaLinha+3){
+            $intervalo = "A".($i).":E".($i+1);
+            $this->linhaNaoHaCandidatos($planilhaPropostas,$ultimaLinha, $intervalo);
+        } 
+
         //Write cells
         for ($i=$i+1; $i< $ultimaLinha+3; $i++){
 
@@ -404,7 +443,6 @@ class EditalController extends Controller
                 ->setCellValue('A'.($i), "='Candidato'!A".($i))
                 ->setCellValue('E'.($i), '=AVERAGE(B'.($i).':D'.($i).')');
         }
-
 
         //definindo tamanho das linhas
         $qtd_linhas = $planilhaPropostas->getHighestRow();
@@ -422,15 +460,6 @@ class EditalController extends Controller
 
     public function planilhaTitulosFormatacao($planilhaTitulos,$intervalo_tamanho){
 
-
-        $planilhaTitulos->mergeCells("A1:J1");
-        $planilhaTitulos->mergeCells("A2:A3");
-
-        $planilhaTitulos->mergeCells("B2:E2");
-        $planilhaTitulos->mergeCells("F2:H2");
-
-        $planilhaTitulos->mergeCells("I2:I3");
-        $planilhaTitulos->mergeCells("J2:J3");
 
         $planilhaTitulos->getStyle("A1:J2")->getFont()->setBold(true);
 
@@ -456,20 +485,6 @@ class EditalController extends Controller
         $planilhaTitulos->getColumnDimension('B')->setWidth(15);
         $planilhaTitulos->getColumnDimension('C')->setWidth(18);
 
-        $planilhaTitulos
-                ->setCellValue("A1", "Mestrado" )
-                ->setCellValue("A2", "Nome" )
-                ->setCellValue("B2", "Atividades Curriculares e Extracurriculares (30 pontos)" )
-                ->setCellValue("F2", "Publicações (70 pontos)" )
-                ->setCellValue("B3", "Mestrado" )
-                ->setCellValue("C3", "Estágio, Extensão e monitoria" )
-                ->setCellValue("D3", "Docência" )
-                ->setCellValue("E3", "IC, IT, ID" )
-                ->setCellValue("F3", "A" )
-                ->setCellValue("G3", "B1 a B2" )
-                ->setCellValue("H3", "B3 a B5" )
-                ->setCellValue("I2", "Nota" )
-                ->setCellValue("J2", "NAC" );
 
           $BStyle = array(
               'borders' => array(
@@ -485,6 +500,30 @@ class EditalController extends Controller
     public function planilhaTitulos($planilhaTitulos,$linhaAtual,$ultimaLinha){
 
 
+        $planilhaTitulos
+                ->setCellValue("A1", "Mestrado" )
+                ->setCellValue("A2", "Nome" )
+                ->setCellValue("B2", "Atividades Curriculares e Extracurriculares (30 pontos)" )
+                ->setCellValue("F2", "Publicações (70 pontos)" )
+                ->setCellValue("B3", "Mestrado" )
+                ->setCellValue("C3", "Estágio, Extensão e monitoria" )
+                ->setCellValue("D3", "Docência" )
+                ->setCellValue("E3", "IC, IT, ID" )
+                ->setCellValue("F3", "A" )
+                ->setCellValue("G3", "B1 a B2" )
+                ->setCellValue("H3", "B3 a B5" )
+                ->setCellValue("I2", "Nota" )
+                ->setCellValue("J2", "NAC" );
+
+            $planilhaTitulos->mergeCells("A1:J1");
+            $planilhaTitulos->mergeCells("A2:A3");
+
+            $planilhaTitulos->mergeCells("B2:E2");
+            $planilhaTitulos->mergeCells("F2:H2");
+
+            $planilhaTitulos->mergeCells("I2:I3");
+            $planilhaTitulos->mergeCells("J2:J3");
+
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
 
@@ -497,6 +536,11 @@ class EditalController extends Controller
                 ->setCellValue('I'.($i+4), '=IF('.$soma1.'>30,30,'.$soma1.')'.' + IF('.$soma2.'>70,70,'.$soma2.')');
 
         }
+
+        if($linhaAtual == 0){
+            $intervalo = "A".($i+2).":J".($i+3);
+            $this->linhaNaoHaCandidatos($planilhaTitulos,$linhaAtual, $intervalo);
+        } 
 
         $i = $i+5;
 
@@ -556,6 +600,11 @@ class EditalController extends Controller
         $planilhaTitulos->getStyle("A".($i-1).":C".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
 
 
+        if($i == $ultimaLinha+3){
+            $intervalo = "A".($i).":J".($i+1);
+            $this->linhaNaoHaCandidatos($planilhaTitulos,$ultimaLinha+1, $intervalo);
+        } 
+
         //Write cells
         for ($i; $i< $ultimaLinha+3; $i++){
 
@@ -567,7 +616,6 @@ class EditalController extends Controller
                 ->setCellValue('I'.($i+2), '=IF('.$soma1.'>30,30,'.$soma1.')'.' + IF('.$soma2.'>70,70,'.$soma2.')')
                 ->setCellValue('J'.($i+2), '=5+((5 * I'.($i+2).')/100)');
         }
-
 
         $qtd_linhas = $planilhaTitulos->getHighestRow();
 
@@ -599,36 +647,6 @@ class EditalController extends Controller
         $planilhaCartas->getStyle( $intervalo_tamanho )->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $planilhaCartas->getStyle( $intervalo_tamanho )->getAlignment()->setVertical(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-
-
-        $planilhaCartas
-                ->setCellValue("A1", "Mestrado" )
-                ->setCellValue("B1", "Avaliador 1" )
-                ->setCellValue("M1", "Avaliador 2" )
-                ->setCellValue("A2", "Candidato" )
-                ->setCellValue("B2", "Dom" )
-                ->setCellValue("C2", "Facil" )
-                ->setCellValue("D2", "Assid" )
-                ->setCellValue("E2", "Relac" )
-                ->setCellValue("F2", "Iniciativa" )
-                ->setCellValue("G2", "Escrita" )
-
-                ->setCellValue("H2", "AC" )
-                ->setCellValue("I2", "RA" )
-                ->setCellValue("J2", "PI" )
-                ->setCellValue("K2", "NICR" )
-                ->setCellValue("L2", "Dom" )
-                ->setCellValue("M2", "Facil" )
-                ->setCellValue("N2", "Assid" )
-                ->setCellValue("O2", "Relac" )
-                ->setCellValue("P2", "Iniciativa" )
-                ->setCellValue("Q2", "Escrita" )
-                ->setCellValue("R2", "AC" )
-                ->setCellValue("S2", "RA" )
-                ->setCellValue("T2", "PI" )
-                ->setCellValue("U2", "NICR" )
-                ->setCellValue("V2", "Total" )
-                ->setCellValue("W2", "Nota Ponderada" );
 
           $BStyle = array(
               'borders' => array(
@@ -740,6 +758,35 @@ class EditalController extends Controller
     public function planilhaCartas($planilhaCartas,$model_recomendacoes,$model_candidato_mestrado,
         $model_candidato_doutorado,$linhaAtual,$ultimaLinha){
 
+        $planilhaCartas
+                ->setCellValue("A1", "Mestrado" )
+                ->setCellValue("B1", "Avaliador 1" )
+                ->setCellValue("M1", "Avaliador 2" )
+                ->setCellValue("A2", "Candidato" )
+                ->setCellValue("B2", "Dom" )
+                ->setCellValue("C2", "Facil" )
+                ->setCellValue("D2", "Assid" )
+                ->setCellValue("E2", "Relac" )
+                ->setCellValue("F2", "Iniciativa" )
+                ->setCellValue("G2", "Escrita" )
+
+                ->setCellValue("H2", "AC" )
+                ->setCellValue("I2", "RA" )
+                ->setCellValue("J2", "PI" )
+                ->setCellValue("K2", "NICR" )
+                ->setCellValue("L2", "Dom" )
+                ->setCellValue("M2", "Facil" )
+                ->setCellValue("N2", "Assid" )
+                ->setCellValue("O2", "Relac" )
+                ->setCellValue("P2", "Iniciativa" )
+                ->setCellValue("Q2", "Escrita" )
+                ->setCellValue("R2", "AC" )
+                ->setCellValue("S2", "RA" )
+                ->setCellValue("T2", "PI" )
+                ->setCellValue("U2", "NICR" )
+                ->setCellValue("V2", "Total" )
+                ->setCellValue("W2", "Nota Ponderada" );
+
         //Write cells
         for ($i=0; $i< $linhaAtual; $i++){
 
@@ -757,6 +804,13 @@ class EditalController extends Controller
                 ->setCellValue('U'.($i+3), $formulaNICR2)
                 ->setCellValue('V'.($i+3), $formulaTotal);
         }
+
+
+        if($linhaAtual == 0){
+            $intervalo = "A".($i+2).":W".($i+2);
+            $this->linhaNaoHaCandidatos($planilhaCartas,$linhaAtual, $intervalo);
+        } 
+
 
         $i = $i+4;
 
@@ -845,6 +899,12 @@ class EditalController extends Controller
 
         $qtd_linhas = $planilhaCartas->getHighestRow() - 2;
 
+
+        if( ($i+1) == $ultimaLinha+3){
+            $intervalo = "A".($i).":W".($i);
+            $this->linhaNaoHaCandidatos($planilhaCartas,$ultimaLinha, $intervalo);
+        } 
+
         //Write cells
         for ($i=0; $i< $qtd_linhas-2; $i++){
 
@@ -871,6 +931,7 @@ class EditalController extends Controller
                 ->setCellValue('U'.($i), $formulaNICR2)
                 ->setCellValue('V'.($i), $formulaTotal);
         }
+
 
         for ($i=$qtd_linhas; $i< $ultimaLinha; $i++){
 
@@ -928,14 +989,6 @@ class EditalController extends Controller
         $planilhaMediaFinal->getColumnDimension('D')->setWidth(15);
         $planilhaMediaFinal->getColumnDimension('E')->setWidth(10);
 
-        //INSERE VALORES NAS COLUNAS
-        $planilhaMediaFinal
-                ->setCellValue("A1", "Mestrado" )
-                ->setCellValue("A2", "Candidato" )
-                ->setCellValue("B2", "Prova" )
-                ->setCellValue("C2", "Proposta" )
-                ->setCellValue("D2", "Títulos + Carta" )
-                ->setCellValue("E2", "Média" );
 
           $BStyle = array(
               'borders' => array(
@@ -951,6 +1004,14 @@ class EditalController extends Controller
     public function planilhaMediaFinal($planilhaMediaFinal,$linhaAtual,$ultimaLinha){
 
 
+        //INSERE VALORES NAS COLUNAS
+        $planilhaMediaFinal
+                ->setCellValue("A1", "Mestrado" )
+                ->setCellValue("A2", "Candidato" )
+                ->setCellValue("B2", "Prova" )
+                ->setCellValue("C2", "Proposta" )
+                ->setCellValue("D2", "Títulos + Carta" )
+                ->setCellValue("E2", "Média" );
 
 
         //ESCREVE VALORES NAS CÉLULAS
@@ -964,7 +1025,12 @@ class EditalController extends Controller
                 ->setCellValue('E'.($i+3), "=AVERAGE(B".($i+3).",D".($i+3).")");
           }
 
-          //verificar erro no planilha do Professor !
+
+        if($linhaAtual == 0){
+            $intervalo = "A".($i+2).":E".($i+2);
+            $this->linhaNaoHaCandidatos($planilhaMediaFinal,$linhaAtual, $intervalo);
+        } 
+
 
         $i = $i+4;
 
@@ -1012,6 +1078,11 @@ class EditalController extends Controller
         $planilhaMediaFinal->getStyle("A".($i-1).":C".($i-1))->getFont()->getColor()->setRGB('FFFFFF');
 
         $linhaSegundoHeader = $i;
+
+        if($i+1 == $ultimaLinha+3){
+            $intervalo = "A".($i).":E".($i);
+            $this->linhaNaoHaCandidatos($planilhaMediaFinal,$ultimaLinha, $intervalo);
+        } 
 
 
         //INSERINDO VALORES NAS CÉLULAS
@@ -1063,7 +1134,7 @@ class EditalController extends Controller
         $model_candidato_mestrado = Candidato::find()->where("cursodesejado = 1 AND passoatual = 4 AND idEdital ='".$idEdital."'")->orderBy("nome")->all();
         $model_candidato_doutorado = Candidato::find()->where("cursodesejado = 2 AND passoatual = 4  AND idEdital ='".$idEdital."'")->orderBy("nome")->all();
 
-        $model_recomendacoes = Recomendacoes::find()->all();
+        $model_recomendacoes = Recomendacoes::find()->where("edital_idEdital='".$idEdital."'")->all();
 
         //instanciando objeto Excel
 
