@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Defesa */
@@ -51,8 +52,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'horario',
             'local',
             'resumo:ntext',
-            'banca_id',
+            //'banca_id',
         ],
     ]) ?>
+
+<h3> Detalhes da Banca </h3>
+
+
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        //'filterModel' => $searchModel,
+        'columns' => [
+            //['class' => 'yii\grid\SerialColumn'],
+
+            //'banca_id',
+            //'membrosbanca_id',
+            'membro_nome',
+            'membro_filiacao',
+            'funcao',
+
+            //['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+
 
 </div>

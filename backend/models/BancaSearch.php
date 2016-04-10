@@ -18,8 +18,8 @@ class BancaSearch extends Banca
     public function rules()
     {
         return [
-            [['id', 'idAluno', 'idMembro'], 'integer'],
-            [['nomeMembro', 'instituicaoMembro', 'funcao', 'tipoDefesa'], 'safe'],
+            [['banca_id', 'membrosbanca_id'], 'integer'],
+            [['funcao', 'passagem'], 'safe'],
         ];
     }
 
@@ -39,9 +39,10 @@ class BancaSearch extends Banca
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$idBanca)
     {
-        $query = Banca::find();
+        $query = Banca::find()->select("j17_banca_has_membrosbanca.* , j17_membrosbanca.nome as membro_nome, j17_membrosbanca.filiacao as membro_filiacao ")->where("banca_id = ".$idBanca)
+            ->innerJoin("j17_membrosbanca","j17_membrosbanca.id = j17_banca_has_membrosbanca.membrosbanca_id");
 
         // add conditions that should always apply here
 
@@ -59,15 +60,12 @@ class BancaSearch extends Banca
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'idAluno' => $this->idAluno,
-            'idMembro' => $this->idMembro,
+            'banca_id' => $this->banca_id,
+            'membrosbanca_id' => $this->membrosbanca_id,
         ]);
 
-        $query->andFilterWhere(['like', 'nomeMembro', $this->nomeMembro])
-            ->andFilterWhere(['like', 'instituicaoMembro', $this->instituicaoMembro])
-            ->andFilterWhere(['like', 'funcao', $this->funcao])
-            ->andFilterWhere(['like', 'tipoDefesa', $this->tipoDefesa]);
+        $query->andFilterWhere(['like', 'funcao', $this->funcao])
+            ->andFilterWhere(['like', 'passagem', $this->passagem]);
 
         return $dataProvider;
     }

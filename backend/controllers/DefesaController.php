@@ -5,6 +5,8 @@ namespace backend\controllers;
 use Yii;
 use app\models\Defesa;
 use app\models\DefesaSearch;
+use app\models\Banca;
+use app\models\BancaSearch;
 use app\models\Aluno;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -54,11 +56,14 @@ class DefesaController extends Controller
     public function actionView($idDefesa, $aluno_id)
     {
 
+        $model_defesa = $this->findModel($idDefesa, $aluno_id);
 
-
+        $model_banca = new BancaSearch();
+        $dataProvider = $model_banca->search(Yii::$app->request->queryParams,$model_defesa->banca_id);
 
         return $this->render('view', [
-            'model' => $this->findModel($idDefesa, $aluno_id),
+            'model' => $model_defesa,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

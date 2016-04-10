@@ -1,25 +1,40 @@
 <?php
 
 namespace backend\controllers;
-use app\models\BancaSearch;
-use app\models\Banca;
+
 use Yii;
+use app\models\Banca;
+use app\models\BancaSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
-class BancaController extends \yii\web\Controller
+/**
+ * BancaController implements the CRUD actions for Banca model.
+ */
+class BancaController extends Controller
 {
-    public function actionCreate()
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
     {
-        return $this->render('create');
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
-    public function actionDelete()
-    {
-        return $this->render('delete');
-    }
-
+    /**
+     * Lists all Banca models.
+     * @return mixed
+     */
     public function actionIndex()
     {
-
         $searchModel = new BancaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -27,17 +42,87 @@ class BancaController extends \yii\web\Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-
     }
 
-    public function actionUpdate()
+    /**
+     * Displays a single Banca model.
+     * @param integer $banca_id
+     * @param integer $membrosbanca_id
+     * @return mixed
+     */
+    public function actionView($banca_id, $membrosbanca_id)
     {
-        return $this->render('update');
+        return $this->render('view', [
+            'model' => $this->findModel($banca_id, $membrosbanca_id),
+        ]);
     }
 
-    public function actionView()
+    /**
+     * Creates a new Banca model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
     {
-        return $this->render('view');
+        $model = new Banca();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'banca_id' => $model->banca_id, 'membrosbanca_id' => $model->membrosbanca_id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
     }
 
+    /**
+     * Updates an existing Banca model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $banca_id
+     * @param integer $membrosbanca_id
+     * @return mixed
+     */
+    public function actionUpdate($banca_id, $membrosbanca_id)
+    {
+        $model = $this->findModel($banca_id, $membrosbanca_id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'banca_id' => $model->banca_id, 'membrosbanca_id' => $model->membrosbanca_id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Banca model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $banca_id
+     * @param integer $membrosbanca_id
+     * @return mixed
+     */
+    public function actionDelete($banca_id, $membrosbanca_id)
+    {
+        $this->findModel($banca_id, $membrosbanca_id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Banca model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $banca_id
+     * @param integer $membrosbanca_id
+     * @return Banca the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($banca_id, $membrosbanca_id)
+    {
+        if (($model = Banca::findOne(['banca_id' => $banca_id, 'membrosbanca_id' => $membrosbanca_id])) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }

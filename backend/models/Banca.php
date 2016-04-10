@@ -5,24 +5,25 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "j17_banca".
+ * This is the model class for table "j17_banca_has_membrosbanca".
  *
- * @property integer $id
- * @property integer $idAluno
- * @property integer $idMembro
- * @property string $nomeMembro
- * @property string $instituicaoMembro
+ * @property integer $banca_id
+ * @property integer $membrosbanca_id
  * @property string $funcao
- * @property string $tipoDefesa
+ * @property string $passagem
  */
 class Banca extends \yii\db\ActiveRecord
 {
+
+    public $membro_nome;
+    public $membro_filiacao;
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'j17_banca';
+        return 'j17_banca_has_membrosbanca';
     }
 
     /**
@@ -31,10 +32,10 @@ class Banca extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idAluno', 'nomeMembro', 'instituicaoMembro', 'tipoDefesa'], 'required'],
-            [['idAluno', 'idMembro'], 'integer'],
-            [['nomeMembro', 'instituicaoMembro'], 'string', 'max' => 60],
-            [['funcao', 'tipoDefesa'], 'string', 'max' => 1],
+            [['membrosbanca_id'], 'required'],
+            [['membrosbanca_id'], 'integer'],
+            [['funcao'], 'string'],
+            [['passagem'], 'string', 'max' => 1],
         ];
     }
 
@@ -44,13 +45,10 @@ class Banca extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'idAluno' => 'Id Aluno',
-            'idMembro' => 'Id Membro',
-            'nomeMembro' => 'Nome Membro',
-            'instituicaoMembro' => 'Instituicao Membro',
+            'banca_id' => 'Banca ID',
+            'membrosbanca_id' => 'Membrosbanca ID',
             'funcao' => 'Funcao',
-            'tipoDefesa' => 'Tipo Defesa',
+            'passagem' => 'Passagem',
         ];
     }
 }
