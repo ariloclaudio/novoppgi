@@ -237,7 +237,6 @@ class RecomendacoesController extends Controller
                                        ,array('Atributos do Candidato'=>'Relacionamento com colegas e superiores','Nível'=>$pontos[$recomendacao[$i]->relacionamento])
                                        ,array('Atributos do Candidato'=>'Iniciativa, desembaraço, originalidade e liderança','Nível'=>$pontos[$recomendacao[$i]->iniciativa])
                                        ,array('Atributos do Candidato'=>'Capacidade de expressão escrita','Nível'=>$pontos[$recomendacao[$i]->expressao])
-                                       ,array('Atributos do Candidato'=>'Conhecimento em Inglês','Nível'=>$pontos[$recomendacao[$i]->ingles])
             );
             
 
@@ -302,10 +301,6 @@ class RecomendacoesController extends Controller
                     <tr style="background-color:#D8D8D8">
                         <td style="text-align:left"> '.'Capacidade de expressão escrita </td>
                         <td> '.$pontos[$recomendacao[$i]->expressao].'</td>
-                    </tr>
-                    <tr style="background-color:#F2F5A9">
-                        <td style="text-align:left" > '.'Conhecimento em Inglês </td>
-                        <td> '.$pontos[$recomendacao[$i]->ingles].'</td>
                     </tr>
 
                 </table>

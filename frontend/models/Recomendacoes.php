@@ -22,9 +22,9 @@ class Recomendacoes extends \yii\db\ActiveRecord
     public function rules()
     {
             return [
-            [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles', 'classificacao', 'informacoes', 'anoContato', 'funcoesCartaArray', 'conhece'], 'required',
+            [['anoTitulacao', 'prazo', 'nome', 'email', 'token', 'titulacao', 'cargo', 'instituicaoTitulacao', 'instituicaoAtual', 'dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'classificacao', 'informacoes', 'anoContato', 'funcoesCartaArray', 'conhece'], 'required',
             'when' => function($model){ return $model->passo == 2;},],
-            [['dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao', 'ingles'], 'integer'],
+            [['dominio', 'aprendizado', 'assiduidade', 'relacionamento', 'iniciativa', 'expressao'], 'integer'],
             [['classificacao'], 'string'],
             [['anoContato', 'anoTitulacao'], 'integer', 'min' => 1900, 'max' => 2099],
             [['dataEnvio', 'prazo'], 'safe'],
@@ -58,7 +58,6 @@ class Recomendacoes extends \yii\db\ActiveRecord
             'relacionamento' => 'Relacionamento',
             'iniciativa' => 'Iniciativa',
             'expressao' => 'Expressão',
-            'ingles' => 'Inglês',
             'classificacao' => 'Classificacão',
             'informacoes' => 'Informacões',
             'anoContato' => 'Ano que conheceu o contato',

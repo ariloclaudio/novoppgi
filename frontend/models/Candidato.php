@@ -7,6 +7,7 @@ use yiibr\brvalidator\CpfValidator;
 use yii\web\UploadedFile;
 use yii\db\IntegrityException;
 use yii\base\Exception;
+use yii\helpers\Html;
 
 
 class Candidato extends \yii\db\ActiveRecord
@@ -257,6 +258,10 @@ class Candidato extends \yii\db\ActiveRecord
 
     /*Fim dos Relacionamentos*/
 
+    public function getNumeroInscricao(){
+        return $this->idEdital.'-'.str_pad($this->posicaoEdital, 3, "0", STR_PAD_LEFT);
+    }
+
 
     public function getDiretorio(){
         $salt1 = "programadeposgraduacaoufamicompPPGI";
@@ -379,11 +384,13 @@ class Candidato extends \yii\db\ActiveRecord
         return true;
     }
 
-    /*Validação para identidicar se usuáio já está cadastrado*/
+    /*Validação para identificar se usuário já está cadastrado*/
     public function beforeSave()
     {
-        if($this->passoatual != 0 || !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count()){
+        if($this->passoatual == 0 && !Candidato::find()->where(['idEdital' => $this->idEdital])->andWhere(['email' => $this->email])->count()){
             $this->posicaoEdital = (Candidato::find()->where(['idEdital' => $this->idEdital])->count() + 1);
+            return true;
+        }else if($this->passoatual != 0){
             return true;
         }else
             return false;
@@ -478,14 +485,14 @@ class Candidato extends \yii\db\ActiveRecord
                             $candidatoPublicacoes = new CandidatoPublicacoes();
                             $candidatoPublicacoes->idCandidato = $this->id;
                             
-                            $candidatoPublicacoes->titulo = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO'];
-                            $candidatoPublicacoes->local = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DETALHAMENTO-DO-ARTIGO'}['TITULO-DO-PERIODICO-OU-REVISTA'];
-                            $candidatoPublicacoes->ano = $publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO'];
-                            $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA']));
+                            $candidatoPublicacoes->titulo = Html::encode($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['TITULO-DO-ARTIGO']);
+                            $candidatoPublicacoes->local = Html::encode($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DETALHAMENTO-DO-ARTIGO'}['TITULO-DO-PERIODICO-OU-REVISTA']);
+                            $candidatoPublicacoes->ano = Html::encode($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['ANO-DO-ARTIGO']);
+                            $candidatoPublicacoes->natureza = ucwords(strtolower(Html::encode($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'DADOS-BASICOS-DO-ARTIGO'}['NATUREZA'])));
                             $candidatoPublicacoes->tipo = 2;
                             $candidatoPublicacoes->autores = "";
                             foreach ($publicacao->{'ARTIGO-PUBLICADO'}[$i]->{'AUTORES'} as $autor) {
-                                $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                                $candidatoPublicacoes->autores .= ucwords(strtolower(Html::encode($autor['NOME-COMPLETO-DO-AUTOR'])))."; ";
                             }
                             
                             if(!$candidatoPublicacoes->save())
@@ -500,14 +507,14 @@ class Candidato extends \yii\db\ActiveRecord
                             $candidatoPublicacoes = new CandidatoPublicacoes();
                             $candidatoPublicacoes->idCandidato = $this->id;
                             
-                            $candidatoPublicacoes->titulo = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO'];
-                            $candidatoPublicacoes->local = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DETALHAMENTO-DO-TRABALHO'}['NOME-DO-EVENTO'];
-                            $candidatoPublicacoes->ano = $publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DO-TRABALHO']; 
+                            $candidatoPublicacoes->titulo = Html::encode($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['TITULO-DO-TRABALHO']);
+                            $candidatoPublicacoes->local = Html::encode($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DETALHAMENTO-DO-TRABALHO'}['NOME-DO-EVENTO']);
+                            $candidatoPublicacoes->ano = Html::encode($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['ANO-DO-TRABALHO']); 
                             $candidatoPublicacoes->tipo = 1;
-                            $candidatoPublicacoes->natureza = ucwords(strtolower($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA'])); 
+                            $candidatoPublicacoes->natureza = ucwords(strtolower(Html::encode($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'DADOS-BASICOS-DO-TRABALHO'}['NATUREZA']))); 
                             $candidatoPublicacoes->autores = "";
                             foreach ($publicacao->{'TRABALHO-EM-EVENTOS'}[$i]->{'AUTORES'} as $autor) {
-                                $candidatoPublicacoes->autores .= ucwords(strtolower($autor['NOME-COMPLETO-DO-AUTOR']))."; ";
+                                $candidatoPublicacoes->autores .= ucwords(strtolower(Html::encode($autor['NOME-COMPLETO-DO-AUTOR'])))."; ";
                             }
                             
                             if(!$candidatoPublicacoes->save())
@@ -520,4 +527,5 @@ class Candidato extends \yii\db\ActiveRecord
         }
         return false;
     }
+
 }

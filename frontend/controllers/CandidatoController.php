@@ -61,6 +61,11 @@ class CandidatoController extends Controller
             if($model->passoatual == 0){
                 $model->passoatual = 1;
             }
+
+            $model->telresidencial = str_replace("_", "", $model->telresidencial);
+            $model->telcelular = str_replace("_", "", $model->telcelular);
+            if($model->nacionalidade == 1)
+                $model->pais = "Brasil";
         
             if($model->save(false)){
                 $this->mensagens('success', 'Informações Salvas com Sucesso', 'Suas informações referente aos dados pessoais foram salvas');
@@ -437,7 +442,7 @@ function actionComprovanteinscricao() {
                     </tr>
                     <tr>
                         <td colspan="2" style="width:100%">
-                            Número da inscrição: '.$candidato->id.'
+                            Número da inscrição: '.$candidato->numeroinscricao.'
                         </td>   
 s                    </tr>
                     <tr>

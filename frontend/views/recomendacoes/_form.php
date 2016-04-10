@@ -83,10 +83,6 @@ label{
             <font color='#FF0000'>*</font> <b>Capacidade de expressão escrita</b>
         </div>
         <?= $form->field($model, 'expressao', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false) ?>
-        <div class="col-md-8">
-            <font color='#FF0000'>*</font> <b>Conhecimento em inglês</b>
-        </div>
-        <?= $form->field($model, 'ingles', ['options' =>['class' => 'col-md-4']])->dropDownList($atributos, ['prompt' => 'Selecione um Nível'])->label(false)?>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -108,33 +104,3 @@ label{
     <?php ActiveForm::end(); ?>
 
 </div>
-
-
-    <!-- <?php echo StarRating::widget([
-    'name' => 'rating_21',
-    'pluginOptions' => [
-        'min' => 0,
-        'max' => 8,
-        'step' => 2,
-        //'size' => 'lg',
-        'starCaptions' => [
-            0 => 'Extremely Poor',
-            2 => 'Fraco',
-            4 => 'Regular',
-            6 => 'Bom',
-            8 => 'Muito Bom',
-            10 => 'Excelente',
-            
-        ],
-        'starCaptionClasses' => [
-            0 => 'text-danger',
-            2 => 'text-danger',
-            4 => 'text-warning',
-            6 => 'text-info',
-            8 => 'text-primary',
-            10 => 'text-success',
-            12 => 'text-success'
-        ],
-    ],
-]);
-?> -->

@@ -19,6 +19,11 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
+    <link rel='stylesheet' type='text/css' href='https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css'>
+    <link rel="stylesheet" type="text/css" href="http://flwebsites.biz/jAlert/src/jAlert-v3.css">
+    <script src='https://code.jquery.com/jquery-2.0.3.min.js'></script>
+    <script src='https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js'></script>
+    
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
@@ -36,20 +41,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Início', 'url' => ['/site/index']],
-        //['label' => 'About', 'url' => ['/site/about']],
-        //['label' => 'Contact', 'url' => ['/site/contact']],
     ];
-    /*if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = [
-            'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-            'url' => ['/site/logout'],
-            'linkOptions' => ['data-method' => 'post']
-        ];
-    }
-*/
 
     $session = Yii::$app->session;
     if ($session->get('candidato')) {
@@ -73,6 +65,7 @@ AppAsset::register($this);
         
     <section class="content">
         <?= Yii::$app->view->renderFile('@app/views/layouts/mensagemFlash.php') ?>
+        <input id="timesession" type="hidden" value= <?= ini_get('session.gc_maxlifetime');?> />
     </section>
 
         <?= $content ?>

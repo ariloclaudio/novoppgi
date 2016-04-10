@@ -250,6 +250,33 @@ $( window ).load(function() {
 
 });
 
+$(function(){
+            
+  $.jTimeout({
+    'flashingTitleText': 'Fim da Sessão',
+    'secondsPrior': 100,
+    'timeoutAfter': $('#timesession').val(),
+    'onClickExtend': function(jTimeout)
+    {
+      $('.jAlert').closeAlert();
+      window.localStorage.timeoutCountdown = $('#timesession').val()
+      $('#curTime').val( $('#timesession').val() );
+    },
+    'extendOnMouseMove': false,
+    'loginUrl': 'index.php',
+    'logoutUrl': 'index.php',
+  });
+
+  var timer,
+  setTimer = function(){
+    timer = window.setInterval(function(){
+      $('#curTime').text( window.localStorage.timeoutCountdown );
+    }, 1000);
+  };
+
+  setTimer();
+});
+
 
         function aparecerInputHistorico(){
 

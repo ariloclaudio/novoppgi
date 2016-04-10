@@ -58,7 +58,7 @@ function goBack() {
             [   'label' => 'Nº de Inscrição',
                 'attribute' => 'id',
                 'value' => function ($model) {
-                     return $model->idEdital.'-'.str_pad($model->posicaoEdital, 3, "0", STR_PAD_LEFT);;
+                     return $model->idEdital.'-'.str_pad($model->posicaoEdital, 3, "0", STR_PAD_LEFT);
                 },
             ],
              'nome',
