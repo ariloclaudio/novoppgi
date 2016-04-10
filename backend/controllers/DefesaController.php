@@ -53,6 +53,10 @@ class DefesaController extends Controller
      */
     public function actionView($idDefesa, $aluno_id)
     {
+
+
+
+
         return $this->render('view', [
             'model' => $this->findModel($idDefesa, $aluno_id),
         ]);

@@ -27,6 +27,7 @@ class Defesa extends \yii\db\ActiveRecord
 {
 
     public $nome_aluno;
+    public $curso_aluno;
 
     /**
      * @inheritdoc
@@ -76,5 +77,49 @@ class Defesa extends \yii\db\ActiveRecord
             'aluno_id' => 'Aluno ID',
             'previa' => 'Previa',
         ];
+    }
+
+    public function getModelAluno(){
+
+        return Aluno::find()->where("id =".$this->aluno_id)->one();
+
+    }
+
+    public function getNome(){
+
+        $aluno = $this->getModelAluno();
+
+        return $aluno->nome;
+    }
+
+
+    public function getCurso(){
+
+        $aluno = $this->getModelAluno();
+
+        return $aluno->curso == 1 ? "Mestrado" : "Doutorado" ;
+    }
+
+    public function getTipoDefesa(){
+
+        if ($this->tipoDefesa == "Q1"){
+            $defesa = "Qualificação 1";
+        }
+        else if ($this->tipoDefesa == "Q2"){
+            $defesa = "Qualificação 2";
+        }
+        else if ($this->tipoDefesa == "T"){
+            $defesa = "Tese";
+        }
+        else if ($this->tipoDefesa == "T"){
+            $defesa = "Dissertação";
+        }
+
+        return $defesa;
+    }
+
+    public function getConceitoDefesa(){
+
+        return $this->conceito == null ? "Não Julgado" : $this->conceito;
     }
 }

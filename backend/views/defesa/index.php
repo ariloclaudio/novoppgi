@@ -7,12 +7,11 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\DefesaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Defesas';
+$this->title = 'Lista de Defesas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="defesa-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -27,10 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'idDefesa',
             'nome_aluno',
-            'titulo',
+            [   'label' => 'Curso Desejado',
+                'attribute' => 'curso_aluno',
+                'value' => function ($model) {
+                     return $model->curso_aluno == 1 ? 'Mestrado' : 'Doutorado';
+                },
+            ],
+            //'titulo',
             'tipoDefesa',
             'data',
-            'conceito',
+            [
+            "attribute" => 'conceito',
+
+            "value" => function ($model){
+                return $model->conceito == null ? "Não Julgado" : $model->conceito;
+
+            },
+            ],
              'horario',
              'local',
             // 'resumo:ntext',
@@ -39,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'emailExaminador:ntext',
             // 'reservas_id',
             // 'banca_id',
-             'aluno_id',
+            //'aluno_id',
             // 'previa',
 
             ['class' => 'yii\grid\ActionColumn'],

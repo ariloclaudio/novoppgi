@@ -41,7 +41,7 @@ class DefesaSearch extends Defesa
      */
     public function search($params)
     {
-        $query = Defesa::find()->select("j17_aluno.nome as nome_aluno , j17_defesa.*")->innerJoin("j17_aluno"," j17_aluno.id = j17_defesa.aluno_id");
+        $query = Defesa::find()->select("j17_aluno.nome as nome_aluno, j17_aluno.curso as curso_aluno , j17_defesa.*")->innerJoin("j17_aluno"," j17_aluno.id = j17_defesa.aluno_id");
 
         // add conditions that should always apply here
 
@@ -60,6 +60,11 @@ class DefesaSearch extends Defesa
         $dataProvider->sort->attributes['nome_aluno'] = [
         'asc' => ['nome_aluno' => SORT_ASC],
         'desc' => ['nome_aluno' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['curso_aluno'] = [
+        'asc' => ['curso_aluno' => SORT_ASC],
+        'desc' => ['curso_aluno' => SORT_DESC],
         ];
 
         // grid filtering conditions
