@@ -83,20 +83,28 @@ function goBack() {
             ],
             [   'label' => 'Linha Pesquisa',
                 'attribute' => 'siglaLinhaPesquisa',
+                'contentOptions' => function ($model){
+                  return ['style' => 'background-color: '.$model->linhaPesquisa->cor];
+                },
+                'format' => 'html',
+                'value' => function ($model){
+                  return "<span class='fa ". $model->linhaPesquisa->descricao ."'/> ". $model->siglaLinhaPesquisa;
+                }
             ],
             [   'label' => 'Fase',
                 'attribute' => 'fase',
+                'format' => 'html',
                 'value' => function ($model) {
 
                     if($model->resultado === 1){
-                        return "Aprovado";
+                        return "<span class='fa fa-thumbs-up' /> Aprovado";
                     }
                     else if($model->resultado === 0){
 
-                        return "Reprovado";
+                        return "<span class='fa fa-thumbs-down'/> Reprovado";
                     }
                     else{
-                        return "Não Julgado";
+                        return "<span class='fa fa-hand-stop-o'/> Não Julgado";
                     }
                 },
             ],
@@ -136,7 +144,7 @@ function goBack() {
                   },
                   'reenviar' => function ($url, $model) {  
 
-                    return $model->carta_recomendacao == 1 && $model->qtd_cartas > $model->cartas_respondidas && !($model->resultado === 1 || $model->resultado === 0) ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
+                    return $model->carta_recomendacao == 1 && $model->qtd_cartas > $model->cartas_respondidas && !($model->resultado === 1 || $model->resultado === 0) && $model->cartasPrazo ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
                             'title' => Yii::t('yii', 'Reenviar Cartas'),
                             'data-confirm' => \Yii::t('yii', 'Você deseja Reenviar cartas de recomendação deste candidato?'),
                     ]) : '';                   
@@ -155,20 +163,8 @@ echo Collapse::widget([
             'label' => 'Inscrições Em Andamento',
             'content' => GridView::widget([
             'dataProvider' => $dataProvider2,
-            'rowOptions'=> function($model){
-                    if($model->resultado === 1) {
-                        return ['class' => 'info'];
-                    }
-                    else if($model->resultado === 0) {
-                        return ['class' => 'danger'];
-                    }
-                    else if($model->cartas_respondidas < 2 && $model->carta_recomendacao == 1){
-                        return ['class' => 'warning'];
-                    }
-                    else{
-                        return ['class' => 'success'];
-                    }
-            },
+            'emptyText' => '-',
+            'rowOptions'=> ['class' => 'warning'],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -213,30 +209,6 @@ echo Collapse::widget([
                     ]);                                
 
                   },
-                  'aprovar' => function ($url, $model) {  
-
-                    return $model->resultado === null ? Html::a('<span class="glyphicon glyphicon-ok-sign"></span>', ['candidatos/aprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
-                            'title' => Yii::t('yii', 'Aprovar Aluno'),
-                            'data-confirm' => \Yii::t('yii', 'Você deseja APROVAR este candidato?'),
-                    ]) : '';                               
-
-                  },
-                  'reprovar' => function ($url, $model) {  
-
-                    return $model->resultado === null ? Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['candidatos/reprovar', 'id' => $model->id, 'idEdital' => $model->idEdital], [
-                            'title' => Yii::t('yii', 'Reprovar Aluno'),
-                            'data-confirm' => \Yii::t('yii', 'Você deseja REPROVAR este candidato?'),
-                    ]) : '';                   
-
-                  },
-                  'reenviar' => function ($url, $model) {  
-
-                    return $model->carta_recomendacao == 1 && $model->qtd_cartas > $model->cartas_respondidas ? Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['candidatos/reenviarcartas', 'id' => $model->id, 'idEdital' => $model->idEdital], [
-                            'title' => Yii::t('yii', 'Reenviar Cartas'),
-                            'data-confirm' => \Yii::t('yii', 'Você deseja Reenviar cartas de recomendação deste candidato?'),
-                    ]) : '';                   
-
-                  }
               ]                            
             ],
         ],

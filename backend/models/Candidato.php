@@ -185,5 +185,14 @@ class Candidato extends \yii\db\ActiveRecord
         return $recomedacoes->getCartasEmitidas($this->id);
     }
 
+    public function getCartasPrazo(){
+        $recomendacoes = Recomendacoes::findOne(['idCandidato' => $this->id, 'dataResposta' => '0000-00-00 00:00:00']);
+        
+        if(count($recomendacoes))
+            return $recomendacoes->prazo < date('Y-m-d') ? true : false;
+        else
+            return false;
+    }
+
 
 }

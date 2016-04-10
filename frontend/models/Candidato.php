@@ -423,7 +423,7 @@ class Candidato extends \yii\db\ActiveRecord
     public function arrayCartas(){
         $array = [];
 
-        $array['nome'] = [$this->cartaNomeReq1, $this->cartaNomeReq2];
+        $array['nome'] = $this->cartaNomeReq1 != "" && $this->cartaNomeReq2 != "" ? [$this->cartaNomeReq1, $this->cartaNomeReq2] : [];
         $array['email'] = [$this->cartaEmailReq1, $this->cartaEmailReq2];
         
         if(isset($this->cartaNome) && isset($this->cartaEmail)){
