@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use app\models\Defesa;
 use app\models\DefesaSearch;
+use app\models\Aluno;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -86,7 +87,9 @@ class DefesaController extends Controller
     {
 
 
-        //SÓ PODE EDITAR A DEFESA SE ELA NÃO FOI CONCEITUADA !!!!!!!!!!! TEM DE CHECAR SE CONCEITO == NULL
+        //SÓ PODE EDITAR A DEFESA SE ELA NÃO FOI CONCEITUADA! TEM DE CHECAR SE CONCEITO == NULL
+
+        $model_aluno = Aluno::find()->where("id = ".$aluno_id)->one();
 
 
         $model = $this->findModel($idDefesa, $aluno_id);
@@ -102,6 +105,8 @@ class DefesaController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'model_aluno' => $model_aluno,
+
             ]);
         }
     }
@@ -116,7 +121,7 @@ class DefesaController extends Controller
     public function actionDelete($idDefesa, $aluno_id)
     {
 
-        //SÓ PODE EXCLUIR A DEFESA SE ELA NÃO NÃO POSSUIR BANCA !!!!!!!!!!! TEM DE CHECAR SE banca_id == 0
+        //SÓ PODE EXCLUIR A DEFESA SE ELA NÃO NÃO POSSUIR BANCA! TEM DE CHECAR SE banca_id == 0
         $model = $this->findModel($idDefesa, $aluno_id);
 
         if($model->banca_id != 0){
