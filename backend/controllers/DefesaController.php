@@ -84,7 +84,18 @@ class DefesaController extends Controller
      */
     public function actionUpdate($idDefesa, $aluno_id)
     {
+
+
+        //SÓ PODE EDITAR A DEFESA SE ELA NÃO FOI CONCEITUADA !!!!!!!!!!! TEM DE CHECAR SE CONCEITO == NULL
+
+
         $model = $this->findModel($idDefesa, $aluno_id);
+
+        if($model->conceito != null){
+            $this->mensagens('danger', 'Não é possível editar', 'Não foi possível editar, pois essa defesa já possui conceito');
+            return $this->redirect(['index']);
+        }
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
@@ -104,7 +115,16 @@ class DefesaController extends Controller
      */
     public function actionDelete($idDefesa, $aluno_id)
     {
-        $this->findModel($idDefesa, $aluno_id)->delete();
+
+        //SÓ PODE EXCLUIR A DEFESA SE ELA NÃO NÃO POSSUIR BANCA !!!!!!!!!!! TEM DE CHECAR SE banca_id == 0
+        $model = $this->findModel($idDefesa, $aluno_id);
+
+        if($model->banca_id != 0){
+            $this->mensagens('danger', 'Não Excluído', 'Não foi possível excluir, pois essa defesa já possui banca aprovada');
+            return $this->redirect(['index']);
+        }
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }
@@ -124,5 +144,20 @@ class DefesaController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+            /* Envio de mensagens para views
+       Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }
