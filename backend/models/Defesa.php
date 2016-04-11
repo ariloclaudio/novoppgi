@@ -120,6 +120,6 @@ class Defesa extends \yii\db\ActiveRecord
 
     public function getConceitoDefesa(){
 
-        return $this->conceito == null ? "Não Julgado" : $this->conceito;
+        return $this->conceito == null ? "<div style = \"color:red \"><b>Não Julgado</b></div>" : $this->conceito;
     }
 }

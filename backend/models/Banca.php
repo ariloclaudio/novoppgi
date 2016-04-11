@@ -51,4 +51,19 @@ class Banca extends \yii\db\ActiveRecord
             'passagem' => 'Passagem',
         ];
     }
+
+
+    public function getFuncaoMembro(){
+
+        if($this->funcao == "P"){
+            return "Presidente";
+        }
+        else if($this->funcao == "I"){
+
+            return "Membro Interno";
+        }
+        else{
+            return "Membro Externo";
+        }
+    }
 }

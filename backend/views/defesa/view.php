@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
             "attribute" => 'conceitodefesa',
+            'format' => 'html',
             "label" => "Conceito",
             ],
             'horario',
@@ -63,14 +64,24 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
+        "summary" => "",
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
             //'banca_id',
             //'membrosbanca_id',
-            'membro_nome',
-            'membro_filiacao',
-            'funcao',
+            [
+                'attribute'=>'membro_nome',
+                'label' => "Nome do Membro",
+            ],
+            [
+                'attribute'=>'membro_filiacao',
+                'label' => "Filiação do Membro",
+            ],
+            [
+                "attribute" => 'funcaomembro',
+                "label" => "Função",
+            ],
 
             //['class' => 'yii\grid\ActionColumn'],
         ],
