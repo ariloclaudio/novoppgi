@@ -83,6 +83,11 @@ class FeriasController extends Controller
     public function actionCreate()
     {
         $model = new Ferias();
+        
+        $model->idusuario = Yii::$app->user->identity->id;
+        $model->nomeusuario = Yii::$app->user->identity->nome;
+        $model->emailusuario = Yii::$app->user->identity->email;
+        $model->dataPedido = date("Y-m-d");
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
