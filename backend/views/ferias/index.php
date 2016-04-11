@@ -4,36 +4,46 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\BancaSearch */
+/* @var $searchModel app\models\FeriasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Bancas';
+$this->title = 'Lista de Férias';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="banca-index">
+<div class="ferias-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Banca', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Criar Férias', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'idusuario',
-            'tipo',
-            'dataSaida',
-            'dataRetorno',
+            //'id',
             'dataPedido',
+            //'idusuario',
+            'nomeusuario',
+             'dataSaida',
+             'dataRetorno',
+            [
+            "attribute" =>'tipo',
+            "value" => function ($model){
 
+            	if($model->tipo == 1){
+            		return "Oficial";
+            	}
+            	else{
+            		return "Usufruto";
+            	}
+
+            },
+
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
-    
 </div>

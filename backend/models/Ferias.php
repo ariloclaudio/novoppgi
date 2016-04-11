@@ -46,10 +46,10 @@ class Ferias extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'idusuario' => 'Idusuario',
-            'nomeusuario' => 'Nomeusuario',
-            'emailusuario' => 'Emailusuario',
-            'tipo' => 'Tipo',
+            'idusuario' => 'Id do Usuário',
+            'nomeusuario' => 'Professor',
+            'emailusuario' => 'Email do Usuário',
+            'tipo' => 'Tipo Férias',
             'dataSaida' => 'Data Saida',
             'dataRetorno' => 'Data Retorno',
             'dataPedido' => 'Data Pedido',

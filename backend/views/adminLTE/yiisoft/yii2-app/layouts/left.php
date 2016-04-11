@@ -47,6 +47,15 @@
                         ['label' => 'Listar Defesas', 'icon' => 'fa fa-list', 'url' => ['defesa/index'],],
                     ],
                 ],
+                [
+                    'label' => 'Gerenciar Férias',
+                    'icon' => 'fa fa-file-code-o',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao'),
+                    'items' => [
+                        ['label' => 'Listar Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/index'],],
+                    ],
+                ],
                 ['label' => 'Professor', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('professor')],
                 ['label' => 'Professor Opção', 'icon' => 'fa fa-file-code-o', 'url' => ['site/index'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
                 ['label' => 'Aluno', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('aluno')],

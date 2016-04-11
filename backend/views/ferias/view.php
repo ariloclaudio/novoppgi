@@ -1,9 +1,40 @@
 <?php
-/* @var $this yii\web\View */
-?>
-<h1>ferias/view</h1>
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\Ferias */
+
+$this->title = "Detalhes - Férias";
+$this->params['breadcrumbs'][] = ['label' => 'Ferias', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="ferias-view">
+
+    <p>
+        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Excluir', ['delete', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'idusuario',
+            'nomeusuario',
+            'emailusuario:email',
+            'tipo',
+            'dataSaida',
+            'dataRetorno',
+            'dataPedido',
+        ],
+    ]) ?>
+
+</div>

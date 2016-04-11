@@ -1,25 +1,40 @@
 <?php
 
 namespace backend\controllers;
+
 use Yii;
 use app\models\Ferias;
 use app\models\FeriasSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
-class FeriasController extends \yii\web\Controller
+/**
+ * FeriasController implements the CRUD actions for Ferias model.
+ */
+class FeriasController extends Controller
 {
-    public function actionCreate()
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
     {
-        return $this->render('create');
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
     }
 
-    public function actionDelete()
-    {
-        return $this->render('delete');
-    }
-
+    /**
+     * Lists all Ferias models.
+     * @return mixed
+     */
     public function actionIndex()
     {
-
         $searchModel = new FeriasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -27,17 +42,83 @@ class FeriasController extends \yii\web\Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-
     }
 
-    public function actionUpdate()
+    /**
+     * Displays a single Ferias model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
     {
-        return $this->render('update');
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
-    public function actionView()
+    /**
+     * Creates a new Ferias model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
     {
-        return $this->render('view');
+        $model = new Ferias();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
     }
 
+    /**
+     * Updates an existing Ferias model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Ferias model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Ferias model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Ferias the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Ferias::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }
