@@ -39,11 +39,14 @@ class FeriasSearch extends Ferias
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function searchMinhasFerias($params, $idUser)
     {
-        $query = Ferias::find();
+
+
+        $query = Ferias::find()->where("idusuario = '".$idUser."'");
 
         // add conditions that should always apply here
+
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -69,6 +72,7 @@ class FeriasSearch extends Ferias
 
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
             ->andFilterWhere(['like', 'emailusuario', $this->emailusuario]);
+
 
         return $dataProvider;
     }

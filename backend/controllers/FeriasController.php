@@ -35,8 +35,27 @@ class FeriasController extends Controller
      */
     public function actionIndex()
     {
+
+     $idUser = Yii::$app->user->identity->id;
+
+
         $searchModel = new FeriasSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser);
+
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionListar()
+    {
+
+        $idUser = Yii::$app->user->identity->id;
+
+        $searchModel = new FeriasSearch();
+        $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
