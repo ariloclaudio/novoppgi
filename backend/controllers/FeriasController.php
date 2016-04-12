@@ -42,7 +42,6 @@ class FeriasController extends Controller
         $searchModel = new FeriasSearch();
         $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser);
         
-        //$anoFerias = Ferias::find()->select("")
 
 
         return $this->render('index', [
@@ -51,17 +50,22 @@ class FeriasController extends Controller
         ]);
     }
 
-    public function actionListar()
+    public function actionListar($ano)
     {
+
 
         $idUser = Yii::$app->user->identity->id;
 
+        $model = new Ferias();
+        $todosAnosFerias = $model->anosFerias($idUser);
+
         $searchModel = new FeriasSearch();
-        $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser);
+        $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser ,$ano);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'todosAnosFerias' => $todosAnosFerias,
         ]);
     }
 
@@ -84,14 +88,13 @@ class FeriasController extends Controller
      */
     public function actionCreate()
     {
+
         $model = new Ferias();
-        
         $model->idusuario = Yii::$app->user->identity->id;
         $model->nomeusuario = Yii::$app->user->identity->nome;
         $model->emailusuario = Yii::$app->user->identity->email;
         $model->dataPedido = date("Y-m-d H:i:s");
 
-  
         $ehProfessor = Yii::$app->user->identity->professor;
         $ehCoordenador = Yii::$app->user->identity->coordenador;
         $ehSecretario = Yii::$app->user->identity->secretaria;
@@ -103,35 +106,53 @@ class FeriasController extends Controller
                 $model->dataRetorno =  date('Y-m-d', strtotime($model->dataRetorno));
 
 
+                $feriasAno = new Ferias();
+                $anoSaida = date('Y', strtotime($model->dataSaida));
+                $totalDiasFeriasAno = $feriasAno->feriasAno($model->idusuario,$anoSaida,$model->tipo);
+
+
                 $datetime1 = new \DateTime($model->dataSaida);
                 $datetime2 = new \DateTime($model->dataRetorno);
                 $interval = $datetime1->diff($datetime2);
                 $diferencaDias =  $interval->format('%a');
 
-                if( ($ehProfessor == 1 || $ehCoordenador == 1) && $diferencaDias <=45 && $model->save()){
+                if( $diferencaDias == 0 || $interval->format('%R') == "-"){
 
-                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+                    $this->mensagens('success', 'Registro Férias',  'Datas inválidas!');
 
-                    return $this->redirect(['view', 'id' => $model->id]);
+                        $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                        $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
 
-                }
-                else if( $ehSecretario == 1  && $diferencaDias <= 30 && $model->save()){
-
-                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
-                
-                    return $this->redirect(['view', 'id' => $model->id]);
-                
-                }
-                else if ((($ehProfessor == 1 || $ehCoordenador == 1) && $diferencaDias >=45)) {
-
-                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
-                }
-
-                else if (( $ehSecretario == 1  && $diferencaDias >= 30)) {
-
-                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+                    return $this->render('create', [
+                            'model' => $model,
+                        ]);
 
                 }
+
+                    if( ($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) <=45 && $model->save()){
+
+                        $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+
+                        return $this->redirect(['view', 'id' => $model->id]);
+
+                    }
+                    else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) <= 30 && $model->save()){
+
+                        $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+                    
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    
+                    }
+                    else if ((($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) >=45)) {
+
+                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
+                    }
+
+                    else if (( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) >= 30)) {
+
+                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+
+                    }
 
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));

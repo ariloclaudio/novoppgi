@@ -53,7 +53,7 @@
                     'url' => '#',
                     'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') && Yii::$app->user->identity->checarAcesso('secretaria'),
                     'items' => [
-                        ['label' => 'Listar Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar'],],
+                        ['label' => 'Listar Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar', "ano" => date("Y") ],],
                     ],
                 ],
                 ['label' => 'Professor', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('professor')],

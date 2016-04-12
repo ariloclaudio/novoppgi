@@ -39,11 +39,48 @@ class FeriasSearch extends Ferias
      *
      * @return ActiveDataProvider
      */
-    public function searchMinhasFerias($params, $idUser)
+    public function searchMinhasFerias($params, $idUser ,$ano)
     {
 
+            $query = Ferias::find()->select("j17_ferias.* , ")->where("idusuario = '".$idUser."' 
+            AND YEAR(dataSaida) = ".$ano);
 
-        $query = Ferias::find()->where("idusuario = '".$idUser."'");
+        // add conditions that should always apply here
+
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'idusuario' => $this->idusuario,
+            'tipo' => $this->tipo,
+            'dataSaida' => $this->dataSaida,
+            'dataRetorno' => $this->dataRetorno,
+            'dataPedido' => $this->dataPedido,
+        ]);
+
+        $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
+            ->andFilterWhere(['like', 'emailusuario', $this->emailusuario]);
+
+
+        return $dataProvider;
+    }
+
+    public function searchFeriasAno($params, $idUser)
+    {
+
+        $query = Ferias::find()->select("j17_ferias.*")->where("idusuario = '".$idUser."'");
 
         // add conditions that should always apply here
 

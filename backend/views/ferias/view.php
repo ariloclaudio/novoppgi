@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Ferias */
 
 $this->title = "Detalhes - Férias";
-$this->params['breadcrumbs'][] = ['label' => 'Ferias', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Ferias', 'url' => ['listar', "ano" => date("Y")]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ferias-view">
@@ -26,18 +26,34 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
+            [
+                'label' => 'Data Pedido',
+                'attribute' => 'dataPedido',
+                'value' => date("d-m-Y", strtotime($model->dataPedido)),
+
+            ],
             'idusuario',
             'nomeusuario',
             'emailusuario:email',
-            'tipo',
-            'dataSaida',
-            'dataRetorno',
-            'dataPedido',
+                [
+                     'attribute' => 'tipo',
+                     'format'=>'raw',
+                     'value' => $model->tipo == 1 ? 'Oficial' : 'Usufruto'
+                ],
+            [
+                'label' => 'Data Saída',
+                'attribute' => 'dataSaida',
+                'value' => date("d-m-Y", strtotime($model->dataSaida)),
+
+            ],
+            [
+                'label' => 'Data Retorno',
+                'attribute' => 'dataRetorno',
+                'value' => date("d-m-Y", strtotime($model->dataRetorno)),
+
+            ],
         ],
     ]) ?>
-
-
-    <?php var_dump($model)?>
 
 </div>
