@@ -127,7 +127,7 @@ class CandidatoController extends Controller
                 return $this->redirect(['passo1']);
         }
 
-        $publicacoes = CandidatoPublicacoes::find()->where(['idCandidato' => $model->id])->all();
+        $publicacoes = CandidatoPublicacoes::find()->where(['idCandidato' => $model->id])->orderBy(['ano' => SORT_DESC])->all();
         for ($i=0; $i < count($publicacoes); $i++) {
             if($publicacoes[$i]->tipo == 2)
                 $itensPeriodicos[$i] = ['label' => $publicacoes[$i]->ano.': '.$publicacoes[$i]->titulo, 

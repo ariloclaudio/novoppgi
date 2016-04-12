@@ -186,7 +186,9 @@ class User extends ActiveRecord implements IdentityInterface
             case 'administrador':
                 return $this->administrador;
             case 'coordenacao':
-                return $this->coordenador || $this->secretaria;
+                return $this->coordenador;
+            case 'secretaria':
+                return $this->secretaria;
             case 'professor':
                 return $this->professor;
             case 'aluno':
