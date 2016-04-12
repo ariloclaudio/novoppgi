@@ -18,6 +18,8 @@ use Yii;
  */
 class Ferias extends \yii\db\ActiveRecord
 {
+    
+    public $diferencaData;
     /**
      * @inheritdoc
      */
@@ -52,7 +54,22 @@ class Ferias extends \yii\db\ActiveRecord
             'tipo' => 'Tipo Férias',
             'dataSaida' => 'Data Saida',
             'dataRetorno' => 'Data Retorno',
-            'dataPedido' => 'Data Pedido',
         ];
     }
+    
+    
+    
+    public function getDiferencaData(){
+        
+                $dataSaida = date('Y-m-d', strtotime($this->dataSaida));
+                $dataRetorno =  date('Y-m-d', strtotime($this->dataRetorno));
+
+
+                $datetime1 = new \DateTime($dataSaida);
+                $datetime2 = new \DateTime($dataRetorno);
+                $interval = $datetime1->diff($datetime2);
+                return $diferencaDias =  $interval->format('%a');
+    }
+    
+    
 }

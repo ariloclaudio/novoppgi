@@ -41,6 +41,8 @@ class FeriasController extends Controller
 
         $searchModel = new FeriasSearch();
         $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser);
+        
+        //$anoFerias = Ferias::find()->select("")
 
 
         return $this->render('index', [

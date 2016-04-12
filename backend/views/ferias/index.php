@@ -27,8 +27,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataPedido',
             //'idusuario',
             'nomeusuario',
-             'dataSaida',
-             'dataRetorno',
+             ['attribute' => 'dataSaida',
+             'value' => function ($model){
+                        return date('d-m-Y', strtotime($model->dataSaida));
+             },
+             ],
+             ['attribute' => 'dataRetorno',
+             'value' => function ($model){
+                        return date('d-m-Y', strtotime($model->dataRetorno));
+             },
+             ],
+             [
+                 'attribute' => 'diferencadata',
+                 'label' => "Qtd. Dias",
+            ],
+                     
             [
             "attribute" =>'tipo',
             "value" => function ($model){
