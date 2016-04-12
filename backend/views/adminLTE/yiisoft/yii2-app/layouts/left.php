@@ -32,7 +32,7 @@
                     'label' => 'Seleções PPGI',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao'),
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') && Yii::$app->user->identity->checarAcesso('secretaria'),
                     'items' => [
                         ['label' => 'Criar Edital de Seleção', 'icon' => 'fa fa-file-code-o', 'url' => ['edital/create'],],
                         ['label' => 'Listar Editais de Seleção', 'icon' => 'fa fa-list', 'url' => ['edital/index'],],
@@ -51,7 +51,7 @@
                     'label' => 'Gerenciar Férias',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao'),
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') && Yii::$app->user->identity->checarAcesso('secretaria'),
                     'items' => [
                         ['label' => 'Listar Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar'],],
                     ],
