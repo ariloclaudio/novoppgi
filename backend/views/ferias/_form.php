@@ -16,10 +16,12 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'tipo')->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'] ) ?>
+    <div class = "row">
+    <?= $form->field($model, 'tipo' , ['options' => ['class' => 'col-md-3']])->dropDownlist($arrayTipoferias, ['prompt' => 'Selecione um tipo de Férias'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>") ?>
+    </div>
 
-
-	        <?= $form->field($model, 'dataSaida', ['options' => ['class' => 'col-md-12']])->widget(DatePicker::classname(), [
+    <div class = "row">
+	        <?= $form->field($model, 'dataSaida', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Saída ...',],
 				    'pluginOptions' => [
@@ -28,8 +30,11 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Saída:</b>")
 		    ?>
+
+	</div>
+	<div class = "row">
 		    
-	        <?= $form->field($model, 'dataRetorno', ['options' => ['class' => 'col-md-12']])->widget(DatePicker::classname(), [
+	        <?= $form->field($model, 'dataRetorno', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
 	                'language' => Yii::$app->language,
 	                'options' => ['placeholder' => 'Selecione a Data de Retorno ...',],
 				    'pluginOptions' => [
@@ -38,10 +43,10 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
 				    ]
 		        ])->label("<font color='#FF0000'>*</font> <b>Data Retorno:</b>")
 		    ?>
-    
+    </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Criar Férias' : 'Editar Férias', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Registrar Férias' : 'Editar Registro de Férias', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

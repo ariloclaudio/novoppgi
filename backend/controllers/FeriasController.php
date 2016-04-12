@@ -87,10 +87,58 @@ class FeriasController extends Controller
         $model->idusuario = Yii::$app->user->identity->id;
         $model->nomeusuario = Yii::$app->user->identity->nome;
         $model->emailusuario = Yii::$app->user->identity->email;
-        $model->dataPedido = date("Y-m-d");
+        $model->dataPedido = date("Y-m-d H:i:s");
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+  
+        $ehProfessor = Yii::$app->user->identity->professor;
+        $ehCoordenador = Yii::$app->user->identity->coordenador;
+        $ehSecretario = Yii::$app->user->identity->secretaria;
+
+        if ($model->load(Yii::$app->request->post())) {
+
+
+                $model->dataSaida = date('Y-m-d', strtotime($model->dataSaida));
+                $model->dataRetorno =  date('Y-m-d', strtotime($model->dataRetorno));
+
+
+                $datetime1 = new \DateTime($model->dataSaida);
+                $datetime2 = new \DateTime($model->dataRetorno);
+                $interval = $datetime1->diff($datetime2);
+                $diferencaDias =  $interval->format('%a');
+
+                if( ($ehProfessor == 1 || $ehCoordenador == 1) && $diferencaDias <=45 && $model->save()){
+
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+
+                    return $this->redirect(['view', 'id' => $model->id]);
+
+                }
+                else if( $ehSecretario == 1  && $diferencaDias <= 30 && $model->save()){
+
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+                
+                    return $this->redirect(['view', 'id' => $model->id]);
+                
+                }
+                else if ((($ehProfessor == 1 || $ehCoordenador == 1) && $diferencaDias >=45)) {
+
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
+                }
+
+                else if (( $ehSecretario == 1  && $diferencaDias >= 30)) {
+
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+
+                }
+
+                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+
+                return $this->render('create', [
+                        'model' => $model,
+                    ]);
+
+
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -108,9 +156,61 @@ class FeriasController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $ehProfessor = Yii::$app->user->identity->professor;
+        $ehCoordenador = Yii::$app->user->identity->coordenador;
+        $ehSecretario = Yii::$app->user->identity->secretaria;
+
+        if ($model->load(Yii::$app->request->post())) {
+
+
+            $model->dataSaida = date('Y-m-d', strtotime($model->dataSaida));
+            $model->dataRetorno =  date('Y-m-d', strtotime($model->dataRetorno));
+
+
+
+                $datetime1 = new \DateTime($model->dataSaida);
+                $datetime2 = new \DateTime($model->dataRetorno);
+                $interval = $datetime1->diff($datetime2);
+                $diferencaDias =  $interval->format('%a');
+
+                if( ($ehProfessor == 1 || $ehCoordenador == 1) && $diferencaDias <= 45 && $model->save()){
+
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+
+                    return $this->redirect(['view', 'id' => $model->id]);
+
+                }
+                else if( $ehSecretario == 1  && $diferencaDias <= 30 && $model->save()){
+
+                    $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+                
+                    return $this->redirect(['view', 'id' => $model->id]);
+                
+                }
+                else if ((($ehProfessor == 1 || $ehCoordenador == 1) && $diferencaDias >=45)) {
+
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
+                }
+
+                else if (( $ehSecretario == 1  && $diferencaDias >= 30)) {
+
+                    $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+
+                }
+
+                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+
+
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+
         } else {
+
+                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -144,5 +244,20 @@ class FeriasController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+            /* Envio de mensagens para views
+       Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }
