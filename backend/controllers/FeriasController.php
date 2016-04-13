@@ -85,6 +85,38 @@ class FeriasController extends Controller
 
         ]);
     }
+    
+    public function actionListartodos($ano)
+    {
+
+
+        $idUser = Yii::$app->user->identity->id;
+
+        if (Yii::$app->user->identity->professor == 1 || Yii::$app->user->identity->coordenador == 1){
+            $direitoQtdFerias = 45;
+        }
+        else{
+            $direitoQtdFerias = 30;   
+        }
+
+
+        $model = new Ferias();
+        $todosAnosFerias = $model->anosFerias(null);
+
+        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,1);
+        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,2);
+
+
+
+        $searchModel = new FeriasSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams , $ano);
+
+        return $this->render('listarTodos', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'todosAnosFerias' => $todosAnosFerias,
+        ]);
+    }
 
     /**
      * Displays a single Ferias model.
@@ -279,11 +311,20 @@ class FeriasController extends Controller
      * @param integer $id
      * @return mixed
      */
+     //funcao usada por cada professor/técnico
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        
 
-        return $this->redirect(['listar','ano'=> '2016']);
+        return $this->redirect(['listar','ano'=> date("Y")]);
+    }
+    //função usada na view da Secretaria, o qual lista todos os membros
+    public function actionDelete2($id)
+    {
+        $this->findModel($id)->delete();
+        
+        return $this->redirect(['listartodos','ano'=> date("Y")]);
     }
 
     /**

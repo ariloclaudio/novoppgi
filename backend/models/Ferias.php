@@ -74,8 +74,13 @@ class Ferias extends \yii\db\ActiveRecord
     }
 
     public function anosFerias($idusuario){
+        
+        if($idusuario == null){
+            $anos_model = Ferias::find()->select("YEAR(dataSaida) as anoSaida")->all();
+        }else{
 
-        $anos_model = Ferias::find()->select("YEAR(dataSaida) as anoSaida")->where(["idusuario" => $idusuario])->all();
+            $anos_model = Ferias::find()->select("YEAR(dataSaida) as anoSaida")->where(["idusuario" => $idusuario])->all();
+        }
 
         $anos = array (0 => date("Y"));
         
@@ -117,5 +122,28 @@ class Ferias extends \yii\db\ActiveRecord
 
     }
     
+    public function feriasAnoTodos($ano,$tipo){
+
+        $ferias = Ferias::find()->where(["tipo" => $tipo ])->all();
+        $cont = 0;
+        $arrayDias = array();
+
+        for($i = 0; $i < count($ferias) ; $i++ ){
+
+            $anoSaida = date('Y', strtotime($ferias[$i]->dataSaida));
+
+            if($anoSaida == $ano){
+                $datetime1 = new \DateTime($ferias[$i]->dataSaida);
+                $datetime2 = new \DateTime($ferias[$i]->dataRetorno);
+                $interval = $datetime1->diff($datetime2);
+                $arrayDias[$cont] =  abs($interval->format('%a'));
+                $cont++;
+            }
+
+        }
+
+        return array_sum($arrayDias);
+
+    }
     
 }

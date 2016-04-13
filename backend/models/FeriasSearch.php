@@ -39,21 +39,9 @@ class FeriasSearch extends Ferias
      *
      * @return ActiveDataProvider
      */
-    public function searchMinhasFerias($params, $idUser ,$ano)
-    {
-
-            $query = Ferias::find()->select("j17_ferias.*, DATEDIFF((dataRetorno),(dataSaida)) as diferencaData")->where("idusuario = '".$idUser."' 
-            AND YEAR(dataSaida) = ".$ano);
-
-        // add conditions that should always apply here
-
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $this->load($params);
-
+     
+    public function criarDataProvider($dataProvider,$query){
+        
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -77,7 +65,45 @@ class FeriasSearch extends Ferias
 
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
             ->andFilterWhere(['like', 'emailusuario', $this->emailusuario]);
+            
+        return $dataProvider;
+    } 
+    
+    public function search($params,$ano){
+        
+        $query = Ferias::find()->select("j17_ferias.*, DATEDIFF((dataRetorno),(dataSaida)) as diferencaData, YEAR(dataSaida) as anoSaida")->where("(YEAR (dataSaida)) = ".$ano);
+        
+        
+        // add conditions that should always apply here
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        $dataProvider = $this->criarDataProvider($dataProvider,$query);
+        
+        return $dataProvider;
+        
+    }
+     
+     
+    public function searchMinhasFerias($params, $idUser ,$ano)
+    {
+
+            $query = Ferias::find()->select("j17_ferias.*, DATEDIFF((dataRetorno),(dataSaida)) as diferencaData")->where("idusuario = '".$idUser."' 
+            AND YEAR(dataSaida) = ".$ano);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        $dataProvider = $this->criarDataProvider($dataProvider,$query);
 
         return $dataProvider;
     }

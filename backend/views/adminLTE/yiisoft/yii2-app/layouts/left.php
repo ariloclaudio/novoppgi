@@ -32,7 +32,7 @@
                     'label' => 'Seleções PPGI',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') && Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') || Yii::$app->user->identity->checarAcesso('secretaria'),
                     'items' => [
                         ['label' => 'Criar Edital de Seleção', 'icon' => 'fa fa-file-code-o', 'url' => ['edital/create'],],
                         ['label' => 'Listar Editais de Seleção', 'icon' => 'fa fa-list', 'url' => ['edital/index'],],
@@ -42,7 +42,7 @@
                     'label' => 'Gerenciar Defesas',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao'),
+                    'visible' => Yii::$app->user->identity->checarAcesso('professor') || Yii::$app->user->identity->checarAcesso('secretaria') || Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('administrador'),
                     'items' => [
                         ['label' => 'Listar Defesas', 'icon' => 'fa fa-list', 'url' => ['defesa/index'],],
                     ],
@@ -52,7 +52,7 @@
                     'label' => 'Gerenciar Férias',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') && Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') || Yii::$app->user->identity->checarAcesso('secretaria') || Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('professor') ,
                     'items' => [
                         ['label' => 'Minhas Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar', "ano" => date("Y") ],],
                     ],
