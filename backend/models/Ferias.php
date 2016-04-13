@@ -60,7 +60,7 @@ class Ferias extends \yii\db\ActiveRecord
     
     
     
-    public function getDiferencaData(){
+    public function getDAiferencaData(){
         
                 $dataSaida = date('Y-m-d', strtotime($this->dataSaida));
                 $dataRetorno =  date('Y-m-d', strtotime($this->dataRetorno));
@@ -69,20 +69,24 @@ class Ferias extends \yii\db\ActiveRecord
                 $datetime1 = new \DateTime($dataSaida);
                 $datetime2 = new \DateTime($dataRetorno);
                 $interval = $datetime1->diff($datetime2);
-                return $diferencaDias =  $interval->format('%a');
+                $diferencaDias =  $interval->format('%a');
+                return $diferencaDias;
     }
 
     public function anosFerias($idusuario){
 
         $anos_model = Ferias::find()->select("YEAR(dataSaida) as anoSaida")->where(["idusuario" => $idusuario])->all();
+
+        $anos = array (0 => date("Y"));
         
         for($i=0; $i<count($anos_model); $i++){
             $anos[$i] = $anos_model[$i]->anoSaida;
         }
 
-        $anos = array_unique($anos);
 
-        rsort($anos);
+        $anos = array_unique($anos);
+       rsort($anos);
+
 
         return $anos;
 

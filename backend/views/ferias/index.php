@@ -30,10 +30,25 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Registrar Novas Férias', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-
+ <table class="table" style ="width: 20%;border:solid 2px;">
+    <tbody>
+      <tr class="success">
+        <td> <b> Total de dias de férias oficiais: </b> </td>
+        <td  style="width:10%" > <b> <?= $qtd_ferias_oficiais ?> </b> </td>
+      </tr>
+      <tr class="warning">
+        <td> <b> Total de dias de usufruto de férias: </b> </td>
+        <td> <b> <?= $qtd_usufruto_ferias ?> </b> </td>
+      </tr>
+      <tr class="info">
+        <td> <b> Dias restantes de usufruto de férias: </b> </td>
+        <td> <b> <?php echo ($direitoQtdFerias-$qtd_usufruto_ferias) ?>  </b> </td>
+      </tr>
+    </tbody>
+  </table>
 
 <p>
-    Selecione um ano: <select id= "comboBoxAno" onclick="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%">
+    Selecione um ano: <select id= "comboBoxAno" onclick="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
         <?php for($i=0; $i<count($todosAnosFerias); $i++){ 
 
             $valores = $todosAnosFerias[$i];
@@ -44,7 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </select>
 </p>
 
-
 <div class="ferias-index">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -53,9 +67,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             //'id',
-            'dataPedido',
+             ['attribute' => 'dataPedido',
+             'value' => function ($model){
+                        return date('d-m-Y', strtotime($model->dataSaida));
+             },
+             ],
             //'idusuario',
-            'nomeusuario',
+            //'nomeusuario',
              ['attribute' => 'dataSaida',
              'value' => function ($model){
                         return date('d-m-Y', strtotime($model->dataSaida));
@@ -67,8 +85,8 @@ $this->params['breadcrumbs'][] = $this->title;
              },
              ],
              [
-                 'attribute' => 'diferencadata',
-                 'label' => "Qtd. Dias",
+                 'attribute' => 'diferencaData',
+                 'label' => "Nº de Dias",
             ],
                      
             [
