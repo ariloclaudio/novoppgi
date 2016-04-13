@@ -52,11 +52,22 @@
                     'label' => 'Gerenciar Férias',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') || Yii::$app->user->identity->checarAcesso('secretaria') || Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('professor') ,
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') ||  Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('professor') ,
                     'items' => [
                         ['label' => 'Minhas Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar', "ano" => date("Y") ],],
                     ],
                 ],
+                ['label' => 'Secretaria', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('professor')],
+                [
+                    'label' => 'Gerenciar Férias',
+                    'icon' => 'fa fa-file-code-o',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('secretaria') || Yii::$app->user->identity->checarAcesso('administrador') ,
+                    'items' => [
+                        ['label' => 'Minhas Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar', "ano" => date("Y") ],],
+                        ['label' => 'Listar Férias', 'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),  'icon' => 'fa fa-list', 'url' => ['ferias/listartodos', "ano" => date("Y") ],],
+                    ],
+                ],                
                 ['label' => 'Aluno', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('aluno')],
                 ['label' => 'Aluno Opção', 'icon' => 'fa fa-file-code-o', 'url' => ['site/index'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
             ],

@@ -108,8 +108,14 @@ class DefesaController extends Controller
             return $this->redirect(['index']);
         }
 
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->data = date('d-m-Y', strtotime($model->data));
+        
+        if ($model->load(Yii::$app->request->post())) {
+            
+            $model->data = date('Y-m-d', strtotime($model->data));
+            $model->save();
+            
+            
             return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
         } else {
             return $this->render('update', [

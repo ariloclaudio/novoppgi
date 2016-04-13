@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\widgets\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Defesa */
@@ -33,7 +34,15 @@ else{
 
     <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'data')->textInput(['maxlength' => true]) ?>
+		        <?= $form->field($model, 'data', ['options' => []])->widget(DatePicker::classname(), [
+	                'language' => Yii::$app->language,
+	                'options' => ['placeholder' => 'Selecione a Data de Início ...',],
+				    'pluginOptions' => [
+				        'format' => 'dd-mm-yyyy',
+				        'todayHighlight' => true
+				    ]
+		        ]);
+		    ?>
 
     <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>
 
