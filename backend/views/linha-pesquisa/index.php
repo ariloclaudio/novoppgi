@@ -3,32 +3,32 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\LinhaPesquisaSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
-$this->title = 'Linha Pesquisas';
+$this->title = 'Linhas de Pesquisa';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="linha-pesquisa-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Linha Pesquisa', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Nova Linha Pesquisa', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'nome',
-            'descricao:ntext',
+            [   'label' => 'Descrição',
+                'format' => 'html',
+                'attribute' => 'descricao',
+                'value' => function ($model) {
+                     return $model->descricao == "" ? "" : $model->descricao;
+                },
+            ],
             'sigla',
-
+            [   'label' => 'Cor',
+                'attribute' => 'cor',
+                'contentOptions' => function ($model){
+                  return ['style' => 'background-color: '.$model->cor];
+                },
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -28,17 +28,17 @@ class EditalController extends Controller
     {
         return [
             'access' => [
-                        'class' => \yii\filters\AccessControl::className(),
-                        'rules' => [
-                            [
-                                'allow' => true,
-                                'roles' => ['@'],
-                                'matchCallback' => function ($rule, $action) {
-                                       return Yii::$app->user->identity->checarAcesso('coordenacao');
-                                }
-                            ],
-                        ],
-                    ], 
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                               return Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('secretaria');
+                        }
+                    ],
+                ],
+            ], 
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

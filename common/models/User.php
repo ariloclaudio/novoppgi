@@ -185,7 +185,7 @@ class User extends ActiveRecord implements IdentityInterface
         switch ($permissao) {
             case 'administrador':
                 return $this->administrador;
-            case 'coordenacao':
+            case 'coordenador':
                 return $this->coordenador;
             case 'secretaria':
                 return $this->secretaria;

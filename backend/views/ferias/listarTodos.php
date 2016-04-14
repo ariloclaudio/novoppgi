@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
               'template'=>'{view} {delete} {update}',
                 'buttons'=>[
                   'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['delete2', 'id' => $model->id, "params" => $params], [
+                    return Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['delete2', 'id' => $model->id], [
                             'data' => [
                                 'confirm' => 'Remover o registro das férias do \''.$model->nomeusuario.'\'?',
                                 'method' => 'post',

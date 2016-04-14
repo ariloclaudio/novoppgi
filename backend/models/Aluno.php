@@ -8,6 +8,7 @@ use yiibr\brvalidator\CpfValidator;
 
 class Aluno extends \yii\db\ActiveRecord
 {
+
     /**
      * @inheritdoc
      */
@@ -122,5 +123,10 @@ class Aluno extends \yii\db\ActiveRecord
     public function beforeSave(){
         $this->dataingresso = date('Y-m-d', strtotime($this->dataingresso));
         return true;
+    }
+
+    public function getlinhaPesquisa()
+    {
+        return $this->hasOne(LinhaPesquisa::className(), ['id' => 'area']);
     }
 }

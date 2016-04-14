@@ -27,12 +27,22 @@
                         ['label' => 'Listar Usuários', 'icon' => 'fa fa-list', 'url' => ['user/index'],],
                     ],
                 ],
-                ['label' => 'Coordenação PPGI', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('coordenacao')],
+                [
+                    'label' => 'Linhas de Pesquisa',
+                    'icon' => 'fa fa-search',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('administrador'),
+                    'items' => [
+                        ['label' => 'Adicionar Linha de Pesquisa', 'icon' => 'fa fa-search-plus', 'url' => ['linha-pesquisa/create'],],
+                        ['label' => 'Listar Linhas de Pesquisa', 'icon' => 'fa fa-list', 'url' => ['linha-pesquisa/index'],],
+                    ],
+                ],
+                ['label' => 'Coordenação PPGI', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('coordenador')],
                 [
                     'label' => 'Seleções PPGI',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') || Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('secretaria'),
                     'items' => [
                         ['label' => 'Criar Edital de Seleção', 'icon' => 'fa fa-file-code-o', 'url' => ['edital/create'],],
                         ['label' => 'Listar Editais de Seleção', 'icon' => 'fa fa-list', 'url' => ['edital/index'],],
@@ -49,14 +59,26 @@
                 ],
                 ['label' => 'Professor', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('professor')],
                 [
+                    'label' => 'Afastamento Temporário',
+                    'icon' => 'fa fa-file-code-o',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('professor'),
+                    'items' => [
+                        ['label' => 'Solicitar Afastamento', 'icon' => 'fa fa-file-code-o', 'url' => ['afastamentos/create'],],
+                        ['label' => 'Listar Afastamentos', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
+                    ],
+                ],
+                [
                     'label' => 'Gerenciar Férias',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenacao') ||  Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('professor') ,
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenador') ||  Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('professor') ,
                     'items' => [
-                        ['label' => 'Minhas Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar', "ano" => date("Y") ],],
+                        ['label' => 'Listar Férias', 'icon' => 'fa fa-list', 'visible' => Yii::$app->user->identity->checarAcesso('secretaria'), 'url' => ['ferias/listartodos', "ano" => date("Y") ],],
                     ],
                 ],
+                ['label' => 'Acompanhar Orientandos', 'icon' => 'fa fa-file-code-o', 'url' => ['aluno/orientandos'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
+
                 ['label' => 'Secretaria', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('professor')],
                 [
                     'label' => 'Gerenciar Férias',

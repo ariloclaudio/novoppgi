@@ -41,7 +41,15 @@ class AlunoSearch extends Aluno
      */
     public function search($params)
     {
-        $query = Aluno::find();
+        $idUsuario = Yii::$app->user->identity->id;
+       
+        if(Yii::$app->user->identity->checarAcesso('secretaria')){
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id");
+       }
+       else if (Yii::$app->user->identity->checarAcesso('professor')){
+           $query = Aluno::find()->select("*")
+           ->where('orientador = '.$idUsuario);
+       }
 
         // add conditions that should always apply here
 
@@ -49,7 +57,7 @@ class AlunoSearch extends Aluno
             'query' => $query,
         ]);
 
-        $this->load($params);
+        //$this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

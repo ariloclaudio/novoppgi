@@ -36,7 +36,7 @@ class CandidatosController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                               return Yii::$app->user->identity->checarAcesso('coordenacao');
+                               return Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('secretaria');
                         }
                     ],
                 ],

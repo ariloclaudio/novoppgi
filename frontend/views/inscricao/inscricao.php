@@ -532,7 +532,7 @@ var isRTL = false;
 
 <body onload="relogio(900);showDivNacionalidade();showDivVinculo('');">
 
-        <p align="center"><h3>Formul&#225;rio de Inscri&#231;&#227;o no Mestrado/Doutorado no PPGI/UFAM</h3></p>
+        <p align="center"><h3>Formulário de Inscrição no Mestrado/Doutorado no Processo Seletivo para Mestrado/Doutorado no PPGI/UFAM</h3></p>
         
         <hr style="width: 100%; height: 2px;">
         <font size="2" style="line-height: 150%">
