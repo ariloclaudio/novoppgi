@@ -1,0 +1,106 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\BancaControleDefesas */
+
+$this->title = "Detalhes da Banca";
+$this->params['breadcrumbs'][] = ['label' => 'Banca Controle Defesas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+
+$arrayStatusBanca = array(null => "Não Avaliada", 0 => "Reprovada", 1 => "Aprovada");
+
+?>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="banca-controle-defesas-view">
+
+    <p>
+        <?= Html::a('Aprovar', ['aprovar', 'id' => $model->id], [
+            'class' => 'btn btn-primary',
+            'data' => [
+                'confirm' => 'Você tem certeza que deseja APROVAR essa banca?',
+                'method' => 'post',
+            ],
+        ]) ?>
+        <?= Html::a('Reprovar', ['reprovar', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Você tem certeza que deseja REPROVAR essa banca?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'aluno_nome',
+            'linhaSigla',
+            'cursoAluno',
+            'titulo',
+            'local',
+            'horario',
+            'data',
+            [
+            'attribute' => 'status_banca',
+            'value' => $arrayStatusBanca[$model->status_banca],
+            ],
+        ],
+    ]) ?>
+
+<h3> Detalhes da Banca </h3>
+
+
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        //'filterModel' => $searchModel,
+        "summary" => "",
+        'columns' => [
+            //['class' => 'yii\grid\SerialColumn'],
+
+            //'banca_id',
+            //'membrosbanca_id',
+            [
+                'attribute'=>'membro_nome',
+                'label' => "Nome do Membro",
+            ],
+            [
+                'attribute'=>'membro_filiacao',
+                'label' => "Filiação do Membro",
+            ],
+            [
+                "attribute" => 'funcaomembro',
+                "label" => "Função",
+            ],
+
+            //['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+
+</div>

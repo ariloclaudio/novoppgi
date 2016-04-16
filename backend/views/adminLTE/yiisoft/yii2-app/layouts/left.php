@@ -55,6 +55,7 @@
                     'visible' => Yii::$app->user->identity->checarAcesso('professor') || Yii::$app->user->identity->checarAcesso('secretaria') || Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('administrador'),
                     'items' => [
                         ['label' => 'Listar Defesas', 'icon' => 'fa fa-list', 'url' => ['defesa/index'],],
+                        ['label' => 'Controle Defesas', 'icon' => 'fa fa-list', 'url' => ['banca-controle-defesas/index'],],
                     ],
                 ],
                 ['label' => 'Professor', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('professor')],
