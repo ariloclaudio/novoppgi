@@ -30,10 +30,23 @@ class CandidatoController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        //'roles' => ['?'],
+                        'matchCallback' => function ($rule, $action) {
+                            $session = Yii::$app->session;
+                            return $session->get('candidato');
+                        }
+                    ],
+                ],
+            ], 
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['post'],
+                    'delete' => ['POST'],
                 ],
             ],
         ];

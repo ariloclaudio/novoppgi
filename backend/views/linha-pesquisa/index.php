@@ -8,7 +8,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="linha-pesquisa-index">
     <p>
-        <?= Html::a('Nova Linha Pesquisa', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="fa fa-plus"></span> Nova Linha Pesquisa', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

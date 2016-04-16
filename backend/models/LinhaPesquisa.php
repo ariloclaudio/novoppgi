@@ -28,10 +28,13 @@ class LinhaPesquisa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['sigla', 'nome', 'cor'], 'required'],
             [['descricao'], 'string'],
-            [['sigla'], 'required'],
             [['nome'], 'string', 'max' => 60],
             [['sigla'], 'string', 'max' => 20],
+            [['icone'], 'string', 'max' => 20],
+            [['cor'], 'string', 'max' => 7],
+            [['cor', 'sigla'], 'unique'],
         ];
     }
 
@@ -41,9 +44,8 @@ class LinhaPesquisa extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'nome' => 'Nome',
-            'descricao' => 'Descricao',
+            'descricao' => 'Descricão',
             'sigla' => 'Sigla',
         ];
     }

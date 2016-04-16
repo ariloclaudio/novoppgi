@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </table>
 
 
-    <?= Html::a('Novo Edital', ['create'], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('<span class="fa fa-plus"></span> Novo Edital', ['create'], ['class' => 'btn btn-success']) ?>
 
 
     <?= GridView::widget([
