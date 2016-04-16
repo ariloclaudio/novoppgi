@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\BancaControleDefesasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Banca Controle Defesas';
+$this->title = 'Lista de Banca de Defesa ';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="banca-controle-defesas-index">

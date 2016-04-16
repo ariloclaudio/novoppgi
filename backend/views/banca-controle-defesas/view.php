@@ -16,38 +16,18 @@ $arrayStatusBanca = array(null => "Não Avaliada", 0 => "Reprovada", 1 => "Aprov
 ?>
 
 
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
 <div class="banca-controle-defesas-view">
 
     <p>
-        <?= Html::a('Aprovar', ['aprovar', 'id' => $model->id], [
+
+        <?= Html::a('Aprovar', ["aprovar", 'id' => $model->id], [
             'class' => 'btn btn-primary',
             'data' => [
                 'confirm' => 'Você tem certeza que deseja APROVAR essa banca?',
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Reprovar', ['reprovar', 'id' => $model->id], [
+        <?= Html::a('Reprovar', ['update', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Você tem certeza que deseja REPROVAR essa banca?',
