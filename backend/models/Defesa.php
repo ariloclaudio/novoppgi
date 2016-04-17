@@ -111,7 +111,7 @@ class Defesa extends \yii\db\ActiveRecord
         else if ($this->tipoDefesa == "T"){
             $defesa = "Tese";
         }
-        else if ($this->tipoDefesa == "T"){
+        else if ($this->tipoDefesa == "D"){
             $defesa = "Dissertação";
         }
 

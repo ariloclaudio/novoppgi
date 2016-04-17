@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use app\models\Defesa;
 use app\models\DefesaSearch;
+use app\models\BancaControleDefesas;
 use app\models\Banca;
 use app\models\BancaSearch;
 use app\models\Aluno;
@@ -72,18 +73,57 @@ class DefesaController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($aluno_id)
     {
         $model = new Defesa();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->aluno_id = $aluno_id;
+
+        $cont_Defesas = Defesa::find()->where("aluno_id = ".$aluno_id)->count();
+        $curso = Aluno::find()->select("curso")->where("id =".$aluno_id)->one()->curso;
+
+            if($cont_Defesas == 0){
+                $model->tipoDefesa = "Q1";
+                $titulo = "Qualificação 1";
+            }
+            else if ($cont_Defesas == 1 && $curso == 1){
+                $model->tipoDefesa = "D";
+                $titulo = "Dissertação";
+            }
+            else if ($cont_Defesas == 1 && $curso == 2){
+                $model->tipoDefesa = "Q2";
+                $titulo = "Qualificação 2";
+            }
+            else if ($cont_Defesas == 2 && $curso == 2){
+                $model->tipoDefesa = "T";
+                $titulo = "Tese";
+            }
+
+        if ($model->load(Yii::$app->request->post() ) ) {
+
+            $model_ControleDefesas = new BancaControleDefesas();
+            $model_ControleDefesas->status_banca = null;
+            $model_ControleDefesas->save(false);
+
+            $model->banca_id = $model_ControleDefesas->id;
+
+            $model->save();
+
             return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
-        } else {
+        }
+        else if ( ($curso == 1 && $cont_Defesas >= 2) || ($curso == 2 && $cont_Defesas >= 3) ){
+            $this->mensagens('danger', 'Solicitar Banca', 'Não foi possível solicitar banca, pois esse aluno já possui '.$cont_Defesas.' defesas cadastradas');
+            return $this->redirect(['aluno/orientandos',]);
+        }
+         else {
+
             return $this->render('create', [
                 'model' => $model,
+                'titulo' => $titulo,
             ]);
         }
     }
+
 
     /**
      * Updates an existing Defesa model.

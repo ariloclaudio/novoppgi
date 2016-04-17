@@ -39,13 +39,20 @@ $this->params['breadcrumbs'][] = $this->title;
 			 'email:email',
 			 'telresidencial',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{view}',
+              'template'=>'{view} {banca}',
                 'buttons'=>[
 				
                   'view' => function ($url, $model) {  
 
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'id' => $model->id], [
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
+                    ]);                                
+
+                  },
+                  'banca' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-check"></span>', ['defesa/create', 'aluno_id' => $model->id], [
+                            'title' => Yii::t('yii', 'Solicitar Banca'),
                     ]);                                
 
                   },
