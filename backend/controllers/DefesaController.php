@@ -15,6 +15,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\db\IntegrityException;
+use yii\base\Exception;
 
 /**
  * DefesaController implements the CRUD actions for Defesa model.
@@ -109,30 +111,38 @@ class DefesaController extends Controller
             }
 
         if ($model->load(Yii::$app->request->post() ) ) {
-
+            
             $model_ControleDefesas = new BancaControleDefesas();
             $model_ControleDefesas->status_banca = null;
             $model_ControleDefesas->save(false);
 
             $model->banca_id = $model_ControleDefesas->id;
 
-            $model->save();
+            try{
+                $model->salvaMembrosBanca();
+                if($model->save()){
+                    $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
+                    return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
+                }else{
+                    $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
+                }
 
-            return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
+            } catch(Exception $e){
+                $this->mensagens('danger', 'Erro ao salvar Membros da banca', 'Ocorreu um Erro ao salvar os membros da bancas.');
+            }
+
         }
         else if ( ($curso == 1 && $cont_Defesas >= 2) || ($curso == 2 && $cont_Defesas >= 3) ){
             $this->mensagens('danger', 'Solicitar Banca', 'Não foi possível solicitar banca, pois esse aluno já possui '.$cont_Defesas.' defesas cadastradas');
             return $this->redirect(['aluno/orientandos',]);
         }
-         else {
 
-            return $this->render('create', [
-                'model' => $model,
-                'titulo' => $titulo,
-                'membrosBancaInternos' => $membrosBancaInternos,
-                'membrosBancaExternos' => $membrosBancaExternos,
-            ]);
-        }
+        return $this->render('create', [
+            'model' => $model,
+            'titulo' => $titulo,
+            'membrosBancaInternos' => $membrosBancaInternos,
+            'membrosBancaExternos' => $membrosBancaExternos,
+        ]);
     }
 
 

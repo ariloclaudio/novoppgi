@@ -4,25 +4,7 @@ namespace app\models;
 
 use Yii;
 
-/**
- * This is the model class for table "j17_defesa".
- *
- * @property integer $idDefesa
- * @property string $titulo
- * @property string $tipoDefesa
- * @property string $data
- * @property string $conceito
- * @property string $horario
- * @property string $local
- * @property string $resumo
- * @property integer $numDefesa
- * @property string $examinador
- * @property string $emailExaminador
- * @property integer $reservas_id
- * @property integer $banca_id
- * @property integer $aluno_id
- * @property string $previa
- */
+
 class Defesa extends \yii\db\ActiveRecord
 {
 
@@ -45,6 +27,7 @@ class Defesa extends \yii\db\ActiveRecord
     {
         return [
             [['resumo', 'banca_id', 'aluno_id'], 'required'],
+            [['membrosBancaExternos', 'membrosBancaInternos'], 'safe'],
             [['resumo', 'examinador', 'emailExaminador'], 'string'],
             [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id'], 'integer'],
             [['titulo'], 'string', 'max' => 180],
@@ -117,6 +100,36 @@ class Defesa extends \yii\db\ActiveRecord
         }
 
         return $defesa;
+    }
+
+    public function salvaMembrosBanca(){
+        $this->beforeDelete();
+
+        $this->membrosBancaExternos = $this->membrosBancaExternos == "" ? array() : $this->membrosBancaExternos;
+        $this->membrosBancaInternos = $this->membrosBancaInternos == "" ? array() : $this->membrosBancaInternos;
+        
+        for ($i = 0; $i < count($this->membrosBancaExternos); $i++) {
+            $sql = "INSERT INTO j17_banca_has_membrosbanca (banca_id, membrosbanca_id, funcao) VALUES ('$this->banca_id', '".$this->membrosBancaExternos[$i]."', 'E');";
+            Yii::$app->db->createCommand($sql)->execute();
+        }
+
+        for ($i = 0; $i < count($this->membrosBancaInternos); $i++) {
+            $sql = "INSERT INTO j17_banca_has_membrosbanca (banca_id, membrosbanca_id, funcao) VALUES ('$this->banca_id', '".$this->membrosBancaInternos[$i]."', 'I');";
+            Yii::$app->db->createCommand($sql)->execute();
+        }
+
+        return true;
+    }
+
+    public function beforeDelete(){
+        try{
+            $sql = "DELETE FROM j17_banca_has_membrosbanca WHERE banca_id = '$this->banca_id'";
+            Yii::$app->db->createCommand($sql)->execute();
+        } catch (ErrorException $e){
+             return false;
+        }
+        
+        return true;
     }
 
     public function getConceitoDefesa(){
