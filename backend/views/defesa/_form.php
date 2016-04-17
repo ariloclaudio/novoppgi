@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use yii\bootstrap\Button;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Defesa */
@@ -37,6 +39,25 @@ use kartik\widgets\DatePicker;
 
     <?= $form->field($model, 'previa')->FileInput(['accept' => '.pdf'])->label("Prévia (PDF)"); ?>
 
+    <?= $form->field($model, 'membrosBancaInternos')->widget(Select2::classname(), [
+        'data' => $membrosBancaInternos,
+        'value' => $model->membrosBancaInternos,
+        'language' => 'pt-BR',
+        'options' => ['placeholder' => 'Selecione os membros internos ...', 'multiple' => true,],
+    ]);
+
+    ?>
+
+    <?= $form->field($model, 'membrosBancaExternos')->widget(Select2::classname(), [
+        'data' => $membrosBancaExternos,
+        'value' => $model->membrosBancaExternos,
+        'language' => 'pt-BR',
+        'options' => ['placeholder' => 'Selecione os membros externos ...', 'multiple' => true,],
+    ]);
+
+    ?>
+
+<br><br>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Salvar' : 'Salvar Alterações', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

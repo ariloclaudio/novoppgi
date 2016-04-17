@@ -8,10 +8,13 @@ use app\models\DefesaSearch;
 use app\models\BancaControleDefesas;
 use app\models\Banca;
 use app\models\BancaSearch;
+use app\models\MembrosBanca;
+use app\models\MembrosBancaSearch;
 use app\models\Aluno;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * DefesaController implements the CRUD actions for Defesa model.
@@ -75,6 +78,12 @@ class DefesaController extends Controller
      */
     public function actionCreate($aluno_id)
     {
+
+        $membrosBancaInternos = ArrayHelper::map(MembrosBanca::find()->where("filiacao = 'PPGI/UFAM'")->orderBy('nome')->all(), 'id', 'nome','filiacao');
+
+        $membrosBancaExternos = ArrayHelper::map(MembrosBanca::find()->where("filiacao <> 'PPGI/UFAM'")->orderBy('nome')->all(), 'id', 'nome','filiacao');
+
+
         $model = new Defesa();
 
         $model->aluno_id = $aluno_id;
@@ -120,6 +129,8 @@ class DefesaController extends Controller
             return $this->render('create', [
                 'model' => $model,
                 'titulo' => $titulo,
+                'membrosBancaInternos' => $membrosBancaInternos,
+                'membrosBancaExternos' => $membrosBancaExternos,
             ]);
         }
     }

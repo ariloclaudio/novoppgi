@@ -28,7 +28,8 @@ class Defesa extends \yii\db\ActiveRecord
 
     public $nome_aluno;
     public $curso_aluno;
-
+    public $membrosBancaInternos = [];
+    public $membrosBancaExternos = [];
     /**
      * @inheritdoc
      */
