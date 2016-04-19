@@ -9,7 +9,20 @@ use kartik\select2\Select2;
 /* @var $this yii\web\View */
 /* @var $model app\models\Defesa */
 /* @var $form yii\widgets\ActiveForm */
+
+
+if ($model->curso == "Doutorado" && $titulo == "Qualificação 1"){
+    $required = 0;
+}
+else {
+    $required = 1;
+}
+
 ?>
+
+
+
+<input type="hidden" id = "membrosObrigatorios" value = <?php echo $required; ?> />
 
 <div class="defesa-form">
 
@@ -39,23 +52,27 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'previa')->FileInput(['accept' => '.pdf'])->label("Prévia (PDF)"); ?>
 
-    <?= $form->field($model, 'membrosBancaInternos')->widget(Select2::classname(), [
-        'data' => $membrosBancaInternos,
-        'value' => $model->membrosBancaInternos,
-        'language' => 'pt-BR',
-        'options' => ['placeholder' => 'Selecione os membros internos ...', 'multiple' => true,],
-    ]);
+    <?php if ($required == 1){ ?>
 
-    ?>
+            <?= $form->field($model, 'membrosBancaInternos')->widget(Select2::classname(), [
+                'data' => $membrosBancaInternos,
+                'value' => $model->membrosBancaInternos,
+                'language' => 'pt-BR',
+                'options' => ['placeholder' => 'Selecione os membros internos ...', 'multiple' => true,],
+            ]);
 
-    <?= $form->field($model, 'membrosBancaExternos')->widget(Select2::classname(), [
-        'data' => $membrosBancaExternos,
-        'value' => $model->membrosBancaExternos,
-        'language' => 'pt-BR',
-        'options' => ['placeholder' => 'Selecione os membros externos ...', 'multiple' => true,],
-    ]);
+            ?>
 
-    ?>
+            <?= $form->field($model, 'membrosBancaExternos')->widget(Select2::classname(), [
+                'data' => $membrosBancaExternos,
+                'value' => $model->membrosBancaExternos,
+                'language' => 'pt-BR',
+                'options' => ['placeholder' => 'Selecione os membros externos ...', 'multiple' => true,],
+            ]);
+
+            ?>
+
+    <?php } ?>
 
 <br><br>
     <div class="form-group">

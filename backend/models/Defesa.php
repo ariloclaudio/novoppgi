@@ -26,8 +26,13 @@ class Defesa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['resumo', 'banca_id', 'aluno_id'], 'required'],
-            [['membrosBancaExternos', 'membrosBancaInternos'], 'safe'],
+            [['resumo', 'banca_id', 'aluno_id', 'titulo', 'data', 'horario','resumo', 'local', 'examinador', 'emailExaminador', 'previa'], 'required'],
+           [ ['membrosBancaInternos', 'membrosBancaExternos'] , 'required', 
+            'whenClient' => "function (attribute, value) {
+                return $('#membrosObrigatorios').val() == 1;
+            }"],
+
+            //[['membrosBancaExternos', 'membrosBancaInternos'], 'safe'],
             [['resumo', 'examinador', 'emailExaminador'], 'string'],
             [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id'], 'integer'],
             [['titulo'], 'string', 'max' => 180],

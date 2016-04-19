@@ -119,12 +119,25 @@ class DefesaController extends Controller
             $model->banca_id = $model_ControleDefesas->id;
 
             try{
-                $model->salvaMembrosBanca();
-                if($model->save()){
-                    $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
-                    return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
-                }else{
-                    $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
+
+                if($model->tipoDefesa == "Q1" && $model->curso == "Doutorado"){
+
+
+                    if($model->save(false)){
+                        $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
+                        return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
+                    }
+
+                }
+                else{
+
+                    $model->salvaMembrosBanca();
+                    if($model->save()){
+                        $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
+                        return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
+                    }else{
+                        $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
+                    }
                 }
 
             } catch(Exception $e){
