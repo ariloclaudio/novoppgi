@@ -18,6 +18,8 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 "PB" => "PB", "PE" => "PE", "PI" => "PI", "PR" => "PR", "RJ" => "RJ", "RN" => "RN", "RO" => "RO",
 "RR" => "RR", "RS" => "RS", "SC" => "SC", "SE" => "SE", "SP" => "SP", "TO" => "TO"];
 
+$financiadoresbolsa = ['CAPES' => 'CAPES', 'FAPEAM' => 'FAPEAM', 'CNPQ' => 'CNPQ'];
+
 ?>
 
 <div class="aluno-form">
@@ -94,14 +96,6 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 
     echo $divRow;
 
-        echo $form->field($model, 'nomepai' , ['options' => ['class' => 'col-md-5']] )->textInput(['maxlength' => true]);
-
-        echo $form->field($model, 'nomemae' , ['options' => ['class' => 'col-md-5']] )->textInput(['maxlength' => true]);
-
-    echo $divFechar;
-
-    echo $divRow;
-
         echo $form->field($model, 'regime', ['options' => ['class' => 'col-md-3']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>");
 
         echo $form->field($model, 'bolsista' , ['options' => ['class' => 'col-md-2']] )->widget(SwitchInput::classname(), [
@@ -116,7 +110,7 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 
         echo "<div id='divAgencia' style='display: none;'>";
         echo $form->field($model, 'agencia' , ['options' => ['class' => 'col-md-3']]  )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> Qual Agência:");
-        echo $form->field($model, 'financiadorbolsa' , ['options' => ['class' => 'col-md-4']]  )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> Financiador da Bolsa: ");
+        echo $form->field($model, 'financiadorbolsa' , ['options' => ['class' => 'col-md-4']]  )->dropDownlist($financiadoresbolsa, ['prompt' => 'Selecione um Financiador'])->label("<font color='#FF0000'>*</font> Financiador da Bolsa: ");
 
         echo $form->field($model, 'dataimplementacaobolsa', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
             'language' => Yii::$app->language,
@@ -124,7 +118,7 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
                 'format' => 'dd-mm-yyyy',
                 'todayHighlight' => true
             ]
-        ])->label("<font color='#FF0000'>*</font> Data de Implementação da Bolsa:");
+        ])->label("<font color='#FF0000'>*</font> Início da Vigência:");
 
         echo "</div>";
     echo $divFechar;
@@ -175,22 +169,11 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 
     echo $divRow;
 
-        echo $form->field($model, 'cursograd' , ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true]);
+        echo $form->field($model, 'cursograd' , ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true]);
 
         echo $form->field($model, 'instituicaograd' , ['options' => ['class' => 'col-md-4']] )->textInput(['maxlength' => true]);
 
-        //echo $form->field($model, 'crgrad')->textInput(['maxlength' => true]);
-
         echo $form->field($model, 'egressograd' , ['options' => ['class' => 'col-md-2']] )->textInput();
-
-    echo $divFechar;
-
-    echo $divRow;
-
-        echo $form->field($model, 'anoconclusao' , ['options' => ['class' => 'col-md-3']] )->textInput(['type' => 'number']);
-
-        echo $form->field($model, 'dataformaturagrad' , ['options' => ['class' => 'col-md-2']] )->widget(MaskedInput::className(), ['clientOptions' => 
-            ['alias' =>  'date']]);
 
     echo $divFechar;
 

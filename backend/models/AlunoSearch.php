@@ -19,7 +19,7 @@ class AlunoSearch extends Aluno
     {
         return [
             [['id', 'area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
-            [['nome', 'email', 'senha', 'matricula', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'datanascimento', 'sexo', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'telresidencial', 'telcomercial', 'telcelular', 'nomepai', 'nomemae', 'bolsista', 'agencia', 'pais', 'dataingresso', 'idiomaExameProf', 'conceitoExameProf', 'dataExameProf', 'tituloQual2', 'dataQual2', 'conceitoQual2', 'tituloTese', 'dataTese', 'conceitoTese', 'horarioQual2', 'localQual2', 'resumoQual2', 'horarioTese', 'localTese', 'resumoTese', 'tituloQual1', 'dataQual1', 'examinadorQual1', 'conceitoQual1', 'cursograd', 'instituicaograd', 'crgrad', 'dataformaturagrad', 'anoconclusao', 'sede'], 'safe'],
+            [['nome', 'email', 'senha', 'matricula', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'datanascimento', 'sexo', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'telresidencial', 'telcomercial', 'telcelular', 'bolsista', 'agencia', 'pais', 'dataingresso', 'idiomaExameProf', 'conceitoExameProf', 'dataExameProf', 'tituloQual2', 'dataQual2', 'conceitoQual2', 'tituloTese', 'dataTese', 'conceitoTese', 'horarioQual2', 'localQual2', 'resumoQual2', 'horarioTese', 'localTese', 'resumoTese', 'tituloQual1', 'dataQual1', 'examinadorQual1', 'conceitoQual1', 'cursograd', 'instituicaograd', 'dataformaturagrad', 'anoconclusao', 'sede'], 'safe'],
         ];
     }
 
@@ -99,8 +99,6 @@ class AlunoSearch extends Aluno
             ->andFilterWhere(['like', 'telresidencial', $this->telresidencial])
             ->andFilterWhere(['like', 'telcomercial', $this->telcomercial])
             ->andFilterWhere(['like', 'telcelular', $this->telcelular])
-            ->andFilterWhere(['like', 'nomepai', $this->nomepai])
-            ->andFilterWhere(['like', 'nomemae', $this->nomemae])
             ->andFilterWhere(['like', 'bolsista', $this->bolsista])
             ->andFilterWhere(['like', 'agencia', $this->agencia])
             ->andFilterWhere(['like', 'pais', $this->pais])
@@ -126,7 +124,6 @@ class AlunoSearch extends Aluno
             ->andFilterWhere(['like', 'conceitoQual1', $this->conceitoQual1])
             ->andFilterWhere(['like', 'cursograd', $this->cursograd])
             ->andFilterWhere(['like', 'instituicaograd', $this->instituicaograd])
-            ->andFilterWhere(['like', 'crgrad', $this->crgrad])
             ->andFilterWhere(['like', 'dataformaturagrad', $this->dataformaturagrad])
             ->andFilterWhere(['like', 'sede', $this->sede]);
 
