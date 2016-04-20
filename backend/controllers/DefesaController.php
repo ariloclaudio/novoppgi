@@ -234,6 +234,42 @@ class DefesaController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionAprovar($idDefesa, $aluno_id)
+    {
+        $model = $this->findModel($idDefesa, $aluno_id);
+
+        $model->conceito = "Aprovado";
+
+        if ($model->save(false)) {
+
+             $this->mensagens('success', 'Aluno', 'Aluno Aprovado com sucesso');
+
+            return $this->redirect(['index']);
+        } else {
+            $this->mensagens('danger', 'Aluno', 'Não foi possível atribuir conceito para este aluno, tente mais tarde');
+            return $this->redirect(['index']);
+        }
+    }
+
+
+    public function actionReprovar($idDefesa, $aluno_id)
+    {
+        $model = $this->findModel($idDefesa, $aluno_id);
+
+        $model->conceito = "Reprovado";
+
+        if ($model->save(false)) {
+
+             $this->mensagens('success', 'Aluno', 'Aluno Reprovado com sucesso');
+
+            return $this->redirect(['index']);
+        } else {
+            $this->mensagens('danger', 'Aluno', 'Não foi possível atribuir conceito para este aluno, tente mais tarde');
+            return $this->redirect(['index']);
+        }
+    }
+
+
     /**
      * Finds the Defesa model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

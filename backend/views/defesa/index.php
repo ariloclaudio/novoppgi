@@ -9,6 +9,18 @@ use yii\grid\GridView;
 
 $this->title = 'Lista de Defesas';
 $this->params['breadcrumbs'][] = $this->title;
+
+if( Yii::$app->user->identity->checarAcesso('coordenador') == 1){
+  $action = "{view} {banca} {update} {delete} {aprovar} {reprovar}";
+}
+if ( Yii::$app->user->identity->checarAcesso('professor') == 1){
+  $action = "{view} {banca} {update} {delete}";
+}
+else if( Yii::$app->user->identity->checarAcesso('secretaria') == 1){
+  $action = "{view} {aprovar} {reprovar}";
+}
+
+
 ?>
 <div class="defesa-index">
 
@@ -54,7 +66,34 @@ $this->params['breadcrumbs'][] = $this->title;
             //'aluno_id',
             // 'previa',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=> $action,
+                'buttons'=>[
+                
+                  'view' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [
+                            'title' => Yii::t('yii', 'Visualizar Detalhes'),
+                    ]);                                
+
+                  },
+                  'aprovar' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-ok-circle"></span>', ['aprovar', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [
+                            'title' => Yii::t('yii', 'Aprovar Candidato'),
+                    ]);                                
+
+                  },
+                  'reprovar' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-ban-circle"></span>', ['reprovar', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [
+                            'title' => Yii::t('yii', 'Reprovar Candidato'),
+                    ]);                                
+
+                  },
+
+              ]                            
+            ],
         ],
     ]); ?>
 </div>

@@ -17,6 +17,17 @@ BootboxAsset::registerWithOverride($this);
 $this->title = 'Acompanhar Orientandos';
 $this->params['breadcrumbs'][] = $this->title;
 
+if( Yii::$app->user->identity->checarAcesso('coordenador') == 1){
+  $action = "{view} {banca} {aprovar} {reprovar}";
+}
+if ( Yii::$app->user->identity->checarAcesso('professor') == 1){
+  $action = "{view} {banca}";
+}
+else if( Yii::$app->user->identity->checarAcesso('secretaria') == 1){
+  $action = "{view} {aprovar} {reprovar}";
+}
+
+
 ?>
 <div class="orientandos-index">
 
@@ -39,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			 'email:email',
 			 'telresidencial',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{view} {banca}',
+              'template'=> $action,
                 'buttons'=>[
 				
                   'view' => function ($url, $model) {  
@@ -49,10 +60,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);                                
 
                   },
-                  'banca' => function ($url, $model) {  
+                  'aprovar' => function ($url, $model) {  
 
-                    return Html::a('<span class="glyphicon glyphicon-check"></span>', ['defesa/create', 'aluno_id' => $model->id], [
-                            'title' => Yii::t('yii', 'Solicitar Banca'),
+                    return Html::a('<span class="glyphicon glyphicon-ok-circle"></span>', ['aprovar', 'aluno_id' => $model->id], [
+                            'title' => Yii::t('yii', 'Aprovar Candidato'),
+                    ]);                                
+
+                  },
+                  'reprovar' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-ban-circle"></span>', ['reprovar', 'aluno_id' => $model->id], [
+                            'title' => Yii::t('yii', 'Reprovar Candidato'),
                     ]);                                
 
                   },
