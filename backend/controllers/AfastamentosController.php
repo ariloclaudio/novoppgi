@@ -94,7 +94,8 @@ class AfastamentosController extends Controller
 		
 		if ($model->load(Yii::$app->request->post())){
 			if($model->save()){            
-				try($this->enviarSolicitacaoAfastamento($model)){
+				try{
+                    $this->enviarSolicitacaoAfastamento($model);
 					$this->mensagens('success', 'Salvo com sucesso', 'Os dados de sua solicitação de afastamento foram enviados ao Diretor do IComp com sucesso.');
 					return $this->redirect(['view', 'id' => $model->id]);
 				}catch(Exception $e){
