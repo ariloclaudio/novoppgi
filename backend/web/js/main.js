@@ -47,8 +47,8 @@ $(document).ready( function() {
             $('#divBrasileiro').css('display', 'none');
         }
    });
-});
 
+});
 
 
 $( window ).load(function(){
@@ -74,6 +74,13 @@ $( window ).load(function(){
         $('#divAgencia').css('display', 'block');
     }
 
-
-
 });
+
+
+function alertar () {
+
+    alert( $('#idsMembrosBancaInternos').val()  );
+
+}
+
+

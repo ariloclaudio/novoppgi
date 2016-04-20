@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 
 class Defesa extends \yii\db\ActiveRecord
@@ -66,6 +67,20 @@ class Defesa extends \yii\db\ActiveRecord
             'aluno_id' => 'Aluno ID',
             'previa' => 'Previa',
         ];
+    }
+
+    public function uploadDocumento($previa)
+    {
+
+        if (isset($previa)) {
+            $this->previa = "previa-".date('dmYHisu') . '.' . $previa->extension;
+            $previa->saveAs('previa/' . $this->previa);
+            return true;
+        } else if(isset($this->previa)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function getModelAluno(){

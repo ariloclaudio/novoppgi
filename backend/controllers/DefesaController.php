@@ -17,6 +17,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\db\IntegrityException;
 use yii\base\Exception;
+use yii\web\UploadedFile;
 
 /**
  * DefesaController implements the CRUD actions for Defesa model.
@@ -117,6 +118,16 @@ class DefesaController extends Controller
             $model_ControleDefesas->save(false);
 
             $model->banca_id = $model_ControleDefesas->id;
+
+            if(! $model->uploadDocumento(UploadedFile::getInstance($model, 'previa'))){
+
+                $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
+
+                return $this->redirect(['aluno/orientandos',]);
+            
+
+            }
+
 
             try{
 

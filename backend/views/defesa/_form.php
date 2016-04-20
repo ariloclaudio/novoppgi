@@ -58,7 +58,8 @@ else {
                 'data' => $membrosBancaInternos,
                 'value' => $model->membrosBancaInternos,
                 'language' => 'pt-BR',
-                'options' => ['placeholder' => 'Selecione os membros internos ...', 'multiple' => true,],
+                'options' => [
+                'placeholder' => 'Selecione os membros internos ...', 'multiple' => true,],
             ]);
 
             ?>
@@ -67,7 +68,9 @@ else {
                 'data' => $membrosBancaExternos,
                 'value' => $model->membrosBancaExternos,
                 'language' => 'pt-BR',
-                'options' => ['placeholder' => 'Selecione os membros externos ...', 'multiple' => true,],
+                'options' => [
+                'id' => 'idsMembrosBancaInternos',
+                'placeholder' => 'Selecione os membros externos ...', 'multiple' => true,],
             ]);
 
             ?>
@@ -76,7 +79,7 @@ else {
 
 <br><br>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Salvar' : 'Salvar Alterações', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Salvar' : 'Salvar Alterações', ['onclick' => 'alertar()' ,  'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

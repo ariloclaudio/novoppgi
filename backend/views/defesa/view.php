@@ -50,6 +50,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'html',
             "label" => "Conceito",
             ],
+            [
+            "attribute" => 'previa',
+            'format' => 'html',
+            "value" => "<a href='previa/".$model->previa."' target = '_blank'> Baixar </a>"
+            ],
+
             'horario',
             'local',
             'resumo:ntext',
