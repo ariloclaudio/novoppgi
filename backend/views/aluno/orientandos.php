@@ -17,17 +17,6 @@ BootboxAsset::registerWithOverride($this);
 $this->title = 'Acompanhar Orientandos';
 $this->params['breadcrumbs'][] = $this->title;
 
-if( Yii::$app->user->identity->checarAcesso('coordenador') == 1){
-  $action = "{view} {banca} {aprovar} {reprovar}";
-}
-if ( Yii::$app->user->identity->checarAcesso('professor') == 1){
-  $action = "{view} {banca}";
-}
-else if( Yii::$app->user->identity->checarAcesso('secretaria') == 1){
-  $action = "{view} {aprovar} {reprovar}";
-}
-
-
 ?>
 <div class="orientandos-index">
 
@@ -50,7 +39,7 @@ else if( Yii::$app->user->identity->checarAcesso('secretaria') == 1){
 			 'email:email',
 			 'telresidencial',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=> $action,
+              'template'=> "{view} {banca} {update} {delete}",
                 'buttons'=>[
 				
                   'view' => function ($url, $model) {  
@@ -60,21 +49,14 @@ else if( Yii::$app->user->identity->checarAcesso('secretaria') == 1){
                     ]);                                
 
                   },
-                  'aprovar' => function ($url, $model) {  
 
-                    return Html::a('<span class="glyphicon glyphicon-ok-circle"></span>', ['aprovar', 'aluno_id' => $model->id], [
-                            'title' => Yii::t('yii', 'Aprovar Candidato'),
+                  'banca' => function ($url, $model) {  
+
+                    return Html::a('<span class="glyphicon glyphicon-check"></span>', ['defesa/create', 'aluno_id' => $model->id], [
+                            'title' => Yii::t('yii', 'Solicitar Banca'),
                     ]);                                
 
                   },
-                  'reprovar' => function ($url, $model) {  
-
-                    return Html::a('<span class="glyphicon glyphicon-ban-circle"></span>', ['reprovar', 'aluno_id' => $model->id], [
-                            'title' => Yii::t('yii', 'Reprovar Candidato'),
-                    ]);                                
-
-                  },
-
               ]                            
             ],
         ],
