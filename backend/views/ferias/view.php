@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => date("d-m-Y", strtotime($model->dataPedido)),
 
             ],
-            'idusuario',
             'nomeusuario',
             'emailusuario:email',
                 [
@@ -42,13 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
                      'value' => $model->tipo == 1 ? 'Oficial' : 'Usufruto'
                 ],
             [
-                'label' => 'Data Saída',
+                'label' => 'Data Início',
                 'attribute' => 'dataSaida',
                 'value' => date("d-m-Y", strtotime($model->dataSaida)),
 
             ],
             [
-                'label' => 'Data Retorno',
+                'label' => 'Data Término',
                 'attribute' => 'dataRetorno',
                 'value' => date("d-m-Y", strtotime($model->dataRetorno)),
 

@@ -48,46 +48,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         return date('d-m-Y', strtotime($model->dataPedido));
              },
              ],
-            //'idusuario',
+
             'nomeusuario',
-             ['attribute' => 'dataSaida',
-             'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataSaida));
-             },
-             ],
-             ['attribute' => 'dataRetorno',
-             'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataRetorno));
-             },
-             ],
-             [
-                 'attribute' => 'diferencaData',
-                 'label' => "Nº de Dias",
-            ],
-                     
             [
-            "attribute" =>'tipo',
-            "value" => function ($model){
-
-            	if($model->tipo == 1){
-            		return "Oficial";
-            	}
-            	else{
-            		return "Usufruto";
-            	}
-
-            },
-
+                'label' => 'Férias Oficiais' ,
+                 'value' => function ($model){
+                            return $model->feriasAno($model->idusuario, $_GET["ano"] , 1 );
+                 },
+            ],
+            [
+                'label' => 'Usufruta de Férias' ,
+                 'value' => function ($model){
+                            return $model->feriasAno($model->idusuario, $_GET["ano"] , 2 );
+                 },
             ],
             ['class' => 'yii\grid\ActionColumn',
-              'template'=>'{view} {delete} {update}',
+              'template'=>'{view}',
                 'buttons'=>[
-                  'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['delete2', 'id' => $model->id], [
-                            'data' => [
-                                'confirm' => 'Remover o registro das férias do \''.$model->nomeusuario.'\'?',
-                                'method' => 'post',
-                            ],
+                  'view' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 'id' => $model->idusuario , 'ano' => $_GET["ano"]], [
                             'title' => Yii::t('yii', 'Remover Férias'),
                     ]);   
                   }

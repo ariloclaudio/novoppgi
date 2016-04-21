@@ -20,6 +20,7 @@ class Ferias extends \yii\db\ActiveRecord
 {
     
     public $diferencaData;
+    public $diferencaData2;
     public $anoSaida;
     /**
      * @inheritdoc
@@ -37,7 +38,7 @@ class Ferias extends \yii\db\ActiveRecord
         return [
             [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno'], 'required'],
             [['idusuario', 'tipo'], 'integer'],
-            [['dataSaida', 'dataRetorno', 'dataPedido'], 'safe'],
+            [['dataSaida', 'dataRetorno', 'dataPedido','diferencaData2','diferencaData'], 'safe'],
             [['nomeusuario', 'emailusuario'], 'string', 'max' => 60],
         ];
     }
@@ -118,9 +119,10 @@ class Ferias extends \yii\db\ActiveRecord
 
         }
 
-        return array_sum($arrayDias);
+        return array_sum($arrayDias) + $cont;
 
     }
+
     
     public function feriasAnoTodos($ano,$tipo){
 
@@ -145,5 +147,15 @@ class Ferias extends \yii\db\ActiveRecord
         return array_sum($arrayDias);
 
     }
-    
+
+
+    public function verificarSeEhProfessor($id){
+
+        $ehProfessor = User::find()->where(["id" => $id])->one()->professor;
+
+        return $ehProfessor;
+
+    }
+
+   
 }

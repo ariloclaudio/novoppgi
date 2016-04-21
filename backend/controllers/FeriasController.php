@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Ferias;
+use common\models\User;
 use app\models\FeriasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -24,6 +25,7 @@ class FeriasController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'deletesecretaria' => ['POST'],
                 ],
             ],
         ];
@@ -82,6 +84,45 @@ class FeriasController extends Controller
             'direitoQtdFerias' => $direitoQtdFerias,
             "qtd_ferias_oficiais" => $qtd_ferias_oficiais,
             "qtd_usufruto_ferias" => $qtd_usufruto_ferias,
+
+        ]);
+    }
+
+    public function actionDetalhar($ano,$id)
+    {
+
+
+        $idUser = $id;
+
+        $model = new Ferias();
+
+        $ehProf = $model->verificarSeEhProfessor($id);
+
+        if ($ehProf == 1){
+            $direitoQtdFerias = 45;
+        }
+        else{
+            $direitoQtdFerias = 30;   
+        }
+       
+        $todosAnosFerias = $model->anosFerias($idUser);
+
+        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,1);
+        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,2);
+
+
+
+        $searchModel = new FeriasSearch();
+        $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser ,$ano);
+
+        return $this->render('detalhar', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'todosAnosFerias' => $todosAnosFerias,
+            'direitoQtdFerias' => $direitoQtdFerias,
+            "qtd_ferias_oficiais" => $qtd_ferias_oficiais,
+            "qtd_usufruto_ferias" => $qtd_usufruto_ferias,
+            "id" => $id,
 
         ]);
     }
@@ -218,6 +259,94 @@ class FeriasController extends Controller
         }
     }
 
+    public function actionCreatesecretaria($id)
+    {
+
+        $model = new Ferias();
+
+        $model_User = User::find()->where(["id" => $id])->one();
+
+
+        $model->idusuario = $id;
+        $model->nomeusuario = $model_User->nome;
+        $model->emailusuario = $model_User->email;
+        $model->dataPedido = date("Y-m-d H:i:s");
+
+        $ehProfessor = $model_User->professor;
+        $ehCoordenador = $model_User->coordenador;
+        $ehSecretario = $model_User->secretaria;
+
+        if ($model->load(Yii::$app->request->post())) {
+
+
+                $model->dataSaida = date('Y-m-d', strtotime($model->dataSaida));
+                $model->dataRetorno =  date('Y-m-d', strtotime($model->dataRetorno));
+
+
+                $feriasAno = new Ferias();
+                $anoSaida = date('Y', strtotime($model->dataSaida));
+                $totalDiasFeriasAno = $feriasAno->feriasAno($model->idusuario,$anoSaida,$model->tipo);
+
+
+                $datetime1 = new \DateTime($model->dataSaida);
+                $datetime2 = new \DateTime($model->dataRetorno);
+                $interval = $datetime1->diff($datetime2);
+                $diferencaDias =  $interval->format('%a');
+
+                if( $diferencaDias == 0 || $interval->format('%R') == "-"){
+
+                    $this->mensagens('danger', 'Registro Férias',  'Datas inválidas!');
+
+                        $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                        $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+
+                    return $this->render('createsecretaria', [
+                            'model' => $model,
+                        ]);
+
+                }
+
+                    if( ($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) <=45 && $model->save()){
+
+                        $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+
+                        return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y")]);
+
+                    }
+                    else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) <= 30 && $model->save()){
+
+                        $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
+                    
+                        return $this->redirect(['detalhar', 'id' => $model->idusuario , 'ano' => date("Y")]);
+                    
+                    }
+                    else if ((($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) >=45)) {
+
+                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
+                    }
+
+                    else if (( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) >= 30)) {
+
+                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+
+                    }
+
+                $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
+                $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
+
+                return $this->render('createsecretaria', [
+                        'model' => $model,
+                    ]);
+
+
+        } else {
+            echo "oi";
+            return $this->render('createsecretaria', [
+                'model' => $model,
+            ]);
+        }
+    }
+
     /**
      * Updates an existing Ferias model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -320,7 +449,7 @@ class FeriasController extends Controller
         return $this->redirect(['listar','ano'=> date("Y")]);
     }
     //função usada na view da Secretaria, o qual lista todos os membros
-    public function actionDelete2($id)
+    public function actionDeletesecretaria($id)
     {
         $this->findModel($id)->delete();
         
