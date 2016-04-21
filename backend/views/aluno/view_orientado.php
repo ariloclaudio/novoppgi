@@ -15,23 +15,17 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
 ?>
 <div class="aluno-view">
 
+    <h1><?= Html::encode($this->title) ?></h1>
+
     <p>
-        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Excluir', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Você tem certeza que deseja excluir este item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-        <?= Html::a('Pedir Banca', ['defesa/create', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Pedir Banca', ['defesa/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-           'matricula',
-            'nome',
+            'matricula',
+			'nome',
             'email:email',
             [
                      'attribute' => 'area',
@@ -51,7 +45,7 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
             'cpf',
             'telresidencial',
             'telcelular',
-            [
+			[
                      'attribute' => 'bolsista',
                      'format'=>'raw',
                      'value' => $model->bolsista == 1 ? 'SIM: '.$model->agencia : 'NÃO'
@@ -60,7 +54,7 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
                 'attribute' => 'status',
                 'value' => $model->status == 0 ? 'Aluno Corrente': 'Aluno Egresso' 
             ],
-            [
+			[
                 'label' => 'Data de Ingresso',
                 'attribute' => 'dataingresso',
                 'value' => date("d-m-Y", strtotime($model->dataingresso)),
@@ -68,7 +62,7 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
             ],
             'idiomaExameProf',
             'conceitoExameProf',
-            'dataExameProf',            
+            'dataExameProf',
         ],
     ]) ?>
 

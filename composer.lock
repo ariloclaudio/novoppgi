@@ -517,12 +517,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "d866af325936209258989d3bd17b4fbdb9835a72"
+                "reference": "a64e8389e4dff0d9f8923b21c1da91aeae65e94e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/d866af325936209258989d3bd17b4fbdb9835a72",
-                "reference": "d866af325936209258989d3bd17b4fbdb9835a72",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/a64e8389e4dff0d9f8923b21c1da91aeae65e94e",
+                "reference": "a64e8389e4dff0d9f8923b21c1da91aeae65e94e",
                 "shasum": ""
             },
             "type": "library",
@@ -562,7 +562,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2016-04-06 11:18:59"
+            "time": "2016-04-20 18:14:58"
         },
         {
             "name": "kartik-v/bootstrap-star-rating",
@@ -656,12 +656,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-krajee-base.git",
-                "reference": "ac0587853943e99738fc7bbd21fcf7acf7095a61"
+                "reference": "a70c97f0d48fc5ce7c8a911252f1cea91e266812"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/ac0587853943e99738fc7bbd21fcf7acf7095a61",
-                "reference": "ac0587853943e99738fc7bbd21fcf7acf7095a61",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/a70c97f0d48fc5ce7c8a911252f1cea91e266812",
+                "reference": "a70c97f0d48fc5ce7c8a911252f1cea91e266812",
                 "shasum": ""
             },
             "require": {
@@ -699,7 +699,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-04-19 12:39:22"
+            "time": "2016-04-19 17:30:09"
         },
         {
             "name": "kartik-v/yii2-mpdf",
@@ -2065,12 +2065,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "d7d15fe98d1000aa82de7e86e749c0df4f5169de"
+                "reference": "625d0b0033c550ae920041ab479471a2bb1ddf5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/d7d15fe98d1000aa82de7e86e749c0df4f5169de",
-                "reference": "d7d15fe98d1000aa82de7e86e749c0df4f5169de",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/625d0b0033c550ae920041ab479471a2bb1ddf5b",
+                "reference": "625d0b0033c550ae920041ab479471a2bb1ddf5b",
                 "shasum": ""
             },
             "require": {
@@ -2151,7 +2151,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-04-19 08:59:16"
+            "time": "2016-04-20 06:26:07"
         },
         {
             "name": "yiisoft/yii2-bootstrap",

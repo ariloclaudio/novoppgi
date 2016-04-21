@@ -8,6 +8,7 @@ use yiibr\brvalidator\CpfValidator;
 
 class Aluno extends \yii\db\ActiveRecord
 {
+    public $siglaLinhaPesquisa;
 
     /**
      * @inheritdoc
@@ -84,9 +85,9 @@ class Aluno extends \yii\db\ActiveRecord
             'pais' => 'País',
             'status' => 'Status',
             'dataingresso' => 'Data de Ingresso',
-            'idiomaExameProf' => 'Idioma Exame Prof',
-            'conceitoExameProf' => 'Conceito Exame Prof',
-            'dataExameProf' => 'Data Exame Prof',
+            'idiomaExameProf' => 'Idioma do Exame de Proficiência',
+            'conceitoExameProf' => 'Conceito do Exame de Proficiência',
+            'dataExameProf' => 'Data do Exame de Proficiência',
             'tituloQual2' => 'Titulo Qual2',
             'dataQual2' => 'Data Qual2',
             'conceitoQual2' => 'Conceito Qual2',

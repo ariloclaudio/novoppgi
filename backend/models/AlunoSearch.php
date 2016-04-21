@@ -39,6 +39,7 @@ class AlunoSearch extends Aluno
      *
      * @return ActiveDataProvider
      */
+    
     public function search($params)
     {
         $idUsuario = Yii::$app->user->identity->id;
@@ -47,7 +48,7 @@ class AlunoSearch extends Aluno
            $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id");
        }
        else if (Yii::$app->user->identity->checarAcesso('professor')){
-           $query = Aluno::find()->select("*")
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")
            ->where('orientador = '.$idUsuario);
        }
 

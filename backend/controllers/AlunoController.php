@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Aluno;
-use app\models\LinhaPesquisa;
+use common\models\LinhaPesquisa;
 use app\models\AlunoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -70,6 +70,28 @@ class AlunoController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Displays a single Aluno model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView_orientado($id)
+    {
+         $model = $this->findModel($id);
+
+        //obtendo o nome linha de pesquisa através do id da linha de pesquisa
+        $linhaPesquisa = new LinhaPesquisa();
+        $linhaPesquisa = $linhaPesquisa->getLinhaPesquisaNome($model->area);
+        
+        if ($linhaPesquisa != null){
+            $model->area = $linhaPesquisa->nome;
+        }
+        
+        return $this->render('view_orientado', [
+            'model' =>  $model,
         ]);
     }
 

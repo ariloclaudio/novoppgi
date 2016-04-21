@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				
                   'view' => function ($url, $model) {  
 
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'id' => $model->id], [
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view_orientado', 'id' => $model->id], [
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);                                
 

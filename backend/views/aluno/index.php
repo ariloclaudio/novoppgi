@@ -12,78 +12,29 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="aluno-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-        <?= Html::a('Create Aluno', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Novo Aluno', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?= GridView::widget([
+       <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'nome',
-            'email:email',
-            'senha',
             'matricula',
-            // 'area',
-            // 'curso',
-            // 'endereco',
-            // 'bairro',
-            // 'cidade',
-            // 'uf',
-            // 'cep',
-            // 'datanascimento',
-            // 'sexo',
-            // 'nacionalidade',
-            // 'estadocivil',
-            // 'cpf',
-            // 'rg',
-            // 'orgaoexpeditor',
-            // 'dataexpedicao',
-            // 'telresidencial',
-            // 'telcomercial',
-            // 'telcelular',
-            // 'nomepai',
-            // 'nomemae',
-            // 'regime',
-            // 'bolsista',
-            // 'agencia',
-            // 'pais',
-            // 'status',
-            // 'anoingresso',
-            // 'idiomaExameProf',
-            // 'conceitoExameProf',
-            // 'dataExameProf',
-            // 'tituloQual2',
-            // 'dataQual2',
-            // 'conceitoQual2',
-            // 'tituloTese',
-            // 'dataTese',
-            // 'conceitoTese',
-            // 'horarioQual2',
-            // 'localQual2',
-            // 'resumoQual2:ntext',
-            // 'horarioTese',
-            // 'localTese',
-            // 'resumoTese:ntext',
-            // 'tituloQual1',
-            // 'numDefesa',
-            // 'dataQual1',
-            // 'examinadorQual1',
-            // 'conceitoQual1',
-            // 'cursograd',
-            // 'instituicaograd',
-            // 'crgrad',
-            // 'egressograd',
-            // 'dataformaturagrad',
-            // 'idUser',
-            // 'orientador',
-            // 'anoconclusao',
-            // 'sede',
+            'nome',
+            [   'label' => 'Status',
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    $statusAluno = array (0 => "Aluno Corrente",1 => "Aluno Egresso",2 => "Aluno Desistente",3 => "Aluno Desligado",4 => "Aluno Jubilado",5 => "Aluno com Matrícula Trancada");
+                    return $statusAluno[$model->status];
+                },
+            ],
+            [   'label' => 'Linha Pesquisa',
+                'attribute' => 'siglaLinhaPesquisa',
+            ],
+             'email:email',
+             'telresidencial',
+             'dataingresso',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

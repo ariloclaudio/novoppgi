@@ -99,7 +99,7 @@ class AfastamentosController extends Controller
 					$this->mensagens('success', 'Salvo com sucesso', 'Os dados de sua solicitação de afastamento foram enviados ao Diretor do IComp com sucesso.');
 					return $this->redirect(['view', 'id' => $model->id]);
 				}catch(Exception $e){
-                    return $e->getMessage();
+                    $this->mensagens('danger', 'Erro ao Enviar a Solicitação', 'Contate o Administrador do Sistema');   
                 }
 			}
        		 else
