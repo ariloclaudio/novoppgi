@@ -53,8 +53,8 @@ class Ferias extends \yii\db\ActiveRecord
             'nomeusuario' => 'Professor',
             'emailusuario' => 'Email do Usuário',
             'tipo' => 'Tipo Férias',
-            'dataSaida' => 'Data Saida',
-            'dataRetorno' => 'Data Retorno',
+            'dataSaida' => 'Data Início',
+            'dataRetorno' => 'Data Término',
         ];
     }
     

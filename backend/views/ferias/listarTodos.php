@@ -43,10 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            //'id',
              ['attribute' => 'dataPedido',
              'value' => function ($model){
-                        return date('d-m-Y', strtotime($model->dataSaida));
+                        return date('d-m-Y', strtotime($model->dataPedido));
              },
              ],
             //'idusuario',
