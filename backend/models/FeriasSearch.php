@@ -72,7 +72,6 @@ class FeriasSearch extends Ferias
     public function search($params,$ano){
         
         $query = Ferias::find()->select("j17_ferias.*, YEAR(dataSaida) as anoSaida")
-        ->rightJoin("j17_professores as prof","prof.id = j17_ferias.idusuario")
         ->where("(YEAR (dataSaida)) = ".$ano)
         ->groupBy("j17_ferias.idusuario");
         
