@@ -50,14 +50,15 @@ $this->params['breadcrumbs'][] = $this->title;
              ],
 
             'nomeusuario',
-            [
+
+           [
                 'label' => 'Férias Oficiais' ,
                  'value' => function ($model){
                             return $model->feriasAno($model->idusuario, $_GET["ano"] , 1 );
                  },
             ],
             [
-                'label' => 'Usufruta de Férias' ,
+                'label' => 'Usufruto de Férias' ,
                  'value' => function ($model){
                             return $model->feriasAno($model->idusuario, $_GET["ano"] , 2 );
                  },
