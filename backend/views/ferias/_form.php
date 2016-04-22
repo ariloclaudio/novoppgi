@@ -28,7 +28,7 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
 				        'format' => 'dd-mm-yyyy',
 				        'todayHighlight' => true
 				    ]
-		        ])->label("<font color='#FF0000'>*</font> <b>Data Saída:</b>")
+		        ])->label("<font color='#FF0000'>*</font> <b>Data Início:</b>")
 		    ?>
 
 	</div>
@@ -41,12 +41,12 @@ $arrayTipoferias = array ("1" => "Oficial", "2" => "Usufruto");
 				        'format' => 'dd-mm-yyyy',
 				        'todayHighlight' => true
 				    ]
-		        ])->label("<font color='#FF0000'>*</font> <b>Data Retorno:</b>")
+		        ])->label("<font color='#FF0000'>*</font> <b>Data Término:</b>")
 		    ?>
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Registrar Férias' : 'Editar Registro de Férias', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Registrar Férias' : 'Editar Registro de Férias', ['id' => $model->idusuario,'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
