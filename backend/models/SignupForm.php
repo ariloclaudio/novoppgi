@@ -95,32 +95,6 @@ public function attributeLabels()
             $user->visualizacao_candidatos_finalizados =  date("Y-m-d H:i:s");
             $user->visualizacao_cartas_respondidas =  date("Y-m-d H:i:s");
             if ($user->save()) {
-                if($this->administrador){
-                    $auth = Yii::$app->authManager;
-                    $authorRole = $auth->getRole('administrador');     
-                    $auth->assign($authorRole, $user->getId());
-                }
-                if($this->coordenador){
-                    $auth = Yii::$app->authManager;
-                    $authorRole = $auth->getRole('coordenador');     
-                    $auth->assign($authorRole, $user->getId());
-                }
-                if($this->secretaria){
-                    $auth = Yii::$app->authManager;
-                    $authorRole = $auth->getRole('secretaria');     
-                    $auth->assign($authorRole, $user->getId());
-                }
-                if($this->professor){
-                    $auth = Yii::$app->authManager;
-                    $authorRole = $auth->getRole('professor');     
-                    $auth->assign($authorRole, $user->getId());
-                }
-                if($this->aluno){
-                    $auth = Yii::$app->authManager;
-                    $authorRole = $auth->getRole('aluno');     
-                    $auth->assign($authorRole, $user->getId());
-                }
-
                 return $user;
             }
         }

@@ -21,7 +21,7 @@ class ReservaSala extends \yii\db\ActiveRecord
     {
         return [
             [['dataReserva', 'dataInicio', 'dataTermino', 'horaInicio', 'horaTermino'], 'safe'],
-            [['sala', 'idSolicitante', 'atividade', 'dataInicio', 'dataTermino', 'horaInicio', 'horaTermino'], 'required'],
+            [['sala', 'idSolicitante', 'atividade', 'dataInicio', 'dataTermino', 'horaInicio', 'horaTermino', 'tipo'], 'required'],
             [['sala', 'idSolicitante'], 'integer'],
             [['atividade'], 'string', 'max' => 50],
             [['tipo'], 'string', 'max' => 30],

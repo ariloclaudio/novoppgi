@@ -6,6 +6,8 @@ use Yii;
 use yii\base\NotSupportedException;
 use app\models\ReservaSala;
 use app\models\ReservaSalaSearch;
+use app\models\SalaSearch;
+use app\models\Sala;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,27 +32,57 @@ class ReservaSalaController extends Controller
         ];
     }
 
-    /*Falta Implementar*/
     public function actionIndex()
     {
-        // QTDE DE RESERVAS PERMITIDAS
-        $qtdeMaxima = 5;
-        $searchModel = new ReservaSalaSearch();
+        $searchModel = new SalaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'qtdeMaxima' => $qtdeMaxima,
         ]);
     }
 
-    /*Falta implementar*/
-    public function actionReservarperiodo(){
-        throw new NotSupportedException('"Reservar Período" ainda não Implementado.');
+    public function actionCalendario($idSala){
+        $reservasCalendario = array();
+
+        $modelSala = Sala::findOne(['id' => $idSala]);
+        $reservas = ReservaSala::findAll(['sala' => $idSala]);
+
+        foreach ($reservas as $reserva) {
+            $reservaItem = new \yii2fullcalendar\models\Event();
+            $reservaItem->id = $reserva->id;
+            $reservaItem->title = $reserva->atividade;
+            $reservaItem->start = $reserva->dataInicio.'T'.$reserva->horaInicio;
+            $reservaItem->end = $reserva->dataTermino.'T'.$reserva->horaTermino;
+            $reservasCalendario[] = $reservaItem;
+        }
+
+        return $this->render('calendario',[
+            'modelSala' => $modelSala,
+            'reservasCalendario' => $reservasCalendario,
+        ]);
     }
+
+    public function actionCreate()
+    {
+
+        $model = new ReservaSala();
+        $model->sala = filter_input(INPUT_GET, 'sala');
+        $model->idSolicitante = Yii::$app->user->identity->id;
+        $model->dataReserva = date('Y-m-d H:i:s');
+        $model->dataInicio = filter_input(INPUT_GET, 'dataInicio');
+        $model->horaInicio = filter_input(INPUT_GET, 'horaInicio');
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index', 'idSala' => $model->sala]);
+        } else {
+            return $this->renderAjax('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
 
     /**
      * Displays a single ReservaSala model.
@@ -62,24 +94,6 @@ class ReservaSalaController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
-    }
-
-    /**
-     * Creates a new ReservaSala model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new ReservaSala();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
     }
 
     /**

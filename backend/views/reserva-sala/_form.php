@@ -3,9 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\ReservaSala */
-/* @var $form yii\widgets\ActiveForm */
+$tipos = ['Aula' => 'Aula', 'Defesa' => 'Defesa', 'Exame' => 'Exame', 'Reunião' => 'Reunião'];
 ?>
 
 <div class="reserva-sala-form">
@@ -20,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'atividade')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'tipo')->dropDownList($tipos, ['prompt' => 'Selecione um tipo']) ?>
 
     <?= $form->field($model, 'dataInicio')->textInput() ?>
 
@@ -31,7 +29,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'horaTermino')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Salvar' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

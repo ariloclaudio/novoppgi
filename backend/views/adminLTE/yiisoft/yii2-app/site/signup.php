@@ -77,7 +77,7 @@ $this->title = 'Cadastro';
                     ]]) ?>
                 </div>
                 <div class="form-group">
-                    <?= Html::submitButton('Cadastrar-se', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton('Cadastrar', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

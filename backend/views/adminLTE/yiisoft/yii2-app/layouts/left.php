@@ -39,6 +39,13 @@
                     ],
                 ],
                 [
+                'label' => 'Reserva de Sala',
+                'icon' => 'fa fa-building-o',
+                'url' => '#',
+                'visible' => Yii::$app->user->identity->checarAcesso('coordenador'),
+                'url' => ['reserva-sala/index'],
+                ],
+                [
                     'label' => 'Seleções PPGI',
                     'icon' => 'fa fa-file-code-o',
                     'url' => '#',
