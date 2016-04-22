@@ -2,24 +2,25 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use xj\bootbox\BootboxAsset;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\ReservaSala */
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
-$this->title = $model->id;
+$this->title = $model->atividade;
 $this->params['breadcrumbs'][] = ['label' => 'Reserva Salas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->salaDesc->nome, 'url' => ['calendario', 'idSala' => $model->sala]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="reserva-sala-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Voltar ao Calendário', ['calendario', 'idSala' => $model->sala], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Remover', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Deseja remover a reserva \''.$model->atividade.'\'?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -28,15 +29,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'dataReserva',
-            'sala',
-            'idSolicitante',
+            [
+                'attribute' => 'dataReserva',
+                'value' => date("d-m-Y H:i:s", strtotime($model->dataReserva)),
+            ],
+            'salaDesc.nome',
             'atividade',
             'tipo',
-            'dataInicio',
-            'dataTermino',
+            [
+                'attribute' => 'dataInicio',
+                'value' => date("d-m-Y", strtotime($model->dataInicio)),
+
+            ],
             'horaInicio',
+            [
+                'attribute' => 'dataTermino',
+                'value' => date("d-m-Y", strtotime($model->dataTermino)),
+            ],
             'horaTermino',
         ],
     ]) ?>

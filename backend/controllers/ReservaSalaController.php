@@ -17,9 +17,7 @@ use yii\filters\VerbFilter;
  */
 class ReservaSalaController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
+
     public function behaviors()
     {
         return [
@@ -66,16 +64,16 @@ class ReservaSalaController extends Controller
 
     public function actionCreate()
     {
-
         $model = new ReservaSala();
         $model->sala = filter_input(INPUT_GET, 'sala');
         $model->idSolicitante = Yii::$app->user->identity->id;
-        $model->dataReserva = date('Y-m-d H:i:s');
-        $model->dataInicio = filter_input(INPUT_GET, 'dataInicio');
-        $model->horaInicio = filter_input(INPUT_GET, 'horaInicio');
+        $model->dataReserva = date('Y-m-d H:i:s');      
+        
+        $model->dataInicio = date('d-m-Y', strtotime(filter_input(INPUT_GET, 'dataInicio')));
+        $model->horaInicio = filter_input(INPUT_GET, 'horaInicio') == '00:00' ? "" : filter_input(INPUT_GET, 'horaInicio');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'idSala' => $model->sala]);
+            return $this->redirect(['calendario', 'idSala' => $model->sala]);
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,
@@ -84,11 +82,6 @@ class ReservaSalaController extends Controller
     }
 
 
-    /**
-     * Displays a single ReservaSala model.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -96,15 +89,12 @@ class ReservaSalaController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing ReservaSala model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
+        $model->dataInicio = date('d-m-Y', strtotime($model->dataInicio));
+        $model->dataTermino = date('d-m-Y', strtotime($model->dataTermino));
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -115,12 +105,6 @@ class ReservaSalaController extends Controller
         }
     }
 
-    /**
-     * Deletes an existing ReservaSala model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -128,13 +112,6 @@ class ReservaSalaController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the ReservaSala model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return ReservaSala the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = ReservaSala::findOne($id)) !== null) {

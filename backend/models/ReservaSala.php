@@ -34,16 +34,28 @@ class ReservaSala extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'dataReserva' => 'Data Reserva',
+            'dataReserva' => 'Data da Reserva',
             'sala' => 'Sala',
             'idSolicitante' => 'Id Solicitante',
             'atividade' => 'Atividade',
             'tipo' => 'Tipo',
-            'dataInicio' => 'Data Início',
-            'dataTermino' => 'Data Término',
-            'horaInicio' => 'Hora Início',
-            'horaTermino' => 'Hora Término',
+            'dataInicio' => 'Data de Início',
+            'dataTermino' => 'Data de Término',
+            'horaInicio' => 'Hora de Início',
+            'horaTermino' => 'Hora de Término',
+            'salaDesc.nome' => 'Sala',
         ];
+    }
+
+    public function getSalaDesc()
+    {
+        return $this->hasOne(Sala::className(), ['id' => 'sala']);
+    }
+
+    public function beforeSave(){
+        $this->dataInicio = date('Y-m-d', strtotime($this->dataInicio));
+        $this->dataTermino =  date('Y-m-d', strtotime($this->dataTermino));
+
+        return true;
     }
 }

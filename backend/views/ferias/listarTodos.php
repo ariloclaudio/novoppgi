@@ -50,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
              ],
 
             'nomeusuario',
+            'nomeProfessor',
 
            [
                 'label' => 'Férias Oficiais' ,

@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Reserva de Sala', 'url' => ['index
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div>
+  <p><?= Html::a('Voltar', ['index'], ['class' => 'btn btn-warning']) ?></p>
   <?php
     Modal::begin([
       'header' => '<h2>Reserva de Sala</h2>',
@@ -34,7 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
               var dateStr = date;
               var data = (new Date(dateStr)).toISOString().slice(0, 10);
               var hora = (new Date(dateStr)).toISOString().slice(11, 16);
-              alert('Clicked on: ' + data+' Hora: '+hora);
               $.get('index.php?r=reserva-sala/create', {'sala': '$modelSala->id', 'dataInicio': data,'horaInicio': hora, 'requ': 'AJAX'}, function(data){
                   $('#modal').modal('show')
                   .find('#modalContent')

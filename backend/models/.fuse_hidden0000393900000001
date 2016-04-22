@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Ferias;
+use app\models\Professor;
 
 /**
  * FeriasSearch represents the model behind the search form about `app\models\Ferias`.
@@ -32,13 +33,6 @@ class FeriasSearch extends Ferias
         return Model::scenarios();
     }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     *
-     * @return ActiveDataProvider
-     */
      
     public function criarDataProvider($dataProvider,$query){
         
@@ -71,11 +65,46 @@ class FeriasSearch extends Ferias
     
     public function search($params,$ano){
         
-/*        $query = Ferias::find()->select("j17_ferias.*, YEAR(dataSaida) as anoSaida")
-        ->where("(YEAR (dataSaida)) = ".$ano)
-        ->groupBy("j17_ferias.idusuario");*/
+/*        $query = Ferias::find()->select("j17_professores.nomeProfessor, j17_ferias.*, YEAR(dataSaida) as anoSaida")
+        ->where("(YEAR (dataSaida)) = ".$ano)->join('right Join','j17_professores', 'j17_professores.idUser = j17_ferias.idusuario')
+        ->groupBy("j17_professores.nomeProfessor");*/
 
-        $query = Ferias::findBySql("SELECT j17_professores.nomeProfessor, j.*, YEAR(dataSaida) as anoSaida FROM j17_professores LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_professores.idUser = j.idusuario group By j17_professores.nomeProfessor");
+        /*$query = Professor::find()->select("j17_professores.nome, j17_ferias.*, YEAR(dataSaida) as anoSaida")
+        ->join('right', 'CREATE VIEW j17_ferias1 AS
+            SELECT j17_ferias1.*
+            FROM j17_ferias1 
+            WHERE (YEAR (dataSaida)) = ".$ano)', 'j17_professores.idUser = j17_ferias.idusuario');*/
+
+        $query = Ferias::findBySql("SELECT * FROM (j17_professores RIGHT JOIN 
+            (SELECT *
+            FROM j17_ferias 
+            WHERE YEAR (dataSaida) = '$ano') as J17) as J18");
+
+        
+        
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        $dataProvider = $this->criarDataProvider($dataProvider,$query);
+        
+        return $dataProvider;
+        
+    }
+
+    public function searchProfessores($params,$ano){
+        
+        /*$query = Ferias::find()->select("j17_professores.nome, j17_ferias.*, YEAR(dataSaida) as anoSaida")
+        ->joinWith('j17_professores')
+        ->where("(YEAR (dataSaida)) = ".$ano)
+        ->groupBy("j17_professores.nome");*/
+
+        $query = Professor::find()->select("j17_professores.nome, j17_ferias.*, YEAR(dataSaida) as anoSaida")
+        ->joinWith('SELECT j17_ferias.* FROM j17_professores right JOIN j17_ferias WHERE (YEAR (dataSaida)) = ".$ano');
         
         
         // add conditions that should always apply here

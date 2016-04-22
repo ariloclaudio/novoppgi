@@ -22,6 +22,8 @@ class Ferias extends \yii\db\ActiveRecord
     public $diferencaData;
     public $diferencaData2;
     public $anoSaida;
+    public $nomeProfessor;
+    
     /**
      * @inheritdoc
      */
@@ -38,7 +40,7 @@ class Ferias extends \yii\db\ActiveRecord
         return [
             [['idusuario', 'nomeusuario', 'emailusuario', 'tipo', 'dataSaida', 'dataRetorno'], 'required'],
             [['idusuario', 'tipo'], 'integer'],
-            [['dataSaida', 'dataRetorno', 'dataPedido','diferencaData2','diferencaData'], 'safe'],
+            [['dataSaida', 'dataRetorno', 'dataPedido','diferencaData2','diferencaData', 'nomeProfessor'], 'safe'],
             [['nomeusuario', 'emailusuario'], 'string', 'max' => 60],
         ];
     }
