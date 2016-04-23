@@ -40,8 +40,27 @@ class FeriasSearch extends Ferias
      * @return ActiveDataProvider
      */
      
-    public function criarDataProvider($dataProvider,$query){
+    
+    public function search($params,$ano){
         
+/*        $query = Ferias::find()->select("j17_ferias.*, YEAR(dataSaida) as anoSaida")
+        ->where("(YEAR (dataSaida)) = ".$ano)
+        ->groupBy("j17_ferias.idusuario");*/
+
+        $query = Ferias::findBySql("SELECT j17_professores.idUser as idUser,j17_professores.nomeProfessor as nomeProfessor, j.*, YEAR(dataSaida) as anoSaida FROM j17_professores LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_professores.idUser = j.idusuario group By j17_professores.nomeProfessor");
+        
+        
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+        $this->load($params);
+
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -65,31 +84,6 @@ class FeriasSearch extends Ferias
 
         $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
             ->andFilterWhere(['like', 'emailusuario', $this->emailusuario]);
-            
-        return $dataProvider;
-    } 
-    
-    public function search($params,$ano){
-        
-/*        $query = Ferias::find()->select("j17_ferias.*, YEAR(dataSaida) as anoSaida")
-        ->where("(YEAR (dataSaida)) = ".$ano)
-        ->groupBy("j17_ferias.idusuario");*/
-
-        $query = Ferias::findBySql("SELECT j17_professores.idUser as idUser,j17_professores.nomeProfessor, j.*, YEAR(dataSaida) as anoSaida FROM j17_professores LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_professores.idUser = j.idusuario group By j17_professores.nomeProfessor");
-        
-        
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 50,
-            ],
-        ]);
-
-        $this->load($params);
-
-        $dataProvider = $this->criarDataProvider($dataProvider,$query);
         
         return $dataProvider;
         
@@ -115,7 +109,29 @@ class FeriasSearch extends Ferias
 
         $this->load($params);
 
-        $dataProvider = $this->criarDataProvider($dataProvider,$query);
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $dataProvider->sort->attributes['diferencaData'] = [
+        'asc' => ['diferencaData' => SORT_ASC],
+        'desc' => ['diferencaData' => SORT_DESC],
+        ];
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'idusuario' => $this->idusuario,
+            'tipo' => $this->tipo,
+            'dataSaida' => $this->dataSaida,
+            'dataRetorno' => $this->dataRetorno,
+            'dataPedido' => $this->dataPedido,
+        ]);
+
+        $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
+            ->andFilterWhere(['like', 'emailusuario', $this->emailusuario]);
         
         return $dataProvider;
         
@@ -136,7 +152,29 @@ class FeriasSearch extends Ferias
 
         $this->load($params);
 
-        $dataProvider = $this->criarDataProvider($dataProvider,$query);
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $dataProvider->sort->attributes['diferencaData'] = [
+        'asc' => ['diferencaData' => SORT_ASC],
+        'desc' => ['diferencaData' => SORT_DESC],
+        ];
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'idusuario' => $this->idusuario,
+            'tipo' => $this->tipo,
+            'dataSaida' => $this->dataSaida,
+            'dataRetorno' => $this->dataRetorno,
+            'dataPedido' => $this->dataPedido,
+        ]);
+
+        $query->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
+            ->andFilterWhere(['like', 'emailusuario', $this->emailusuario]);
 
         return $dataProvider;
     }

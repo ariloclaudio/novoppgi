@@ -23,6 +23,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </script>
 
+    <p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?> 
+    </p>
+
 
 <p>
     Selecione um ano: <select id= "comboBoxAno" onclick="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
@@ -75,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   'view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
                         'id' => $model->idUser , 'ano' => $_GET["ano"], "prof" => 1], [
-                            'title' => Yii::t('yii', 'Remover Férias'),
+                            'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);   
                   }
               ]                            
@@ -121,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   'view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
                         'id' => $model->idUser , 'ano' => $_GET["ano"], "prof" => 0], [
-                            'title' => Yii::t('yii', 'Remover Férias'),
+                            'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);   
                   }
               ]                            

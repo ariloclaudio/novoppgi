@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </script>
 
     <p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['site/index'], ['class' => 'btn btn-warning']) ?>   
         <?= Html::a('Registrar Novas Férias', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
@@ -99,7 +100,16 @@ $this->params['breadcrumbs'][] = $this->title;
             },
 
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{update} {delete}',
+                'buttons'=>[
+                  'update' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-edit"></span>', ['update', 'id' => $model->id , "ano" => $_GET["ano"]], [
+                            'title' => Yii::t('yii', 'Editar Férias'),
+                    ]);   
+                  }
+              ]                            
+                ],
         ],
     ]); ?>
 </div>

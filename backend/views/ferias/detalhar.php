@@ -10,6 +10,11 @@ use yii\grid\GridView;
 $this->title = 'Detalhes de Férias';
 $this->params['breadcrumbs'][] = $this->title;
 
+if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
+    $anoVoltar = $_GET["ano"];
+    $profVoltar = $_GET["prof"];
+}
+
 ?>
 
 
@@ -17,7 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Registrar Novas Férias', ['createsecretaria' , "id" => $id ], ['class' => 'btn btn-success']) ?>
+
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['listartodos', "ano" => $anoVoltar ], ['class' => 'btn btn-warning']) ?>  
+        <?= Html::a('Registrar Novas Férias', ['createsecretaria' , "id" => $id, "ano" => $anoVoltar , "prof" => $profVoltar ], ['class' => 'btn btn-success']) ?>
     </p>
 
  <table class="table" style ="width: 20%;border:solid 2px;">
@@ -95,10 +102,10 @@ $this->params['breadcrumbs'][] = $this->title;
               'template'=>'{delete}',
                 'buttons'=>[
                   'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id ,], [
+                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id], [
 
                         'data' => [
-                                        'confirm' => "Você realmente deseja excluir essa senha?",
+                                        'confirm' => "Você realmente deseja excluir o registro dessas férias?",
                                         'method' => 'post',
                                     ],
 

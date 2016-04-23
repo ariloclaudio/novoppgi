@@ -211,8 +211,9 @@ class FeriasController extends Controller
                 $datetime2 = new \DateTime($model->dataRetorno);
                 $interval = $datetime1->diff($datetime2);
                 $diferencaDias =  $interval->format('%a');
+                $diferencaDias++;
 
-                if( $diferencaDias == 0 || $interval->format('%R') == "-"){
+                if( $diferencaDias < 0 || $interval->format('%R') == "-"){
 
                     $this->mensagens('danger', 'Registro Férias',  'Datas inválidas!');
 
@@ -229,14 +230,14 @@ class FeriasController extends Controller
 
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['listar', 'ano' => $anoSaida]);
 
                     }
                     else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) <= 30 && $model->save()){
 
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
                     
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['listar', 'ano' => $anoSaida]);
                     
                     }
                     else if ((($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) >=45)) {
@@ -387,8 +388,15 @@ class FeriasController extends Controller
         $ehCoordenador = Yii::$app->user->identity->coordenador;
         $ehSecretario = Yii::$app->user->identity->secretaria;
 
-        if ($model->load(Yii::$app->request->post())) {
+        $datetime1Anterior = new \DateTime($model->dataSaida);
+        $datetime2Anterior = new \DateTime($model->dataRetorno);
+        $intervalAnterior = $datetime1Anterior->diff($datetime2Anterior);
+        $AnteriordiferencaDias =  $intervalAnterior->format('%a');
+        $AnteriordiferencaDias++;
 
+        $anteriorTipo = $model->tipo;
+
+        if ($model->load(Yii::$app->request->post())) {
 
                 $model->dataSaida = date('Y-m-d', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('Y-m-d', strtotime($model->dataRetorno));
@@ -403,40 +411,50 @@ class FeriasController extends Controller
                 $datetime2 = new \DateTime($model->dataRetorno);
                 $interval = $datetime1->diff($datetime2);
                 $diferencaDias =  $interval->format('%a');
+                $diferencaDias++;
 
-                if( $diferencaDias == 0 || $interval->format('%R') == "-"){
+                if($anteriorTipo == $model->tipo) {
+                    $diferencaDiasUpdate = $diferencaDias - $AnteriordiferencaDias;
+                }
+                else{
+                    $diferencaDiasUpdate = $diferencaDias;
+                }
+
+
+    
+                if( $diferencaDias < 0 || $interval->format('%R') == "-"){
 
                     $this->mensagens('danger', 'Registro Férias',  'Datas inválidas!');
 
                         $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                         $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
 
-                    return $this->render('create', [
+                    return $this->render('update', [
                             'model' => $model,
                         ]);
 
                 }
 
-                    if( ($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) <=45 && $model->save()){
+                    if( ($ehProfessor == 1 ) && ($totalDiasFeriasAno+$diferencaDiasUpdate) <=45 && $model->save()){
 
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['listar', 'ano' => $anoSaida]);
 
                     }
-                    else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) <= 30 && $model->save()){
+                    else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDiasUpdate) <= 30 && $model->save()){
 
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
                     
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['listar', "ano" => $anoSaida]);
                     
                     }
-                    else if ((($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) >=45)) {
+                    else if ((($ehProfessor == 1) && ($totalDiasFeriasAno+$diferencaDiasUpdate) >45)) {
 
                         $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
                     }
 
-                    else if (( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) >= 30)) {
+                    else if (( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDiasUpdate) > 30)) {
 
                         $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
 
@@ -445,7 +463,7 @@ class FeriasController extends Controller
                 $model->dataSaida = date('d-m-Y', strtotime($model->dataSaida));
                 $model->dataRetorno =  date('d-m-Y', strtotime($model->dataRetorno));
 
-                return $this->render('create', [
+                return $this->render('update', [
                         'model' => $model,
                     ]);
 
@@ -470,7 +488,8 @@ class FeriasController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        
+
+        $this->mensagens('success', 'Registro Férias',  'Registro de Férias excluído com sucesso!');
 
         return $this->redirect(['listar','ano'=> date("Y")]);
     }
