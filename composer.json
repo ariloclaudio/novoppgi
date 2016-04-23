@@ -24,7 +24,8 @@
         "yiibr/yii2-br-validator": "*",
         "xj/yii2-bootbox-widget":"*",
         "kartik-v/yii2-mpdf": "dev-master",
-        "moonlandsoft/yii2-phpexcel": "*"
+        "moonlandsoft/yii2-phpexcel": "*",
+        "philippfrenzel/yii2fullcalendar": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
