@@ -36,20 +36,25 @@ $this->params['breadcrumbs'][] = $this->title;
     </select>
 </p>
 
+<h1> Solicitações de Férias de Professores </h1>
+
 <div class="ferias-index">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+
         //'filterModel' => $searchModel,
+
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-             ['attribute' => 'dataPedido',
+             /*['attribute' => 'dataPedido',
              'value' => function ($model){
                         return date('d-m-Y', strtotime($model->dataPedido));
              },
              ],
+             */
 
-            'nomeusuario',
+            //'nomeusuario',
             'nomeProfessor',
 
            [
@@ -68,7 +73,8 @@ $this->params['breadcrumbs'][] = $this->title;
               'template'=>'{view}',
                 'buttons'=>[
                   'view' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 'id' => $model->idusuario , 'ano' => $_GET["ano"]], [
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
+                        'id' => $model->idUser , 'ano' => $_GET["ano"], "prof" => 1], [
                             'title' => Yii::t('yii', 'Remover Férias'),
                     ]);   
                   }
@@ -76,4 +82,51 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
         ],
     ]); ?>
+
+<h1> Solicitações de Férias de Funcionários </h1>
+
+ <?= GridView::widget([
+        'dataProvider' => $dataProvider2,
+
+        //'filterModel' => $searchModel,
+
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+             /*['attribute' => 'dataPedido',
+             'value' => function ($model){
+                        return date('d-m-Y', strtotime($model->dataPedido));
+             },
+             ],
+             */
+
+            //'nomeusuario',
+            'nomeFuncionario',
+
+           [
+                'label' => 'Férias Oficiais' ,
+                 'value' => function ($model){
+                            return $model->feriasAno($model->idusuario, $_GET["ano"] , 1 );
+                 },
+            ],
+            [
+                'label' => 'Usufruto de Férias' ,
+                 'value' => function ($model){
+                            return $model->feriasAno($model->idusuario, $_GET["ano"] , 2 );
+                 },
+            ],
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{view}',
+                'buttons'=>[
+                  'view' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
+                        'id' => $model->idUser , 'ano' => $_GET["ano"], "prof" => 0], [
+                            'title' => Yii::t('yii', 'Remover Férias'),
+                    ]);   
+                  }
+              ]                            
+                ],
+        ],
+    ]); ?>
+
 </div>

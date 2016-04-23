@@ -12,16 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<script type="text/javascript">
-        
-        function anoSelecionado(){
-            var x = document.getElementById("comboBoxAno").value;
-
-            window.location="index.php?r=ferias/listar&ano="+x; 
-
-        }
-
-</script>
 
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -47,17 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </tbody>
   </table>
 
-<p>
-    Selecione um ano: <select id= "comboBoxAno" onclick="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
-        <?php for($i=0; $i<count($todosAnosFerias); $i++){ 
-
-            $valores = $todosAnosFerias[$i];
-
-            ?>
-            <option <?php if($valores == $_GET["ano"]){echo "SELECTED";} ?> > <?php echo $valores ?> </option>
-        <?php } ?>
-    </select>
-</p>
 
 <div class="ferias-index">
     <?= GridView::widget([

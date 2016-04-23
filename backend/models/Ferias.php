@@ -23,6 +23,8 @@ class Ferias extends \yii\db\ActiveRecord
     public $diferencaData2;
     public $anoSaida;
     public $nomeProfessor;
+    public $nomeFuncionario;
+    public $idUser;
     
     /**
      * @inheritdoc

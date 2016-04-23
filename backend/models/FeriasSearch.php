@@ -75,13 +75,42 @@ class FeriasSearch extends Ferias
         ->where("(YEAR (dataSaida)) = ".$ano)
         ->groupBy("j17_ferias.idusuario");*/
 
-        $query = Ferias::findBySql("SELECT j17_professores.nomeProfessor, j.*, YEAR(dataSaida) as anoSaida FROM j17_professores LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_professores.idUser = j.idusuario group By j17_professores.nomeProfessor");
+        $query = Ferias::findBySql("SELECT j17_professores.idUser as idUser,j17_professores.nomeProfessor, j.*, YEAR(dataSaida) as anoSaida FROM j17_professores LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_professores.idUser = j.idusuario group By j17_professores.nomeProfessor");
         
         
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+        $this->load($params);
+
+        $dataProvider = $this->criarDataProvider($dataProvider,$query);
+        
+        return $dataProvider;
+        
+    }
+
+        public function searchFuncionarios($params,$ano){
+        
+/*        $query = Ferias::find()->select("j17_ferias.*, YEAR(dataSaida) as anoSaida")
+        ->where("(YEAR (dataSaida)) = ".$ano)
+        ->groupBy("j17_ferias.idusuario");*/
+
+        $query = Ferias::findBySql("SELECT j17_funcionarios.idUser as idUser,j17_funcionarios.nome as nomeFuncionario, j.*, YEAR(dataSaida) as anoSaida FROM j17_funcionarios LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_funcionarios.idUser = j.idusuario group By j17_funcionarios.nome");
+        
+        
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 50,
+            ],
         ]);
 
         $this->load($params);
