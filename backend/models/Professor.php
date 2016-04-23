@@ -39,6 +39,9 @@ use Yii;
  */
 class Professor extends \yii\db\ActiveRecord
 {
+
+    public $idUsuarioProfessor;
+
     /**
      * @inheritdoc
      */
@@ -108,4 +111,14 @@ class Professor extends \yii\db\ActiveRecord
             'idRH' => 'Id Rh',
         ];
     }
+
+    public function feriasAno($idusuario,$ano,$tipo){
+
+       $model_ferias = new Ferias();
+       $model_ferias = $model_ferias->feriasAno($idusuario,$ano,$tipo);
+
+        return $model_ferias;
+
+    }
+
 }
