@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\DetailView;
 
 $this->title = 'Minhas Solicitações de Férias';
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,22 +25,38 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Registrar Novas Férias', ['create', "ano" => $_GET["ano"]], ['class' => 'btn btn-success']) ?>
     </p>
 
- <table class="table" style ="width: 20%;border:solid 2px;">
-    <tbody>
-      <tr class="success">
-        <td> <b> Total de dias de férias oficiais: </b> </td>
-        <td  style="width:10%" > <b> <?= $qtd_ferias_oficiais ?> </b> </td>
-      </tr>
-      <tr class="warning">
-        <td> <b> Total de dias de usufruto de férias: </b> </td>
-        <td> <b> <?= $qtd_usufruto_ferias ?> </b> </td>
-      </tr>
-      <tr class="info">
-        <td> <b> Dias restantes de usufruto de férias: </b> </td>
-        <td> <b> <?php echo ($direitoQtdFerias-$qtd_usufruto_ferias) ?>  </b> </td>
-      </tr>
-    </tbody>
-  </table>
+
+<div class="ferias-index">
+
+    <?= DetailView::widget([
+        'model' => $model_do_usuario,
+        'attributes' => [
+
+
+            [
+            'attribute' => 'nomeusuario',
+            'label' => 'Nome',
+            ],
+
+            [
+            'attribute' => 'totalFeriasOficial',
+            'label' => 'Total de dias de férias oficiais:',
+            'value'=> $qtd_ferias_oficiais,
+
+            ],
+            [
+            'attribute' => 'detalharTotalUsufruto',
+            'label' => 'Total de dias de usufruto de férias:',
+            'value'=> $qtd_usufruto_ferias,
+            ],
+            [
+            'attribute' => 'detalharRestoUsufruto',
+            'label' => 'Dias restantes de usufruto de férias:',
+            'value'=> ($direitoQtdFerias-$qtd_usufruto_ferias),
+            ],
+
+        ],
+    ]) ?>
 
 <p>
     Selecione um ano: <select id= "comboBoxAno" onchange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
@@ -53,7 +70,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </select>
 </p>
 
-<div class="ferias-index">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,

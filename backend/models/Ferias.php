@@ -25,6 +25,10 @@ class Ferias extends \yii\db\ActiveRecord
     public $nomeProfessor;
     public $nomeFuncionario;
     public $idUser;
+    public $detalharTotalUsufruto;
+    public $detalharRestoUsufruto;
+    public $totalFeriasOficial;
+
     
     /**
      * @inheritdoc

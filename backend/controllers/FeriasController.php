@@ -79,7 +79,10 @@ class FeriasController extends Controller
         $searchModel = new FeriasSearch();
         $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser ,$ano);
 
+        $model_do_usuario = Ferias::find()->where(["idusuario" => $idUser])->one();
+
         return $this->render('index', [
+            'model_do_usuario' => $model_do_usuario,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'todosAnosFerias' => $todosAnosFerias,
@@ -117,7 +120,10 @@ class FeriasController extends Controller
         $searchModel = new FeriasSearch();
         $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser ,$ano);
 
+        $model_do_usuario = Ferias::find()->where(["idusuario" => $idUser])->one();
+
         return $this->render('detalhar', [
+            'model_do_usuario' => $model_do_usuario,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'todosAnosFerias' => $todosAnosFerias,
