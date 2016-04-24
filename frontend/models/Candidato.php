@@ -312,7 +312,7 @@ class Candidato extends \yii\db\ActiveRecord
             $curriculumFile->saveAs($caminho.$this->curriculum);
         }
 
-        if($enviar || (isset($this->historico) && isset($this->curriculum))){
+        if($enviar || (isset($this->historico) || $this->edital->cartaorientador == 0) && (isset($this->curriculum))) {
             return true;
         }else{
             return false;

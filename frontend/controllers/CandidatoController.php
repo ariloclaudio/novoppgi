@@ -225,7 +225,6 @@ class CandidatoController extends Controller
         $model->passoatual = 4;
         $model->fim = date("Y-m-d H:i:s");
         $model->save(false);
-        //Yii::$app->session->destroy();
 
         $diretorio = $model->getDiretorio();
 

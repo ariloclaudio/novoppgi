@@ -16,7 +16,7 @@ if(!Yii::$app->user->isGuest){
 
 
 ?>
-<?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->checarAcesso('coordenacao')){ ?>
+<?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->checarAcesso('coordenador')){ ?>
 <script>
 
     setInterval(function(){
@@ -130,7 +130,7 @@ if(!Yii::$app->user->isGuest){
         <div class="navbar-custom-menu">
 
             <ul class="nav navbar-nav">
-                <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->checarAcesso('coordenacao')){ ?>
+                <?php if(!Yii::$app->user->isGuest && Yii::$app->user->identity->checarAcesso('coordenador')){ ?>
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
