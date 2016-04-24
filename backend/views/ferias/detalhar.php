@@ -8,7 +8,11 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Detalhes de Férias';
+
+$this->params['breadcrumbs'][] = ['label' => 'Solicitações de Férias', 'url' => ['listartodos',  "ano" => $_GET["ano"] ]];
 $this->params['breadcrumbs'][] = $this->title;
+
+
 
 if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
     $anoVoltar = $_GET["ano"];

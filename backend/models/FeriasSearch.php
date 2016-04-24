@@ -47,7 +47,10 @@ class FeriasSearch extends Ferias
         ->where("(YEAR (dataSaida)) = ".$ano)
         ->groupBy("j17_ferias.idusuario");*/
 
+        /*
         $query = Ferias::findBySql("SELECT j17_professores.idUser as idUser,j17_professores.nomeProfessor as nomeProfessor, j.*, YEAR(dataSaida) as anoSaida FROM j17_professores LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_professores.idUser = j.idusuario group By j17_professores.nomeProfessor");
+        */
+        $query = Professor::find()->select("j17_professores.nomeProfessor , j17_professores.idUser as idUsuarioProfessor");
         
         
         // add conditions that should always apply here
@@ -67,9 +70,9 @@ class FeriasSearch extends Ferias
             return $dataProvider;
         }
 
-        $dataProvider->sort->attributes['diferencaData'] = [
-        'asc' => ['diferencaData' => SORT_ASC],
-        'desc' => ['diferencaData' => SORT_DESC],
+        $dataProvider->sort->attributes['nomeProfessor'] = [
+        'asc' => ['nomeProfessor' => SORT_ASC],
+        'desc' => ['nomeProfessor' => SORT_DESC],
         ];
 
         // grid filtering conditions
@@ -95,7 +98,11 @@ class FeriasSearch extends Ferias
         ->where("(YEAR (dataSaida)) = ".$ano)
         ->groupBy("j17_ferias.idusuario");*/
 
-        $query = Ferias::findBySql("SELECT j17_funcionarios.idUser as idUser,j17_funcionarios.nome as nomeFuncionario, j.*, YEAR(dataSaida) as anoSaida FROM j17_funcionarios LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_funcionarios.idUser = j.idusuario group By j17_funcionarios.nome");
+        /*$query = Ferias::findBySql("SELECT j17_funcionarios.idUser as idUser,j17_funcionarios.nome as nomeFuncionario, j.*, YEAR(dataSaida) as anoSaida FROM j17_funcionarios LEFT JOIN (SELECT * FROM j17_ferias WHERE (YEAR (dataSaida)) = $ano) as j ON j17_funcionarios.idUser = j.idusuario group By j17_funcionarios.nome");
+        */
+
+
+        $query = Funcionario::find()->select("j17_funcionarios.nome as nomeFuncionario, j17_funcionarios.idUser as idUsuarioFuncionario");
         
         
         // add conditions that should always apply here
@@ -115,9 +122,9 @@ class FeriasSearch extends Ferias
             return $dataProvider;
         }
 
-        $dataProvider->sort->attributes['diferencaData'] = [
-        'asc' => ['diferencaData' => SORT_ASC],
-        'desc' => ['diferencaData' => SORT_DESC],
+        $dataProvider->sort->attributes['nomeFuncionario'] = [
+        'asc' => ['nomeFuncionario' => SORT_ASC],
+        'desc' => ['nomeFuncionario' => SORT_DESC],
         ];
 
         // grid filtering conditions
