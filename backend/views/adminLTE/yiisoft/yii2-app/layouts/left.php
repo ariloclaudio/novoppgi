@@ -27,17 +27,17 @@
                         ['label' => 'Listar Usuários', 'icon' => 'fa fa-list', 'url' => ['user/index'],],
                     ],
                 ],
-				['label' => 'Coordenação PPGI', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('coordenador')],
                 [
                     'label' => 'Linhas de Pesquisa',
                     'icon' => 'fa fa-search',
                     'url' => '#',
-                    'visible' => Yii::$app->user->identity->checarAcesso('coordenador'),
+                    'visible' => Yii::$app->user->identity->checarAcesso('administrador'),
                     'items' => [
                         ['label' => 'Adicionar Linha de Pesquisa', 'icon' => 'fa fa-search-plus', 'url' => ['linha-pesquisa/create'],],
                         ['label' => 'Listar Linhas de Pesquisa', 'icon' => 'fa fa-list', 'url' => ['linha-pesquisa/index'],],
                     ],
                 ],
+				['label' => 'Coordenação PPGI', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('coordenador')],
                 [
                 'label' => 'Reserva de Sala',
                 'icon' => 'fa fa-building-o',

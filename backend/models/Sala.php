@@ -57,4 +57,10 @@ class Sala extends \yii\db\ActiveRecord
     {
         return $this->hasMany(J17Reservas::className(), ['sala' => 'id']);
     }
+
+    public function getReservasAtivas(){
+        return ReservaSala::find()->where(['idSolicitante' => Yii::$app->user->identity->id])->andWhere(['sala' => $this->id])
+        ->andWhere('dataInicio >= \''.date('Y-m-d').'\'')
+        ->count();
+    }
 }

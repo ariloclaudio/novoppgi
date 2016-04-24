@@ -1530,7 +1530,7 @@ class EditalController extends Controller
         if (($model = Edital::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('A página solicitada não existe.');
         }
     }
 
