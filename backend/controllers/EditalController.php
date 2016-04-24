@@ -1410,7 +1410,23 @@ class EditalController extends Controller
         $model->doutorado = 1;
 
         if ($model->load(Yii::$app->request->post())) {
-            
+
+
+            if($model->mestrado == 1){
+                $model->cartaorientador = 0;
+            }
+
+            if($model->mestrado == 1 && $model->doutorado == 0){
+                    $model->vagas_doutorado = 0;
+                    $model->cotas_doutorado = 0;
+            }
+            else if($model->mestrado == 0 && $model->doutorado == 1){
+
+                    $model->vagas_mestrado = 0;
+                    $model->cotas_mestrado = 0;   
+            }
+
+           
             if($model->mestrado == 1 && $model->doutorado == 1)
                 $model->curso = '3';
             else if($model->mestrado == 1)

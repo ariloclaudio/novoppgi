@@ -111,7 +111,7 @@ class CandidatoController extends Controller
 
         $session = Yii::$app->session;
         $id = $session->get('candidato');
-        $model = $this->findModel($id);        
+        $model = $this->findModel($id);       
 
         if ($model->load(Yii::$app->request->post())){
 
@@ -130,7 +130,8 @@ class CandidatoController extends Controller
                         $this->mensagens('danger', 'Erro ao salvar informações', 'Ocorreu um erro ao salvar as informações. Contate o adminstrador do sistema.');
                     }
                 }else{
-                    $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');   
+                    $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos'); 
+
                 }
             }else{
                 $this->mensagens('danger', 'Erro ao Salvar as Publicações', 'Ocorreu ao Extrair as informações do arquivo XML.');

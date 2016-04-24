@@ -75,6 +75,7 @@ if(isset($model->documento))
 		    </div>
 		    <div class="row">
 			    <?= $form->field($model, 'cartarecomendacao', ['options' => ['class' => 'col-md-2']])->widget(SwitchInput::classname(), ['pluginOptions' => [
+			    	'size' => 'large',
 			        'onText' => 'Sim',
 			        'offText' => 'Não',
 			    ]])->label("<font color='#FF0000'>*</font> <b>Carta de Recomendação?</b>") ?>
@@ -82,6 +83,7 @@ if(isset($model->documento))
 		    <div class="row">
 			    <?= $form->field($model, 'mestrado', ['options' => ['class' => 'col-md-2']])->widget(SwitchInput::classname(), [
 			    	'pluginOptions' => [
+			    		'size' => 'large',
 				        'onText' => 'Sim',
 				        'offText' => 'Não',
 			    ]])->label("<font color='#FF0000'>*</font> <b>Mestrado?</b>") ?>
@@ -94,16 +96,33 @@ if(isset($model->documento))
 			<div class="row">
 			    <?= $form->field($model, 'doutorado', ['options' => ['class' => 'col-md-2']])->widget(SwitchInput::classname(), [
 			    	'pluginOptions' => [
+			    	'size' => 'large',
 			        'onText' => 'Sim',
 			        'offText' => 'Não',
 			    ]])->label("<font color='#FF0000'>*</font> <b>Doutorado?</b>") ?>
 			</div>
 
-		    <div class="row" id="divVagasDoutorado" style="display:none">
-		    	<?= $form->field($model, 'vagas_doutorado', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Doutorado:</b>") ?>
+		    <div id="divVagasDoutorado" style="display:none">
+		    <div class ="row">
 
-		    	<?= $form->field($model, 'cotas_doutorado', ['options' => ['class' => 'col-md-3']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
+		    	<?= $form->field($model, 'vagas_doutorado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number', 'maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Vagas para Doutorado:</b>") ?>
+
+		    	<?= $form->field($model, 'cotas_doutorado', ['options' => ['class' => 'col-md-2']])->textInput(['type' => 'number'])->label("<font color='#FF0000'>*</font> <b>Vagas para Regime de Cotas:</b>") ?>
+
+			</div>
+
+			<div class = "row">
+
+			    <?= $form->field($model, 'cartaorientador', ['options' => ['class' => 'col-md-2']])->widget(SwitchInput::classname(), [
+			    	'pluginOptions' => [
+			    		'size' => 'large',
+				        'onText' => 'Sim',
+				        'offText' => 'Não',
+			    ]])->label("<font color='#FF0000'>*</font> <b>Carta Orientador?</b>") ?>
+
+
 		     </div>
+		    </div>
 
 		    <div class="form-group">
 		        <?= Html::submitButton($model->isNewRecord ? 'Criar' : 'Alterar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

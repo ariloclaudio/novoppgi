@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <p>
-    Selecione um ano: <select id= "comboBoxAno" onclick="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
+    Selecione um ano: <select id= "comboBoxAno" onChange="anoSelecionado();" class="form-control" style="margin-bottom: 20px; width:10%;">
         <?php for($i=0; $i<count($todosAnosFerias); $i++){ 
 
             $valores = $todosAnosFerias[$i];

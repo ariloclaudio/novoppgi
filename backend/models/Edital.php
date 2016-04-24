@@ -52,7 +52,7 @@ class Edital extends \yii\db\ActiveRecord
             ['numero', 'checkNumero'],
             ['numero', 'unique','message' => 'Já existe edital cadastrado com esse Número.'],
             [['numero'], 'unique', 'message' => 'Edital já criado'],
-            [['vagas_mestrado','vagas_doutorado', 'cotas_mestrado', 'cotas_doutorado'], 'integer', 'min' => 0],
+            [['vagas_mestrado','vagas_doutorado', 'cotas_mestrado', 'cotas_doutorado', 'cartaorientador'], 'integer', 'min' => 0],
             [['datainicio', 'datafim', 'documentoFile'], 'safe'],
             [['datainicio'], 'validarDataInicio'],
             [['datafim'], 'validarDataFim'],

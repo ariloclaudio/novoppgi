@@ -95,21 +95,33 @@ if($model->instituicaoacademica3 == ""){
     
     <div class="row" style="padding: 3px 3px 3px 3px">
         <?php 
-        if(isset($model->historico)){
-            echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Histórico Escolar (mesmo que incompleto para os formandos):<br> 
-                Você já fez o upload do seu histórico, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-lo.</b><br></div>";
-            
-            echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-            'pluginOptions' => [
-                'onText' => 'Sim',
-                'offText' => 'Não',
-                ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
 
+        if($model->cartaOrientador($model->idEdital) ){
+
+            echo "<input type='hidden' id = 'ignorarRequiredCartaOrientador' value = '1' />";
+
+            if(isset($model->historico)){
+                echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Carta do Orientador:<br> 
+                    Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-lo.</b><br></div>";
+                
+                echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                'pluginOptions' => [
+                    'onText' => 'Sim',
+                    'offText' => 'Não',
+                    ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
+
+            }
+            else{
+
+                echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Carta do Orientador </b>");
+            }
         }
         else{
 
-            echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Histórico Escolar (mesmo que incompleto para os formandos):</b>");
+            echo "<input type='hidden' id = 'ignorarRequiredCartaOrientador' value = '0' />";
+
         }
+
         ?>
     </div>
     <div class="row">
