@@ -11,7 +11,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Reserva de Sala', 'url' => ['index
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div>
-  <p><?= Html::a('Voltar', ['index'], ['class' => 'btn btn-warning']) ?></p>
+  <p>Clique em uma reserva para visualizá-la ou clique em um dia e horário para criar uma reserva</p>
+  <p><?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar ', ['index'], ['class' => 'btn btn-warning']) ?></p>
   <?php
     Modal::begin([
       'header' => '<h2>Reserva de Sala</h2>',

@@ -25,6 +25,10 @@ class ReservaSala extends \yii\db\ActiveRecord
             [['sala', 'idSolicitante'], 'integer'],
             [['atividade'], 'string', 'max' => 50],
             [['tipo'], 'string', 'max' => 30],
+            [['dataInicio'], 'validarDataInicio'],
+            [['horaInicio'], 'validarHoraInicio'],
+            [['horaTermino'], 'validarHoraTermino'],
+            [['dataTermino'], 'validarDataTermino']
         ];
     }
 
@@ -45,6 +49,39 @@ class ReservaSala extends \yii\db\ActiveRecord
             'horaTermino' => 'Hora de Término',
             'salaDesc.nome' => 'Sala',
         ];
+    }
+
+    /*Funções para validação de atributos*/
+    public function validarDataInicio($attribute, $params){
+        if (!$this->hasErrors()) {
+            if ($this->dataInicio < date('Y-m-d')) {
+                $this->addError($attribute, 'Informe uma data igual ou posterior a '.date('d-m-Y'));
+            }
+        }
+    }
+
+    public function validarDataTermino($attribute, $params){
+        if (!$this->hasErrors()) {
+            if ($this->dataTermino < $this->dataInicio) {
+                $this->addError($attribute, 'Informe uma data igual ou posterior a '.date("d-m-Y", strtotime($this->dataInicio)));
+            }
+        }
+    }
+
+    public function validarHoraTermino($attribute, $params){
+        if (!$this->hasErrors()) {
+            if ($this->dataInicio == $this->dataTermino && $this->horaTermino <= $this->horaInicio) {
+                $this->addError($attribute, 'Informe uma data posterior a '.$this->horaInicio);
+            }
+        }
+    }
+
+    public function validarHoraInicio($attribute, $params){
+        if (!$this->hasErrors()) {
+            if ($this->horaInicio < '05:00:00') {
+                $this->addError($attribute, 'Este horário está correto?');
+            }
+        }
     }
 
     public function getSalaDesc()

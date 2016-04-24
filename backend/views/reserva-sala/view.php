@@ -15,9 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="reserva-sala-view">
 
     <p>
-        <?= Html::a('Voltar ao Calendário', ['calendario', 'idSala' => $model->sala], ['class' => 'btn btn-warning']) ?>
-        <?= Html::a('Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Remover', ['delete', 'id' => $model->id], [
+        <?= Html::a('<span class="glyphicon glyphicon-calendar"></span> Voltar ao Calendário', ['calendario', 'idSala' => $model->sala], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Remover', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Deseja remover a reserva \''.$model->atividade.'\'?',

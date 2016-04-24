@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => $model->atividade, 'url' => ['view'
 $this->params['breadcrumbs'][] = 'Alterar';
 ?>
 <div class="reserva-sala-update">
-	<p><?= Html::a('Voltar', ['view', 'id' => $model->id], ['class' => 'btn btn-warning']) ?></p>
+	<p><?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['view', 'id' => $model->id], ['class' => 'btn btn-warning']) ?></p>
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

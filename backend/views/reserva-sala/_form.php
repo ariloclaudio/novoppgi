@@ -20,7 +20,6 @@ $horarios = ["07:00" => "07:00", "07:30" => "07:30", "08:00" => "08:00", "08:30"
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <!-- <?= $form->field($model, 'sala')->textInput(['disabled' => true]) ?> -->
     <div class="row">
         <?= $form->field($model, 'atividade', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Atividade:</b>") ?>
     </div>
@@ -38,7 +37,7 @@ $horarios = ["07:00" => "07:00", "07:30" => "07:30", "08:00" => "08:00", "08:30"
 
         ?>
 
-        <?= $form->field($model, 'horaInicio', ['options' => ['class' => 'col-md-3']])->dropDownList($horarios, ['prompt' => 'Selecione um Hor de Início'])->label("<font color='#FF0000'>*</font> <b>Hora de Início:</b>") ?>
+        <?= $form->field($model, 'horaInicio', ['options' => ['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Hora de Início:</b>") ?>
     </div>
     <div class="row">
         <?= $form->field($model, 'dataTermino', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
@@ -50,6 +49,8 @@ $horarios = ["07:00" => "07:00", "07:30" => "07:30", "08:00" => "08:00", "08:30"
         ])->label("<font color='#FF0000'>*</font> <b>Data de Término:</b>")
 
         ?>
+
+        <?= $form->field($model, 'horaTermino', ['options' => ['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Hora de Término  :</b>") ?>
 
     </div>
     <div class="form-group">
