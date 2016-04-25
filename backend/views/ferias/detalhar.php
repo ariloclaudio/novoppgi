@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /* @var $searchModel app\models\FeriasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Detalhes de Férias: '.$model_do_usuario->nomeusuario;
+$this->title = 'Detalhes de Férias';
 
 $this->params['breadcrumbs'][] = ['label' => 'Solicitações de Férias', 'url' => ['listartodos',  "ano" => $_GET["ano"] ]];
 $this->params['breadcrumbs'][] = $this->title;
@@ -119,7 +119,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
               'template'=>'{delete}',
                 'buttons'=>[
                   'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id], [
+                    return Html::a('<span class="glyphicon glyphicon-remove"></span>', ['deletesecretaria', 'id' => $model->id, 'idUsuario' => $model->idusuario , 'ano'=>$_GET['ano'], 'prof' => $_GET["prof"],], [
 
                         'data' => [
                                         'confirm' => "Você realmente deseja excluir o registro dessas férias?",

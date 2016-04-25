@@ -60,20 +60,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'nomeusuario',
             [
-            'attribute' => 'nomeProfessor',
+            'attribute' => 'nome',
             'contentOptions'=>['style'=>'max-width: 0px;'],
             ]
             ,
             [
                 'label' => 'Férias Oficiais' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->idUsuarioProfessor, $_GET["ano"] , 1 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 1 );
                  },
             ],
             [
                 'label' => 'Usufruto de Férias' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->idUsuarioProfessor, $_GET["ano"] , 2 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 2 );
                  },
             ],
             ['class' => 'yii\grid\ActionColumn',
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
                   'view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
-                        'id' => $model->idUsuarioProfessor , 'ano' => $_GET["ano"], "prof" => 1], [
+                        'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 1], [
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);   
                   }
@@ -109,20 +109,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
             //'nomeusuario',
             [
-            'attribute' => 'nomeFuncionario',
+            'attribute' => 'nome',
             'contentOptions'=>['style'=>'max-width: 0px;'],
             ]
             ,
            [
                 'label' => 'Férias Oficiais' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->idUsuarioFuncionario, $_GET["ano"] , 1 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 1 );
                  },
             ],
             [
                 'label' => 'Usufruto de Férias' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->idUsuarioFuncionario, $_GET["ano"] , 2 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 2 );
                  },
             ],
             ['class' => 'yii\grid\ActionColumn',
@@ -130,7 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons'=>[
                   'view' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['detalhar', 
-                        'id' => $model->idUsuarioFuncionario , 'ano' => $_GET["ano"], "prof" => 0], [
+                        'id' => $model->id , 'ano' => $_GET["ano"], "prof" => 0], [
                             'title' => Yii::t('yii', 'Visualizar Detalhes'),
                     ]);   
                   }

@@ -59,4 +59,14 @@ class User extends \yii\db\ActiveRecord
             'aluno' => 'Aluno',
         ];
     }
+
+
+    public function feriasAno($idusuario,$ano,$tipo){
+
+       $model_ferias = new Ferias();
+       $model_ferias = $model_ferias->feriasAno($idusuario,$ano,$tipo);
+
+        return $model_ferias;
+
+    }
 }
