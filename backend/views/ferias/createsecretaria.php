@@ -16,7 +16,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) && isset($_GET["id"]) ){
 $this->title = 'Registrar Férias';
 $this->params['breadcrumbs'][] = ['label' => 'Solicitações de Férias', 'url' => ['listartodos' , "ano" => $_GET["ano"]]];
 $this->params['breadcrumbs'][] = ['label' => 'Detalhes de Férias', 'url' => ['detalhar' , "id" => $idVoltar , "ano" => $anoVoltar , "prof" => $profVoltar ]];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title.' '.$nome;
 
 
 

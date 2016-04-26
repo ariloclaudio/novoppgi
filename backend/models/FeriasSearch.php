@@ -89,7 +89,7 @@ class FeriasSearch extends Ferias
         public function searchFuncionarios($params,$ano){
         
 
-        $query = User::find()->select("j17_user.nome, j17_user.id as idUsuarioProfessor")->where(["j17_user.secretaria" => 1]);
+        $query = User::find()->select("j17_user.nome, j17_user.id")->where(["j17_user.secretaria" => 1]);
         
         
         // add conditions that should always apply here

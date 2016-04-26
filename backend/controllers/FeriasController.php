@@ -120,7 +120,7 @@ class FeriasController extends Controller
         $searchModel = new FeriasSearch();
         $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser ,$ano);
 
-        $model_do_usuario = Ferias::find()->where(["idusuario" => $idUser])->one();
+        $model_do_usuario = User::find()->where(["id" => $idUser])->one();
 
         return $this->render('detalhar', [
             'model_do_usuario' => $model_do_usuario,
@@ -274,7 +274,7 @@ class FeriasController extends Controller
         $model_User = User::find()->where(["id" => $id])->one();
         
         
-        if($model->professor == 1){
+        if($model_User->professor == 1){
             $limiteDias = 45;
         }
         else{
@@ -323,7 +323,7 @@ class FeriasController extends Controller
 
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 
-                        return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $ehProfessor]);
+                        return $this->redirect(['detalhar', 'id' => $model->idusuario, 'ano' => date("Y") ,"prof" => $model_User->professor]);
 
                     }
 
@@ -338,6 +338,7 @@ class FeriasController extends Controller
 
                 return $this->render('createsecretaria', [
                         'model' => $model,
+                        'nome' => $model->nomeusuario,
                     ]);
 
 
@@ -345,6 +346,7 @@ class FeriasController extends Controller
 
             return $this->render('createsecretaria', [
                 'model' => $model,
+                'nome' => $model->nomeusuario,
             ]);
         }
     }

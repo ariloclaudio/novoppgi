@@ -38,7 +38,7 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
 
 
             [
-            'attribute' => 'nomeusuario',
+            'attribute' => 'nome',
             'label' => 'Nome',
             ],
 
