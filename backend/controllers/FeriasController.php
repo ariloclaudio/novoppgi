@@ -79,7 +79,7 @@ class FeriasController extends Controller
         $searchModel = new FeriasSearch();
         $dataProvider = $searchModel->searchMinhasFerias(Yii::$app->request->queryParams , $idUser ,$ano);
 
-        $model_do_usuario = Ferias::find()->where(["idusuario" => $idUser])->one();
+        $model_do_usuario = User::find()->where(["id" => $idUser])->one();
 
         return $this->render('index', [
             'model_do_usuario' => $model_do_usuario,
@@ -198,8 +198,14 @@ class FeriasController extends Controller
         $model->dataPedido = date("Y-m-d H:i:s");
 
         $ehProfessor = Yii::$app->user->identity->professor;
-        $ehCoordenador = Yii::$app->user->identity->coordenador;
         $ehSecretario = Yii::$app->user->identity->secretaria;
+
+        if($ehProfessor == 1){
+            $limiteDias = 45;
+        }
+        else{
+            $limiteDias = 30;
+        }
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -232,28 +238,16 @@ class FeriasController extends Controller
 
                 }
 
-                    if( ($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) <=45 && $model->save()){
+                    if( ($totalDiasFeriasAno+$diferencaDias) <= $limiteDias && $model->save()){
 
                         $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
 
                         return $this->redirect(['listar', 'ano' => $anoSaida]);
 
                     }
-                    else if( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) <= 30 && $model->save()){
+                    else {
 
-                        $this->mensagens('success', 'Registro Férias',  'Registro de Férias realizado com sucesso!');
-                    
-                        return $this->redirect(['listar', 'ano' => $anoSaida]);
-                    
-                    }
-                    else if ((($ehProfessor == 1 || $ehCoordenador == 1) && ($totalDiasFeriasAno+$diferencaDias) >=45)) {
-
-                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 45 dias');
-                    }
-
-                    else if (( $ehSecretario == 1  && ($totalDiasFeriasAno+$diferencaDias) >= 30)) {
-
-                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de 30 dias');
+                        $this->mensagens('danger', 'Registro Férias', 'Não foi possível registrar o pedido de férias. Você ultrapassou o limite de '.$limiteDias.'  dias');
 
                     }
 
@@ -491,20 +485,23 @@ class FeriasController extends Controller
      * @return mixed
      */
      //funcao usada por cada professor/técnico
-    public function actionDelete($id)
+    public function actionDelete($id,$ano)
     {
         $this->findModel($id)->delete();
 
         $this->mensagens('success', 'Registro Férias',  'Registro de Férias excluído com sucesso!');
 
-        return $this->redirect(['listar','ano'=> date("Y")]);
+        return $this->redirect(['listar','ano'=> $ano]);
     }
     //função usada na view da Secretaria, o qual lista todos os membros
-    public function actionDeletesecretaria($id)
+    public function actionDeletesecretaria($id,$ano,$idUsuario,$prof)
     {
+
         $this->findModel($id)->delete();
+
+        $this->mensagens('success', 'Registro Férias',  'Registro de Férias excluído com sucesso!');
         
-        return $this->redirect(['listartodos','ano'=> date("Y")]);
+        return $this->redirect(['detalhar','id' => $idUsuario , 'ano'=> $ano, 'prof' => $prof]);
     }
 
     /**
