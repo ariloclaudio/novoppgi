@@ -28,10 +28,10 @@ class ReservaSalaController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                               return Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('secretaria') ||
-                               Yii::$app->user->identity->checarAcesso('professor');
+                           return Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('secretaria') ||
+                           Yii::$app->user->identity->checarAcesso('professor');
                         }
-                    ],
+                    ],                    
                 ],
             ], 
             'verbs' => [
@@ -74,29 +74,47 @@ class ReservaSalaController extends Controller
         ]);
     }
 
-    public function actionCreate()
+    public function actionListagemreservas(){
+        
+        $searchModel = new ReservaSalaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('listagemReservas', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionCreate($sala, $dataInicio, $horaInicio)
     {
         $model = new ReservaSala();
-        $model->sala = filter_input(INPUT_GET, 'sala');
-        $model->dataInicio = filter_input(INPUT_GET, 'dataInicio') ? date('d-m-Y', strtotime(filter_input(INPUT_GET, 'dataInicio'))) : "";
-        $model->horaInicio = filter_input(INPUT_GET, 'horaInicio') == '00:00' ? "" : filter_input(INPUT_GET, 'horaInicio');
+        $model->sala = $sala;
+        $model->dataInicio = $dataInicio;
+        $model->dataTermino = $model->dataInicio;
+        $model->horaInicio = $horaInicio;
+
 
         if($model->salaDesc->reservasAtivas > 4){
             $this->mensagens('warning', 'Limite de Reservas', 'Você alcançou o limite de 5 reservas ativas.');
             return $this->redirect(['calendario', 'idSala' => $model->sala]);
-        }else if($model->dataInicio < date('d-m-Y')){
-            $this->mensagens('warning', 'Data Inválida', 'A data para reserva deve ser igual ou superior que a data de hoje.');
+        }else if($model->dataInicio < date('Y-m-d')){
+            $this->mensagens('warning', 'Data Inválida', 'A data para reserva deve ser igual ou superior que a data de hoje.'.$model->dataInicio.'  '.date('d-m-Y'));
+            return $this->redirect(['calendario', 'idSala' => $model->sala]);
+        }else if(!$model->horarioOk()){
+            $this->mensagens('danger', 'Horário Inválido', 'Não foi possível reservar esta sala no horário escolhido, pois ela já possui uma reserva. Tente novamente em outro horário!');
             return $this->redirect(['calendario', 'idSala' => $model->sala]);
         }
         
         $model->idSolicitante = Yii::$app->user->identity->id;
         $model->dataReserva = date('Y-m-d H:i:s');      
         
-        
-
         if ($model->load(Yii::$app->request->post())) {
+            if(!$model->horarioOk()){
+                $this->mensagens('danger', 'Horário Inválido', 'Não foi possível reservar esta sala no horário escolhido, pois ela já possui uma reserva. Tente novamente em outro horário!');
+                return $this->redirect(['calendario', 'idSala' => $model->sala]);
+            }
             if($model->save()){
-                $this->mensagens('success', 'Reserva de Sala', 'A reserva \''.$model->atividade.'\' foi reservada com sucesso.');
+                $this->mensagens('success', 'Reserva de Sala', 'A \''.$model->atividade.'\' foi reservada com sucesso.');
                 return $this->redirect(['calendario', 'idSala' => $model->sala]);
             }else{
                 $this->mensagens('danger', 'Erro ao Reservar Sala', 'Ocorreu um erro ao reservar a sala. Verifique os campos e tente novamente.');
@@ -125,6 +143,7 @@ class ReservaSalaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $this->validaUpdateDelete($model);
 
         $model->dataInicio = date('d-m-Y', strtotime($model->dataInicio));
         $model->dataTermino = date('d-m-Y', strtotime($model->dataTermino));
@@ -148,7 +167,10 @@ class ReservaSalaController extends Controller
 
     public function actionDelete($id)
     {
-        if($this->findModel($id)->delete()){
+        $model = $this->findModel($id);
+        $this->validaUpdateDelete($model);
+
+        if($model->delete()){
             $this->mensagens('success', 'Reservar Sala', 'A reserva de sala foi removida com sucessso.');
         }else{
             $this->mensagens('danger', 'Erro ao remover Reserva Sala', 'Ocorreu um erro ao remover a reserva de sala.');
@@ -164,6 +186,12 @@ class ReservaSalaController extends Controller
         } else {
             throw new NotFoundHttpException('A página solicitada não existe.');
         }
+    }
+
+    protected function validaUpdateDelete($model){
+        if($model->idSolicitante != Yii::$app->user->identity->id && $model->dataInicio < date('d-m-Y') 
+            || ($model->dataInicio == date('d-m-Y') && $model->horaInicio < date('H:i:s')))
+            throw new ForbiddenHttpException('Acesso negado.');
     }
 
     /* Envio de mensagens para views

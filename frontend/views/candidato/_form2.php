@@ -102,7 +102,7 @@ if($model->instituicaoacademica3 == ""){
 
             if(isset($model->historico)){
                 echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Carta do Orientador:<br> 
-                    Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-lo.</b><br></div>";
+                    Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-la.</b><br></div>";
                 
                 echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
                 'pluginOptions' => [

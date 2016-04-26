@@ -1,55 +1,84 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
-/* @var $model app\models\User */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model \frontend\models\SignupForm */
+
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\widgets\MaskedInput;
+use kartik\widgets\SwitchInput;
+
+$perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4' => 'Professor', '5' => 'Aluno'];
+
 ?>
+<div class="site-signup">
 
-<div class="user-form">
+<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['index'], ['class' => 'btn btn-warning']) ?>    
+    <br><br>
+    <p>Entre com os seguintes dados para alterar o cadastro no sistema do PPGI: </p>
+    
+        <div style= "text-align:right">
+            <font color='#FF0000'>*</font> Campos Obrigatórios
+        </div>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-    <?= $form->field($model, 'nome')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'nome')->label("<font color='#FF0000'>*</font> <b>Nome Completo:</b>") ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'username')->widget(MaskedInput::className(), [
+                'mask' => '999.999.999-99'])->label("<font color='#FF0000'>*</font> <b>CPF:</b>") ?>   
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'email')->label("<font color='#FF0000'>*</font> <b>E-mail:</b>") ?>
 
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'password')->passwordInput()->label("Senha:")  ?>
 
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'password_repeat')->passwordInput()->label("Repetir Senha:")  ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+                <div style="margin-bottom: 20px;"><b><font color='#FF0000'>*</font> Escolha o(s) perfil(s) correspondente a este usuário</b></div>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+                <div class = "row">
+                    <?= $form->field($model, 'administrador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]]) ?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'coordenador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]]) ?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'secretaria', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]])?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'professor', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]])?>
+                </div>
+                <div class = "row">
+                    <?= $form->field($model, 'aluno', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Sim',
+                            'offText' => 'Não',
+                    ]]) ?>
+                </div>
+                <div class="form-group">
+                    <?= Html::submitButton('Cadastrar', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                </div>
 
-    <?= $form->field($model, 'created_at')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'updated_at')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'visualizacao_candidatos')->textInput() ?>
-
-    <?= $form->field($model, 'visualizacao_candidatos_finalizados')->textInput() ?>
-
-    <?= $form->field($model, 'visualizacao_cartas_respondidas')->textInput() ?>
-
-    <?= $form->field($model, 'administrador')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'coordenador')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'secretaria')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'professor')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'aluno')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

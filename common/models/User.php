@@ -32,7 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
                     ActiveRecord::EVENT_BEFORE_UPDATE => 'updated_at',
                 ],
                 'value' => function($event) {
-                    $format = "d/m/Y"; // any format you wish
+                    $format = "Y-m-d"; // any format you wish
                     return date($format); 
                 }
             ],

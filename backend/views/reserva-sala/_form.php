@@ -27,28 +27,8 @@ $horarios = ["07:00" => "07:00", "07:30" => "07:30", "08:00" => "08:00", "08:30"
         <?= $form->field($model, 'tipo', ['options' => ['class' => 'col-md-4']])->dropDownList($tipos, ['prompt' => 'Selecione um tipo'])->label("<font color='#FF0000'>*</font> <b>Tipo:</b>") ?>
     </div>
     <div class="row">
-        <?= $form->field($model, 'dataInicio', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
-            'language' => Yii::$app->language,
-            'pluginOptions' => [
-                'format' => 'dd-mm-yyyy',
-                'todayHighlight' => true
-            ]
-        ])->label("<font color='#FF0000'>*</font> <b>Data de Início:</b>")
-
-        ?>
 
         <?= $form->field($model, 'horaInicio', ['options' => ['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Hora de Início:</b>") ?>
-    </div>
-    <div class="row">
-        <?= $form->field($model, 'dataTermino', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
-            'language' => Yii::$app->language,
-            'pluginOptions' => [
-                'format' => 'dd-mm-yyyy',
-                'todayHighlight' => true
-            ]
-        ])->label("<font color='#FF0000'>*</font> <b>Data de Término:</b>")
-
-        ?>
 
         <?= $form->field($model, 'horaTermino', ['options' => ['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Hora de Término  :</b>") ?>
 

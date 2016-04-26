@@ -39,11 +39,14 @@
                 ],
 				['label' => 'Coordenação PPGI', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('coordenador')],
                 [
-                'label' => 'Reserva de Sala',
-                'icon' => 'fa fa-building-o',
-                'url' => '#',
-                'visible' => Yii::$app->user->identity->checarAcesso('coordenador'),
-                'url' => ['reserva-sala/index'],
+                    'label' => 'Reserva de Sala',
+                    'icon' => 'fa fa-building-o',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('coordenador'),
+                    'items' => [
+                        ['label' => 'Adicionar Sala', 'icon' => 'fa fa-search-plus', 'url' => ['sala/create'],],
+                        ['label' => 'Reservar Sala', 'icon' => 'fa fa-list', 'url' => ['reserva-sala/index'],],
+                    ],
                 ],
                 [
                     'label' => 'Seleções PPGI',

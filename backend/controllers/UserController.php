@@ -78,8 +78,12 @@ class UserController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->setPassword();
+            if($model->save())
+                return $this->redirect(['view', 'id' => $model->id]);
+            else
+                return var_dump($model->getErrors());
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -95,7 +99,10 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $model->status = 0;
+        $model->save();
 
         return $this->redirect(['index']);
     }

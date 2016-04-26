@@ -48,6 +48,7 @@ class ReservaSala extends \yii\db\ActiveRecord
             'horaInicio' => 'Hora de Início',
             'horaTermino' => 'Hora de Término',
             'salaDesc.nome' => 'Sala',
+            'solicitante.nome' => 'Solicitante da Reserva',
         ];
     }
 
@@ -87,6 +88,27 @@ class ReservaSala extends \yii\db\ActiveRecord
     public function getSalaDesc()
     {
         return $this->hasOne(Sala::className(), ['id' => 'sala']);
+    }
+
+    public function getSolicitante()
+    {
+        return $this->hasOne(User::className(), ['id' => 'idSolicitante']);
+    }
+
+    public function horarioOk(){
+        $reservas = self::findAll(['dataInicio' => $this->dataInicio]);
+
+        $this->horaTermino == "" ? $this->horaInicio : $this->horaTermino;
+        
+        if(count($reservas) == 0) return true;
+
+        foreach ($reservas as $value) {
+            if(!(($this->horaTermino < $value->horaInicio && $this->horaInicio < $value->horaInicio) || 
+                ($this->horaInicio > $value->horaTermino && $this->horaTermino > $value->horaTermino)))
+                return false;
+        }
+
+        return true;
     }
 
     public function beforeSave(){

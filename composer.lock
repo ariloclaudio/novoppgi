@@ -160,16 +160,16 @@
         },
         {
             "name": "bower-asset/fullcalendar",
-            "version": "v2.7.0-beta1",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fullcalendar/fullcalendar.git",
-                "reference": "6aa3318bc12acf9f4af4ede862eb33f77e204fb9"
+                "reference": "27547a3a9671692a77fe0a3221b2af5a0be12618"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/6aa3318bc12acf9f4af4ede862eb33f77e204fb9",
-                "reference": "6aa3318bc12acf9f4af4ede862eb33f77e204fb9",
+                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/27547a3a9671692a77fe0a3221b2af5a0be12618",
+                "reference": "27547a3a9671692a77fe0a3221b2af5a0be12618",
                 "shasum": ""
             },
             "require": {
@@ -774,12 +774,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-krajee-base.git",
-                "reference": "a46d88d937f914b71bee85d181687b8f2098e6fa"
+                "reference": "1e53b1124cd92f75e03bf934b01c413ac445ad98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/a46d88d937f914b71bee85d181687b8f2098e6fa",
-                "reference": "a46d88d937f914b71bee85d181687b8f2098e6fa",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/1e53b1124cd92f75e03bf934b01c413ac445ad98",
+                "reference": "1e53b1124cd92f75e03bf934b01c413ac445ad98",
                 "shasum": ""
             },
             "require": {
@@ -817,7 +817,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-04-21 17:23:21"
+            "time": "2016-04-23 10:32:49"
         },
         {
             "name": "kartik-v/yii2-mpdf",
@@ -1934,12 +1934,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/philippfrenzel/yii2fullcalendar.git",
-                "reference": "d5544c638d78fbf331dc52f51411d3e7137a48e8"
+                "reference": "a00862648a8cc81ddd8175b7b6f3ca6f09bde7c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/philippfrenzel/yii2fullcalendar/zipball/d5544c638d78fbf331dc52f51411d3e7137a48e8",
-                "reference": "d5544c638d78fbf331dc52f51411d3e7137a48e8",
+                "url": "https://api.github.com/repos/philippfrenzel/yii2fullcalendar/zipball/a00862648a8cc81ddd8175b7b6f3ca6f09bde7c3",
+                "reference": "a00862648a8cc81ddd8175b7b6f3ca6f09bde7c3",
                 "shasum": ""
             },
             "require": {
@@ -1975,7 +1975,7 @@
                 "fullcalendar",
                 "yii2"
             ],
-            "time": "2016-04-19 14:02:38"
+            "time": "2016-04-23 15:30:06"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -2232,12 +2232,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "680f0b05c89b125190bb1341a71d8bd835845402"
+                "reference": "66c56bca952f7af737348188a5e1162a032d248e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/680f0b05c89b125190bb1341a71d8bd835845402",
-                "reference": "680f0b05c89b125190bb1341a71d8bd835845402",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/66c56bca952f7af737348188a5e1162a032d248e",
+                "reference": "66c56bca952f7af737348188a5e1162a032d248e",
                 "shasum": ""
             },
             "require": {
@@ -2318,7 +2318,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-04-22 22:58:33"
+            "time": "2016-04-23 11:39:15"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2552,12 +2552,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "2e4b26888b33fc733042b116e63336424daeef20"
+                "reference": "ccef6542a4f9c1098fce823c42da7aab4264d385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/2e4b26888b33fc733042b116e63336424daeef20",
-                "reference": "2e4b26888b33fc733042b116e63336424daeef20",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/ccef6542a4f9c1098fce823c42da7aab4264d385",
+                "reference": "ccef6542a4f9c1098fce823c42da7aab4264d385",
                 "shasum": ""
             },
             "require": {
@@ -2594,7 +2594,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-22 12:13:03"
+            "time": "2016-04-25 07:44:40"
         },
         {
             "name": "phpspec/php-diff",

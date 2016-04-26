@@ -16,14 +16,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-calendar"></span> Voltar ao Calendário', ['calendario', 'idSala' => $model->sala], ['class' => 'btn btn-warning']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Remover', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Deseja remover a reserva \''.$model->atividade.'\'?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if($model->idSolicitante == Yii::$app->user->identity->id && $model->dataInicio >= date('Y-m-d') || ($model->dataInicio == date('Y-m-d') && 
+            $model->horaInicio > date('H:i:s'))){ ?>
+                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Remover', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Deseja remover a reserva \''.$model->atividade.'\'?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
+        <?php } ?>
     </p>
 
     <?= DetailView::widget([
@@ -47,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => date("d-m-Y", strtotime($model->dataTermino)),
             ],
             'horaTermino',
+            'solicitante.nome',
         ],
     ]) ?>
 

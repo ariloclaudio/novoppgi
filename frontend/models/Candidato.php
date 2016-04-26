@@ -200,7 +200,7 @@ class Candidato extends \yii\db\ActiveRecord
             'instituicaopos' => 'Instituição',
             'tipopos' => 'Tipo',
             'egressopos' => 'Ano Egresso',
-            'historico' => 'Histórico',
+            'cartaorientador' => 'Carta do Orientador',
             'periodicosinternacionais' => 'Periódicos Internacionais',
             'periodicosnacionais' => 'Periódicos Nacionais',
             'conferenciasinternacionais' => 'Conferências Internacionais',
@@ -235,7 +235,7 @@ class Candidato extends \yii\db\ActiveRecord
             'cartaEmailReq1' => 'E-mail',
             'cartaEmailReq2' => 'E-mail',
 
-                'historicoFile' => 'Histórico Escolar',
+                'historicoFile' => 'Carta Orientador',
                 'curriculumFile' => 'Curriculum Vittae',
                 'propostaFile' => 'Proposta de Trabalho',
                 'comprovanteFile' => 'Comprovante de Pagamento',
