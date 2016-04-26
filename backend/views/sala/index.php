@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use xj\bootbox\BootboxAsset;
 
-/* @var $this yii\web\View */
-/* @var $searchModel app\models\SalaSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 $this->title = 'Salas';
 $this->params['breadcrumbs'][] = $this->title;
@@ -16,11 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
         
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'nome',
             'numero',
             'localizacao',

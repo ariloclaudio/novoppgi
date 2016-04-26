@@ -44,7 +44,7 @@
                     'url' => '#',
                     'visible' => Yii::$app->user->identity->checarAcesso('coordenador'),
                     'items' => [
-                        ['label' => 'Adicionar Sala', 'icon' => 'fa fa-search-plus', 'url' => ['sala/create'],],
+                        ['label' => 'Gerenciar Salas', 'icon' => 'fa fa-wrench', 'url' => ['sala/index'],],
                         ['label' => 'Reservar Sala', 'icon' => 'fa fa-list', 'url' => ['reserva-sala/index'],],
                     ],
                 ],

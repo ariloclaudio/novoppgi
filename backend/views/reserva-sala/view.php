@@ -15,7 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="reserva-sala-view">
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-calendar"></span> Voltar ao Calendário', ['calendario', 'idSala' => $model->sala], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-calendar"></span> Calendário de Reservas', ['calendario', 'idSala' => $model->sala], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-list"></span> Listagem de Reservas', ['listagemreservas'], ['class' => 'btn btn-warning']) ?>
         <?php if($model->idSolicitante == Yii::$app->user->identity->id && $model->dataInicio >= date('Y-m-d') || ($model->dataInicio == date('Y-m-d') && 
             $model->horaInicio > date('H:i:s'))){ ?>
                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

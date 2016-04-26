@@ -7,7 +7,6 @@ $this->title = 'Reserva de Salas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="edital-index">
-    <p><?= Html::a('<span class="fa fa-plus"></span> Nova Sala', ['sala/create'], ['class' => 'btn btn-success']) ?></p>
     <p>Escolha uma das salas abaixo para realizar ou visualizar as reservas</p>
     
     <?= GridView::widget([

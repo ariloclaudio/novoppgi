@@ -31,7 +31,7 @@ class Sala extends \yii\db\ActiveRecord
     {
         return [
             [['nome', 'localizacao'], 'required'],
-            [['numero'], 'integer'],
+            [['numero'], 'integer', 'min' => 0],
             [['nome'], 'string', 'max' => 30],
             [['localizacao'], 'string', 'max' => 50],
         ];
@@ -43,10 +43,9 @@ class Sala extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'nome' => 'Nome',
-            'numero' => 'Numero',
-            'localizacao' => 'Localizacao',
+            'numero' => 'Número da Sala',
+            'localizacao' => 'Localizacão da Sala',
         ];
     }
 

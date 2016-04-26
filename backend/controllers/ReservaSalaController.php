@@ -54,9 +54,15 @@ class ReservaSalaController extends Controller
         ]);
     }
 
-    public function actionCalendario($idSala){
+    public function actionCalendario(){
         $reservasCalendario = array();
-        $modelSala = Sala::findOne(['id' => $idSala]);
+        $idSala = filter_input(INPUT_GET, 'idSala');
+
+        $modelSalas = Sala::find()->all();
+        if($idSala)
+            $modelSala = Sala::findOne(['id' => $idSala]);
+        else
+            $modelSala = $modelSalas[0];
         
         $reservas = ReservaSala::findAll(['sala' => $idSala]);
         foreach ($reservas as $reserva) {
@@ -71,6 +77,7 @@ class ReservaSalaController extends Controller
         return $this->render('calendario',[
             'modelSala' => $modelSala,
             'reservasCalendario' => $reservasCalendario,
+            'modelSalas' => $modelSalas,
         ]);
     }
 
@@ -98,7 +105,7 @@ class ReservaSalaController extends Controller
             $this->mensagens('warning', 'Limite de Reservas', 'Você alcançou o limite de 5 reservas ativas.');
             return $this->redirect(['calendario', 'idSala' => $model->sala]);
         }else if($model->dataInicio < date('Y-m-d')){
-            $this->mensagens('warning', 'Data Inválida', 'A data para reserva deve ser igual ou superior que a data de hoje.'.$model->dataInicio.'  '.date('d-m-Y'));
+            $this->mensagens('warning', 'Data Inválida', 'A data para reserva deve ser igual ou superior que a data de hoje.');
             return $this->redirect(['calendario', 'idSala' => $model->sala]);
         }else if(!$model->horarioOk()){
             $this->mensagens('danger', 'Horário Inválido', 'Não foi possível reservar esta sala no horário escolhido, pois ela já possui uma reserva. Tente novamente em outro horário!');

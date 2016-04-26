@@ -79,7 +79,7 @@ class ReservaSala extends \yii\db\ActiveRecord
 
     public function validarHoraInicio($attribute, $params){
         if (!$this->hasErrors()) {
-            if ($this->horaInicio < '05:00:00') {
+            if ($this->horaInicio < '06:59:00') {
                 $this->addError($attribute, 'Este horário está correto?');
             }
         }
@@ -98,7 +98,7 @@ class ReservaSala extends \yii\db\ActiveRecord
     public function horarioOk(){
         $reservas = self::findAll(['dataInicio' => $this->dataInicio]);
 
-        $this->horaTermino == "" ? $this->horaInicio : $this->horaTermino;
+        $this->horaTermino = $this->horaTermino == null ? date('H:i:s', strtotime('+30 minutes', strtotime($this->horaInicio))) : $this->horaTermino;
         
         if(count($reservas) == 0) return true;
 

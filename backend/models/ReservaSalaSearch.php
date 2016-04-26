@@ -41,7 +41,7 @@ class ReservaSalaSearch extends ReservaSala
      */
     public function search($params)
     {
-        $query = ReservaSala::find()->where('dataInicio > \''.date('Y-m-d').'\'');
+        $query = ReservaSala::find()->where('dataInicio >= \''.date('Y-m-d').'\'');
 
         // add conditions that should always apply here
 
