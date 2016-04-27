@@ -69,8 +69,19 @@ class AlunoController extends Controller
      */
     public function actionView($id)
     {
+
+        $model = $this->findModel($id);
+
+        $linhaPesquisa = new LinhaPesquisa();
+        $linhaPesquisa = $linhaPesquisa->getLinhaPesquisaNome($model->area);
+
+
+        if ($linhaPesquisa != null){
+            $model->area = $linhaPesquisa->nome;
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 

@@ -11,7 +11,7 @@ use kartik\select2\Select2;
 /* @var $form yii\widgets\ActiveForm */
 
 
-if ($model->curso == "Doutorado" && $titulo == "Qualificação 1"){
+if ($tipodefesa == 2){
     $required = 0;
 }
 else {
@@ -46,11 +46,15 @@ else {
 
     <?= $form->field($model, 'resumo')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'examinador')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'previa')->FileInput(['accept' => '.pdf'])->label("Prévia (PDF)"); ?>
+
+    <?php if ($required == 0){ ?>
+
+    <?= $form->field($model, 'examinador')->textInput(['maxlength' => true,]) ?>
 
     <?= $form->field($model, 'emailExaminador')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'previa')->FileInput(['accept' => '.pdf'])->label("Prévia (PDF)"); ?>
+    <?php } ?>
 
     <?php if ($required == 1){ ?>
 
