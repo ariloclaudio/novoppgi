@@ -75,7 +75,7 @@ $perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4
                     ]]) ?>
                 </div>
                 <div class="form-group">
-                    <?= Html::submitButton('Cadastrar', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton($label, ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

@@ -24,7 +24,7 @@ if(isset($model->documento))
 
 		    <div class="row">
             <?= $form->field($model, 'numero', ['options' => ['class' => 'col-md-4']])->widget(MaskedInput::className(), [
-        'mask' => '999-9999'])->hint('Ex.: 001-2016, sendo o <b>\'001\'</b> o número do edital e <b>\'2016\'</b> o ano')->textInput()->label("<font color='#FF0000'>*</font> <b>Número do edital:</b>") ?> 
+        'mask' => '999-9999'])->hint('Ex.: 001-2016, sendo o <b>\'001\'</b> o número do edital e <b>\'2016\'</b> o ano')->textInput(['readonly' => $read ])->label("<font color='#FF0000'>*</font> <b>Número do edital:</b>") ?> 
 
 		     </div>
 		     <div class="row">

@@ -7,6 +7,13 @@ $this->title = 'Reserva de Salas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="edital-index">
+
+<p>
+        <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Reservar Salas em Lote  ', ['reserva-sala/createemlote'], ['class' => 'btn btn-primary']) ?>    
+</p>
+
+
+
     <p>Escolha uma das salas abaixo para realizar ou visualizar as reservas</p>
     
     <?= GridView::widget([

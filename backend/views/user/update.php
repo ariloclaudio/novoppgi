@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = 'Alterar';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'label' => 'Alterar',
     ]) ?>
 
 </div>

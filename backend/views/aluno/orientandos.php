@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
 			[   'label' => 'Linha de Pesquisa',
-                'attribute' => 'linhaPesquisa.sigla',
+                'attribute' => 'siglaLinhaPesquisa',
                 'contentOptions' => function ($model){
                   return ['style' => 'background-color: '.$model->corLinhaPesquisa];
                 },
