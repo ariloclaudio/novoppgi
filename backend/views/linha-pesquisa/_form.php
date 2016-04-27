@@ -4,9 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\ColorInput;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\LinhaPesquisa */
-/* @var $form yii\widgets\ActiveForm */
+//Icones: https://almsaeedstudio.com/themes/AdminLTE/pages/UI/icons.html
+
 ?>
 
 <div class="linha-pesquisa-form">

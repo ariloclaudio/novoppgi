@@ -88,7 +88,7 @@ function goBack() {
                 },
                 'format' => 'html',
                 'value' => function ($model){
-                  return "<span class='fa ". $model->linhaPesquisa->descricao ."'/> ". $model->siglaLinhaPesquisa;
+                  return "<span class='fa ". $model->linhaPesquisa->icone ." fa-lg'/> ". $model->siglaLinhaPesquisa;
                 }
             ],
             [   'label' => 'Fase',
@@ -184,6 +184,13 @@ echo Collapse::widget([
             ],
             [   'label' => 'Linha Pesquisa',
                 'attribute' => 'siglaLinhaPesquisa',
+                'contentOptions' => function ($model){
+                  return ['style' => $model->linhaPesquisa == null ? "-" : 'background-color: '.$model->linhaPesquisa->cor];
+                },
+                'format' => 'html',
+                'value' => function ($model){
+                  return $model->linhaPesquisa == null ? "-" : "<span class='fa ". $model->linhaPesquisa->icone ." fa-lg'/> ". $model->siglaLinhaPesquisa;
+                }
             ],
             [   'label' => 'Etapa da Inscrição',
                 'attribute' => 'passoatual',
