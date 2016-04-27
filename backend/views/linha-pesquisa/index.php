@@ -16,7 +16,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'nome',
             'sigla',
-			'icone',
+            [   'attribute' => 'icone',
+                'format' => 'html',
+                'value' => function ($model){
+                  return "<span class='fa ". $model->icone ." fa-lg'/> ";
+                }
+            ],
             [   'label' => 'Cor',
                 'attribute' => 'cor',
                 'contentOptions' => function ($model){

@@ -10,7 +10,9 @@ use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
-
+use yii\db\IntegrityException;
+use yii\base\Exception;
+use yii\base\InvalidParamException;
 /**
  * Site controller
  */
@@ -87,9 +89,20 @@ class SiteController extends Controller
 
         $model = new LoginForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $this->mensagens('success', 'Autentição', 'Seu login foi efetuado com sucesso.');
-            return $this->goHome();
+        if ($model->load(Yii::$app->request->post())) {
+            try{
+                if($model->login()){
+                    $this->mensagens('success', 'Autentição', 'Seu login foi efetuado com sucesso.');
+                    return $this->goHome();
+                }else
+                    $this->mensagens('danger', 'Erro ao logar', 'Verifique seu CPF e Senha.');    
+            }catch(InvalidParamException $e){
+                $this->mensagens('danger', 'Erro ao logar', 'Ocorreu um erro carregar os dados de login. Contate o administrador do sistema.');
+            }
+
+            return $this->render('login', [
+                'model' => $model,
+            ]);
 
         } else {
             return $this->render('login', [
