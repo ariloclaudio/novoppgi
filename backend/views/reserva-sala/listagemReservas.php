@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
-$this->title = 'Reserva de Salas - Listagem';
+$this->title = Yii::$app->user->identity->secretaria ? 'Reserva de Salas - Listagem' : 'Reserva de Salas - Minhas Reservas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="edital-index">

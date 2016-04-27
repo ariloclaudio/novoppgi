@@ -41,7 +41,10 @@ class ReservaSalaSearch extends ReservaSala
      */
     public function search($params)
     {
-        $query = ReservaSala::find()->where('dataInicio >= \''.date('Y-m-d').'\'');
+        if(Yii::$app->user->identity->secretaria)
+            $query = ReservaSala::find()->where('dataInicio >= \''.date('Y-m-d').'\'');
+        else
+            $query = ReservaSala::find()->where('dataInicio >= \''.date('Y-m-d').'\'')->andwhere(['idSolicitante' => Yii::$app->user->identity->id]);
 
         // add conditions that should always apply here
 

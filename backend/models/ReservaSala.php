@@ -97,9 +97,9 @@ class ReservaSala extends \yii\db\ActiveRecord
     }
 
     public function horarioOk(){
-        $reservas = self::findAll(['dataInicio' => $this->dataInicio]);
+        $reservas = self::find()->where(['dataInicio' => $this->dataInicio])->andWhere(['sala' => $this->sala])->all();
 
-        $this->horaTermino = $this->horaTermino == null ? date('H:i:s', strtotime('+30 minutes', strtotime($this->horaInicio))) : $this->horaTermino;
+        $this->horaTermino = $this->horaTermino == null ? date('H:i:s', strtotime('+29 minutes', strtotime($this->horaInicio))) : $this->horaTermino;
         
         if(count($reservas) == 0) return true;
 
