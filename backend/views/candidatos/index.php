@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get
     'url' => ['edital/view','id' => Yii::$app->request->get('id') ]];
 $this->params['breadcrumbs'][] = $this->title;
 
+//var_dump($dataProvider->getModels());
+
 ?>
 <div class="candidato-index">
 
