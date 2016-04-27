@@ -57,6 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'allDayDefault' => false,
             'weekends' => true,
             'defaultView' => 'agendaWeek',
+            'slotDuration' => '00:20:00',
             'minTime' => '07:00:00',
             'maxTime' => '23:00:00',
             'dayClick' => new JsExpression("function(date, jsEvent, view) {

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Aluno;
+use common\models\User;
 use common\models\LinhaPesquisa;
 use app\models\AlunoSearch;
 use yii\web\Controller;
@@ -108,11 +109,13 @@ class AlunoController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-
-
+            $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
+            $orientadores = ArrayHelper::map(User::find()->where(['professor' => '1'])->orderBy('nome')->all(), 'id', 'nome');
 
             return $this->render('update', [
                 'model' => $model,
+                'linhasPesquisas' => $linhasPesquisas,
+                'orientadores' => $orientadores, 
             ]);
         }
     }

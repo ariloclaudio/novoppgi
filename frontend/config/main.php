@@ -11,6 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'sourceLanguage' => 'pt-Br',
     'language' => 'pt-Br',
+    //'timeZone' => 'America/Manaus',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [

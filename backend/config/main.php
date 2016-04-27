@@ -14,6 +14,7 @@ return [
     'bootstrap' => ['log'],
     'sourceLanguage' => 'en',
     'language' => 'pt-br',
+    'timeZone' => 'America/Manaus',
     'modules' => [],
     'components' => [
         'user' => [

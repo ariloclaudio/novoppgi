@@ -14,6 +14,7 @@ BootboxAsset::registerWithOverride($this);
 $this->title = 'Usuários';
 ?>
 <div class="user-index">
+<?= date('d-m-Y H:i:s') ?>
 
     <p>
         <?= Html::a('<span class="fa fa-plus"></span> Adicionar Usuário', ['site/signup'], ['class' => 'btn btn-success']) ?>

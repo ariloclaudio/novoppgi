@@ -7,6 +7,9 @@ use app\models\Candidato;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+ini_set('max_execution_time', 5*60);
+date_default_timezone_set('Indian/Maldives');
+
 
 if(!Yii::$app->user->isGuest){
     $ultima_visualizacao = Yii::$app->user->identity->visualizacao_candidatos;
