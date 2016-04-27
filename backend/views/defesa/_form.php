@@ -10,7 +10,7 @@ use kartik\select2\Select2;
 /* @var $model app\models\Defesa */
 /* @var $form yii\widgets\ActiveForm */
 
-
+//tipodefesa = 2 representa o curso de doutorado e defesa na qualificacao 1
 if ($tipodefesa == 2){
     $required = 0;
 }
@@ -48,7 +48,7 @@ else {
 
     <?= $form->field($model, 'previa')->FileInput(['accept' => '.pdf'])->label("Prévia (PDF)"); ?>
 
-    <?php if ($required == 0){ ?>
+    <?php if ($tipodefesa == 2){ ?>
 
     <?= $form->field($model, 'examinador')->textInput(['maxlength' => true,]) ?>
 
@@ -56,7 +56,7 @@ else {
 
     <?php } ?>
 
-    <?php if ($required == 1){ ?>
+    <?php if ($tipodefesa != 2){ ?>
 
             <?= $form->field($model, 'membrosBancaInternos')->widget(Select2::classname(), [
                 'data' => $membrosBancaInternos,

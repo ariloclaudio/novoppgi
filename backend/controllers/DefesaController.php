@@ -116,7 +116,9 @@ class DefesaController extends Controller
             }
 
         if ($model->load(Yii::$app->request->post() ) ) {
-            
+
+            $model->auxiliarTipoDefesa = $tipodefesa;
+
             $model_ControleDefesas = new BancaControleDefesas();
             $model_ControleDefesas->status_banca = null;
             $model_ControleDefesas->save(false);
@@ -153,6 +155,11 @@ class DefesaController extends Controller
                     }else{
                         $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
                     }
+
+
+            var_dump($model->getErrors());
+            exit;
+
                 }
 
             } catch(Exception $e){

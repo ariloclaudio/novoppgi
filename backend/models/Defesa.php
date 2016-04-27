@@ -13,6 +13,7 @@ class Defesa extends \yii\db\ActiveRecord
     public $curso_aluno;
     public $membrosBancaInternos = [];
     public $membrosBancaExternos = [];
+    public $auxiliarTipoDefesa;
     /**
      * @inheritdoc
      */
@@ -27,13 +28,28 @@ class Defesa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['resumo', 'banca_id', 'aluno_id', 'titulo', 'data', 'horario','resumo', 'local', 'examinador', 'emailExaminador', 'previa'], 'required'],
+            [['resumo', 'banca_id', 'aluno_id', 'titulo', 'data', 'horario','resumo', 'local', 'previa'], 'required'],
            [ ['membrosBancaInternos', 'membrosBancaExternos'] , 'required', 
+            
+            'when' => function ($model) {
+                     return $model->auxiliarTipoDefesa != 2;
+                 },
             'whenClient' => "function (attribute, value) {
+
                 return $('#membrosObrigatorios').val() == 1;
             }"],
 
-            //[['membrosBancaExternos', 'membrosBancaInternos'], 'safe'],
+           [ ['examinador', 'emailExaminador'] , 'required', 
+            'when' => function ($model) {
+                     return $model->auxiliarTipoDefesa == 2;
+                 },
+            'whenClient' => "function (attribute, value) {
+               
+                return $('#membrosObrigatorios').val() == 0;
+            }"],
+
+
+            [['membrosBancaExternos', 'membrosBancaInternos', 'examinador', 'emailExaminador', 'auxiliarTipoDefesa' ], 'safe'],
             [['resumo', 'examinador', 'emailExaminador'], 'string'],
             [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id'], 'integer'],
             [['titulo'], 'string', 'max' => 180],
