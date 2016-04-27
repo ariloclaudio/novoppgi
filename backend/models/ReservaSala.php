@@ -6,6 +6,7 @@ use Yii;
 
 class ReservaSala extends \yii\db\ActiveRecord
 {
+    public $diasSemana;
     /**
      * @inheritdoc
      */
@@ -20,15 +21,15 @@ class ReservaSala extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dataReserva', 'dataInicio', 'dataTermino', 'horaInicio', 'horaTermino'], 'safe'],
+            [['dataReserva', 'dataInicio', 'dataTermino', 'horaInicio', 'horaTermino', 'diasSemana'], 'safe'],
             [['sala', 'idSolicitante', 'atividade', 'dataInicio', 'dataTermino', 'horaInicio', 'horaTermino', 'tipo'], 'required'],
             [['sala', 'idSolicitante'], 'integer'],
             [['atividade'], 'string', 'max' => 50],
             [['tipo'], 'string', 'max' => 30],
-            [['dataInicio'], 'validarDataInicio'],
+            //[['dataInicio'], 'validarDataInicio'],
             [['horaInicio'], 'validarHoraInicio'],
             [['horaTermino'], 'validarHoraTermino'],
-            [['dataTermino'], 'validarDataTermino']
+           // [['dataTermino'], 'validarDataTermino']
         ];
     }
 

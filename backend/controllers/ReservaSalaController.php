@@ -11,6 +11,7 @@ use app\models\Sala;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * ReservaSalaController implements the CRUD actions for ReservaSala model.
@@ -91,6 +92,56 @@ class ReservaSalaController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionCreateemlote()
+    {
+        $arraySalas = ArrayHelper::map(Sala::find()->orderBy('nome')->all(), 'id', 'nome');
+
+
+        $model = new ReservaSala();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+
+                $datetime1 = new \DateTime($model->dataInicio);
+                $datetime2 = new \DateTime($model->dataTermino);
+                $interval = $datetime1->diff($datetime2);
+                $diferencaDias =  abs($interval->format('%a'));
+                $diferencaDias++;
+
+                $auxDataInicio = $model->dataInicio;
+
+
+            for($i=0; $i<$diferencaDias; $i++){
+
+                $dataDoLoop = date('d-m-Y',date(strtotime("+".$i." days", strtotime($auxDataInicio))));
+                
+                // 0 é domingo, 1 é segunda, 2 é terça, 3 é quarta, 4 é quinta, 5 é sexta, 6 é sábado
+                $diaDaSemana = date('w', strtotime($dataDoLoop));
+
+                if(in_array($diaDaSemana, $model->diasSemana)) { 
+
+                    $model->id = null;
+                    $model->isNewRecord = true;
+                    $model->idSolicitante = Yii::$app->user->id;
+                    $model->dataInicio = $dataDoLoop;
+                    $model->dataTermino = $dataDoLoop;
+
+                    $model->save();
+                }
+
+            }
+
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('createemlote', [
+                'model' => $model,
+                'arraySalas' => $arraySalas,
+            ]);
+        }
+
+    }
+
 
     public function actionCreate($sala, $dataInicio, $horaInicio)
     {
