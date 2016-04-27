@@ -8,7 +8,6 @@ use app\models\Candidato;
 /* @var $content string */
 
 ini_set('max_execution_time', 5*60);
-date_default_timezone_set('Indian/Maldives');
 
 
 if(!Yii::$app->user->isGuest){

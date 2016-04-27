@@ -20,8 +20,8 @@ class Edital extends \yii\db\ActiveRecord
     public $mestrado;
     public $doutorado;
     public $editalUpload;
+    public $update=0;
     
-
     /**
      * @inheritdoc
      */
@@ -54,8 +54,8 @@ class Edital extends \yii\db\ActiveRecord
             [['numero'], 'unique', 'message' => 'Edital já criado'],
             [['vagas_mestrado','vagas_doutorado', 'cotas_mestrado', 'cotas_doutorado', 'cartaorientador'], 'integer', 'min' => 0],
             [['datainicio', 'datafim', 'documentoFile'], 'safe'],
-            [['datainicio'], 'validarDataInicio'],
-            [['datafim'], 'validarDataFim'],
+            [['datainicio'], 'validarDataInicio', 'when' => function($model){ return $model->update != 1; }],
+            [['datafim'], 'validarDataFim', 'when' => function($model){ return $model->update != 1; }],
             [['documentoFile'], 'file', 'extensions' => 'pdf'],
             [['documento'], 'string', 'max' => 100],
 

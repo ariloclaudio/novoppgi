@@ -1461,11 +1461,10 @@ class EditalController extends Controller
     {
         $model = $this->findModel($id);
 
-        $model->datainicio = date('d-m-Y', strtotime($model->datainicio));
-        $model->datafim =  date('d-m-Y', strtotime($model->datafim));
+        $datainicioBanco = $model->datainicio = date('d-m-Y', strtotime($model->datainicio));
+        $datafimBanco = $model->datafim =  date('d-m-Y', strtotime($model->datafim));
 
         if ($model->load(Yii::$app->request->post())) {
-            //return $model->mestrado." ".$model->doutorado;
             if($model->mestrado == 1 && $model->doutorado == 1)
                 $model->curso = '3';
             else if($model->mestrado == 1)
@@ -1477,6 +1476,7 @@ class EditalController extends Controller
 
 
             if($model->uploadDocumento(UploadedFile::getInstance($model, 'documentoFile'))){
+                $model->update = 1;
                 if($model->save()){
                     return $this->redirect(['view', 'id' => $model->numero]);
                 }
