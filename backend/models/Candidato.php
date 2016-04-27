@@ -31,7 +31,7 @@ class Candidato extends \yii\db\ActiveRecord
     {
 
         return [
-
+            [['carta_recomendacao'], 'safe'],
 
         ];
     }
