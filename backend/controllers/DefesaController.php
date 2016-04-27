@@ -94,21 +94,25 @@ class DefesaController extends Controller
         $cont_Defesas = Defesa::find()->where("aluno_id = ".$aluno_id)->count();
         $curso = Aluno::find()->select("curso")->where("id =".$aluno_id)->one()->curso;
 
-            if($cont_Defesas == 0){
+            if($cont_Defesas == 0 && $curso == 1){
                 $model->tipoDefesa = "Q1";
-                $titulo = "Qualificação 1";
+                $tipodefesa = 1;
+            }
+            else if($cont_Defesas == 0 && $curso == 2){
+                $model->tipoDefesa = "Q1";
+                $tipodefesa = 2;
             }
             else if ($cont_Defesas == 1 && $curso == 1){
                 $model->tipoDefesa = "D";
-                $titulo = "Dissertação";
+                $tipodefesa = 3;
             }
             else if ($cont_Defesas == 1 && $curso == 2){
                 $model->tipoDefesa = "Q2";
-                $titulo = "Qualificação 2";
+                $tipodefesa = 4;
             }
             else if ($cont_Defesas == 2 && $curso == 2){
                 $model->tipoDefesa = "T";
-                $titulo = "Tese";
+                $tipodefesa = 5;
             }
 
         if ($model->load(Yii::$app->request->post() ) ) {
@@ -163,7 +167,7 @@ class DefesaController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'titulo' => $titulo,
+            'tipodefesa' => $tipodefesa,
             'membrosBancaInternos' => $membrosBancaInternos,
             'membrosBancaExternos' => $membrosBancaExternos,
         ]);
