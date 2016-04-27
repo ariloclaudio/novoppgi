@@ -101,7 +101,7 @@ if($model->instituicaoacademica3 == ""){
             echo "<input type='hidden' id = 'ignorarRequiredCartaOrientador' value = '1' />";
 
             if(isset($model->historico)){
-                echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Carta do Orientador:<br> 
+                echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Carta de Aceite do Orientador:<br> 
                     Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-la.</b><br></div>";
                 
                 echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
@@ -113,7 +113,7 @@ if($model->instituicaoacademica3 == ""){
             }
             else{
 
-                echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Carta do Orientador </b>");
+                echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Carta de Aceite do Orientador:</b>");
             }
         }
         else{
