@@ -141,6 +141,24 @@ class DefesaController extends Controller
 
 
                     if($model->save(false)){
+
+
+
+
+
+
+                        //preciso atribuir no banca_controledefesa o valor 1, pois no Q1 do doutorado
+                        //não há banca
+
+
+
+
+
+
+
+
+
+
                         $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
                         return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
                     }
@@ -155,10 +173,6 @@ class DefesaController extends Controller
                     }else{
                         $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
                     }
-
-
-            var_dump($model->getErrors());
-            exit;
 
                 }
 
