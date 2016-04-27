@@ -45,10 +45,10 @@ class AlunoSearch extends Aluno
         $idUsuario = Yii::$app->user->identity->id;
        
         if(Yii::$app->user->identity->checarAcesso('secretaria')){
-           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id");
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")->orderBy('nome');
        }
        else if (Yii::$app->user->identity->checarAcesso('professor')){
-           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")
            ->where('orientador = '.$idUsuario);
        }
 
@@ -65,6 +65,11 @@ class AlunoSearch extends Aluno
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $dataProvider->sort->attributes['sigla'] = [
+            'asc' => ['sigla' => SORT_ASC],
+            'desc' => ['sigla' => SORT_DESC],
+        ];
 
         // grid filtering conditions
         $query->andFilterWhere([

@@ -33,13 +33,22 @@ $this->params['breadcrumbs'][] = $this->title;
 					return $statusAluno[$model->status];
                 },
             ],
+			[   'label' => 'Status',
+                'attribute' => 'status',
+                'value' => function ($model) {
+					return $model->curso == 1 ? "Mestrado" : "Doutorado";
+                },
+            ],
 			[   'label' => 'Linha de Pesquisa',
                 'attribute' => 'linhaPesquisa.sigla',
+                'contentOptions' => function ($model){
+                  return ['style' => 'background-color: '.$model->corLinhaPesquisa];
+                },
             ],
 			 'email:email',
 			 'telresidencial',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=> "{view} {banca} {update} {delete}",
+              'template'=> "{view} {banca}",
                 'buttons'=>[
 				
                   'view' => function ($url, $model) {  

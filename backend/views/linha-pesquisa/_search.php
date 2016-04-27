@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'nome') ?>
 
-    <?= $form->field($model, 'descricao') ?>
+    <?= $form->field($model, 'icone') ?>
 
     <?= $form->field($model, 'sigla') ?>
 

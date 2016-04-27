@@ -41,6 +41,12 @@ if( isset($_GET["ano"]) && isset($_GET["prof"]) ){
             'attribute' => 'nome',
             'label' => 'Nome',
             ],
+			
+			[
+            'attribute' => 'categoria',
+            'label' => 'Categoria',
+			'value' => $profVoltar == 1 ? "Professor" : "Secretaria"
+            ],
 
             [
             'attribute' => 'totalFeriasOficial',

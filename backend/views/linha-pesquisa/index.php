@@ -15,14 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'nome',
-            [   'label' => 'Descrição',
-                'format' => 'html',
-                'attribute' => 'descricao',
-                'value' => function ($model) {
-                     return $model->descricao == "" ? "" : $model->descricao;
-                },
-            ],
             'sigla',
+			'icone',
             [   'label' => 'Cor',
                 'attribute' => 'cor',
                 'contentOptions' => function ($model){

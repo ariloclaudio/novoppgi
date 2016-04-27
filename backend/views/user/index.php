@@ -24,7 +24,25 @@ $this->title = 'Usuários';
         'columns' => [
             'nome',
             'username',
-             'email:email',
+            'email:email',
+			[   'label' => 'Coordenador PPGI',
+                'attribute' => 'coordenador',
+				'value' => function ($model) {
+                        return $model->coordenador == 1 ? 'Sim' : 'Não';
+                },
+            ],
+			[   'label' => 'Professor',
+                'attribute' => 'professor',
+				'value' => function ($model) {
+                        return $model->professor == 1 ? 'Sim' : 'Não';
+                },
+            ],
+			[   'label' => 'Secretaria',
+                'attribute' => 'secretaria',
+				'value' => function ($model) {
+                        return $model->secretaria == 1 ? 'Sim' : 'Não';
+                },
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'reservasAtivas',
                 'value' => function ($model){
-                    return $model->reservasAtivas.'/5';
+                    return $model->reservasAtivas;
                 },
             ],
 

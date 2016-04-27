@@ -81,13 +81,13 @@ class User extends \yii\db\ActiveRecord
         $perfis = "";
 
         if($this->administrador)
-            $perfis .= "Administrador / ";
+            $perfis .= "Administrador | ";
         if($this->secretaria)
-            $perfis .= "Secretaria / ";
+            $perfis .= "Secretaria | ";
         if($this->coordenador)
-            $perfis .= "Secretaria / ";
+            $perfis .= "Secretaria | ";
         if($this->professor)
-            $perfis .= "Professor, / ";
+            $perfis .= "Professor | ";
         if($this->aluno)
             $perfis .= "Aluno";
 

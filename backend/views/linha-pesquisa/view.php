@@ -12,7 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="linha-pesquisa-view">
     <p>
-        <?= Html::a('Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['index'], ['class' => 'btn btn-warning']) ?>
+		<?= Html::a('Alterar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Remover', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -26,8 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'nome',
-            'descricao:ntext',
             'sigla',
+			'icone',
+			[   'label' => 'Cor',
+                'attribute' => 'cor',
+                'contentOptions' => function ($model){
+                  return ['style' => 'background-color: '.$model->cor];
+                },
+            ],
         ],
     ]) ?>
 

@@ -12,7 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sala-create">
 
-    <?= $this->render('_form', [
+    <p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['index'], ['class' => 'btn btn-warning']) ?>
+    </p>
+	<?= $this->render('_form', [
         'model' => $model,
     ]) ?>
 

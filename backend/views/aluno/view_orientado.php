@@ -18,7 +18,8 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Pedir Banca', ['defesa/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['orientandos'], ['class' => 'btn btn-warning']) ?>
+		<?= Html::a('Pedir Banca', ['defesa/create', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= DetailView::widget([

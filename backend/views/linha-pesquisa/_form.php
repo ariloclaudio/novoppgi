@@ -16,11 +16,11 @@ use kartik\widgets\ColorInput;
     <div class="row">
     	<?= $form->field($model, 'nome', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Nome</b>") ?>
     </div>
-	<div class="row">
-    	<?= $form->field($model, 'descricao', ['options' => ['class' => 'col-md-5']])->textarea(['rows' => 6]) ?>
-    </div>
     <div class="row">
     	<?= $form->field($model, 'sigla', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Sigla</b>") ?>
+    </div>
+    <div class="row">
+    	<?= $form->field($model, 'icone', ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Ícone</b>") ?>
     </div>
 
 	<div class="row">

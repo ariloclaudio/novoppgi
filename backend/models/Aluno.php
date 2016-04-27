@@ -9,6 +9,7 @@ use yiibr\brvalidator\CpfValidator;
 class Aluno extends \yii\db\ActiveRecord
 {
     public $siglaLinhaPesquisa;
+    public $corLinhaPesquisa;
 
     /**
      * @inheritdoc

@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $nome
- * @property string $descricao
+ * @property string $icone
  * @property string $sigla
  */
 class LinhaPesquisa extends \yii\db\ActiveRecord
@@ -29,7 +29,6 @@ class LinhaPesquisa extends \yii\db\ActiveRecord
     {
         return [
             [['sigla', 'nome', 'cor'], 'required'],
-            [['descricao'], 'string'],
             [['nome'], 'string', 'max' => 60],
             [['sigla'], 'string', 'max' => 20],
             [['icone'], 'string', 'max' => 20],
@@ -45,7 +44,7 @@ class LinhaPesquisa extends \yii\db\ActiveRecord
     {
         return [
             'nome' => 'Nome',
-            'descricao' => 'Descricão',
+            'icone' => 'Ícone',
             'sigla' => 'Sigla',
         ];
     }

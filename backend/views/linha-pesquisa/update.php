@@ -11,7 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => $model->nome, 'url' => ['view', 'id
 $this->params['breadcrumbs'][] = 'Alterar';
 ?>
 <div class="linha-pesquisa-update">
-
+<p>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['view', 'id' => $model->id], ['class' => 'btn btn-warning']) ?>
+    </p>
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

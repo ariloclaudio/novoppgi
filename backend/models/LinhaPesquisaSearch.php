@@ -19,7 +19,7 @@ class LinhaPesquisaSearch extends LinhaPesquisa
     {
         return [
             [['id'], 'integer'],
-            [['nome', 'descricao', 'sigla'], 'safe'],
+            [['nome', 'icone', 'sigla'], 'safe'],
         ];
     }
 
@@ -63,7 +63,7 @@ class LinhaPesquisaSearch extends LinhaPesquisa
         ]);
 
         $query->andFilterWhere(['like', 'nome', $this->nome])
-            ->andFilterWhere(['like', 'descricao', $this->descricao])
+            ->andFilterWhere(['like', 'icone', $this->icone])
             ->andFilterWhere(['like', 'sigla', $this->sigla]);
 
         return $dataProvider;
