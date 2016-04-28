@@ -210,21 +210,15 @@ class DefesaController extends Controller
 
         $model_aluno = Aluno::find()->where("id = ".$aluno_id)->one();
 
-
         $model = $this->findModel($idDefesa, $aluno_id);
 
-        if($model->conceito != null){
-            $this->mensagens('danger', 'Não é possível editar', 'Não foi possível editar, pois essa defesa já possui conceito');
-            return $this->redirect(['index']);
-        }
-
         $model->data = date('d-m-Y', strtotime($model->data));
-        
+
         if ($model->load(Yii::$app->request->post())) {
             
             $model->data = date('Y-m-d', strtotime($model->data));
-            $model->save();
-            
+            $model->save(false);
+           
             
             return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
         } else {

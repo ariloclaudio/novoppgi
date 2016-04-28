@@ -14,6 +14,7 @@ class Defesa extends \yii\db\ActiveRecord
     public $membrosBancaInternos = [];
     public $membrosBancaExternos = [];
     public $auxiliarTipoDefesa;
+    public $presidente;
     /**
      * @inheritdoc
      */
@@ -29,7 +30,7 @@ class Defesa extends \yii\db\ActiveRecord
     {
         return [
             [['resumo', 'banca_id', 'aluno_id', 'titulo', 'data', 'horario','resumo', 'local', 'previa'], 'required'],
-           [ ['membrosBancaInternos', 'membrosBancaExternos'] , 'required', 
+           [ ['membrosBancaInternos', 'membrosBancaExternos','presidente'] , 'required', 
             
             'when' => function ($model) {
                      return $model->auxiliarTipoDefesa != 2;
@@ -49,8 +50,9 @@ class Defesa extends \yii\db\ActiveRecord
             }"],
 
 
-            [['membrosBancaExternos', 'membrosBancaInternos', 'examinador', 'emailExaminador', 'auxiliarTipoDefesa' ], 'safe'],
+            [['membrosBancaExternos', 'membrosBancaInternos', 'examinador', 'emailExaminador', 'auxiliarTipoDefesa','presidente' ], 'safe'],
             [['resumo', 'examinador', 'emailExaminador'], 'string'],
+            [['emailExaminador'] , 'email'],
             [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id'], 'integer'],
             [['titulo'], 'string', 'max' => 180],
             [['tipoDefesa'], 'string', 'max' => 2],
@@ -143,6 +145,9 @@ class Defesa extends \yii\db\ActiveRecord
 
         $this->membrosBancaExternos = $this->membrosBancaExternos == "" ? array() : $this->membrosBancaExternos;
         $this->membrosBancaInternos = $this->membrosBancaInternos == "" ? array() : $this->membrosBancaInternos;
+
+        $sql = "INSERT INTO j17_banca_has_membrosbanca (banca_id, membrosbanca_id, funcao) VALUES ('$this->banca_id', '".$this->presidente."', 'P');";
+        Yii::$app->db->createCommand($sql)->execute();
         
         for ($i = 0; $i < count($this->membrosBancaExternos); $i++) {
             $sql = "INSERT INTO j17_banca_has_membrosbanca (banca_id, membrosbanca_id, funcao) VALUES ('$this->banca_id', '".$this->membrosBancaExternos[$i]."', 'E');";

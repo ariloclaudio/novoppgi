@@ -40,9 +40,6 @@ else {
     ])->label("<font color='#FF0000'>*</font> <b>Data da Defesa: </b>")
 ?>
 
-    <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'resumo')->textarea(['rows' => 6]) ?>
 
@@ -57,6 +54,22 @@ else {
     <?php } ?>
 
     <?php if ($tipodefesa != 2){ ?>
+
+
+
+    <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'presidente')->widget(Select2::classname(), [
+                'data' => $membrosBancaInternos,
+                'value' => $model->membrosBancaInternos,
+                'language' => 'pt-BR',
+                'options' => [
+                'placeholder' => 'Selecione um presidente ...', 'multiple' => false,],
+            ]);
+
+            ?>
 
             <?= $form->field($model, 'membrosBancaInternos')->widget(Select2::classname(), [
                 'data' => $membrosBancaInternos,
