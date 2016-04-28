@@ -15,7 +15,15 @@ return [
     'sourceLanguage' => 'en',
     'language' => 'pt-br',
     'timeZone' => 'America/Manaus',
-    'modules' => [],
+
+
+'modules' => [
+   'datecontrol' =>  [
+      'class' => '\kartik\datecontrol\Module'
+    ]
+],
+
+
     'components' => [
         'user' => [
             'identityClass' => 'common\models\User',

@@ -5,6 +5,11 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use yii\bootstrap\Button;
 use kartik\select2\Select2;
+use kartik\datecontrol\Module;
+use kartik\datecontrol\DateControl;
+
+
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Defesa */
@@ -55,9 +60,14 @@ else {
 
     <?php if ($tipodefesa != 2){ ?>
 
-
-
-    <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'horario')->widget(DateControl::classname(), [
+    'language' => 'pt-BR',
+    'name'=>'kartik-date', 
+    'value'=>time(),
+    'type'=>DateControl::FORMAT_TIME,
+    'displayFormat' => 'php: H:i',
+    ]) ?>
 
     <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
 
