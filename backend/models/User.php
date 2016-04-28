@@ -103,6 +103,6 @@ class User extends \yii\db\ActiveRecord
     }
 
     public function beforeDelete(){
-        return Aluno::find()->where(['orientador' => $this->id])->count() == 0 ? true : false;
+        return Aluno::find()->where(['orientador' => $this->id])->count() == 0 || $this->administrador == 0 ? true : false;
     }
 }
