@@ -25,7 +25,8 @@
         "xj/yii2-bootbox-widget":"*",
         "kartik-v/yii2-mpdf": "dev-master",
         "moonlandsoft/yii2-phpexcel": "*",
-        "philippfrenzel/yii2fullcalendar": "*"
+        "philippfrenzel/yii2fullcalendar": "*",
+        "kartik-v/yii2-datecontrol": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
