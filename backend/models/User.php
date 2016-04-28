@@ -85,7 +85,7 @@ class User extends \yii\db\ActiveRecord
         if($this->secretaria)
             $perfis .= "Secretaria | ";
         if($this->coordenador)
-            $perfis .= "Secretaria | ";
+            $perfis .= "Coordenador | ";
         if($this->professor)
             $perfis .= "Professor | ";
         if($this->aluno)
@@ -100,5 +100,9 @@ class User extends \yii\db\ActiveRecord
        $model_ferias = $model_ferias->feriasAno($idusuario,$ano,$tipo);
 
         return $model_ferias;
+    }
+
+    public function beforeDelete(){
+        return Aluno::find()->where(['orientador' => $this->id])->count() == 0 ? true : false;
     }
 }

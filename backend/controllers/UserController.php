@@ -8,6 +8,8 @@ use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\IntegrityException;
+use yii\base\Exception;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -28,6 +30,17 @@ class UserController extends Controller
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
                                return Yii::$app->user->identity->checarAcesso('administrador');
+                        }
+                    ],
+                    [   'actions' => ['perfil'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                      [ 'actions' => ['update'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                               return Yii::$app->user->identity->id == filter_input(INPUT_GET, 'id') ;
                         }
                     ],
                 ],
@@ -69,6 +82,18 @@ class UserController extends Controller
     }
 
     /**
+     * Displays a single User perfil.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionPerfil()
+    {
+        return $this->render('view', [
+            'model' => $this->findModel(Yii::$app->user->identity->id),
+        ]);
+    }
+
+    /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -80,10 +105,12 @@ class UserController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->setPassword();
-            if($model->save())
-                return $this->redirect(['view', 'id' => $model->id]);
+            if($model->save()){
+                $this->mensagens('success', 'Usuário Alterado', 'Usuário alterado com sucesso.');
+                return Yii::$app->user->identity->checarAcesso('administrador') ? $this->redirect(['view', 'id' => $model->id]) : $this->redirect(['perfil']);
+            }
             else
-                return var_dump($model->getErrors());
+                $this->mensagens('danger', 'Erro ao Alterar Usuário', 'Ocorreu um erro ao alterar o usuário. Verifique os campos e tente novamente.');
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -99,10 +126,14 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
-
-        $model->status = 0;
-        $model->save();
+        try{
+            if($this->findModel($id)->delete())
+                $this->mensagens('success', 'Usuário Removido', 'Usuário removido com sucesso.');
+            else
+                $this->mensagens('warning', 'Usuário não removido', 'Este usuário não pode ser removido, pois possui aluno(s).');
+        }catch(IntegrityException $e){
+            $this->mensagens('danger', 'Erro ao Remover Usuário', 'Ocorreu um erro ao remover o Usuário. '.$e.getMensage());
+        }            
 
         return $this->redirect(['index']);
     }
@@ -121,5 +152,20 @@ class UserController extends Controller
         } else {
             throw new NotFoundHttpException('A página solicitada não existe.');
         }
+    }
+
+    /* Envio de mensagens para views
+   Tipo: success, danger, warning*/
+    protected function mensagens($tipo, $titulo, $mensagem){
+        Yii::$app->session->setFlash($tipo, [
+            'type' => $tipo,
+            'icon' => 'home',
+            'duration' => 5000,
+            'message' => $mensagem,
+            'title' => $titulo,
+            'positonY' => 'top',
+            'positonX' => 'center',
+            'showProgressbar' => true,
+        ]);
     }
 }

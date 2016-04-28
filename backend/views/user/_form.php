@@ -37,43 +37,47 @@ $perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4
 
                 <?= $form->field($model, 'password_repeat')->passwordInput()->label("Repetir Senha:")  ?>
 
-                <div style="margin-bottom: 20px;"><b><font color='#FF0000'>*</font> Escolha o(s) perfil(s) correspondente a este usuário</b></div>
+                <?php if(Yii::$app->user->identity->checarAcesso('administrador')){ ?>
 
-                <div class = "row">
-                    <?= $form->field($model, 'administrador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                        'pluginOptions' => [
-                            'onText' => 'Sim',
-                            'offText' => 'Não',
-                    ]]) ?>
-                </div>
-                <div class = "row">
-                    <?= $form->field($model, 'coordenador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                        'pluginOptions' => [
-                            'onText' => 'Sim',
-                            'offText' => 'Não',
-                    ]]) ?>
-                </div>
-                <div class = "row">
-                    <?= $form->field($model, 'secretaria', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                        'pluginOptions' => [
-                            'onText' => 'Sim',
-                            'offText' => 'Não',
-                    ]])?>
-                </div>
-                <div class = "row">
-                    <?= $form->field($model, 'professor', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                        'pluginOptions' => [
-                            'onText' => 'Sim',
-                            'offText' => 'Não',
-                    ]])?>
-                </div>
-                <div class = "row">
-                    <?= $form->field($model, 'aluno', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                        'pluginOptions' => [
-                            'onText' => 'Sim',
-                            'offText' => 'Não',
-                    ]]) ?>
-                </div>
+                    <div style="margin-bottom: 20px;"><b><font color='#FF0000'>*</font> Escolha o(s) perfil(s) correspondente a este usuário</b></div>
+
+                    <div class = "row">
+                        <?= $form->field($model, 'administrador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                            'pluginOptions' => [
+                                'onText' => 'Sim',
+                                'offText' => 'Não',
+                        ]]) ?>
+                    </div>
+                    <div class = "row">
+                        <?= $form->field($model, 'coordenador', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                            'pluginOptions' => [
+                                'onText' => 'Sim',
+                                'offText' => 'Não',
+                        ]]) ?>
+                    </div>
+                    <div class = "row">
+                        <?= $form->field($model, 'secretaria', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                            'pluginOptions' => [
+                                'onText' => 'Sim',
+                                'offText' => 'Não',
+                        ]])?>
+                    </div>
+                    <div class = "row">
+                        <?= $form->field($model, 'professor', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                            'pluginOptions' => [
+                                'onText' => 'Sim',
+                                'offText' => 'Não',
+                        ]])?>
+                    </div>
+                    <div class = "row">
+                        <?= $form->field($model, 'aluno', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                            'pluginOptions' => [
+                                'onText' => 'Sim',
+                                'offText' => 'Não',
+                        ]]) ?>
+                    </div>
+                <?php } ?>
+
                 <div class="form-group">
                     <?= Html::submitButton($label, ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>

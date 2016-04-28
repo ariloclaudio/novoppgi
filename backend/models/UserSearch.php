@@ -41,7 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->where(['status' => '10']);
+        $query = User::find()->where(['status' => '10'])->orderBy('nome ASC');
 
         // add conditions that should always apply here
 
