@@ -15,6 +15,7 @@ class Defesa extends \yii\db\ActiveRecord
     public $membrosBancaExternos = [];
     public $auxiliarTipoDefesa;
     public $presidente;
+    public $membrosBancaExternosPassagem = [];
     /**
      * @inheritdoc
      */

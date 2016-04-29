@@ -20,14 +20,14 @@ $arrayStatusBanca = array(null => "Não Avaliada", 0 => "Reprovada", 1 => "Aprov
 
     <p>
 
-        <?= Html::a('Aprovar', ["aprovar", 'id' => $model->id], [
+        <?= Html::a('Deferir Banca', ["aprovar", 'id' => $model->id], [
             'class' => 'btn btn-primary',
             'data' => [
                 'confirm' => 'Você tem certeza que deseja APROVAR essa banca?',
                 'method' => 'post',
             ],
         ]) ?>
-        <?= Html::a('Reprovar', ['update', 'id' => $model->id], [
+        <?= Html::a('Indeferir Banca', ['update', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Você tem certeza que deseja REPROVAR essa banca?',

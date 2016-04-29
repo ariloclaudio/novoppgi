@@ -88,9 +88,21 @@ else {
                 'language' => 'pt-BR',
                 'options' => [
                 'id' => 'idsMembrosBancaInternos',
-                'placeholder' => 'Selecione os membros externos ...', 'multiple' => true,],
+                'placeholder' => 'Selecione os membros externos sem solicitação da passagem...', 'multiple' => true,],
             ]);
 
+            ?>
+
+
+            <?= $form->field($model, 'membrosBancaExternosPassagem')->widget(Select2::classname(), [
+                'data' => $membrosBancaExternos,
+                'value' => $model->membrosBancaExternos,
+                'language' => 'pt-BR',
+                'options' => [
+                'id' => 'idsMembrosBancaExternos',
+                'placeholder' => 'Selecione os membros externos que <b> solicitam passagem </b> ...', 'multiple' => true,],
+            ]);
+            
             ?>
 
     <?php } ?>

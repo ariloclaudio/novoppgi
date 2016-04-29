@@ -14,10 +14,10 @@ use yii\widgets\ActiveForm;
 
     <?php  //echo $form->field($model, 'status_banca')->textInput() ?>
 
-    <?= $form->field($model, 'justificativa')->textarea(['rows' => 6]) ?>
+    <div style="color:red; float:left">*</div><?= $form->field($model, 'justificativa')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Indeferir e Salvar' : 'Alterar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Indeferir e Salvar' : 'Indeferir e Salvar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-danger']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

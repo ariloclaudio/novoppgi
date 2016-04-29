@@ -167,10 +167,18 @@ class DefesaController extends Controller
                 else{
 
                     $model->salvaMembrosBanca();
+
+
                     if($model->save()){
-                        $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
-                        return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
+
+
+                        return $this->render('passagens', [
+                            'model' => $model,
+                            'arraymembrosBancaExternos' => $model->membrosBancaExternos,
+                        ]);
+
                     }else{
+
                         $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
                     }
 
