@@ -24,25 +24,17 @@ $this->title = 'Usuários';
             'nome',
             'username',
             'email:email',
-			[   'label' => 'Coordenador PPGI',
-                'attribute' => 'coordenador',
-				'value' => function ($model) {
-                        return $model->coordenador == 1 ? 'Sim' : 'Não';
-                },
+            [   'label' => 'Telefones',
+                'format' => 'html',
+                'attribute' => 'telcelular',
+                'value' => function ($model){
+                  $imagens = '      ';
+                  if($model->telcelular) $imagens = "<i class='fa fa-mobile fa-lg' title='".$model->telcelular."' aria-hidden='true'></i>". $imagens;
+                  if($model->telresidencial) $imagens = $imagens . "<i class='fa fa-phone fa-lg' title='".$model->telresidencial."' aria-hidden='true'></i>";
+                  return $imagens;
+                }
             ],
-			[   'label' => 'Professor',
-                'attribute' => 'professor',
-				'value' => function ($model) {
-                        return $model->professor == 1 ? 'Sim' : 'Não';
-                },
-            ],
-			[   'label' => 'Secretaria',
-                'attribute' => 'secretaria',
-				'value' => function ($model) {
-                        return $model->secretaria == 1 ? 'Sim' : 'Não';
-                },
-            ],
-
+            'perfis',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

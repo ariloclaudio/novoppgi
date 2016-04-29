@@ -19,7 +19,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'status'], 'integer'],
-            [['nome', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'created_at', 'updated_at', 'visualizacao_candidatos', 'visualizacao_candidatos_finalizados', 'visualizacao_cartas_respondidas', 'administrador', 'coordenador', 'secretaria', 'professor', 'aluno'], 'safe'],
+            [['nome', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'created_at', 'updated_at', 'visualizacao_candidatos', 'visualizacao_candidatos_finalizados', 'visualizacao_cartas_respondidas', 'administrador', 'coordenador', 'secretaria', 'professor', 'aluno', 'telcelular'], 'safe'],
         ];
     }
 

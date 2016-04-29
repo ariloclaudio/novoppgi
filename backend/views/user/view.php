@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) : "" ?>
     </p>
 
+    <?php if($model->professor){ ?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -37,9 +38,47 @@ $this->params['breadcrumbs'][] = $this->title;
             'perfis',
             [
                 'attribute' => 'created_at',
-                'value' => date('d-m-Y', strtotime($model->created_at)),
-            ]
+                 'value' => date('d-m-Y', strtotime($model->created_at)),
+            ],
+            'endereco',
+            'telcelular',
+            'telresidencial',
+            'unidade',
+            'turno',
+            'titulacao',
+            'classe',
+            'nivel',
+            'regime',
+            'idLattes',
+            'alias',
+            'idRH',
         ],
-    ]) ?>
+    ])
+    ?>
+    <?php 
+        }
+        else{
+    ?>
+    
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'nome',
+            'username',
+            'email:email',
+            'perfis',
+            [
+                'attribute' => 'created_at',
+                 'value' => date('d-m-Y', strtotime($model->created_at)),
+            ],
+            'endereco',
+            'telcelular',
+            'telresidencial',
+            'unidade',
+            'turno',
+            'cargo',
+        ],
+        ]);?>
+        <?php } ?>
 
 </div>

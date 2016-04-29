@@ -45,7 +45,7 @@ class AlunoSearch extends Aluno
         $idUsuario = Yii::$app->user->identity->id;
        
         if(Yii::$app->user->identity->checarAcesso('secretaria')){
-           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id");
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.icone as icone, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id");
 
             if(!isset ($params['sort'])){
                $query = $query->orderBy('nome');
@@ -65,6 +65,99 @@ class AlunoSearch extends Aluno
         ]);
 
         //$this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $dataProvider->sort->attributes['sigla'] = [
+            'asc' => ['sigla' => SORT_ASC],
+            'desc' => ['sigla' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['siglaLinhaPesquisa'] = [
+            'asc' => ['siglaLinhaPesquisa' => SORT_ASC],
+            'desc' => ['siglaLinhaPesquisa' => SORT_DESC],
+        ];
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'area' => $this->area,
+            'curso' => $this->curso,
+            'nacionalidade' => $this->nacionalidade,
+            'regime' => $this->regime,
+            'status' => $this->status,
+            'numDefesa' => $this->numDefesa,
+            'egressograd' => $this->egressograd,
+            'idUser' => $this->idUser,
+            'orientador' => $this->orientador,
+            'anoconclusao' => $this->anoconclusao,
+        ]);
+
+        $query->andFilterWhere(['like', 'nome', $this->nome])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'senha', $this->senha])
+            ->andFilterWhere(['like', 'matricula', $this->matricula])
+            ->andFilterWhere(['like', 'endereco', $this->endereco])
+            ->andFilterWhere(['like', 'bairro', $this->bairro])
+            ->andFilterWhere(['like', 'cidade', $this->cidade])
+            ->andFilterWhere(['like', 'uf', $this->uf])
+            ->andFilterWhere(['like', 'cep', $this->cep])
+            ->andFilterWhere(['like', 'datanascimento', $this->datanascimento])
+            ->andFilterWhere(['like', 'sexo', $this->sexo])
+            ->andFilterWhere(['like', 'estadocivil', $this->estadocivil])
+            ->andFilterWhere(['like', 'cpf', $this->cpf])
+            ->andFilterWhere(['like', 'rg', $this->rg])
+            ->andFilterWhere(['like', 'orgaoexpeditor', $this->orgaoexpeditor])
+            ->andFilterWhere(['like', 'dataexpedicao', $this->dataexpedicao])
+            ->andFilterWhere(['like', 'telresidencial', $this->telresidencial])
+            ->andFilterWhere(['like', 'telcomercial', $this->telcomercial])
+            ->andFilterWhere(['like', 'telcelular', $this->telcelular])
+            ->andFilterWhere(['like', 'bolsista', $this->bolsista])
+            ->andFilterWhere(['like', 'agencia', $this->agencia])
+            ->andFilterWhere(['like', 'pais', $this->pais])
+            ->andFilterWhere(['like', 'dataingresso', $this->dataingresso])
+            ->andFilterWhere(['like', 'idiomaExameProf', $this->idiomaExameProf])
+            ->andFilterWhere(['like', 'conceitoExameProf', $this->conceitoExameProf])
+            ->andFilterWhere(['like', 'dataExameProf', $this->dataExameProf])
+            ->andFilterWhere(['like', 'tituloQual2', $this->tituloQual2])
+            ->andFilterWhere(['like', 'dataQual2', $this->dataQual2])
+            ->andFilterWhere(['like', 'conceitoQual2', $this->conceitoQual2])
+            ->andFilterWhere(['like', 'tituloTese', $this->tituloTese])
+            ->andFilterWhere(['like', 'dataTese', $this->dataTese])
+            ->andFilterWhere(['like', 'conceitoTese', $this->conceitoTese])
+            ->andFilterWhere(['like', 'horarioQual2', $this->horarioQual2])
+            ->andFilterWhere(['like', 'localQual2', $this->localQual2])
+            ->andFilterWhere(['like', 'resumoQual2', $this->resumoQual2])
+            ->andFilterWhere(['like', 'horarioTese', $this->horarioTese])
+            ->andFilterWhere(['like', 'localTese', $this->localTese])
+            ->andFilterWhere(['like', 'resumoTese', $this->resumoTese])
+            ->andFilterWhere(['like', 'tituloQual1', $this->tituloQual1])
+            ->andFilterWhere(['like', 'dataQual1', $this->dataQual1])
+            ->andFilterWhere(['like', 'examinadorQual1', $this->examinadorQual1])
+            ->andFilterWhere(['like', 'conceitoQual1', $this->conceitoQual1])
+            ->andFilterWhere(['like', 'cursograd', $this->cursograd])
+            ->andFilterWhere(['like', 'instituicaograd', $this->instituicaograd])
+            ->andFilterWhere(['like', 'dataformaturagrad', $this->dataformaturagrad])
+            ->andFilterWhere(['like', 'sede', $this->sede]);
+
+        return $dataProvider;
+    }
+    
+    public function getAlunos($idUsuario)
+    {
+       
+        $query = Aluno::find()->select("j17_aluno.*")->where('orientador = '.$idUsuario);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails

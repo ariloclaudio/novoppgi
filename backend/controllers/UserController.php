@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\User;
+use app\models\Aluno;
 use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -81,14 +82,9 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single User perfil.
-     * @param integer $id
-     * @return mixed
-     */
     public function actionPerfil()
     {
-        return $this->render('view', [
+        return $this->render('perfil', [
             'model' => $this->findModel(Yii::$app->user->identity->id),
         ]);
     }
@@ -126,14 +122,22 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
+        $model = $this->findModel($id);
+        
+        if($model->professor){
+            $alunos = $model->getAlunos($model->id);
+            if($alunos){
+                $this->mensagens('warning', 'Usuário com alunos associados', 'O usuário corrente é professor e possui alunos.');
+                return $this->redirect(['index']);
+            }
+        }
+
         try{
-            if($this->findModel($id)->delete())
-                $this->mensagens('success', 'Usuário Removido', 'Usuário removido com sucesso.');
-            else
-                $this->mensagens('warning', 'Usuário não removido', 'Este usuário não pode ser removido, pois possui aluno(s).');
+            $model->delete();
+            $this->mensagens('success', 'Usuário Removido', 'Usuário removido com sucesso.');
         }catch(IntegrityException $e){
-            $this->mensagens('danger', 'Erro ao Remover Usuário', 'Ocorreu um erro ao remover o Usuário. '.$e.getMensage());
-        }            
+            $this->mensagens('danger', 'Erro ao Remover Usuário', 'Ocorreu um erro ao remover o Usuário.');
+        }  
 
         return $this->redirect(['index']);
     }

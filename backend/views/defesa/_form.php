@@ -8,13 +8,6 @@ use kartik\select2\Select2;
 use kartik\datecontrol\Module;
 use kartik\datecontrol\DateControl;
 
-
-
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Defesa */
-/* @var $form yii\widgets\ActiveForm */
-
 //tipodefesa = 2 representa o curso de doutorado e defesa na qualificacao 1
 if ($tipodefesa == 2){
     $required = 0;
@@ -24,8 +17,6 @@ else {
 }
 
 ?>
-
-
 
 <input type="hidden" id = "membrosObrigatorios" value = <?php echo $required; ?> />
 

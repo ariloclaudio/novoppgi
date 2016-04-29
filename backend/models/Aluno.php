@@ -10,7 +10,7 @@ class Aluno extends \yii\db\ActiveRecord
 {
     public $siglaLinhaPesquisa;
     public $corLinhaPesquisa;
-
+    public $icone;
     /**
      * @inheritdoc
      */
@@ -128,4 +128,10 @@ class Aluno extends \yii\db\ActiveRecord
     {
         return $this->hasOne(LinhaPesquisa::className(), ['id' => 'area']);
     }
+
+    public function orientados($idusuario){
+       $alunos = Aluno::find()->where(["orientador" => $idusuario])->all();
+       return $alunos;
+    }
+
 }
