@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'rowOptions' => function ($model) { if($model->reservasAtivas > 4) return ['class' => 'danger'];},
+        'rowOptions' => function ($model) { if($model->reservasAtivas > 4 && !Yii::$app->user->identity->secretaria) return ['class' => 'danger'];},
         'summary' => false,
         'columns' => [
             'nome',

@@ -33,8 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $statusAluno[$model->status];
                 },
             ],
-            [   'label' => 'Linha Pesquisa',
+            [   'label' => 'Linha de Pesquisa',
                 'attribute' => 'siglaLinhaPesquisa',
+                'format' => 'html',
+                'contentOptions' => function ($model){
+                  return ['style' => 'background-color: '.$model->corLinhaPesquisa];
+                },
+                'value' => function ($model){
+                  return " <span class='fa ". $model->icone ." fa-lg'/> ".$model->siglaLinhaPesquisa;
+                },
             ],
              'email:email',
              'telresidencial',

@@ -3,16 +3,17 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
+use kartik\datecontrol\Module;
+use kartik\datecontrol\DateControl;
 
 
 $tipos = ['Aula' => 'Aula', 'Defesa' => 'Defesa', 'Exame' => 'Exame', 'Reunião' => 'Reunião'];
 
-
-$horarios = ["07:59" => "08:59", "09:30" => "10:59", "11:59" => "12:59", "13:59" => "14:59", "15:59" => "16:59", "17:59" => "18:59", "20:59" => "21:59",
-"22:59" => "10:30", "11:00" => "11:00", "11:30" => "11:30", "12:00" => "12:00", "12:30" => "12:30", "13:00" => "13:00", "13:30" => "13:30",
-"14:00" => "14:00", "14:30" => "14:30", "15:00" => "15:00", "15:30" => "15:30", "16:00" => "16:00", "16:30" => "16:30", "17:00" => "17:00", 
-"17:30" => "17:30", "18:00" => "18:00", "18:30" => "18:30", "19:00" => "19:00", "19:30" => "19:30", "20:00" => "20:00", "20:30" => "20:30", 
-"21:00" => "21:00", "21:30" => "21:30"];
+$horarios = ["" => "", "07:30" => "07:30", "07:59" => "07:59", "08:30" => "08:30", "08:59" => "08:59", "09:30" => "09:30", "09:59" => "09:59", "10:30" => "10:30", 
+            "10:59" => "10:59", "11:30" => "11:30", "11:59" => "11:59", "12:30" => "12:30", "12:59" => "12:59", "13:30" => "13:30", "13:59" => "13:59",
+            "14:30" => "14:30", "14:59" => "14:59", "15:30" => "15:30", "15:59" => "15:59", "16:30" => "16:30", "16:59" => "16:59", "17:30" => "17:30", 
+            "17:59" => "17:59", "18:30" => "18:30", "18:59" => "18:59", "19:30" => "19:30", "19:59" => "19:59", "20:30" => "20:30", "20:59" => "20:59",
+            "21:30" => "21:30", "21:59" => "21:59", "22:30" => "22:30", "22:59" => "22:59"];
 
 ?>
 
@@ -28,9 +29,15 @@ $horarios = ["07:59" => "08:59", "09:30" => "10:59", "11:59" => "12:59", "13:59"
     </div>
     <div class="row">
 
-        <?= $form->field($model, 'horaInicio', ['options' => ['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Hora de Início:</b>") ?>
+        <?= $form->field($model, 'horaInicio', ['options' => ['class' => 'col-md-3']])->widget(DateControl::classname(), [
+            'language' => 'pt-BR',
+            'name'=>'kartik-date',
+            'value' => date(''),
+            'type'=>DateControl::FORMAT_TIME,
+            'displayFormat' => 'php: H:i',
+        ])->label("<font color='#FF0000'>*</font> <b>Hora de Início:</b>") ?>
 
-        <?= $form->field($model, 'horaTermino', ['options' => ['class' => 'col-md-3']])->textInput()->label("<font color='#FF0000'>*</font> <b>Hora de Término  :</b>") ?>
+        <?= $form->field($model, 'horaTermino', ['options' => ['class' => 'col-md-3']])->dropDownList($horarios)->label("<font color='#FF0000'>*</font> <b>Hora de Término  :</b>") ?>
 
     </div>
     <div class="form-group">

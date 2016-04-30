@@ -17,11 +17,25 @@ return [
     'timeZone' => 'America/Manaus',
 
 
-'modules' => [
-   'datecontrol' =>  [
-      'class' => '\kartik\datecontrol\Module'
-    ]
-],
+    'modules' => [
+       'datecontrol' =>  [
+          'class' => '\kartik\datecontrol\Module',
+
+            // format settings for displaying each date attribute (ICU format example)
+            'displaySettings' => [
+                \kartik\datecontrol\Module::FORMAT_DATE => 'dd-MM-yyyy',
+                \kartik\datecontrol\Module::FORMAT_TIME => 'HH:mm a',
+                \kartik\datecontrol\Module::FORMAT_DATETIME => 'dd-MM-yyyy HH:mm a', 
+            ],
+
+            // format settings for saving each date attribute (PHP format example)
+            'saveSettings' => [
+                \kartik\datecontrol\Module::FORMAT_DATE => 'php:U', // saves as unix timestamp
+                \kartik\datecontrol\Module::FORMAT_TIME => 'php:H:i',
+                \kartik\datecontrol\Module::FORMAT_DATETIME => 'php:Y-m-d H:i',
+            ],
+        ]
+    ],
 
 
     'components' => [

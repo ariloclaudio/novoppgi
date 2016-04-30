@@ -20,6 +20,7 @@ use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
 use mPDF;
 use kartik\mpdf\Pdf;
+use yii\base\ErrorException;
 
 
 /**
@@ -176,21 +177,24 @@ class CandidatoController extends Controller
 
             if($model->passoatual == 2) 
                 $model->passoatual = 3;
-            
-            if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'),$model->idEdital)){
-                if($model->save(false) && $model->salvaCartaRecomendacao()){
-                    if(isset($_POST['finalizar'])){
-                        //ENVIAR EMAILS CADASTRADOS*
-                        $this->notificarCartasRecomendacao($model);
-                        
-                        return $this->redirect(['passo4']);
+            try{
+                if($model->uploadPasso3(UploadedFile::getInstance($model, 'historicoFile'), UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'),$model->idEdital)){
+                    if($model->save(false) && $model->salvaCartaRecomendacao()){
+                        if(isset($_POST['finalizar'])){
+                            //ENVIAR EMAILS CADASTRADOS*
+                            $this->notificarCartasRecomendacao($model);
+                            
+                            return $this->redirect(['passo4']);
+                        }
+                    }else{
+                        $this->mensagens('danger', 'Erro ao Salvar Alterações', 'Ocorreu um Erro ao salvar os dados.');
                     }
+                
                 }else{
-                    $this->mensagens('danger', 'Erro ao Salvar Alterações', 'Ocorreu um Erro ao salvar os dados.');
+                    $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
                 }
-            
-            }else{
-                $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
+            }catch(ErrorException $e){
+                $this->mensagens('danger', 'Erro Temporário', $e->getCode());
             }
             
             return $this->render('create3', [
