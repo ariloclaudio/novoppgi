@@ -81,13 +81,25 @@ class DefesaController extends Controller
      */
     public function actionCreate($aluno_id)
     {
-
+        
         $membrosBancaInternos = ArrayHelper::map(MembrosBanca::find()->where("filiacao = 'PPGI/UFAM'")->orderBy('nome')->all(), 'id', 'nome','filiacao');
 
         $membrosBancaExternos = ArrayHelper::map(MembrosBanca::find()->where("filiacao <> 'PPGI/UFAM'")->orderBy('nome')->all(), 'id', 'nome','filiacao');
-
-
+        
+        $membrosExternos = ArrayHelper::map(MembrosBanca::find()->where("filiacao <> 'PPGI/UFAM'")->orderBy('nome')->all(), 'id', 'nome');
+        
         $model = new Defesa();
+        
+        $conceitoPendente = $model->ConceitoPendente($aluno_id);
+        
+        if ($conceitoPendente == true){
+
+                $this->mensagens('danger', 'Defesas Pendências de Conceito', 'Existem defesas deste aluno que estão pendentes de conceito. Por favor, solicite que a secretaria atribua o conceito.');
+
+                return $this->redirect(['aluno/orientandos',]);            
+            
+        }
+        
 
         $model->aluno_id = $aluno_id;
 
@@ -126,17 +138,13 @@ class DefesaController extends Controller
             $model->banca_id = $model_ControleDefesas->id;
 
             if(! $model->uploadDocumento(UploadedFile::getInstance($model, 'previa'))){
-
                 $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
-
                 return $this->redirect(['aluno/orientandos',]);
-            
-
             }
 
 
             try{
-
+                
                 if($model->tipoDefesa == "Q1" && $model->curso == "Doutorado"){
 
 
@@ -171,11 +179,9 @@ class DefesaController extends Controller
 
                     if($model->save()){
 
-
-                        return $this->render('passagens', [
-                            'model' => $model,
-                            'arraymembrosBancaExternos' => $model->membrosBancaExternos,
-                        ]);
+                        $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
+                        
+                        return $this->redirect(['passagens', 'banca_id' => $model->banca_id]);
 
                     }else{
 
@@ -200,6 +206,39 @@ class DefesaController extends Controller
             'membrosBancaInternos' => $membrosBancaInternos,
             'membrosBancaExternos' => $membrosBancaExternos,
         ]);
+    }
+    
+    public function actionPassagens($banca_id){
+        
+
+        $banca = Banca::find()->select("j17_banca_has_membrosbanca.* , mb.nome as membro_nome, mb.filiacao as membro_filiacao, , mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+        ->where(["banca_id" => $banca_id , "funcao" => "E"])->all();
+        
+        return $this->render('passagens', [
+            'model' => $banca,
+        ]);
+    
+        
+        
+    }
+    
+    public function actionPassagens2(){
+        
+
+    if(isset($_POST['submit'])){//to run PHP script on submit
+        if(!empty($_POST['check_list'])){
+            // Loop to store and display values of individual checked checkbox.
+            foreach($_POST['check_list'] as $selected){
+                echo $selected."</br>";
+            }
+        }
+    }
+    
+    var_dump($_POST["submit"]);
+    
+    exit;
+
+        
     }
 
 

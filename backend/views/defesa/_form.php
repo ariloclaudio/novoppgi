@@ -93,18 +93,6 @@ else {
 
             ?>
 
-
-            <?= $form->field($model, 'membrosBancaExternosPassagem')->widget(Select2::classname(), [
-                'data' => $membrosBancaExternos,
-                'value' => $model->membrosBancaExternos,
-                'language' => 'pt-BR',
-                'options' => [
-                'id' => 'idsMembrosBancaExternos',
-                'placeholder' => 'Selecione os membros externos que <b> solicitam passagem </b> ...', 'multiple' => true,],
-            ]);
-            
-            ?>
-
     <?php } ?>
 
 <br><br>

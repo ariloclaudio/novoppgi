@@ -2706,12 +2706,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "6abfc0cec5648e6ccc6a8053533383ecaf4dbdb4"
+                "reference": "cc83247f5c71d816eb6227788d9abee579527a71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/6abfc0cec5648e6ccc6a8053533383ecaf4dbdb4",
-                "reference": "6abfc0cec5648e6ccc6a8053533383ecaf4dbdb4",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/cc83247f5c71d816eb6227788d9abee579527a71",
+                "reference": "cc83247f5c71d816eb6227788d9abee579527a71",
                 "shasum": ""
             },
             "require": {
@@ -2748,7 +2748,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-28 06:53:57"
+            "time": "2016-04-29 09:21:21"
         },
         {
             "name": "phpspec/php-diff",

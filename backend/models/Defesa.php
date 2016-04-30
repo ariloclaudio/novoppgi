@@ -178,4 +178,17 @@ class Defesa extends \yii\db\ActiveRecord
 
         return $this->conceito == null ? "<div style = \"color:red \"><b>Não Julgado</b></div>" : $this->conceito;
     }
+    
+    public function conceitoPendente($aluno_id){
+        $conceitos = Defesa::find()->Where(["aluno_id" => $aluno_id , "conceito" => null])->count();
+        
+        if ($conceitos == 0){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+    
 }
