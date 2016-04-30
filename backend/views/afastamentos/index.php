@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="afastamentos-index">
 
-<?= Html::a('Novo Pedido de Afastamento', ['create'], ['class' => 'btn btn-success']) ?>
+<?= Html::a('<span class="glyphicon glyphicon-plus"></span> Novo Pedido de Afastamento', ['create'], ['class' => 'btn btn-success']) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

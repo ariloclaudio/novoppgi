@@ -11,6 +11,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\db\IntegrityException;
+use yii\base\Exception;
+
 
 /**
  * AlunoController implements the CRUD actions for Aluno model.
@@ -85,11 +88,59 @@ class AlunoController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Aluno model.
-     * @param integer $id
-     * @return mixed
-     */
+    public function actionCreate()
+    {
+        $model = new Aluno();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model_usuario = User::findOne(['username' => $model->cpf]);
+
+            if($model_usuario == null){
+                $model_usuario = new User();
+                $model_usuario->nome = $model->nome;
+                $model_usuario->username = $model->cpf;
+                $model_usuario->password = $model->senha;
+                $model_usuario->email = $model->email;
+                $model_usuario->administrador =  0;
+                $model_usuario->coordenador =  0;
+                $model_usuario->secretaria =  0;
+                $model_usuario->professor = 0;
+                $model_usuario->aluno = 1;
+                $model_usuario->auth_key = Yii::$app->security->generateRandomString();
+            }else{
+                $model_usuario->aluno = 1;
+                $model_usuario->status = 10;
+            }
+
+            //try{
+                if($model_usuario->save()){
+                    $model->idUser = $model_usuario->id;
+                    if($model->save()){
+                        $this->mensagens('success', 'Aluno Adicionado', 'O aluno \''.$model->nome.'\' foi adicionado com sucesso.');
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }else{
+                        $this->mensagens('danger', 'Aluno não Adicionado', 'Ocorreu um erro ao adicionar o aluno. Verifique os campos e tente novamente.');
+                    }
+                }else{
+                    $this->mensagens('danger', 'Usuário não Adicionado', 'Ocorreu um erro ao adicionar aluno aos usuários. Verifique os campos e tente novamente.');
+                }
+            //}catch(IntegrityException $e){
+                $this->mensagens('danger', 'Usuário não Adicionado', 'Ocorreu um erro ao adicionar aluno aos usuários. Verifique os campos e tente novamente.');
+            //}
+        }
+            
+        $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
+        $orientadores = ArrayHelper::map(User::find()->where(['professor' => '1'])->orderBy('nome')->all(), 'id', 'nome');
+        
+        return $this->render('create', [
+            'model' => $model,
+            'linhasPesquisas' => $linhasPesquisas,
+            'orientadores' => $orientadores, 
+        ]);
+    }
+
+
     public function actionView_orientado($id)
     {
          $model = $this->findModel($id);
@@ -107,12 +158,7 @@ class AlunoController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Aluno model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);

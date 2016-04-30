@@ -9,11 +9,11 @@ use yii\helpers\Html;
 
 
 $this->title = 'Novo Aluno';
-$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['edital/index']];
-$this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get('idEdital'), 
-    'url' => ['edital/view','id' => Yii::$app->request->get('idEdital') ]];
-    $this->params['breadcrumbs'][] = ['label' => 'Candidatos com inscrição finalizada', 
-    'url' => ['candidatos/index','id' => Yii::$app->request->get('idEdital') ]];
+//$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['edital/index']];
+//$this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get('idEdital'), 
+//    'url' => ['edital/view','id' => Yii::$app->request->get('idEdital') ]];
+ //   $this->params['breadcrumbs'][] = ['label' => 'Candidatos com inscrição finalizada', 
+ //   'url' => ['candidatos/index','id' => Yii::$app->request->get('idEdital') ]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
