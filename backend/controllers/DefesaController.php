@@ -317,7 +317,9 @@ class DefesaController extends Controller
         //SÓ PODE EXCLUIR A DEFESA SE ELA NÃO NÃO POSSUIR BANCA! TEM DE CHECAR SE banca_id == 0
         $model = $this->findModel($idDefesa, $aluno_id);
 
-        if($model->banca_id != 0){
+        $banca = BancaControleDefesas::find()->where(["id" => $model->banca_id])->one();
+
+        if($banca->status_banca != null){
             $this->mensagens('danger', 'Não Excluído', 'Não foi possível excluir, pois essa defesa já possui banca aprovada');
             return $this->redirect(['index']);
         }
