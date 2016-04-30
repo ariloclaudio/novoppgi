@@ -20,6 +20,9 @@ if(isset($model->proposta))
 if(isset($model->comprovantepagamento))
     $uploadRealizados += 2;
 
+if(isset($model->comprovantepagamento))
+    $uploadRealizados += 4;
+
 if(!isset($model->cartaNome[0]) || $model->cartaNome[0] == ""){
     $hideCartaRecomendacao0 = 'none';
 }else{
@@ -102,6 +105,44 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
     <div class="row">
 
         <?= $form->field($model, 'motivos')->textarea(['maxlength' => true, 'id' => 'txtMotivos', 'rows' => 6])->label("<font color='#FF0000'>*</font> <b> Descreva os motivos que o levaram a se candidatar ao curso (<span class='caracteres'>1000</span> Caracteres Restantes): </b>") ?>
+    </div>
+
+    <div class="row" style="padding: 3px 3px 3px 3px">
+        <?php 
+
+        if($model->cartaOrientador($model->idEdital) ){
+
+            if(isset($model->cartaorientador)){
+                echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Carta de Aceite do Orientador:<br> 
+                    Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-la.</b><br></div>";
+                
+                echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
+                'pluginOptions' => [
+                    'onText' => 'Sim',
+                    'offText' => 'Não',
+                    ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
+
+            }
+            else{
+
+                echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Carta de Aceite do Orientador:</b>");
+            }
+        }
+        else{
+
+            echo "<input type='hidden' id = 'ignorarRequiredCartaOrientador' value = '0' />";
+
+        }
+
+        ?>
+    </div>
+    <div class="row">
+        <?php if(isset($model->historico)){ ?>
+            <div id="divHistoricoFile" style="display: none; clear: both;">
+                <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label(false); ?>
+                <div style='border-bottom:solid 1px'> </div>
+            </div>
+        <?php } ?>
     </div>
 
     <div class="row">

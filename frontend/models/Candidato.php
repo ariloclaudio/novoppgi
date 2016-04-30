@@ -303,8 +303,8 @@ class Candidato extends \yii\db\ActiveRecord
         //fim do método que gera o diretório
 
         if (isset($historicoFile)) {
-            $this->historico = "Historico.".$historicoFile->extension;
-            $historicoFile->saveAs($caminho.$this->historico);
+            $this->cartaorientador = "CartaOrientador.".$historicoFile->extension;
+            $historicoFile->saveAs($caminho.$this->cartaorientador);
         }
 
         if(isset($curriculumFile)){
@@ -312,7 +312,7 @@ class Candidato extends \yii\db\ActiveRecord
             $curriculumFile->saveAs($caminho.$this->curriculum);
         }
 
-        if($enviar || (isset($this->historico) || $this->edital->cartaorientador == 0) && (isset($this->curriculum))) {
+        if($enviar || $this->edital->cartaorientador == 0) && (isset($this->curriculum))) {
             return true;
         }else{
             return false;

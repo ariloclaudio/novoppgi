@@ -20,6 +20,7 @@ use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
 use mPDF;
 use kartik\mpdf\Pdf;
+use yii\base\ErrorException;
 
 
 /**
@@ -176,7 +177,7 @@ class CandidatoController extends Controller
 
             if($model->passoatual == 2) 
                 $model->passoatual = 3;
-            
+            try{
             if($model->uploadPasso3(UploadedFile::getInstance($model, 'propostaFile'), UploadedFile::getInstance($model, 'comprovanteFile'),$model->idEdital)){
                 if($model->save(false) && $model->salvaCartaRecomendacao()){
                     if(isset($_POST['finalizar'])){
@@ -192,6 +193,9 @@ class CandidatoController extends Controller
             }else{
                 $this->mensagens('danger', 'Erro ao Enviar arquivos', 'Ocorreu um Erro ao enviar os arquivos submetidos');
             }
+        }catch(ErrorException $e){
+            $this->mensagens('danger', 'Erro Temporário', 'Tente novamente.');
+        }
             
             return $this->render('create3', [
                 'model' => $model,

@@ -2246,12 +2246,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "fffbc0e2a7e376dbb0a4b5f2ff6847330f20ccf9"
+                "reference": "bf40b5635c09e09eaad9c48bcb245ca4a6961401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/fffbc0e2a7e376dbb0a4b5f2ff6847330f20ccf9",
-                "reference": "fffbc0e2a7e376dbb0a4b5f2ff6847330f20ccf9",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/bf40b5635c09e09eaad9c48bcb245ca4a6961401",
+                "reference": "bf40b5635c09e09eaad9c48bcb245ca4a6961401",
                 "shasum": ""
             },
             "require": {
@@ -2291,7 +2291,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-01-03 15:42:47"
+            "time": "2016-04-30 13:52:30"
         },
         {
             "name": "xj/yii2-bootbox-widget",
@@ -2386,12 +2386,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "0d3c7aa71311f779c658972cd74ded95a59b42d7"
+                "reference": "8629491d238e6f06ba00486abeef33cd501e8147"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/0d3c7aa71311f779c658972cd74ded95a59b42d7",
-                "reference": "0d3c7aa71311f779c658972cd74ded95a59b42d7",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/8629491d238e6f06ba00486abeef33cd501e8147",
+                "reference": "8629491d238e6f06ba00486abeef33cd501e8147",
                 "shasum": ""
             },
             "require": {
@@ -2472,7 +2472,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-04-28 21:02:23"
+            "time": "2016-04-30 18:05:33"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2706,12 +2706,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "cc83247f5c71d816eb6227788d9abee579527a71"
+                "reference": "123a68ff806be726d92e7db49eed3f36c881f099"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/cc83247f5c71d816eb6227788d9abee579527a71",
-                "reference": "cc83247f5c71d816eb6227788d9abee579527a71",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/123a68ff806be726d92e7db49eed3f36c881f099",
+                "reference": "123a68ff806be726d92e7db49eed3f36c881f099",
                 "shasum": ""
             },
             "require": {
@@ -2748,7 +2748,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-29 09:21:21"
+            "time": "2016-04-29 12:42:00"
         },
         {
             "name": "phpspec/php-diff",
@@ -2933,12 +2933,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-gii.git",
-                "reference": "62eddfcbf377353777742b3ceaf2b75dc81178e3"
+                "reference": "6777f007457b4f18597d03ac707581e59a3084b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/62eddfcbf377353777742b3ceaf2b75dc81178e3",
-                "reference": "62eddfcbf377353777742b3ceaf2b75dc81178e3",
+                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/6777f007457b4f18597d03ac707581e59a3084b6",
+                "reference": "6777f007457b4f18597d03ac707581e59a3084b6",
                 "shasum": ""
             },
             "require": {
@@ -2978,7 +2978,7 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2016-04-21 13:19:47"
+            "time": "2016-04-30 16:12:40"
         }
     ],
     "aliases": [],

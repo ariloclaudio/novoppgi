@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\Exception;
 
 /**
  * ReservaSalaController implements the CRUD actions for ReservaSala model.
@@ -29,8 +30,7 @@ class ReservaSalaController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                           return Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('secretaria') ||
-                           Yii::$app->user->identity->checarAcesso('professor');
+                           return Yii::$app->user->identity->checarAcesso('secretaria') || Yii::$app->user->identity->checarAcesso('professor');
                         }
                     ],                    
                 ],
@@ -103,13 +103,13 @@ class ReservaSalaController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
 
-                $datetime1 = new \DateTime($model->dataInicio);
-                $datetime2 = new \DateTime($model->dataTermino);
-                $interval = $datetime1->diff($datetime2);
-                $diferencaDias =  abs($interval->format('%a'));
-                $diferencaDias++;
+            $datetime1 = new \DateTime($model->dataInicio);
+            $datetime2 = new \DateTime($model->dataTermino);
+            $interval = $datetime1->diff($datetime2);
+            $diferencaDias =  abs($interval->format('%a'));
+            $diferencaDias++;
 
-                $auxDataInicio = $model->dataInicio;
+            $auxDataInicio = $model->dataInicio;
 
 
             for($i=0; $i<$diferencaDias; $i++){
@@ -127,11 +127,22 @@ class ReservaSalaController extends Controller
                     $model->dataInicio = $dataDoLoop;
                     $model->dataTermino = $dataDoLoop;
 
+                    $reservas = ReservaSala::find()->where(['dataInicio' => date('Y-m-d', strtotime($model->dataInicio))])->andWhere(['sala' => $model->sala])->all();
+
+                    if(count($reservas) > 0){
+                        foreach ($reservas as $value) {
+                            if(!(($model->horaTermino < $value->horaInicio && $model->horaInicio < $value->horaInicio) || 
+                                ($model->horaInicio > $value->horaTermino && $model->horaTermino > $value->horaTermino))){
+                                $this->enviarNotificaoDesmarqueReserva($model, $value);
+                                $value->delete();
+                            }
+                        }
+                    }
+
                     $model->save();
                 }
 
             }
-
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('createemlote', [
@@ -152,7 +163,7 @@ class ReservaSalaController extends Controller
         $model->horaInicio = $horaInicio;
 
 
-        if($model->salaDesc->reservasAtivas > 4){
+        if($model->salaDesc->reservasAtivas > 4 && !Yii::$app->user->identity->secretaria){
             $this->mensagens('warning', 'Limite de Reservas', 'Você alcançou o limite de 5 reservas ativas.');
             return $this->redirect(['calendario', 'idSala' => $model->sala]);
         }else if($model->dataInicio < date('Y-m-d')){
@@ -250,6 +261,38 @@ class ReservaSalaController extends Controller
         if($model->idSolicitante != Yii::$app->user->identity->id && $model->dataInicio < date('d-m-Y') 
             || ($model->dataInicio == date('d-m-Y') && $model->horaInicio < date('H:i:s')))
             throw new ForbiddenHttpException('Acesso negado.');
+    }
+
+    public function enviarNotificaoDesmarqueReserva($reservaLote, $reserva){
+
+        $subject  = "[IComp/UFAM] Perda de Reserva de Sala";
+
+        $mime_boundary = "<<<--==-->>>";
+
+        // message
+        $message = "";
+        $message .= "Prof.".$reserva->solicitante->nome."\r\n";
+        $message .= "Devido à solicitação de ".$reservaLote->tipo." pela Secretaria do IComp, a sua Reserva para a ".$reserva->atividade." no dia ".$reserva->dataInicio." no Horário das ".$reserva->horaInicio." foi cancelada por motivo de prioridade.\r\n";
+        $message .= "Qualquer dúvida entre em contato com a Secretaria do IComp.\r\n";  
+        $message .= $mime_boundary."\r\n";
+
+        try{
+               Yii::$app->mailer->compose()
+                ->setFrom("secretaria@icomp.ufam.edu.br")
+                ->setTo($reserva->solicitante->email)
+                ->setSubject($subject)
+                ->setTextBody($message)
+                ->send();
+        }catch(Exception $e){
+                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Notificações de Perda de Reserva de Sala.
+                    Tente novamente ou contate o adminstrador do sistema');
+                return false;
+        }
+        return true;
+
+        $secretaria = "secretaria@icomp.ufam.edu.br";
+
+        JUtility::sendMail($secretaria, "Reserva de Sala", $dados[0]->email, $subject, $message, false, $secretaria, NULL);
     }
 
     /* Envio de mensagens para views

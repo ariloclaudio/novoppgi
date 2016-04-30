@@ -45,7 +45,7 @@ class AlunoSearch extends Aluno
         $idUsuario = Yii::$app->user->identity->id;
        
         if(Yii::$app->user->identity->checarAcesso('secretaria')){
-           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.icone as icone, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id");
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.icone as icone, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")->where(['status' => 0]);
 
             if(!isset ($params['sort'])){
                $query = $query->orderBy('nome');
@@ -55,7 +55,7 @@ class AlunoSearch extends Aluno
        }
        else if (Yii::$app->user->identity->checarAcesso('professor')){
            $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")
-           ->where('orientador = '.$idUsuario);
+           ->where(['orientador' => $idUsuario, 'status' => 0]);
        }
 
         // add conditions that should always apply here
