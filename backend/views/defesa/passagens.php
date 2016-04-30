@@ -37,12 +37,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <b> Selecionar Todos </b>
         </td>
     </tr>
-    <tr>
-        <td> <br> </td>
-    </tr>
 
-    <?php $form = ActiveForm::begin(['action' =>['defesa/passagens2'], 'id' => 'forum_post_passagem', 'method' => 'post',]); ?>
+    <?php $form = ActiveForm::begin(['action' =>['defesa/passagens2'],'id' => 'forum_post_passagem', 'method' => 'post',]); ?>
     
+            <input type="hidden" name= "banca_id" value= <?php echo $_GET['banca_id']; ?> />
     
         <?php
         
@@ -57,8 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     
     <tr> 
-        <td>
-            <input type="submit" class="btn btn-success" name="submit" value="Salvar"/> 
+        <td colspan="2">
+        <br>
+                <?= Html::submitButton("Salvar", ['class' => 'btn btn-success']) ?>
         </td>
     </tr>
     <?php ActiveForm::end(); ?>

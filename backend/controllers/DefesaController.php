@@ -226,7 +226,8 @@ class DefesaController extends Controller
 
     $where = "";
 
-    if(isset($_POST['submit'])){//to run PHP script on submit
+    $banca_id = $_POST['banca_id'];
+
         if(!empty($_POST['check_list'])){
             // Loop to store and display values of individual checked checkbox.
 
@@ -237,17 +238,18 @@ class DefesaController extends Controller
             }
                 $where = $where."membrosbanca_id = ".$arrayChecked[$i];
         }
-    }
-    
+
+  
         if ($where != ""){
-            $sqlSim = "UPDATE j17_banca_has_membrosbanca SET passagem = 'S' WHERE $where";
+            $sqlSim = "UPDATE j17_banca_has_membrosbanca SET passagem = 'S' WHERE ($where) AND banca_id = ".$banca_id;
             //$sqlNao = "UPDATE j17_banca_has_membrosbanca SET passagem = 'N' WHERE $where";
 
             try{
                 echo Yii::$app->db->createCommand($sqlSim)->execute();
+
               //  echo Yii::$app->db->createCommand($sqlNao)->execute();
 
-                $this->mensagens('sucess', 'Passagens', 'As alterações das passagens foram salvas com sucesso.');
+                $this->mensagens('success', 'Passagens', 'As alterações das passagens foram salvas com sucesso.');
 
                 return $this->redirect(['aluno/orientandos',]);
 
@@ -258,7 +260,7 @@ class DefesaController extends Controller
             }
         }
         else {
-            $this->mensagens('sucess', 'Passagens', 'As alterações das passagens foram salvas com sucesso.');
+            $this->mensagens('success', 'Passagens', 'As alterações das passagens foram salvas com sucesso.');
             return $this->redirect(['aluno/orientandos',]);
         }
 
