@@ -223,20 +223,45 @@ class DefesaController extends Controller
     }
     
     public function actionPassagens2(){
-        
+
+    $where = "";
 
     if(isset($_POST['submit'])){//to run PHP script on submit
         if(!empty($_POST['check_list'])){
             // Loop to store and display values of individual checked checkbox.
-            foreach($_POST['check_list'] as $selected){
-                echo $selected."</br>";
+
+           $arrayChecked = $_POST['check_list'];
+
+            for($i=0; $i<count($arrayChecked)-1; $i++){
+                $where = $where."membrosbanca_id = ".$arrayChecked[$i]." OR ";
             }
+                $where = $where."membrosbanca_id = ".$arrayChecked[$i];
         }
     }
     
-    var_dump($_POST["submit"]);
-    
-    exit;
+        if ($where != ""){
+            $sqlSim = "UPDATE j17_banca_has_membrosbanca SET passagem = 'S' WHERE $where";
+            //$sqlNao = "UPDATE j17_banca_has_membrosbanca SET passagem = 'N' WHERE $where";
+
+            try{
+                echo Yii::$app->db->createCommand($sqlSim)->execute();
+              //  echo Yii::$app->db->createCommand($sqlNao)->execute();
+
+                $this->mensagens('sucess', 'Passagens', 'As alterações das passagens foram salvas com sucesso.');
+
+                return $this->redirect(['aluno/orientandos',]);
+
+            }
+            catch(\Exception $e){
+
+                $this->mensagens('danger', 'Erro ao salvar', 'Ocorreu um Erro ao salvar essas alterações no Banco. Tente Novamente.');
+            }
+        }
+        else {
+            $this->mensagens('sucess', 'Passagens', 'As alterações das passagens foram salvas com sucesso.');
+            return $this->redirect(['aluno/orientandos',]);
+        }
+
 
         
     }
