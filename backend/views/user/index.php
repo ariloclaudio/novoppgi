@@ -19,7 +19,6 @@ $this->title = 'Usuários';
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
             'nome',
             'username',
@@ -35,7 +34,20 @@ $this->title = 'Usuários';
                 }
             ],
             'perfis',
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{view} {delete} {update}',
+                'buttons'=>[
+                  'delete' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                            'data' => [
+                                'confirm' => 'Remover o usuário \''.$model->nome.'\'?',
+                                'method' => 'post',
+                            ],
+                            'title' => Yii::t('yii', 'Remover Edital'),
+                    ]);   
+                  }
+              ]                            
+            ],
         ],
     ]); ?>
 </div>

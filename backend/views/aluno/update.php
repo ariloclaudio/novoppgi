@@ -12,6 +12,8 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="aluno-update">
 
+<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', 'javascript:window.history.go(-1)', ['class' => 'btn btn-warning']) ?>
+
     <?= $this->render('_form', [
         'model' => $model,
         'linhasPesquisas' => $linhasPesquisas,

@@ -11,6 +11,7 @@ class Aluno extends \yii\db\ActiveRecord
     public $siglaLinhaPesquisa;
     public $corLinhaPesquisa;
     public $icone;
+    public $username;
     /**
      * @inheritdoc
      */
@@ -44,6 +45,7 @@ class Aluno extends \yii\db\ActiveRecord
             [['datanascimento', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'dataExameProf', 'dataQual2', 'dataTese', 'horarioQual2', 'horarioTese', 'dataQual1'], 'string', 'max' => 10],
             [['sexo'], 'string', 'max' => 1],
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
+            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Já existe usuário cadastrado com esse CPF'],
             [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
             [['bolsista'], 'string', 'max' => 3],
             [['agencia', 'pais'], 'string', 'max' => 30],
@@ -115,6 +117,7 @@ class Aluno extends \yii\db\ActiveRecord
             'sede' => 'Sede',
             'financiadorbolsa' => 'Financiador da Bolsa',
             'dataimplementacaobolsa' => 'Início da Vigência',
+            'orientador1.nome' => 'Orientador',
 
         ];
     }
@@ -127,6 +130,11 @@ class Aluno extends \yii\db\ActiveRecord
     public function getlinhaPesquisa()
     {
         return $this->hasOne(LinhaPesquisa::className(), ['id' => 'area']);
+    }
+
+    public function getOrientador1()
+    {
+        return $this->hasOne(User::className(), ['id' => 'orientador']);
     }
 
     public function orientados($idusuario){
