@@ -99,13 +99,9 @@ class Candidato extends \yii\db\ActiveRecord
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_2' && $('#ignorarRequired').val() == '0';
             }"],
-            [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->historico) && $model->passoatual == 2 && $model->cartaorientador($model->idEdital) ;}, 
-                'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2' && $('#ignorarRequiredCartaOrientador').val() == '1' && ($('#form_upload').val() == 2 || $('#form_upload').val() == 0);
-                }"],
             [['curriculumFile'], 'required', 'when' => function($model){ return !isset($model->curriculum) && $model->passoatual == 2;},
                 'whenClient' => "function (attribute, value) {
-                    return $('#form_hidden').val() == 'passo_form_2' && $('#ignorarRequired').val() == '0' && ($('#form_upload').val() == 1 || $('#form_upload').val() == 0);
+                    return $('#form_hidden').val() == 'passo_form_2' && $('#ignorarRequired').val() == '0' && ($('#form_upload').val() == 0);
                 }"],
             [['publicacoesFile'], 'required', 'when' => function($model){ return !isset($model->publicacoesFile) && $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
@@ -117,6 +113,10 @@ class Candidato extends \yii\db\ActiveRecord
             [['idLinhaPesquisa', 'tituloproposta', 'motivos', 'declaracao'], 'required', 'when' => function($model){ return $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
                 return $('#form_hidden').val() == 'passo_form_3';
+            }"],
+            [['historicoFile'], 'required', 'when' => function($model){ return !isset($model->cartaorientador) && $model->passoatual == 3 && $model->cartaorientador($model->idEdital) ;}, 
+                'whenClient' => "function (attribute, value) {
+                    return $('#form_hidden').val() == 'passo_form_3' && ($('#form_upload').val() == 2 || $('#form_upload').val() == 1 || $('#form_upload').val() == 3 || $('#form_upload').val() == 0);
             }"],
             [['propostaFile'], 'required', 'when' => function($model){ return !isset($model->proposta) && $model->passoatual == 3;},
             'whenClient' => "function (attribute, value) {
@@ -144,7 +144,7 @@ class Candidato extends \yii\db\ActiveRecord
             [['inicio', 'fim'], 'safe'],
             [['passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'tipopos', 'resultado'], 'integer', 'min' => 0, 'max' => 2099],
             [['anoposcomp', 'egressograd', 'egressopos'], 'integer', 'min' => 1900, 'max' => 2099],
-            [['diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
+            [['diploma', 'cartaorientador', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento'], 'string'],
             [['cidade'], 'string', 'max' => 40],
             [['motivos'], 'string', 'max' => 1000],
             [['nome', 'nomesocial'], 'string', 'max' => 60],
@@ -294,7 +294,7 @@ class Candidato extends \yii\db\ActiveRecord
         return $caminho;
     }
     
-    public function uploadPasso2($historicoFile, $curriculumFile, $enviar){
+    public function uploadPasso2($curriculumFile, $enviar){
         //obtenção o ID do usuário pelo meio de sessão
         $id = Yii::$app->session->get('candidato');
         //fim da obtenção
@@ -302,24 +302,19 @@ class Candidato extends \yii\db\ActiveRecord
         $caminho = $this->gerarDiretorio($id,$this->idEdital);
         //fim do método que gera o diretório
 
-        if (isset($historicoFile)) {
-            $this->cartaorientador = "CartaOrientador.".$historicoFile->extension;
-            $historicoFile->saveAs($caminho.$this->cartaorientador);
-        }
-
         if(isset($curriculumFile)){
             $this->curriculum = "Curriculum.".$curriculumFile->extension;
             $curriculumFile->saveAs($caminho.$this->curriculum);
         }
 
-        if($enviar || $this->edital->cartaorientador == 0) && (isset($this->curriculum))) {
+        if($enviar || (isset($this->curriculum))) {
             return true;
         }else{
             return false;
         }
     }
 
-    public function uploadPasso3($propostaFile, $comprovanteFile, $idEdital)
+    public function uploadPasso3($historicoFile, $propostaFile, $comprovanteFile, $idEdital)
     {
         //obtenção o ID do usuário pelo meio de sessão
         $id = Yii::$app->session->get('candidato');
@@ -328,6 +323,11 @@ class Candidato extends \yii\db\ActiveRecord
         //método que gera o diretório, retornando o caminho do diretório
         $caminho = $this->gerarDiretorio($id,$idEdital);
         //fim do método que gera o diretório
+
+        if (isset($historicoFile)) {
+            $this->cartaorientador = "CartaOrientador.".$historicoFile->extension;
+            $historicoFile->saveAs($caminho.$this->cartaorientador);
+        }
 
         if (isset($propostaFile)) {
             $this->proposta = "Proposta.".$propostaFile->extension;
@@ -339,7 +339,7 @@ class Candidato extends \yii\db\ActiveRecord
             $comprovanteFile->saveAs($caminho.$this->comprovantepagamento);
         }
 
-        if(isset($this->proposta) && isset($this->comprovantepagamento)){
+        if((($this->edital->cartaorientador == 1 && isset($this->cartaorientador)) || $this->edital->cartaorientador == 0) && isset($this->proposta) && isset($this->comprovantepagamento)){
             return true;
         } else {
             return false;

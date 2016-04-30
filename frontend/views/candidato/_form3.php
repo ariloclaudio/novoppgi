@@ -20,7 +20,7 @@ if(isset($model->proposta))
 if(isset($model->comprovantepagamento))
     $uploadRealizados += 2;
 
-if(isset($model->comprovantepagamento))
+if(isset($model->cartaorientador))
     $uploadRealizados += 4;
 
 if(!isset($model->cartaNome[0]) || $model->cartaNome[0] == ""){
@@ -114,7 +114,7 @@ if(!isset($model->cartaNome[2]) || $model->cartaNome[2] == ""){
 
             if(isset($model->cartaorientador)){
                 echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Carta de Aceite do Orientador:<br> 
-                    Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-la.</b><br></div>";
+                    Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->cartaorientador.">clique aqui </a>para visualizá-la.</b><br></div>";
                 
                 echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
                 'pluginOptions' => [
