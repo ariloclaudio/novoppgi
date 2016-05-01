@@ -18,6 +18,7 @@ use yii\helpers\ArrayHelper;
 use yii\db\IntegrityException;
 use yii\base\Exception;
 use yii\web\UploadedFile;
+use mPDF;
 
 /**
  * DefesaController implements the CRUD actions for Defesa model.
@@ -132,7 +133,12 @@ class DefesaController extends Controller
             $model->auxiliarTipoDefesa = $tipodefesa;
 
             $model_ControleDefesas = new BancaControleDefesas();
-            $model_ControleDefesas->status_banca = null;
+            if($model->tipoDefesa == "Q1" && $model->curso == "Doutorado"){
+                $model_ControleDefesas->status_banca = 1;
+            }
+            else{
+                $model_ControleDefesas->status_banca = null;
+            }
             $model_ControleDefesas->save(false);
 
             $model->banca_id = $model_ControleDefesas->id;
@@ -149,23 +155,6 @@ class DefesaController extends Controller
 
 
                     if($model->save(false)){
-
-
-
-
-
-
-                        //preciso atribuir no banca_controledefesa o valor 1, pois no Q1 do doutorado
-                        //não há banca
-
-
-
-
-
-
-
-
-
 
                         $this->mensagens('success', 'Defesa salva', 'A defesa foi salva com sucesso.');
                         return $this->redirect(['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id]);
@@ -319,6 +308,7 @@ class DefesaController extends Controller
 
         $banca = BancaControleDefesas::find()->where(["id" => $model->banca_id])->one();
 
+
         if($banca->status_banca != null){
             $this->mensagens('danger', 'Não Excluído', 'Não foi possível excluir, pois essa defesa já possui banca aprovada');
             return $this->redirect(['index']);
@@ -328,6 +318,172 @@ class DefesaController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    public function cabecalhoRodape($pdf){
+            $pdf->SetHTMLHeader('
+                <table style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
+                    <tr>
+                        <td width="20%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 175%;"> <img src = "../../frontend/web/img/logo-brasil.jpg" height="90px" width="90px"> </td>
+                        <td width="60%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 135%;">  PODER EXECUTIVO <br> UNIVERSIDADE FEDERAL DO AMAZONAS <br> INSTITUTO DE COMPUTAÇÃO <br> PROGRAMA DE PÓS-GRADUAÇÃO EM INFORMÁTICA </td>
+                        <td width="20%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 175%;"> <img style="margin-left:8%" src = "../../frontend/web/img/ufam.jpg" height="90px" width="75px"> </td>
+                    </tr>
+                </table>
+                <hr>
+            ');
+
+            $pdf->SetHTMLFooter('
+
+                <table width="100%" style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
+                    <tr>
+                        <td  colspan = "3" align="center" ><span style="font-weight: bold"> Av. Rodrigo Otávio, 6.200 - Campus Universitário Senador Arthur Virgílio Filho - CEP 69077-000 - Manaus, AM, Brasil </span></td>
+                    </tr>
+                    <tr>
+                        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">  Tel. (092) 3305-1193/2808/2809</td>
+                        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">  E-mail: secretaria@icomp.ufam.edu.br</td>
+
+                        <td width="33%" align="center" style="font-weight: bold; font-style: italic;">  http://www.icomp.ufam.edu.br </td>
+                    </tr>
+                </table>
+            ');
+
+            return $pdf;
+    }
+
+    public function actionConvitepdf($idDefesa, $aluno_id){
+
+        $model = $this->findModel($idDefesa, $aluno_id);
+
+        $banca = Banca::find()
+        ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+        ->where(["banca_id" => $model->banca_id])->all();
+
+        $bancacompleta = "";
+
+        foreach ($banca as $rows) {
+            if($rows->funcao == "P"){
+                $funcao = "(Presidente)";
+            }
+            else{
+                $funcao = "";
+            }
+            $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
+        }
+
+        $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
+
+        $pdf = $this->cabecalhoRodape($pdf);
+
+             $pdf->WriteHTML('
+                <div style="text-align:center"> <h3>  CONVITE À COMUNIDADE </h3> </div>
+                <p style = "text-align: justify;">
+                     A Coordenação do Programa de Pós-Graduação em Informática PPGI/UFAM tem o prazer de convidar toda a
+                    comunidade para a sessão pública de apresentação de defesa de exame de qualificação de mestrado:
+                </p>
+            ');
+
+             $pdf->WriteHTML('
+                <div style="text-align:center"> <h4>'.$model->titulo.'</h4> </div>
+                <p style = "text-align: justify;">
+                RESUMO: '.$model->resumo.'
+                </p>
+            ');
+
+             $pdf->WriteHTML('
+
+                    CANDIDATO: '.$model->nome.' <br><br>
+
+                    BANCA EXAMINADORA: <br>
+                    <div style="margin-left:15%"> '.$bancacompleta.' </div>
+
+            ');
+
+
+             $pdf->WriteHTML('
+                <p> 
+                    LOCAL: '.$model->local.'
+                </p>
+                <p> 
+                    DATA: '.$model->data.'
+                </p>
+                <p> 
+                    HORÁRIO: '.$model->horario.'
+                </p>
+
+                <div style="text-align:center"> 
+                    <h5 style="margin-bottom:0px">Prof. Dr. Eduardo Luzeiro Feitosa</h5>
+                    <h5 style="margin-top:0px"> Coordenador(a) do Programa de Pós-Graduação em Informática PPGI/UFAM </h5>
+
+                </div>
+            ');
+
+    $pdfcode = $pdf->output();
+    fwrite($arqPDF,$pdfcode);
+    fclose($arqPDF);
+
+
+
+    }
+
+
+    public function actionAtapdf($idDefesa, $aluno_id){
+
+    $model = $this->findModel($idDefesa, $aluno_id);
+
+            $banca = Banca::find()
+            ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+            ->where(["banca_id" => $model->banca_id])->all();
+
+            $bancacompleta = "";
+
+            foreach ($banca as $rows) {
+                if($rows->funcao == "P"){
+                    $funcao = "(Presidente)";
+                }
+                else{
+                    $funcao = "";
+                }
+                $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
+            }
+
+            $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
+
+            $pdf = $this->cabecalhoRodape($pdf);
+
+                 $pdf->WriteHTML('
+                    <div style="text-align:center"> <h3>  AVALIAÇÃO DE PROPOSTA DE DISSERTAÇÃO DE MESTRADO </h3> </div>
+                    <p style = "font-weight: bold;">
+                        DADOS DO(A) ALUNO(A): </p>
+                        Nome: '.$model->nome.'  <br><br>
+                        Área de Conceitação: '.$model->nome.'  <br><br>
+                        Linha de Pesquisa: '.$model->nome.'  <br><br>
+                        Orientador: '.$model->nome.'  <br><br>
+                        <hr>
+                    </p>
+                ');
+
+
+                 $pdf->WriteHTML('
+                    <p style = "font-weight: bold;">
+                        DADOS DA DEFESA: </p>
+                        Título: '.$model->titulo.' <br><br>
+                        Data: '.date("d-m-Y",  strtotime($model->data)).'<br>  Hora: '.$model->horario.'<br> Local: '.$model->local.'
+
+                    </p>
+                ');
+
+    $pdfcode = $pdf->output();
+    fwrite($arqPDF,$pdfcode);
+    fclose($arqPDF);
+}
+
+
+
+
+
+
+
+
+
 
     public function actionAprovar($idDefesa, $aluno_id)
     {

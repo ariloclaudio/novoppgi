@@ -88,7 +88,7 @@ else {
                 'language' => 'pt-BR',
                 'options' => [
                 'id' => 'idsMembrosBancaInternos',
-                'placeholder' => 'Selecione os membros externos sem solicitação da passagem...', 'multiple' => true,],
+                'placeholder' => 'Selecione os membros externos ...', 'multiple' => true,],
             ]);
 
             ?>

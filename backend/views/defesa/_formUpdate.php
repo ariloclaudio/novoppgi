@@ -15,6 +15,12 @@ else{
     $arrayCurso = array ("2" => "Doutorado");   
 }
 
+if($model_aluno->curso == 2 && $model->tipoDefesa == "Q1"){
+    $aparecer_form = false;
+}
+else {
+    $aparecer_form = true;
+}
 
 ?>
 
@@ -48,10 +54,12 @@ else{
 				    ]
 		        ]);
 		    ?>
-
+    <?php if ($aparecer_form){ ?>
     <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
+
+    <?php } ?>
 
     <?= $form->field($model, 'resumo')->textarea(['rows' => 13]) ?>
 

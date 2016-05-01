@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			 'email:email',
 			 'telresidencial',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=> "{view} {banca}",
+              'template'=> "{view}",
                 'buttons'=>[
 				
                   'view' => function ($url, $model) {  

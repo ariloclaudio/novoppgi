@@ -13,6 +13,11 @@ $this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="defesa-update">
 
+		<p>
+		<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['view', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-primary']) ?> 
+
+        </p>
+
     <?= $this->render('_formUpdate', [
         'model' => $model,
         'model_aluno' => $model_aluno,

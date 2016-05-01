@@ -25,6 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+
+        <?= Html::a('<span class="glyphicon glyphicon-print"></span>  Convite', ['convitepdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Ata Defesa  ', ['atapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Folha de Qualificação', ['update', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -55,12 +59,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
             "attribute" => 'previa',
-            'format' => 'html',
-            "value" => "<a href='previa/".$model->previa."' target = '_blank'> Baixar </a>"
+            'format' => 'raw',
+              'value' => "<a href='previa/".$model->previa."' target = '_blank'> Baixar </a>"
             ],
 
-            'horario',
-            'local',
+            [
+            'attribute' => 'horario',
+            'visible' => ($model->curso == "Doutorado" && $model->tipoDefesa == "Q1") ? false : true,
+            ]
+            ,
+
+            [
+            'attribute' => 'local',
+            'visible' => ($model->curso == "Doutorado" && $model->tipoDefesa == "Q1") ? false : true,
+            ]
+            ,
             'resumo:ntext',
             //'banca_id',
         ],
