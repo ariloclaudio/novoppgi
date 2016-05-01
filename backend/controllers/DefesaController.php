@@ -468,7 +468,82 @@ class DefesaController extends Controller
                         Data: '.date("d-m-Y",  strtotime($model->data)).'<br>  Hora: '.$model->horario.'<br> Local: '.$model->local.'
 
                     </p>
+
+                    <br><br><br><br>
                 ');
+
+
+            foreach ($banca as $rows) {
+
+                if ($rows->funcao == "P"){
+                    $funcao = "Presidente";
+                }
+                else if($rows->funcao == "E"){
+                    $funcao = "Membro Externo";
+                }
+                else {
+                    $funcao = "Membro Interno";
+                }
+                 $pdf->WriteHTML('
+
+                    <div style="float: right;
+                                width: 60%;
+                                text-align:right;
+                                margin-bottom:8%;
+                                border-top:double 1px">
+                            '.$rows->membro_nome.' - '.$funcao.'
+                    </div>
+
+                ');
+
+             }
+
+    $pdf->addPage();
+
+    $pdf->WriteHTML('
+    <div style="text-align:center"> <h3>  AVALIAÇÃO DE PROPOSTA DE DISSERTAÇÃO DE MESTRADO </h3> </div>
+    <br>
+        PARECER:
+    ');
+
+     $pdf->WriteHTML('
+
+        <div style="width: 100%;
+                    height:65%;
+                    text-align:right;
+                    margin-top:4%;
+                    margin-bottom:8%;
+                    border:double 1px">
+        </div>
+
+    ');
+
+     $pdf->WriteHTML('
+
+        <table style="width:100%; text-align:center">
+            <tr>
+                <td>
+                _________________________________________
+                </td>
+                <td>
+                _________________________________________  
+                </td>   
+            </tr>
+            <tr>
+                <td>
+                Assinatura do(a) Orientador(a) 
+                </td>
+                <td>
+                Assinatura do(a) Discente
+                </td>   
+            </tr>
+            <tr>
+            <td colspan="2"> <br><br> <b> Obs.: Anexar PROPOSTA a ser apresentada  </b> </td>
+            </tr>
+        </table>
+
+    ');
+
 
     $pdfcode = $pdf->output();
     fwrite($arqPDF,$pdfcode);
