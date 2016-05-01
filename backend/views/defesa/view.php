@@ -3,9 +3,12 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use xj\bootbox\BootboxAsset;
+use yii\bootstrap\Modal;
+use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Defesa */
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 $this->title = "Detalhes da Defesa";
 $this->params['breadcrumbs'][] = ['label' => 'Defesas', 'url' => ['index']];
@@ -14,28 +17,57 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="defesa-view">
 
     <p>
+    <div class="row" style="margin-left: 10px;">
 
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['defesa/index',], ['class' => 'btn btn-warning']) ?>  
 
-		<?= Html::a('Editar', ['update', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Excluir', ['delete', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], [
+		<?= $model->conceito == null ? Html::a('<span class="glyphicon glyphicon-edit"></span> Editar', ['update', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-primary']) : "" ?>
+        
+        <?= $model->banca->status_banca == null ? Html::a('<span class="glyphicon glyphicon-remove"></span> Excluir', ['delete', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Deseja remove defesa \''.$model->titulo.'\'?',
                 'method' => 'post',
             ],
-        ]) ?>
+        ]) : "" ?>
+
+        <?php if(Yii::$app->user->identity->secretaria){
+                Modal::begin([
+                  'header' => '<h2>Lançar Conceito</h2>',
+                  'toggleButton' => ['label' => '<span class="fa fa-hand-stop-o"></span> Lançar Conceito', 'class' => 'btn btn-success'],
+                  'id' => 'modal',
+                  'size' => 'modal-md',
+                ]);
+
+                $form = ActiveForm::begin();
+                echo $form->field($model, 'conceito')->dropDownlist(['Aprovado' => 'Aprovado', 'Reprovado' => 'Reprovado', 'Suspenso' => 'Suspenso'], 
+                    ['prompt' => 'Selecione um Conceito']);
+                
+                echo "<div class='form-group'>";
+                echo Html::submitButton($model->isNewRecord ? 'Criar' : 'Alterar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']);
+                echo "</div>";
+
+                ActiveForm::end();
+
+                Modal::end();
+            }
+        ?>
+        <?= Yii::$app->user->identity->secretaria ? Html::a('<span class="glyphicon glyphicon-envelope"></span>  Enviar Lembrete de Pendência', ['lembretependencia', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-primary']) : "" ?>
 
         <?= Html::a('<span class="glyphicon glyphicon-print"></span>  Convite', ['convitepdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-print"></span> Ata Defesa  ', ['atapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-print"></span> Folha de Qualificação', ['update', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
+        </div>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            //'idDefesa',
             'nome',
+            [
+                'label' => 'E-mail',
+                'value' => $model->modelAluno->email,
+            ],
             'curso',
             'titulo',
             [

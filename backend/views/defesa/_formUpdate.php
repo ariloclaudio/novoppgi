@@ -36,12 +36,12 @@ else {
 
     <?= $form->field($model, 'tipoDefesa')->textInput(['readonly' => true,'maxlength' => true]) ?>
 
-    <?= $form->field($model, 'conceito')
+<!--     <?= $form->field($model, 'conceito')
         ->dropDownList(
             array ("Aprovado" => "Aprovado", "Reprovado" => "Reprovado", "Suspenso" => "Suspenso"),
             ['prompt'=>'Escolha um Atributo']    // options
         );
-    ?>
+    ?> -->
 
     <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
 

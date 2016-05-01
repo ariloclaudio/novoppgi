@@ -123,6 +123,10 @@ class Defesa extends \yii\db\ActiveRecord
         return $aluno->curso == 1 ? "Mestrado" : "Doutorado" ;
     }
 
+    public function getBanca(){
+        return $this->hasOne(BancaControleDefesas::className(), ['id' => 'banca_id']);
+    }
+
     public function getTipoDefesa(){
 
         if ($this->tipoDefesa == "Q1"){

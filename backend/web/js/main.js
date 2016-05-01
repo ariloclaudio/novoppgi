@@ -48,6 +48,10 @@ $(document).ready( function() {
         }
    });
 
+    $("#lancarconceito").click(function(){
+        
+    });
+
 });
 
 
