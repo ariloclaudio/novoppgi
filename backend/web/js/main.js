@@ -77,10 +77,5 @@ $( window ).load(function(){
 });
 
 
-function alertar () {
-
-    alert( $('#idsMembrosBancaInternos').val()  );
-
-}
 
 
