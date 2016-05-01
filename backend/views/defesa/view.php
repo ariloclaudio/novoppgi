@@ -52,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 Modal::end();
             }
         ?>
+        <?= Yii::$app->user->identity->secretaria ? Html::a('<span class="glyphicon glyphicon-envelope"></span>  Enviar Lembrete de Pendência', ['lembretependencia', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-primary']) : "" ?>
 
         <?= Html::a('<span class="glyphicon glyphicon-print"></span>  Convite', ['convitepdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-print"></span> Ata Defesa  ', ['atapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
@@ -63,6 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'nome',
+            [
+                'label' => 'E-mail',
+                'value' => $model->modelAluno->email,
+            ],
             'curso',
             'titulo',
             [
