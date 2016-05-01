@@ -88,6 +88,19 @@ class AlunoController extends Controller
         ]);
     }
 
+    public function actionExame($id){
+        
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('createExame', [
+                'model' => $model,
+            ]);
+        }
+    }
+
     public function actionCreate()
     {
         $model = new Aluno();
@@ -113,7 +126,7 @@ class AlunoController extends Controller
                 $model_usuario->status = 10;
             }
 
-            //try{
+            try{
                 if($model_usuario->save()){
                     $model->idUser = $model_usuario->id;
                     if($model->save()){
@@ -125,9 +138,9 @@ class AlunoController extends Controller
                 }else{
                     $this->mensagens('danger', 'Usuário não Adicionado', 'Ocorreu um erro ao adicionar aluno aos usuários. Verifique os campos e tente novamente.');
                 }
-            //}catch(IntegrityException $e){
+            }catch(IntegrityException $e){
                 $this->mensagens('danger', 'Usuário não Adicionado', 'Ocorreu um erro ao adicionar aluno aos usuários. Verifique os campos e tente novamente.');
-            //}
+            }
         }
             
         $linhasPesquisas = ArrayHelper::map(LinhaPesquisa::find()->orderBy('nome')->all(), 'id', 'nome');
