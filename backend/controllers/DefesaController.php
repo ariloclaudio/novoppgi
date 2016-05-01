@@ -173,7 +173,6 @@ class DefesaController extends Controller
                         return $this->redirect(['passagens', 'banca_id' => $model->banca_id]);
 
                     }else{
-
                         $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
                     }
 
@@ -200,7 +199,7 @@ class DefesaController extends Controller
     public function actionPassagens($banca_id){
         
 
-        $banca = Banca::find()->select("j17_banca_has_membrosbanca.* , mb.nome as membro_nome, mb.filiacao as membro_filiacao, , mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+        $banca = Banca::find()->select("j17_banca_has_membrosbanca.* , mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
         ->where(["banca_id" => $banca_id , "funcao" => "E"])->all();
         
         return $this->render('passagens', [

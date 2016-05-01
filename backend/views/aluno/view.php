@@ -26,6 +26,7 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
             ],
         ]) ?>
         <?= Html::a('Pedir Banca', ['defesa/create', 'aluno_id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<span class="fa fa-file"></span> Exame de Proeficiência', ['aluno/exame', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= DetailView::widget([
