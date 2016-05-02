@@ -657,6 +657,146 @@ class DefesaController extends Controller
     fclose($arqPDF);
 }
 
+   public function actionAgradecimentopdf($idDefesa, $aluno_id){
+
+        $arrayMes = array(
+            "01" => "Janeiro",
+            "02" => "Fevereiro",
+            "03" => "Março",
+            "04" => "Abril",
+            "05" => "Maio",
+            "06" => "Junho",
+            "07" => "Julho",
+            "08" => "Agosto",
+            "09" => "Setembro",
+            "10" => "Outubro",
+            "11" => "Novembro",
+            "12" => "Dezembro",
+            );
+
+        $model = $this->findModel($idDefesa, $aluno_id);
+
+        $banca = Banca::find()
+        ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+        ->where(["banca_id" => $model->banca_id])->all();
+
+        $bancacompleta = "";
+
+        foreach ($banca as $rows) {
+            if($rows->funcao == "P"){
+                $funcao = "(Presidente)";
+            }
+            else{
+                $funcao = "";
+            }
+            $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
+        }
+
+        $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
+
+        $pdf = $this->cabecalhoRodape($pdf);
+
+             $pdf->WriteHTML('
+                <div style="text-align:center"> <h2>  AGRADECIMENTO </h2> </div>
+            ');
+
+             $pdf->WriteHTML('
+                <p style = "text-align: justify;">
+                    AGRADECEMOS a participação do(a)'.$membro->nome.' como
+                    '.$membro->funcao.'(a) da banca examinadora referente à apresentação da Defesa de Dissertação
+                    de Mestrado do(a) aluno(a), abaixo especificado(a), do curso de Mestrado em Informática do
+                    Programa de Pós-Graduação em Informática da Universidade Federal do Amazonas - realizada no
+                    dia 31 de Dezembro de 2016 às '.$horario.'
+                </p>
+            ');
+
+             $mes = date("m",strtotime($model->data));
+
+             var_dump($mes);
+
+             $pdf->WriteHTML('
+                    <br><br>
+                <div style="text-align:left"> <h3>'.$model->titulo.'</h3> </div>
+                    <div style="margin-left:5%"> '.$bancacompleta.' </div>
+                    <br><br>
+                    <div style="text-align:center"> <h3>Manaus, '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).'</h3> </div>
+            ');
+
+
+    $pdfcode = $pdf->output();
+    fwrite($arqPDF,$pdfcode);
+    fclose($arqPDF);
+}
+
+   public function actionDeclaracaopdf($idDefesa, $aluno_id){
+
+        $arrayMes = array(
+            "01" => "Janeiro",
+            "02" => "Fevereiro",
+            "03" => "Março",
+            "04" => "Abril",
+            "05" => "Maio",
+            "06" => "Junho",
+            "07" => "Julho",
+            "08" => "Agosto",
+            "09" => "Setembro",
+            "10" => "Outubro",
+            "11" => "Novembro",
+            "12" => "Dezembro",
+            );
+
+        $model = $this->findModel($idDefesa, $aluno_id);
+
+        $banca = Banca::find()
+        ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+        ->where(["banca_id" => $model->banca_id])->all();
+
+        $bancacompleta = "";
+
+        foreach ($banca as $rows) {
+            if($rows->funcao == "P"){
+                $funcao = "(Presidente)";
+            }
+            else{
+                $funcao = "";
+            }
+            $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
+        }
+
+        $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
+
+        $pdf = $this->cabecalhoRodape($pdf);
+
+             $pdf->WriteHTML('
+                <div style="text-align:center"> <h2>  DECLARAÇÃO </h2> </div>
+            ');
+
+             $pdf->WriteHTML('
+                <p style = "text-align: justify;">
+                    DECLARAMOS para os devidos fins que o(a) Horácio Antonio Braga Fernandes de Oliveira fez
+                    parte, na qualidade de presidente/orientador(a), da comissão julgadora da defesa de Dissertação
+                    de Mestrado do(a) aluno(a) Felipe Leite Lobo , intitulada "Eficiência de Energia Através de Coleta
+                    Periódica em Redes de Sensores Sem Fio", do curso de Mestrado em Informática do Programa de
+                    Pós-Graduação em Informática da Universidade Federal do Amazonas, realizada no dia 22 de
+                    Março de 2012 às 08:00.
+                </p>
+            ');
+
+             $mes = date("m",strtotime($model->data));
+
+             var_dump($mes);
+
+             $pdf->WriteHTML('
+                    <br><br>
+                    <div style="text-align:center"> <h3>Manaus, '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).'</h3> </div>
+            ');
+
+
+    $pdfcode = $pdf->output();
+    fwrite($arqPDF,$pdfcode);
+    fclose($arqPDF);
+}
+
 
     public function actionAprovar($idDefesa, $aluno_id)
     {
