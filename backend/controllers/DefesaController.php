@@ -6,6 +6,7 @@ use Yii;
 use app\models\Defesa;
 use app\models\DefesaSearch;
 use app\models\BancaControleDefesas;
+use app\models\LinhaPesquisa;
 use app\models\Banca;
 use app\models\BancaSearch;
 use app\models\MembrosBanca;
@@ -451,6 +452,10 @@ class DefesaController extends Controller
 
     $model = $this->findModel($idDefesa, $aluno_id);
 
+        $modelAlunoLinha = LinhaPesquisa::find()->innerJoin("j17_aluno as a","a.id = ".$aluno_id)->one();
+        $modelAluno = Aluno::find()->select("u.nome as nome")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
+
+
             $banca = Banca::find()
             ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
             ->where(["banca_id" => $model->banca_id])->all();
@@ -476,9 +481,9 @@ class DefesaController extends Controller
                     <p style = "font-weight: bold;">
                         DADOS DO(A) ALUNO(A): </p>
                         Nome: '.$model->nome.'  <br><br>
-                        Área de Conceitação: '.$model->nome.'  <br><br>
-                        Linha de Pesquisa: '.$model->nome.'  <br><br>
-                        Orientador: '.$model->nome.'  <br><br>
+                        Área de Conceitação: Ciência da Computação  <br><br>
+                        Linha de Pesquisa: '.$modelAlunoLinha->nome.'  <br><br>
+                        Orientador: '.$modelAluno->nome.'  <br><br>
                         <hr>
                     </p>
                 ');
@@ -486,13 +491,23 @@ class DefesaController extends Controller
 
                  $pdf->WriteHTML('
                     <p style = "font-weight: bold;">
-                        DADOS DA DEFESA: </p>
-                        Título: '.$model->titulo.' <br><br>
-                        Data: '.date("d-m-Y",  strtotime($model->data)).'<br>  Hora: '.$model->horario.'<br> Local: '.$model->local.'
-
+                        DADOS DA DEFESA:
                     </p>
+                    <table style =" margin-bottom:40px">
+                        <tr>
+                            <td colspan="4"> Título: '.$model->titulo.' </td>
+                        </tr>
+                        <tr>
+                        <td coslpan="4"> &nbsp;  </td>
+                        </tr>
+                        <tr>
+                            <td> Data: '.date("d-m-Y",  strtotime($model->data)).' </td>
+                            <td> Hora: '.$model->horario.' </td>
+                            <td colspan="2"> Local: '.$model->local.' </td>
 
-                    <br><br><br><br>
+                        </tr>
+                    </table>
+
                 ');
 
 
@@ -512,7 +527,7 @@ class DefesaController extends Controller
                     <div style="float: right;
                                 width: 60%;
                                 text-align:right;
-                                margin-bottom:8%;
+                                margin-bottom:5%;
                                 border-top:double 1px">
                             '.$rows->membro_nome.' - '.$funcao.'
                     </div>
@@ -574,12 +589,73 @@ class DefesaController extends Controller
 }
 
 
+    public function actionFolhapdf($idDefesa, $aluno_id){
+
+        $arrayMes = array(
+            "01" => "Janeiro",
+            "02" => "Fevereiro",
+            "03" => "Março",
+            "04" => "Abril",
+            "05" => "Maio",
+            "06" => "Junho",
+            "07" => "Julho",
+            "08" => "Agosto",
+            "09" => "Setembro",
+            "10" => "Outubro",
+            "11" => "Novembro",
+            "12" => "Dezembro",
+            );
+
+        $model = $this->findModel($idDefesa, $aluno_id);
+
+        $banca = Banca::find()
+        ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+        ->where(["banca_id" => $model->banca_id])->all();
+
+        $bancacompleta = "";
+
+        foreach ($banca as $rows) {
+            if($rows->funcao == "P"){
+                $funcao = "(Presidente)";
+            }
+            else{
+                $funcao = "";
+            }
+            $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
+        }
+
+        $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
+
+        $pdf = $this->cabecalhoRodape($pdf);
+
+             $pdf->WriteHTML('
+                <div style="text-align:center"> <h2>  FOLHA DE APROVAÇÃO </h2> </div>
+            ');
+
+             $pdf->WriteHTML('
+                <div style="text-align:center"> <h3>'.$model->titulo.'</h3> </div>
+                <div style="text-align:center"> <h3>'.$model->nome.'</h3> </div>
+                <p style = "text-align: justify;">
+                    Diessertação de Mestrado defendida e aprovada pela banca examinadora contituída pelos Professores:
+                </p>
+            ');
+
+             $mes = date("m",strtotime($model->data));
+
+             var_dump($mes);
+
+             $pdf->WriteHTML('
+                    <br><br>
+                    <div style="margin-left:5%"> '.$bancacompleta.' </div>
+                    <br><br>
+                    <div style="text-align:center"> <h3>Manaus, '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).'</h3> </div>
+            ');
 
 
-
-
-
-
+    $pdfcode = $pdf->output();
+    fwrite($arqPDF,$pdfcode);
+    fclose($arqPDF);
+}
 
 
     public function actionAprovar($idDefesa, $aluno_id)
