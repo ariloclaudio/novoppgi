@@ -110,10 +110,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'banca_id',
         ],
     ]) ?>
+    
 
 <h3> Detalhes da Banca </h3>
-
-
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -137,7 +136,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 "label" => "Função",
             ],
 
-            //['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{carta} {folha}',
+                'buttons'=>[
+                  'carta' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-envelope"></span>', ['agradecimentopdf', 'idDefesa' => $_GET['idDefesa'], 'aluno_id' => $_GET['aluno_id'], 'membrosbanca_id' => $model->membrosbanca_id ], [
+                            'data' => [
+                                'method' => 'post',
+                            ],
+                            'title' => Yii::t('yii', 'Agradecimento'),
+                            'target'=>'_blank',
+                    ]);   
+                  },
+                  'folha' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-print"></span>', ['declaracaopdf', 'idDefesa' => $_GET['idDefesa'], 'aluno_id' => $_GET['aluno_id'], 'membrosbanca_id' => $model->membrosbanca_id  ], [
+                            'data' => [
+                                'method' => 'post',
+                            ],
+                            'title' => Yii::t('yii', 'Declaração'),
+                            'target'=>'_blank',
+                    ]);   
+                  }
+              ]                            
+            ],
         ],
     ]); ?>
 

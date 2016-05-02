@@ -17,6 +17,7 @@ class Banca extends \yii\db\ActiveRecord
 
     public $membro_nome;
     public $membro_filiacao;
+    //public $membrosbanca_id;
 
     /**
      * @inheritdoc

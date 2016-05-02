@@ -657,7 +657,7 @@ class DefesaController extends Controller
     fclose($arqPDF);
 }
 
-   public function actionAgradecimentopdf($idDefesa, $aluno_id){
+   public function actionAgradecimentopdf($idDefesa, $aluno_id, $membrosbanca_id){
 
         $arrayMes = array(
             "01" => "Janeiro",
@@ -728,7 +728,7 @@ class DefesaController extends Controller
     fclose($arqPDF);
 }
 
-   public function actionDeclaracaopdf($idDefesa, $aluno_id){
+   public function actionDeclaracaopdf($idDefesa, $aluno_id, $membrosbanca_id){
 
         $arrayMes = array(
             "01" => "Janeiro",

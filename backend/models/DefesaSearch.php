@@ -42,7 +42,7 @@ class DefesaSearch extends Defesa
     public function search($params)
     {
         $query = Defesa::find()->select("j17_aluno.nome as nome_aluno, j17_aluno.curso as curso_aluno , j17_defesa.*")->innerJoin("j17_aluno"," j17_aluno.id = j17_defesa.aluno_id");
-
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
