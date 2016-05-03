@@ -347,7 +347,7 @@ class DefesaController extends Controller
                 <table style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
                     <tr>
                         <td width="20%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 175%;"> <img src = "../../frontend/web/img/logo-brasil.jpg" height="90px" width="90px"> </td>
-                        <td width="60%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 135%;">  PODER EXECUTIVO <br> UNIVERSIDADE FEDERAL DO AMAZONAS <br> INSTITUTO DE COMPUTAÇÃO <br> PROGRAMA DE PÓS-GRADUAÇÃO EM INFORMÁTICA </td>
+                        <td width="60%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 135%;">  PODER EXECUTIVO <br> MINISTÉRIO DA EDUCAÇÃO <br> INSTITUTO DE COMPUTAÇÃO <br><br> PROGRAMA DE PÓS-GRADUAÇÃO EM INFORMÁTICA </td>
                         <td width="20%" align="center" style="font-family: Helvetica;font-weight: bold; font-size: 175%;"> <img style="margin-left:8%" src = "../../frontend/web/img/ufam.jpg" height="90px" width="75px"> </td>
                     </tr>
                 </table>
@@ -676,37 +676,67 @@ class DefesaController extends Controller
 
         $model = $this->findModel($idDefesa, $aluno_id);
 
+        $modelAluno = Aluno::find()->select("u.nome as nome, j17_aluno.curso as curso")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
+
+
+
         $banca = Banca::find()
         ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
-        ->where(["banca_id" => $model->banca_id])->all();
+        ->where(["membrosbanca_id" => $membrosbanca_id])->one();
 
-        $bancacompleta = "";
+        if ($banca->funcao == "P"){
+                $participacao = "presidente/orientador(a)";
+        }
+        else if ($banca->funcao == "I"){
+                $participacao = "membro interno";
+        }
+        else if ($banca->funcao == "E"){
+                $participacao = "membro externo";
+        }
 
-        foreach ($banca as $rows) {
-            if($rows->funcao == "P"){
-                $funcao = "(Presidente)";
+        if($modelAluno->curso == 1){
+            $curso = "Mestrado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Mestrado";
             }
             else{
-                $funcao = "";
+                $tipoDefesa = "Dissertação de Mestrado";
             }
-            $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
         }
+        else{
+            $curso = "Doutorado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else  if($model->tipoDefesa == "Q2"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else{
+                $tipoDefesa = "Tese de Doutorado";
+            }
+
+        }
+
 
         $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
 
         $pdf = $this->cabecalhoRodape($pdf);
 
+             $mes = date("m",strtotime($model->data));
+
              $pdf->WriteHTML('
-                <div style="text-align:center"> <h2>  AGRADECIMENTO </h2> </div>
+                <div style="text-align:center; padding:10% 10%;"> <h2>  AGRADECIMENTO </h2> </div>
             ');
 
              $pdf->WriteHTML('
-                <p style = "text-align: justify;">
-                    AGRADECEMOS a participação do(a)'.$membro->nome.' como
-                    '.$membro->funcao.'(a) da banca examinadora referente à apresentação da Defesa de Dissertação
-                    de Mestrado do(a) aluno(a), abaixo especificado(a), do curso de Mestrado em Informática do
-                    Programa de Pós-Graduação em Informática da Universidade Federal do Amazonas - realizada no
-                    dia 31 de Dezembro de 2016 às '.$horario.'
+                <p style = "text-align: justify; font-family: Times New Roman, Arial, serif; font-size: 120%;">
+                    AGRADECEMOS a participação do(a) <b>'.$banca->membro_nome.'</b> como
+                    '.$participacao.'(a) da banca examinadora referente à apresentação da Defesa de '.$tipoDefesa.'
+                    do(a) aluno(a), abaixo especificado(a), do curso de '.$curso.' em Informática do
+                    Programa de Pós-Graduação em Informática da Universidade Federal do Amazonas - realizada no dia 
+                    '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).' às '.$model->horario.'.
                 </p>
             ');
 
@@ -716,8 +746,9 @@ class DefesaController extends Controller
 
              $pdf->WriteHTML('
                     <br><br>
-                <div style="text-align:left"> <h3>'.$model->titulo.'</h3> </div>
-                    <div style="margin-left:5%"> '.$bancacompleta.' </div>
+                <div style = "text-align: justify; font-family: Times New Roman, Arial, serif; font-size: 120%;"> Título: '.$model->titulo.'</div>
+                <br>
+                <div style = "text-align: justify; font-family: Times New Roman, Arial, serif; font-size: 120%;"> Aluno(a): '.$model->nome.'</div>
                     <br><br>
                     <div style="text-align:center"> <h3>Manaus, '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).'</h3> </div>
             ');
@@ -747,44 +778,68 @@ class DefesaController extends Controller
 
         $model = $this->findModel($idDefesa, $aluno_id);
 
+        $modelAluno = Aluno::find()->select("u.nome as nome, j17_aluno.curso as curso")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
+
         $banca = Banca::find()
         ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
-        ->where(["banca_id" => $model->banca_id])->all();
+        ->where(["membrosbanca_id" => $membrosbanca_id])->one();
 
-        $bancacompleta = "";
+        if ($banca->funcao == "P"){
+                $participacao = "presidente/orientador(a)";
+        }
+        else if ($banca->funcao == "I"){
+                $participacao = "membro interno";
+        }
+        else if ($banca->funcao == "E"){
+                $participacao = "membro externo";
+        }
 
-        foreach ($banca as $rows) {
-            if($rows->funcao == "P"){
-                $funcao = "(Presidente)";
+        if($modelAluno->curso == 1){
+            $curso = "Mestrado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Mestrado";
             }
             else{
-                $funcao = "";
+                $tipoDefesa = "Dissertação de Mestrado";
             }
-            $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
         }
+        else{
+            $curso = "Doutorado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else  if($model->tipoDefesa == "Q2"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else{
+                $tipoDefesa = "Tese de Doutorado";
+            }
+
+        }
+
 
         $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
 
         $pdf = $this->cabecalhoRodape($pdf);
 
              $pdf->WriteHTML('
-                <div style="text-align:center"> <h2>  DECLARAÇÃO </h2> </div>
-            ');
 
-             $pdf->WriteHTML('
-                <p style = "text-align: justify;">
-                    DECLARAMOS para os devidos fins que o(a) Horácio Antonio Braga Fernandes de Oliveira fez
-                    parte, na qualidade de presidente/orientador(a), da comissão julgadora da defesa de Dissertação
-                    de Mestrado do(a) aluno(a) Felipe Leite Lobo , intitulada "Eficiência de Energia Através de Coleta
-                    Periódica em Redes de Sensores Sem Fio", do curso de Mestrado em Informática do Programa de
-                    Pós-Graduação em Informática da Universidade Federal do Amazonas, realizada no dia 22 de
-                    Março de 2012 às 08:00.
-                </p>
+                <div style="text-align:center; padding:10% 10%;"> <h2>  DECLARAÇÃO </h2> </div>
             ');
 
              $mes = date("m",strtotime($model->data));
 
-             var_dump($mes);
+             $pdf->WriteHTML('
+                <p style = "text-align: justify; font-family: Times New Roman, Arial, serif; font-size: 120%;">
+                    DECLARAMOS para os devidos fins que o(a) <b> Prof(a) '.$banca->membro_nome.' </b> fez
+                    parte, na qualidade de '.$participacao.', da comissão julgadora da defesa de '.$tipoDefesa.'
+                    do(a) aluno(a) '.$model->nome.' , intitulada <b>"'.$model->titulo.'    "</b>, do curso de '.$curso.' em Informática do Programa de Pós-Graduação em Informática da Universidade Federal do Amazonas, realizada no dia 
+                    '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).' às '.$model->horario.'.
+                </p>
+            ');
+
 
              $pdf->WriteHTML('
                     <br><br>
