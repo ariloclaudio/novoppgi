@@ -129,6 +129,7 @@ class DefesaController extends Controller
         $model->aluno_id = $aluno_id;
 
         $cont_Defesas = Defesa::find()->where("aluno_id = ".$aluno_id)->count();
+        
         $curso = Aluno::find()->select("curso")->where("id =".$aluno_id)->one()->curso;
 
             if($cont_Defesas == 0 && $curso == 1){
@@ -157,7 +158,7 @@ class DefesaController extends Controller
             $model->auxiliarTipoDefesa = $tipodefesa;
 
             $model_ControleDefesas = new BancaControleDefesas();
-            if($model->tipoDefesa == "Q1" && $model->curso == "Doutorado"){
+            if($model->tipoDefesa == "Q1" && $curso == 2){
                 $model_ControleDefesas->status_banca = 1;
             }
             else{
@@ -167,7 +168,7 @@ class DefesaController extends Controller
 
             $model->banca_id = $model_ControleDefesas->id;
 
-            if(! $model->uploadDocumento(UploadedFile::getInstance($model, 'previa'))){
+            if (! $model->uploadDocumento(UploadedFile::getInstance($model, 'previa'))){
                 $this->mensagens('danger', 'Erro ao salvar defesa', 'Ocorreu um erro ao salvar a defesa. Verifique os campos e tente novamente');
                 return $this->redirect(['aluno/orientandos',]);
             }

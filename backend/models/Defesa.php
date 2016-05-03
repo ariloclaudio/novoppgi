@@ -16,6 +16,7 @@ class Defesa extends \yii\db\ActiveRecord
     public $auxiliarTipoDefesa;
     public $presidente;
     public $membrosBancaExternosPassagem = [];
+    public $status_banca;
     /**
      * @inheritdoc
      */
@@ -54,7 +55,7 @@ class Defesa extends \yii\db\ActiveRecord
             [['membrosBancaExternos', 'membrosBancaInternos', 'examinador', 'emailExaminador', 'auxiliarTipoDefesa','presidente' ], 'safe'],
             [['resumo', 'examinador', 'emailExaminador'], 'string'],
             [['emailExaminador'] , 'email'],
-            [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id'], 'integer'],
+            [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id', 'status_banca'], 'integer'],
             [['titulo'], 'string', 'max' => 180],
             [['tipoDefesa'], 'string', 'max' => 2],
             [['data', 'horario'], 'string', 'max' => 10],
@@ -184,8 +185,9 @@ class Defesa extends \yii\db\ActiveRecord
     }
     
     public function conceitoPendente($aluno_id){
-        $conceitos = Defesa::find()->Where(["aluno_id" => $aluno_id , "conceito" => null])->count();
-        
+        $conceitos = Defesa::find()->select("cd.status_banca as status_banca, j17_defesa.*")
+        ->leftJoin("j17_banca_controledefesas as cd","cd.id = j17_defesa.banca_id")->Where(["j17_defesa.aluno_id" => $aluno_id , "conceito" => null, "status_banca" => 0])->count();
+
         if ($conceitos == 0){
             return false;
         }
