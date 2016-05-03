@@ -19,7 +19,7 @@ class CandidatosSearch extends Candidato
     {
         return [
             [['id', 'passoatual', 'nacionalidade', 'cursodesejado', 'regime', 'anoposcomp', 'idLinhaPesquisa', 'egressograd', 'tipopos', 'egressopos', 'periodicosinternacionais', 'periodicosnacionais', 'conferenciasinternacionais', 'conferenciasnacionais', 'resultado'], 'integer'],
-            [['senha', 'inicio', 'fim', 'nome', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'email', 'datanascimento', 'pais', 'passaporte', 'cpf', 'sexo', 'telresidencial', 'telcelular', 'inscricaoposcomp', 'notaposcomp', 'solicitabolsa', 'tituloproposta', 'diploma', 'historico', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento', 'cursograd', 'instituicaograd',  'dataformaturagrad', 'cursopos', 'instituicaopos', 'dataformaturapos', 'periodo'], 'safe'],
+            [['senha', 'inicio', 'fim', 'nome', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'email', 'datanascimento', 'pais', 'passaporte', 'cpf', 'sexo', 'telresidencial', 'telcelular', 'inscricaoposcomp', 'notaposcomp', 'solicitabolsa', 'tituloproposta', 'diploma', 'cartaorientador', 'motivos', 'proposta', 'curriculum', 'comprovantepagamento', 'cursograd', 'instituicaograd',  'dataformaturagrad', 'cursopos', 'instituicaopos', 'dataformaturapos', 'periodo'], 'safe'],
         ];
     }
 
@@ -133,7 +133,7 @@ class CandidatosSearch extends Candidato
             ->andFilterWhere(['like', 'solicitabolsa', $this->solicitabolsa])
             ->andFilterWhere(['like', 'tituloproposta', $this->tituloproposta])
             ->andFilterWhere(['like', 'diploma', $this->diploma])
-            ->andFilterWhere(['like', 'historico', $this->historico])
+            ->andFilterWhere(['like', 'cartaorientador', $this->cartaorientador])
             ->andFilterWhere(['like', 'motivos', $this->motivos])
             ->andFilterWhere(['like', 'proposta', $this->proposta])
             ->andFilterWhere(['like', 'curriculum', $this->curriculum])
@@ -246,7 +246,7 @@ public function search2($params)
             ->andFilterWhere(['like', 'solicitabolsa', $this->solicitabolsa])
             ->andFilterWhere(['like', 'tituloproposta', $this->tituloproposta])
             ->andFilterWhere(['like', 'diploma', $this->diploma])
-            ->andFilterWhere(['like', 'historico', $this->historico])
+            ->andFilterWhere(['like', 'cartaorientador', $this->cartaorientador])
             ->andFilterWhere(['like', 'motivos', $this->motivos])
             ->andFilterWhere(['like', 'proposta', $this->proposta])
             ->andFilterWhere(['like', 'curriculum', $this->curriculum])

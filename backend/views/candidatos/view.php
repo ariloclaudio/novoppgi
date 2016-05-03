@@ -122,10 +122,10 @@ $tipoPos = array (null => " <div style=\"color:red; font-weight:bold\"> Não Reg
                 ],
             'motivos:ntext',
                 [
-                     'attribute' => 'historico',
-                     'label' => 'Histórico Escolar (PDF)',
+                     'attribute' => 'cartaorientador',
+                     'label' => 'Carta do Orientador (PDF)',
                      'format'=>'raw',
-                     'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->historico."' target = '_blank'> Baixar </a>"
+                     'value' => "<a href='index.php?r=candidatos/pdf&id=".$model->id."&documento=".$model->cartaorientador."' target = '_blank'> Baixar </a>"
                 ],
 
                 [
