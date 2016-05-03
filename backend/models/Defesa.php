@@ -186,7 +186,7 @@ class Defesa extends \yii\db\ActiveRecord
     
     public function conceitoPendente($aluno_id){
         $conceitos = Defesa::find()->select("cd.status_banca as status_banca, j17_defesa.*")
-        ->leftJoin("j17_banca_controledefesas as cd","cd.id = j17_defesa.banca_id")->Where(["j17_defesa.aluno_id" => $aluno_id , "conceito" => null, "status_banca" => 0])->count();
+        ->leftJoin("j17_banca_controledefesas as cd","cd.id = j17_defesa.banca_id")->Where(["j17_defesa.aluno_id" => $aluno_id , "conceito" => null, "status_banca" => 1])->count();
 
         if ($conceitos == 0){
             return false;

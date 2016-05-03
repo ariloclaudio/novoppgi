@@ -377,6 +377,34 @@ class DefesaController extends Controller
 
         $model = $this->findModel($idDefesa, $aluno_id);
 
+        $modelAluno = Aluno::find()->select("u.nome as nome, j17_aluno.curso as curso")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
+
+        if($modelAluno->curso == 1){
+            $curso = "Mestrado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Mestrado";
+            }
+            else{
+                $tipoDefesa = "Dissertação de Mestrado";
+            }
+        }
+        else{
+            $curso = "Doutorado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else  if($model->tipoDefesa == "Q2"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else{
+                $tipoDefesa = "Tese de Doutorado";
+            }
+
+        }
+
+
         $banca = Banca::find()
         ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
         ->where(["banca_id" => $model->banca_id])->all();
@@ -401,7 +429,7 @@ class DefesaController extends Controller
                 <div style="text-align:center"> <h3>  CONVITE À COMUNIDADE </h3> </div>
                 <p style = "text-align: justify;">
                      A Coordenação do Programa de Pós-Graduação em Informática PPGI/UFAM tem o prazer de convidar toda a
-                    comunidade para a sessão pública de apresentação de defesa de exame de qualificação de mestrado:
+                    comunidade para a sessão pública de apresentação de defesa de '.$tipoDefesa.':
                 </p>
             ');
 
@@ -457,8 +485,33 @@ class DefesaController extends Controller
     $model = $this->findModel($idDefesa, $aluno_id);
 
         $modelAlunoLinha = LinhaPesquisa::find()->innerJoin("j17_aluno as a","a.id = ".$aluno_id)->one();
-        $modelAluno = Aluno::find()->select("u.nome as nome")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
 
+        $modelAluno = Aluno::find()->select("u.nome as nome, j17_aluno.curso as curso")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
+
+        if($modelAluno->curso == 1){
+            $curso = "Mestrado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Mestrado";
+            }
+            else{
+                $tipoDefesa = "Dissertação de Mestrado";
+            }
+        }
+        else{
+            $curso = "Doutorado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else  if($model->tipoDefesa == "Q2"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else{
+                $tipoDefesa = "Tese de Doutorado";
+            }
+
+        }
 
             $banca = Banca::find()
             ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
@@ -481,7 +534,7 @@ class DefesaController extends Controller
             $pdf = $this->cabecalhoRodape($pdf);
 
                  $pdf->WriteHTML('
-                    <div style="text-align:center"> <h3>  AVALIAÇÃO DE PROPOSTA DE DISSERTAÇÃO DE MESTRADO </h3> </div>
+                    <div style="text-align:center"> <h3>  Avaliação de Proposta de '.$tipoDefesa.' </h3> </div>
                     <p style = "font-weight: bold;">
                         DADOS DO(A) ALUNO(A): </p>
                         Nome: '.$model->nome.'  <br><br>
@@ -543,7 +596,7 @@ class DefesaController extends Controller
     $pdf->addPage();
 
     $pdf->WriteHTML('
-    <div style="text-align:center"> <h3>  AVALIAÇÃO DE PROPOSTA DE DISSERTAÇÃO DE MESTRADO </h3> </div>
+    <div style="text-align:center"> <h3>  Avaliação de Proposta de '.$tipoDefesa.' </h3> </div>
     <br>
         PARECER:
     ');
@@ -612,6 +665,36 @@ class DefesaController extends Controller
 
         $model = $this->findModel($idDefesa, $aluno_id);
 
+
+
+        $modelAluno = Aluno::find()->select("u.nome as nome, j17_aluno.curso as curso")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
+
+        if($modelAluno->curso == 1){
+            $curso = "Mestrado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Mestrado";
+            }
+            else{
+                $tipoDefesa = "Dissertação de Mestrado";
+            }
+        }
+        else{
+            $curso = "Doutorado";
+
+            if($model->tipoDefesa == "Q1"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else  if($model->tipoDefesa == "Q2"){
+                $tipoDefesa = "Exame de Qualificação de Doutorado";
+            }
+            else{
+                $tipoDefesa = "Tese de Doutorado";
+            }
+
+        }
+
+
         $banca = Banca::find()
         ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
         ->where(["banca_id" => $model->banca_id])->all();
@@ -640,7 +723,7 @@ class DefesaController extends Controller
                 <div style="text-align:center"> <h3>'.$model->titulo.'</h3> </div>
                 <div style="text-align:center"> <h3>'.$model->nome.'</h3> </div>
                 <p style = "text-align: justify;">
-                    Diessertação de Mestrado defendida e aprovada pela banca examinadora constituída pelos Professores:
+                    '.$tipoDefesa.' defendida e aprovada pela banca examinadora constituída pelos Professores:
                 </p>
             ');
 
@@ -746,7 +829,6 @@ class DefesaController extends Controller
 
              $mes = date("m",strtotime($model->data));
 
-             var_dump($mes);
 
              $pdf->WriteHTML('
                     <br><br>
