@@ -194,5 +194,12 @@ class Defesa extends \yii\db\ActiveRecord
         }
 
     }
+
+    public function getCoordenadorPPGI(){
+        $user = User::find()->where(["coordenador"=>1, "administrador"=>0])->one();
+
+        return $user->nome;
+
+    }
     
 }

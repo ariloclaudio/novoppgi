@@ -420,6 +420,9 @@ class DefesaController extends Controller
 
             ');
 
+             $coordenadorppgi = new Defesa();
+             $coordenadorppgi = $coordenadorppgi->getCoordenadorPPGI();
+
 
              $pdf->WriteHTML('
                 <p> 
@@ -433,7 +436,7 @@ class DefesaController extends Controller
                 </p>
 
                 <div style="text-align:center"> 
-                    <h5 style="margin-bottom:0px">Prof. Dr. Eduardo Luzeiro Feitosa</h5>
+                    <h5 style="margin-bottom:0px">'.$coordenadorppgi.'</h5>
                     <h5 style="margin-top:0px"> Coordenador(a) do Programa de Pós-Graduação em Informática PPGI/UFAM </h5>
 
                 </div>
@@ -636,7 +639,7 @@ class DefesaController extends Controller
                 <div style="text-align:center"> <h3>'.$model->titulo.'</h3> </div>
                 <div style="text-align:center"> <h3>'.$model->nome.'</h3> </div>
                 <p style = "text-align: justify;">
-                    Diessertação de Mestrado defendida e aprovada pela banca examinadora contituída pelos Professores:
+                    Diessertação de Mestrado defendida e aprovada pela banca examinadora constituída pelos Professores:
                 </p>
             ');
 
