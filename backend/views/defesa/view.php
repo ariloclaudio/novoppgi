@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) : "" ?>
 
-        <?php if(Yii::$app->user->identity->secretaria){
+        <?php if(Yii::$app->user->identity->secretaria && $model->banca->status_banca == 1){
                 Modal::begin([
                   'header' => '<h2>Lançar Conceito</h2>',
                   'toggleButton' => ['label' => '<span class="fa fa-hand-stop-o"></span> Lançar Conceito', 'class' => 'btn btn-success'],

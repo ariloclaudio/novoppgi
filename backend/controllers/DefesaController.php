@@ -75,17 +75,20 @@ class DefesaController extends Controller
     public function actionView($idDefesa, $aluno_id)
     {
 
-        $model_defesa = $this->findModel($idDefesa, $aluno_id);
+        $model = $this->findModel($idDefesa, $aluno_id);
 
         $model_banca = new BancaSearch();
-        $dataProvider = $model_banca->search(Yii::$app->request->queryParams,$model_defesa->banca_id);
+        $dataProvider = $model_banca->search(Yii::$app->request->queryParams,$model->banca_id);
 
-        if ($model_defesa->load(Yii::$app->request->post() ) ) {
-            $model_defesa->save();
+        if ($model->load(Yii::$app->request->post() ) ) {
+            if($model->banca->status_banca == 1 && $model->save(false))
+                $this->mensagens('success', 'Conceito Atribuído', 'Conceito atribuído com sucesso.');
+            else
+                $this->mensagens('danger', 'Conceito não Atribuído', 'Ocorreu um erro ao atribuir o conceito a defesa. Verifique se a banca foi avaliada.');
         }
 
         return $this->render('view', [
-            'model' => $model_defesa,
+            'model' => $model,
             'dataProvider' => $dataProvider,
         ]);
     }

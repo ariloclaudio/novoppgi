@@ -32,7 +32,7 @@ function goBack() {
 }
 </script>
 
-<?= Html::a('Voltar', ['edital/view', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-warning']) ?>
+<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['edital/view', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-warning']) ?>
 
 <?= Html::a(' <span class="glyphicon glyphicon-download"></span> Baixar Documentação ', ['candidatos/downloadscompletos', 'id' => Yii::$app->request->get('id')], ['class' => 'btn btn-success']) ?>
 
