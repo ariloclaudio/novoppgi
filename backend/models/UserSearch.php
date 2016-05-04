@@ -19,7 +19,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'status'], 'integer'],
-            [['nome', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'created_at', 'updated_at', 'visualizacao_candidatos', 'visualizacao_candidatos_finalizados', 'visualizacao_cartas_respondidas', 'administrador', 'coordenador', 'secretaria', 'professor', 'aluno'], 'safe'],
+            [['nome', 'username', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'created_at', 'updated_at', 'visualizacao_candidatos', 'visualizacao_candidatos_finalizados', 'visualizacao_cartas_respondidas', 'administrador', 'coordenador', 'secretaria', 'professor', 'aluno', 'telcelular'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->where(['status' => '10']);
+        $query = User::find()->where(['status' => '10'])->orderBy('nome ASC');
 
         // add conditions that should always apply here
 

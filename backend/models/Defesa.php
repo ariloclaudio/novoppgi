@@ -14,6 +14,9 @@ class Defesa extends \yii\db\ActiveRecord
     public $membrosBancaInternos = [];
     public $membrosBancaExternos = [];
     public $auxiliarTipoDefesa;
+    public $presidente;
+    public $membrosBancaExternosPassagem = [];
+    public $status_banca;
     /**
      * @inheritdoc
      */
@@ -29,7 +32,7 @@ class Defesa extends \yii\db\ActiveRecord
     {
         return [
             [['resumo', 'banca_id', 'aluno_id', 'titulo', 'data', 'horario','resumo', 'local', 'previa'], 'required'],
-           [ ['membrosBancaInternos', 'membrosBancaExternos'] , 'required', 
+           [ ['membrosBancaInternos', 'membrosBancaExternos','presidente'] , 'required', 
             
             'when' => function ($model) {
                      return $model->auxiliarTipoDefesa != 2;
@@ -49,9 +52,10 @@ class Defesa extends \yii\db\ActiveRecord
             }"],
 
 
-            [['membrosBancaExternos', 'membrosBancaInternos', 'examinador', 'emailExaminador', 'auxiliarTipoDefesa' ], 'safe'],
+            [['membrosBancaExternos', 'membrosBancaInternos', 'examinador', 'emailExaminador', 'auxiliarTipoDefesa','presidente' ], 'safe'],
             [['resumo', 'examinador', 'emailExaminador'], 'string'],
-            [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id'], 'integer'],
+            [['emailExaminador'] , 'email'],
+            [['numDefesa', 'reservas_id', 'banca_id', 'aluno_id', 'status_banca'], 'integer'],
             [['titulo'], 'string', 'max' => 180],
             [['tipoDefesa'], 'string', 'max' => 2],
             [['data', 'horario'], 'string', 'max' => 10],
@@ -120,6 +124,10 @@ class Defesa extends \yii\db\ActiveRecord
         return $aluno->curso == 1 ? "Mestrado" : "Doutorado" ;
     }
 
+    public function getBanca(){
+        return $this->hasOne(BancaControleDefesas::className(), ['id' => 'banca_id']);
+    }
+
     public function getTipoDefesa(){
 
         if ($this->tipoDefesa == "Q1"){
@@ -143,6 +151,9 @@ class Defesa extends \yii\db\ActiveRecord
 
         $this->membrosBancaExternos = $this->membrosBancaExternos == "" ? array() : $this->membrosBancaExternos;
         $this->membrosBancaInternos = $this->membrosBancaInternos == "" ? array() : $this->membrosBancaInternos;
+
+        $sql = "INSERT INTO j17_banca_has_membrosbanca (banca_id, membrosbanca_id, funcao) VALUES ('$this->banca_id', '".$this->presidente."', 'P');";
+        Yii::$app->db->createCommand($sql)->execute();
         
         for ($i = 0; $i < count($this->membrosBancaExternos); $i++) {
             $sql = "INSERT INTO j17_banca_has_membrosbanca (banca_id, membrosbanca_id, funcao) VALUES ('$this->banca_id', '".$this->membrosBancaExternos[$i]."', 'E');";
@@ -172,4 +183,25 @@ class Defesa extends \yii\db\ActiveRecord
 
         return $this->conceito == null ? "<div style = \"color:red \"><b>Não Julgado</b></div>" : $this->conceito;
     }
+    
+    public function conceitoPendente($aluno_id){
+        $conceitos = Defesa::find()->select("cd.status_banca as status_banca, j17_defesa.*")
+        ->leftJoin("j17_banca_controledefesas as cd","cd.id = j17_defesa.banca_id")->Where(["j17_defesa.aluno_id" => $aluno_id , "conceito" => null, "status_banca" => 1])->count();
+
+        if ($conceitos == 0){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
+    public function getCoordenadorPPGI(){
+        $user = User::find()->where(["coordenador"=>1, "administrador"=>0])->one();
+
+        return $user->nome;
+
+    }
+    
 }

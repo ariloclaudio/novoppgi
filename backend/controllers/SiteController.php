@@ -119,8 +119,8 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             if ($user = $model->signup()) {
-                $this->mensagens('success', 'Usuário Cadastrado', 'Usuário Foi salvo com sucesso');
-                return $this->goHome();
+                $this->mensagens('success', 'Usuário Cadastrado', 'Usuário foi salvo com sucesso');
+                return $this->redirect(['user/index']);
             }else{
                 $this->mensagens('danger', 'Erro ao Cadastrar', 'Ocorreu um erro ao Cadastar Usuário. Verifique os campos e tente novamente');
             }

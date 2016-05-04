@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use xj\bootbox\BootboxAsset;
+
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\DefesaSearch */
@@ -11,13 +15,13 @@ $this->title = 'Lista de Defesas';
 $this->params['breadcrumbs'][] = $this->title;
 
 if( Yii::$app->user->identity->checarAcesso('coordenador') == 1){
-  $action = "{view} {banca} {update} {delete} {aprovar} {reprovar}";
+  $action = "{view} {banca} {update} {delete}";
 }
-if ( Yii::$app->user->identity->checarAcesso('professor') == 1){
+else if ( Yii::$app->user->identity->checarAcesso('professor') == 1){
   $action = "{view} {banca} {update} {delete}";
 }
 else if( Yii::$app->user->identity->checarAcesso('secretaria') == 1){
-  $action = "{view} {aprovar} {reprovar}";
+  $action = "{view}";
 }
 
 
@@ -62,29 +66,24 @@ else if( Yii::$app->user->identity->checarAcesso('secretaria') == 1){
               'template'=> $action,
                 'buttons'=>[
                 
-                  'view' => function ($url, $model) {  
-
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [
-                            'title' => Yii::t('yii', 'Visualizar Detalhes'),
-                    ]);                                
-
-                  },
-                  'aprovar' => function ($url, $model) {  
-
-                    return Html::a('<span class="glyphicon glyphicon-ok-circle"></span>', ['aprovar', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [
-                            'title' => Yii::t('yii', 'Aprovar Candidato'),
-                    ]);                                
-
-                  },
-                  'reprovar' => function ($url, $model) {  
-
-                    return Html::a('<span class="glyphicon glyphicon-ban-circle"></span>', ['reprovar', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [
-                            'title' => Yii::t('yii', 'Reprovar Candidato'),
-                    ]);                                
-
-                  },
-
-              ]                            
+                    'view' => function ($url, $model) {  
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [
+                                'title' => Yii::t('yii', 'Visualizar Detalhes'),
+                        ]);                                
+                    },
+                    'update' => function ($url, $model){
+                        return $model->conceito == null ? Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], ['title' => Yii::t('yii', 'Editar Defesa'),
+                        ]) : "";
+                    },
+                    'delete' => function ($url, $model){
+                        return $model->banca->status_banca == null ? Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'idDefesa' => $model->idDefesa , 'aluno_id' => $model->aluno_id], [ 
+                                'data' => [
+                                    'confirm' => 'Remover a defesa \''.$model->titulo.'\'?',
+                                    'method' => 'post',
+                                ], 'title' => Yii::t('yii', 'Remover Defesa'),
+                        ]) : "";
+                    },
+                ]                            
             ],
         ],
     ]); ?>

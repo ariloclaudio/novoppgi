@@ -2,6 +2,11 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use xj\bootbox\BootboxAsset;
+
+BootboxAsset::register($this);
+BootboxAsset::registerWithOverride($this);
+
 
 $this->title = 'Linhas de Pesquisa';
 $this->params['breadcrumbs'][] = $this->title;
@@ -28,7 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
                   return ['style' => 'background-color: '.$model->cor];
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{view} {delete} {update}',
+                'buttons'=>[
+                  'delete' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                            'data' => [
+                                'confirm' => 'Remover o linha de pesquisa \''.$model->nome.'\'?',
+                                'method' => 'post',
+                            ],
+                            'title' => Yii::t('yii', 'Remover Edital'),
+                    ]);   
+                  }
+              ]                            
+            ],
         ],
     ]); ?>
 </div>

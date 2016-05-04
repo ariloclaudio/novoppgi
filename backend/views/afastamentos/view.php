@@ -17,20 +17,22 @@ $tipoViagem = array(null => " <div style=\"color:red; font-weight:bold\"> Não d
 <div class="afastamentos-view">
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar  ', ['afastamentos/index'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['afastamentos/index'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir Solcitação de Afastamento  ', ['afastamentos/print', 'id' => $model->id], [
+                            'target' => '_blank', 'class' => 'btn btn-info']) ?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-			'id',			
+            'id',           
             [
                 'attribute' => 'dataenvio',
                 'format'=>'raw',
                 'value' => date("d/m/Y", strtotime($model->dataenvio)).' às '.date("H:i:s", strtotime($model->dataenvio))
             ],
-            'nomeusuario',			
-            'local',						
+            'nomeusuario',          
+            'local',                        
             [
                 'attribute' => 'tipo',
                 'format'=>'raw',

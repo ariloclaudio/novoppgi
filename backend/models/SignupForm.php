@@ -22,6 +22,21 @@ class SignupForm extends Model
     public $secretaria;
     public $professor;
     public $aluno;
+    public $endereco;
+    public $dataIngresso;
+    public $telcelular;
+    public $telresidencial;
+    public $unidade;
+    public $siape;
+    public $titulacao;
+    public $classe;
+    public $nivel;
+    public $regime;
+    public $turno;
+    public $idLattes;
+    public $idRH;
+    public $alias;
+    public $cargo;
 
     public $visualizacao_candidatos;
     public $visualizacao_candidatos_finalizados;
@@ -48,14 +63,20 @@ class SignupForm extends Model
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['nome', 'string', 'max' => 255],
+            [['nome', 'endereco'],'string', 'max' => 255],
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Email já em uso.'],
+            [['cargo', 'turno'], 'string', 'max' => 32],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
             ['password_repeat', 'required'],
             ['password_repeat', 'compare', 'compareAttribute'=>'password', 'message'=>"Esta senha não é igual à anterior" ],
+            [['unidade'], 'string', 'max' => 60],
+            [['nivel'], 'string', 'max' => 6],
+            [['siape', 'dataIngresso','regime'], 'string', 'max' => 10],
+            [['telcelular', 'telresidencial', 'titulacao', 'classe', 'alias'], 'string', 'max' => 20],
+            [['idLattes', 'idRH'], 'integer'],
 
         ];
     }

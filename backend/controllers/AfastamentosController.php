@@ -293,7 +293,7 @@ class AfastamentosController extends Controller
                 ->setTextBody($message)
                 ->send();
         }catch(Exception $e){
-                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Solicitações de Cartas de Recomendação.
+                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Solicitações de Afastamento Temporário.
                     Tente novamente ou contate o adminstrador do sistema');
 				return false;
         }

@@ -8,7 +8,7 @@ use yii\helpers\Html;
 
 
 
-$this->title = 'Novo Aluno';
+$this->title = 'Exame de Proeficiência';
 //$this->params['breadcrumbs'][] = ['label' => 'Editais', 'url' => ['edital/index']];
 //$this->params['breadcrumbs'][] = ['label' => 'Número: '.Yii::$app->request->get('idEdital'), 
 //    'url' => ['edital/view','id' => Yii::$app->request->get('idEdital') ]];
@@ -17,15 +17,12 @@ $this->title = 'Novo Aluno';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<p> <?= Html::a('Voltar', ['candidatos/index', 'id' => Yii::$app->request->get('idEdital')], ['class' => 'btn btn-warning']) ?> </p>
-
+<p> <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['aluno/view', 'id' => $model->id], ['class' => 'btn btn-warning']) ?> </p>
 
 <div class="aluno-create">
 
-    <?= $this->render('_form', [
+    <?= $this->render('_formExame', [
         'model' => $model,
-        'linhasPesquisas' => $linhasPesquisas,
-        'orientadores' => $orientadores,
     ]) ?>
 
 </div>

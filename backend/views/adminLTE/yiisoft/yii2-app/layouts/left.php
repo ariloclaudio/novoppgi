@@ -1,11 +1,9 @@
 <aside class="main-sidebar">
-
     <section class="sidebar">
-
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="img/administrador.png" class="img-circle" alt="User Image"/>
+                <img src="img/professor.png" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
                 <p><?= Yii::$app->user->identity->nome ?></p>
@@ -76,7 +74,7 @@
                     'visible' => Yii::$app->user->identity->checarAcesso('professor'),
                     'items' => [
                         ['label' => 'Solicitar Afastamento', 'icon' => 'fa fa-file-code-o', 'url' => ['afastamentos/create'],],
-                        ['label' => 'Listar Afastamentos', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
+                        ['label' => 'Meus Afastamentos', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
                     ],
                 ],
                 ['label' => 'Minhas Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar', "ano" => date("Y") ],],
@@ -95,6 +93,16 @@
                     ],
                 ],
                 ['label' => 'Gerenciar Defesas', 'icon' => 'fa fa-file-code-o', 'url' => ['defesa/index'], 'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),],
+                [
+                    'label' => 'Afastamento Temporário',
+                    'icon' => 'fa fa-file-code-o',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'items' => [
+                        ['label' => 'Solicitar Afastamento', 'icon' => 'fa fa-file-code-o', 'url' => ['afastamentos/create'],],
+                        ['label' => 'Listar Solicitações', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
+                    ],
+                ],
                // ['label' => 'Aluno', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('aluno')],
                // ['label' => 'Aluno Opção', 'icon' => 'fa fa-file-code-o', 'url' => ['site/index'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
             ],
@@ -180,7 +188,7 @@
                     'visible' => Yii::$app->user->identity->checarAcesso('professor'),
                     'items' => [
                         ['label' => 'Solicitar Afastamento', 'icon' => 'fa fa-file-code-o', 'url' => ['afastamentos/create'],],
-                        ['label' => 'Listar Afastamentos', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
+                        ['label' => 'Meus Afastamentos', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
                     ],
                 ],
                 ['label' => 'Minhas Férias', 'icon' => 'fa fa-list', 'url' => ['ferias/listar', "ano" => date("Y") ],],
@@ -199,6 +207,16 @@
                     ],
                 ],
                 ['label' => 'Gerenciar Defesas', 'icon' => 'fa fa-file-code-o', 'url' => ['defesa/index'], 'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),],
+                [
+                    'label' => 'Afastamento Temporário',
+                    'icon' => 'fa fa-file-code-o',
+                    'url' => '#',
+                    'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),
+                    'items' => [
+                        ['label' => 'Solicitar Afastamento', 'icon' => 'fa fa-file-code-o', 'url' => ['afastamentos/create'],],
+                        ['label' => 'Listar Afastamentos', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
+                    ],
+                ],
                // ['label' => 'Aluno', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('aluno')],
                // ['label' => 'Aluno Opção', 'icon' => 'fa fa-file-code-o', 'url' => ['site/index'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
             ],

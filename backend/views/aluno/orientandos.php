@@ -21,10 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="orientandos-index">
 
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'matricula',
+      'dataProvider' => $dataProvider,
+      'columns' => [
+          ['class' => 'yii\grid\SerialColumn'],
+          'matricula',
 			'nome',
 			[   'label' => 'Status',
                 'attribute' => 'status',
@@ -41,14 +41,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 			[   'label' => 'Linha de Pesquisa',
                 'attribute' => 'siglaLinhaPesquisa',
+                'format' => 'html',
                 'contentOptions' => function ($model){
                   return ['style' => 'background-color: '.$model->corLinhaPesquisa];
                 },
-            ],
+                'value' => function ($model){
+                  return " <span class='fa ". $model->icone ." fa-lg'/> ".$model->siglaLinhaPesquisa;
+                },
+      ],
 			 'email:email',
 			 'telresidencial',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=> "{view} {banca}",
+              'template'=> "{view}",
                 'buttons'=>[
 				
                   'view' => function ($url, $model) {  

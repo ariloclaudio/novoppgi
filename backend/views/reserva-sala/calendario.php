@@ -6,6 +6,7 @@ use yii\web\JsExpression;
 use yii\bootstrap\Modal;
 
 
+
 $this->title = 'Reserva: '.$modelSala->nome;
 $this->params['breadcrumbs'][] = ['label' => 'Reserva de Sala', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -61,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'minTime' => '07:00:00',
             'maxTime' => '23:00:00',
             'height' => 'auto',
-            //'allDaySlot' => false,
+            'allDaySlot' => false,
             'slotLabelFormat' => 'H:mm',
             'dayClick' => new JsExpression("function(date, jsEvent, view) {
               var dateStr = date;

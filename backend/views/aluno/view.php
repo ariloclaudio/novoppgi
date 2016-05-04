@@ -17,8 +17,8 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['index'], ['class' => 'btn btn-warning']) ?>
-		<?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Excluir', ['delete', 'id' => $model->id], [
+		<?= Html::a('<span class="glyphicon glyphicon-edit"></span> Editar  ', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-remove-sign"></span> Excluir', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Você tem certeza que deseja excluir este item?',
@@ -26,6 +26,7 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
             ],
         ]) ?>
         <?= Html::a('Pedir Banca', ['defesa/create', 'aluno_id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('<span class="fa fa-file"></span> Exame de Proeficiência', ['aluno/exame', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -44,18 +45,22 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
                      'value' => $model->curso == 1 ? 'Mestrado' : 'Doutorado'
                 ],
             [
-                     'attribute' => 'endereco',
+                     'attribute' => 'status',
                      'format'=>'raw',
-                     'label' => 'Endereço',
                      'value' => $statusAluno[$model->status] 
                 ],
             'cpf',
             'telresidencial',
             'telcelular',
             [
-                     'attribute' => 'bolsista',
-                     'format'=>'raw',
-                     'value' => $model->bolsista == 1 ? 'SIM: '.$model->agencia : 'NÃO'
+                'attribute' => 'bolsista',
+                'format'=>'raw',
+                'value' => $model->bolsista == 1 ? 'SIM: '.$model->agencia : 'NÃO'
+            ],
+            [
+                'attribute' => 'financiadorbolsa',
+                'format'=>'raw',
+                'visible' => $model->bolsista == 1,
             ],
             [   'label' => 'Status',
                 'attribute' => 'status',
@@ -69,7 +74,8 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
             ],
             'idiomaExameProf',
             'conceitoExameProf',
-            'dataExameProf',            
+            'dataExameProf',
+            'orientador1.nome',          
         ],
     ]) ?>
 

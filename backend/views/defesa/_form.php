@@ -5,10 +5,8 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DatePicker;
 use yii\bootstrap\Button;
 use kartik\select2\Select2;
-
-/* @var $this yii\web\View */
-/* @var $model app\models\Defesa */
-/* @var $form yii\widgets\ActiveForm */
+use kartik\datecontrol\Module;
+use kartik\datecontrol\DateControl;
 
 //tipodefesa = 2 representa o curso de doutorado e defesa na qualificacao 1
 if ($tipodefesa == 2){
@@ -19,8 +17,6 @@ else {
 }
 
 ?>
-
-
 
 <input type="hidden" id = "membrosObrigatorios" value = <?php echo $required; ?> />
 
@@ -40,9 +36,6 @@ else {
     ])->label("<font color='#FF0000'>*</font> <b>Data da Defesa: </b>")
 ?>
 
-    <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'resumo')->textarea(['rows' => 6]) ?>
 
@@ -57,6 +50,27 @@ else {
     <?php } ?>
 
     <?php if ($tipodefesa != 2){ ?>
+
+    
+    <?= $form->field($model, 'horario')->widget(DateControl::classname(), [
+    'language' => 'pt-BR',
+    'name'=>'kartik-date', 
+    'value'=>time(),
+    'type'=>DateControl::FORMAT_TIME,
+    'displayFormat' => 'php: H:i',
+    ]) ?>
+
+    <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
+
+            <?= $form->field($model, 'presidente')->widget(Select2::classname(), [
+                'data' => $membrosBancaInternos,
+                'value' => $model->membrosBancaInternos,
+                'language' => 'pt-BR',
+                'options' => [
+                'placeholder' => 'Selecione um presidente ...', 'multiple' => false,],
+            ]);
+
+            ?>
 
             <?= $form->field($model, 'membrosBancaInternos')->widget(Select2::classname(), [
                 'data' => $membrosBancaInternos,
@@ -83,7 +97,7 @@ else {
 
 <br><br>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Salvar' : 'Salvar Alterações', ['onclick' => 'alertar()' ,  'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Salvar' : 'Salvar Alterações', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

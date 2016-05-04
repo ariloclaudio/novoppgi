@@ -15,6 +15,12 @@ else{
     $arrayCurso = array ("2" => "Doutorado");   
 }
 
+if($model_aluno->curso == 2 && $model->tipoDefesa == "Q1"){
+    $aparecer_form = false;
+}
+else {
+    $aparecer_form = true;
+}
 
 ?>
 
@@ -26,11 +32,16 @@ else{
 
     <?= $form->field($model_aluno, 'curso')->dropDownList($arrayCurso,['readonly' => true]) ?>
 
-    <?= $form->field($model, 'numDefesa')->textInput(['readonly' => true]) ?>
+    <?= $form->field($model, 'numDefesa')->textInput() ?>
 
     <?= $form->field($model, 'tipoDefesa')->textInput(['readonly' => true,'maxlength' => true]) ?>
 
-    <?= $form->field($model, 'conceito')->textInput(['readonly' => true]) ?>
+<!--     <?= $form->field($model, 'conceito')
+        ->dropDownList(
+            array ("Aprovado" => "Aprovado", "Reprovado" => "Reprovado", "Suspenso" => "Suspenso"),
+            ['prompt'=>'Escolha um Atributo']    // options
+        );
+    ?> -->
 
     <?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?>
 
@@ -43,10 +54,12 @@ else{
 				    ]
 		        ]);
 		    ?>
-
+    <?php if ($aparecer_form){ ?>
     <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'local')->textInput(['maxlength' => true]) ?>
+
+    <?php } ?>
 
     <?= $form->field($model, 'resumo')->textarea(['rows' => 13]) ?>
 

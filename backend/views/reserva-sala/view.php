@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Remover', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',
                     'data' => [
-                        'confirm' => 'Deseja remover a reserva \''.$model->atividade.'\'?',
+                        'confirm' => 'Deseja desmarcar a reserva \''.$model->atividade.'\'?',
                         'method' => 'post',
                     ],
                 ]) ?>

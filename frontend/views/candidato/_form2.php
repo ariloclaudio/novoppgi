@@ -37,11 +37,8 @@ if(count($itensPeriodicos) + count($itensConferencias) > 0){
     $hideInputPublicacoes = 'block';
 }
 
-if(isset($model->historico))
-    $uploadRealizados = 1;
-
 if(isset($model->curriculum))
-    $uploadRealizados += 2;
+    $uploadRealizados = 2;
 
 if($model->instituicaoacademica2 == ""){
     $hideInstituicao2 = 'none';
@@ -63,7 +60,6 @@ if($model->instituicaoacademica3 == ""){
         <input type="hidden" id = "form_hidden" value ="passo_form_2"/>
         <input type="hidden" id = "form_upload" value = '<?=$uploadRealizados?>' />
         <input type="hidden" id = "form_uploadxml" value = '<?= $uploadXML ?>' />
-        <input type="hidden" id = "ignorarRequired" value = '0' />
         
 
     <div style="clear: both;"><legend>Curso de Graduação</legend></div>
@@ -93,45 +89,6 @@ if($model->instituicaoacademica3 == ""){
         'mask' => '9999']) ?>
     </div>
     
-    <div class="row" style="padding: 3px 3px 3px 3px">
-        <?php 
-
-        if($model->cartaOrientador($model->idEdital) ){
-
-            echo "<input type='hidden' id = 'ignorarRequiredCartaOrientador' value = '1' />";
-
-            if(isset($model->historico)){
-                echo "<div style= padding: 3px 3px 3px 3px' class='col-md-8'> <b>Carta de Aceite do Orientador:<br> 
-                    Você já fez o upload da Carta do Orientador, <a href=index.php?r=candidato/pdf&documento=".$model->historico.">clique aqui </a>para visualizá-la.</b><br></div>";
-                
-                echo $form->field($model, 'historicoUpload', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                'pluginOptions' => [
-                    'onText' => 'Sim',
-                    'offText' => 'Não',
-                    ]])->label("<font color='#FF0000'>*</font> <b>Deseja mudar o arquivo?</b>");
-
-            }
-            else{
-
-                echo $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label("<font color='#FF0000'>*</font> <b>Carta de Aceite do Orientador:</b>");
-            }
-        }
-        else{
-
-            echo "<input type='hidden' id = 'ignorarRequiredCartaOrientador' value = '0' />";
-
-        }
-
-        ?>
-    </div>
-    <div class="row">
-        <?php if(isset($model->historico)){ ?>
-            <div id="divHistoricoFile" style="display: none; clear: both;">
-                <?= $form->field($model, 'historicoFile')->FileInput(['accept' => '.pdf'])->label(false); ?>
-                <div style='border-bottom:solid 1px'> </div>
-            </div>
-        <?php } ?>
-    </div>
 
     <div class="row">
         <?php 

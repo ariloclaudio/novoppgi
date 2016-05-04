@@ -14,38 +14,40 @@ BootboxAsset::registerWithOverride($this);
 $this->title = 'Usuários';
 ?>
 <div class="user-index">
-<?= date('d-m-Y H:i:s') ?>
-
     <p>
         <?= Html::a('<span class="fa fa-plus"></span> Adicionar Usuário', ['site/signup'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'columns' => [
             'nome',
             'username',
             'email:email',
-			[   'label' => 'Coordenador PPGI',
-                'attribute' => 'coordenador',
-				'value' => function ($model) {
-                        return $model->coordenador == 1 ? 'Sim' : 'Não';
-                },
+            [   'label' => 'Telefones',
+                'format' => 'html',
+                'attribute' => 'telcelular',
+                'value' => function ($model){
+                  $imagens = '      ';
+                  if($model->telcelular) $imagens = "<i class='fa fa-mobile fa-lg' title='".$model->telcelular."' aria-hidden='true'></i>". $imagens;
+                  if($model->telresidencial) $imagens = $imagens . "<i class='fa fa-phone fa-lg' title='".$model->telresidencial."' aria-hidden='true'></i>";
+                  return $imagens;
+                }
             ],
-			[   'label' => 'Professor',
-                'attribute' => 'professor',
-				'value' => function ($model) {
-                        return $model->professor == 1 ? 'Sim' : 'Não';
-                },
+            'perfis',
+            ['class' => 'yii\grid\ActionColumn',
+              'template'=>'{view} {delete} {update}',
+                'buttons'=>[
+                  'delete' => function ($url, $model) {
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                            'data' => [
+                                'confirm' => 'Remover o usuário \''.$model->nome.'\'?',
+                                'method' => 'post',
+                            ],
+                            'title' => Yii::t('yii', 'Remover Edital'),
+                    ]);   
+                  }
+              ]                            
             ],
-			[   'label' => 'Secretaria',
-                'attribute' => 'secretaria',
-				'value' => function ($model) {
-                        return $model->secretaria == 1 ? 'Sim' : 'Não';
-                },
-            ],
-
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </div>

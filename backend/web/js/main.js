@@ -48,6 +48,10 @@ $(document).ready( function() {
         }
    });
 
+    $("#lancarconceito").click(function(){
+        
+    });
+
 });
 
 
@@ -77,10 +81,5 @@ $( window ).load(function(){
 });
 
 
-function alertar () {
-
-    alert( $('#idsMembrosBancaInternos').val()  );
-
-}
 
 

@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="afastamentos-index">
 
-<?= Html::a('Novo Pedido de Afastamento', ['create'], ['class' => 'btn btn-success']) ?>
+<?= Html::a('<span class="glyphicon glyphicon-plus"></span> Novo Pedido de Afastamento', ['create'], ['class' => 'btn btn-success']) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   },
 				  'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-remove-sign"></span>', ['delete', 'id' => $model->id], [
+                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
                             'data' => [
                                 'confirm' => 'Remover o pedido de asfastamento \''.$model->id.'\' de '.$model->nomeusuario.'?',
                                 'method' => 'post',
