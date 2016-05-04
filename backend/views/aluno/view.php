@@ -12,6 +12,8 @@ $this->params['breadcrumbs'][] = "Aluno: ".$model->nome;
 
 $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desistente',3 => 'Aluno Desligado',4 => 'Aluno Jubilado',5 => 'Aluno com Matrícula Trancada');
 
+$exameProficienciaAluno = array(null => "Não Avaliado", 0 => 'Reprovado',1 => 'Aprovado');
+
 ?>
 <div class="aluno-view">
 
@@ -73,7 +75,11 @@ $statusAluno = array(0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desi
 
             ],
             'idiomaExameProf',
-            'conceitoExameProf',
+            [
+            'attribute' => 'conceitoExameProf',
+            'value' => $exameProficienciaAluno[$model->conceitoExameProf],
+            ]
+            ,
             'dataExameProf',
             'orientador1.nome',          
         ],

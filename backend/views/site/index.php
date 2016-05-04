@@ -7,7 +7,7 @@ $this->title = 'Início';
 <div class="site-index">
 
     <div class="jumbotron">
-        <h2> Programa de Pós Gradução em Informática - PPGI</h2>
+        <h2> Programa de Pós Graduação em Informática - PPGI</h2>
         <br><br>
         <p class="lead">Seja Bem Vindo ao Sistema do PPGI</p>
         <p class="lead">Selecione uma das Opções na barra a esquerda.</p>

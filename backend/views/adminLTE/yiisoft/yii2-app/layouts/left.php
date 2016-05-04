@@ -217,6 +217,7 @@
                         ['label' => 'Listar Afastamentos', 'icon' => 'fa fa-list', 'url' => ['afastamentos/index'],],
                     ],
                 ],
+                ['label' => 'Adicionar Membros', 'icon' => 'fa fa-file-code-o', 'url' => ['membros-banca/create'], 'visible' => Yii::$app->user->identity->checarAcesso('secretaria'),],
                // ['label' => 'Aluno', 'options' => ['class' => 'header'], 'visible' => Yii::$app->user->identity->checarAcesso('aluno')],
                // ['label' => 'Aluno Opção', 'icon' => 'fa fa-file-code-o', 'url' => ['site/index'], 'visible' => Yii::$app->user->identity->checarAcesso('professor'),],
             ],

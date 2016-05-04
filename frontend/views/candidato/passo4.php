@@ -58,8 +58,8 @@ $this->params['breadcrumbs'][] = $this->title;
 					<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/trabalho.png" border="0" height="32" width="32"><br><b>Imprimir Proposta de Trabalho</b></div></a>
 		        <div id="cpanel" width="25%"></div>
 				
-				<a href="index.php?r=candidato/pdf&documento=Historico.pdf">
-						<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/historico.gif" border="0" height="32" width="32"><br><b>Imprimir Hist&#243;rico Escolar</b></div></a>
+				<a href="index.php?r=candidato/pdf&documento=CartaOrientador.pdf">
+						<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/historico.gif" border="0" height="32" width="32"><br><b>Carta Orientador</b></div></a>
 				<a href="index.php?r=candidato/pdf&documento=Curriculum.pdf">
 						<div class="iconimage" style="float: left; width: 150px; margin-top: 20px;"><img src="img/curriculum.gif" border="0" ><br><b>Imprimir Curriculum Lattes</b></div></a>
 				<a href="index.php?r=candidato/pdf&documento=Comprovante.pdf">

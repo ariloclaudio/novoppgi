@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= Html::a('<span class="glyphicon glyphicon-print"></span>  Convite', ['convitepdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-print"></span> Ata Defesa  ', ['atapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Folha de Qualificação', ['folhapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Folha de Aprovação', ['folhapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
         </div>
     </p>
 

@@ -65,7 +65,12 @@ class MembrosBancaController extends Controller
     {
         $model = new MembrosBanca();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->idProfessor = null;
+            $model->dataCadastro = date("Y-m-d H:i:s");
+
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
