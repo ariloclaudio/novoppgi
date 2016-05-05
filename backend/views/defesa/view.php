@@ -50,14 +50,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 ActiveForm::end();
 
                 Modal::end();
+
+        echo Html::a('<span class="glyphicon glyphicon-print"></span>  Convite', ['convitepdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']);
+
+        if($model->conceito == "Aprovado"){
+            echo Html::a('<span class="glyphicon glyphicon-print"></span> Folha Qualificação', ['atapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']);
+        }
+
+        echo Html::a('<span class="glyphicon glyphicon-print"></span> Ata Defesa  ', ['atadefesapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']);
+        echo Html::a('<span class="glyphicon glyphicon-print"></span> Folha de Aprovação', ['folhapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']);
             }
+
         ?>
         <?= Yii::$app->user->identity->secretaria ? Html::a('<span class="glyphicon glyphicon-envelope"></span>  Enviar Lembrete de Pendência', ['lembretependencia', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-primary']) : "" ?>
 
-        <?= Html::a('<span class="glyphicon glyphicon-print"></span>  Convite', ['convitepdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Folha Qualificação', ['atapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Ata Defesa  ', ['atadefesapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Folha de Aprovação', ['folhapdf', 'idDefesa' => $model->idDefesa, 'aluno_id' => $model->aluno_id], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
         </div>
     </p>
 
@@ -108,7 +114,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
             ,
             'resumo:ntext',
-            //'banca_id',
         ],
     ]) ?>
     

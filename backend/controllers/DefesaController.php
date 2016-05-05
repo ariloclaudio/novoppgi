@@ -122,7 +122,7 @@ class DefesaController extends Controller
         
         if ($conceitoPendente == true){
 
-                $this->mensagens('danger', 'Defesas Pendências de Conceito', 'Existem defesas deste aluno que estão pendentes de conceito. Por favor, solicite que a secretaria atribua o conceito.');
+                $this->mensagens('danger', 'Defesas c/ Pendências', 'Existem defesas que estão pendentes de conceito ou Bancas pendentes de Deferimento pelo Coordenador.');
 
                 return $this->redirect(['aluno/orientandos',]);            
             
@@ -131,7 +131,7 @@ class DefesaController extends Controller
 
         $model->aluno_id = $aluno_id;
 
-        $cont_Defesas = Defesa::find()->where("aluno_id = ".$aluno_id)->count();
+        $cont_Defesas = Defesa::find()->where("aluno_id = ".$aluno_id." AND conceito is NOT NULL")->count();
         
         $curso = Aluno::find()->select("curso")->where("id =".$aluno_id)->one()->curso;
 
@@ -534,7 +534,7 @@ class DefesaController extends Controller
                 }
                 else{
                     $funcao = "";
-                    $outrosMembros = $outrosMembros . $rows->membro_nome;
+                    $outrosMembros = $outrosMembros .', '. $rows->membro_nome;
                 }
                 $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
             }
@@ -554,7 +554,7 @@ class DefesaController extends Controller
              $pdf->WriteHTML('
 
                 <p style = "text-align: justify; font-family: Times New Roman, Arial, serif; font-size: 100%;">
-                    Aos '.$dia.' dias do mês de '.$arrayMes[$mes].' do ano de '.date("Y", strtotime($model->data)).', às '.$model->horario.'h, na '.$model->local.' da Universidade Federal do Amazonas, situada na Av. Rodrigo Otávio, 6.200, Campus Universitário, Setor Norte, Coroado, nesta Capital, ocorreu a sessão pública de defesa de '.$tipoDefesa.' intitulada "'.$model->titulo.'" apresentada pelo discente '.$model->nome.' que concluiu todos os pré-requisitos exigidos para a obtenção do título de '.$titulo.' em informática, conforme estabelece o artigo 52 do regimento interno do curso. Os trabalhos foram instalados pelo(a) '.$presidente.', orientador(a) e presidente da Banca Examinadora, que foi constituí­da, ainda, pelos membros convidados '.$outrosMembros.'. A Banca Examinadora tendo decidido aceitar a dissertação, passou à arguição pública do candidato.
+                    Aos '.$dia.' dias do mês de '.$arrayMes[$mes].' do ano de '.date("Y", strtotime($model->data)).', às '.$model->horario.'h, na '.$model->local.' da Universidade Federal do Amazonas, situada na Av. Rodrigo Otávio, 6.200, Campus Universitário, Setor Norte, Coroado, nesta Capital, ocorreu a sessão pública de defesa de '.$tipoDefesa.' intitulada "'.$model->titulo.'" apresentada pelo discente '.$model->nome.' que concluiu todos os pré-requisitos exigidos para a obtenção do título de '.$titulo.' em informática, conforme estabelece o artigo 52 do regimento interno do curso. Os trabalhos foram instalados pelo(a) '.$presidente.', orientador(a) e presidente da Banca Examinadora, que foi constituí­da, ainda, pelos membros convidados: '.$outrosMembros.'. A Banca Examinadora tendo decidido aceitar a dissertação, passou à arguição pública do candidato.
                 </p>
             ');
 
@@ -566,7 +566,7 @@ class DefesaController extends Controller
                 (   ) Suspensa <br>
                 (   ) Reprovada, conforme folha de modificações, anexa <br>
                 <p style = "text-align: justify;"> 
-                Proclamados os resultados, foram encerrados os trabalhos e, para constar, eu, Elienai Nogueira, Secretária do Programa de Pós-Graduação em Informática, lavrei a presente ata, que assino juntamente com os Membros da Banca Examinadora." 
+                Proclamados os resultados, foram encerrados os trabalhos e, para constar, eu, Elienai Nogueira, Secretária do Programa de Pós-Graduação em Informática, lavrei a presente ata, que assino juntamente com os Membros da Banca Examinadora. 
                 </p>
                 <br>
                 ');
@@ -614,7 +614,52 @@ class DefesaController extends Controller
 
                 ');
 
-    
+    $pdf->addPage();
+
+             $pdf->WriteHTML('
+                <div style="text-align:center;"> <h4>  FOLHA DE SUSPENSÃO </h4> </div>
+            ');
+
+             $pdf->WriteHTML('
+                <p style = "text-align: justify; font-family: Times New Roman, Arial, serif; font-size: 120%; margin-bottom:10%">
+
+                 A Banca Examinadora, com base no Art. 13, da Resolução nº 033/2014 - CONSEPE, de 30 de setembro de 2014, decide suspender a sessão, pelo prazo de ______ dias, respeitando o período máximo de 60 dias estabelecido no § 1º do referido artigo:
+
+                </p>
+            ');
+
+            foreach ($banca as $rows) {
+
+                if ($rows->funcao == "P"){
+                    $funcao = "Presidente";
+                }
+                else if($rows->funcao == "E"){
+                    $funcao = "Membro Externo";
+                }
+                else {
+                    $funcao = "Membro Interno";
+                }
+                 $pdf->WriteHTML('
+
+                    <div style="float: right;
+                                width: 60%;
+                                text-align:right;
+                                margin-bottom:5%;
+                                border-top:double 1px">
+                            '.$rows->membro_nome.' - '.$funcao.'
+                    </div>
+
+                ');
+
+             }
+
+             $pdf->WriteHTML('
+
+                    <div style="text-align:center"> <h4>Manaus, '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).'</h4> </div>
+
+                ');
+
+
 
     $pdfcode = $pdf->output();
     fwrite($arqPDF,$pdfcode);
