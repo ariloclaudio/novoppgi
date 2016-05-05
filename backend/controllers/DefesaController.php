@@ -482,6 +482,146 @@ class DefesaController extends Controller
 
     }
 
+    public function actionAtadefesapdf($idDefesa, $aluno_id){
+
+    $model = $this->findModel($idDefesa, $aluno_id);
+
+        $arrayMes = array(
+            "01" => "Janeiro",
+            "02" => "Fevereiro",
+            "03" => "Março",
+            "04" => "Abril",
+            "05" => "Maio",
+            "06" => "Junho",
+            "07" => "Julho",
+            "08" => "Agosto",
+            "09" => "Setembro",
+            "10" => "Outubro",
+            "11" => "Novembro",
+            "12" => "Dezembro",
+            );
+
+        $modelAlunoLinha = LinhaPesquisa::find()->innerJoin("j17_aluno as a","a.id = ".$aluno_id)->one();
+
+        $modelAluno = Aluno::find()->select("u.nome as nome, j17_aluno.curso as curso")->where(["j17_aluno.id" => $aluno_id])->innerJoin("j17_user as u","j17_aluno.orientador = u.id")->one();
+
+        if($modelAluno->curso == 1){
+                $curso = "Mestrado";
+                $titulo = "mestre";
+
+                $tipoDefesa = "Dissertação de Mestrado";
+                $tipoDefesaUp = "DISSERTAÇÃO DE MESTRADO";
+
+        }
+        else{
+                $curso = "Doutorado";
+                $titulo = "doutor";
+                $tipoDefesa = "Tese de Doutorado";
+                $tipoDefesaUp = "TESE DE DOUTORADO";
+        }
+
+            $banca = Banca::find()
+            ->select("j17_banca_has_membrosbanca.* , j17_banca_has_membrosbanca.funcao ,mb.nome as membro_nome, mb.filiacao as membro_filiacao, mb.*")->leftJoin("j17_membrosbanca as mb","mb.id = j17_banca_has_membrosbanca.membrosbanca_id")
+            ->where(["banca_id" => $model->banca_id])->all();
+
+            $bancacompleta = "";
+            $outrosMembros = "";
+
+            foreach ($banca as $rows) {
+                if($rows->funcao == "P"){
+                    $funcao = "(Presidente)";
+                    $presidente = $rows->membro_nome;
+                }
+                else{
+                    $funcao = "";
+                    $outrosMembros = $outrosMembros . $rows->membro_nome;
+                }
+                $bancacompleta = $bancacompleta . $rows->membro_nome.' - '.$rows->membro_filiacao.' '.$funcao.'<br>';
+            }
+
+            $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
+
+            $pdf = $this->cabecalhoRodape($pdf);
+
+
+             $pdf->WriteHTML('
+                <div style="text-align:center;"> <h4>  '.$model->numDefesa.'ª ATA DE DEFESA PÚBLICA DE '.$tipoDefesaUp.' </h4> </div>
+            ');
+
+             $dia = date('d', strtotime($model->data));
+             $mes = date("m",strtotime($model->data));
+
+             $pdf->WriteHTML('
+
+                <p style = "text-align: justify; font-family: Times New Roman, Arial, serif; font-size: 100%;">
+                    Aos '.$dia.' dias do mês de '.$arrayMes[$mes].' do ano de '.date("Y", strtotime($model->data)).', às '.$model->horario.'h, na '.$model->local.' da Universidade Federal do Amazonas, situada na Av. Rodrigo Otávio, 6.200, Campus Universitário, Setor Norte, Coroado, nesta Capital, ocorreu a sessão pública de defesa de '.$tipoDefesa.' intitulada "'.$model->titulo.'" apresentada pelo discente '.$model->nome.' que concluiu todos os pré-requisitos exigidos para a obtenção do título de '.$titulo.' em informática, conforme estabelece o artigo 52 do regimento interno do curso. Os trabalhos foram instalados pelo(a) '.$presidente.', orientador(a) e presidente da Banca Examinadora, que foi constituí­da, ainda, pelos membros convidados '.$outrosMembros.'. A Banca Examinadora tendo decidido aceitar a dissertação, passou à arguição pública do candidato.
+                </p>
+            ');
+
+
+             $pdf->WriteHTML('Encerrados os trabalhos, os examinadores expressaram o parecer abaixo. <br><br>
+
+                A comissão considerou a '.$tipoDefesa.': <br>
+                (   ) Aprovada <br>
+                (   ) Suspensa <br>
+                (   ) Reprovada, conforme folha de modificações, anexa <br>
+                <p style = "text-align: justify;"> 
+                Proclamados os resultados, foram encerrados os trabalhos e, para constar, eu, Elienai Nogueira, Secretária do Programa de Pós-Graduação em Informática, lavrei a presente ata, que assino juntamente com os Membros da Banca Examinadora." 
+                </p>
+                <br>
+                ');
+
+
+            foreach ($banca as $rows) {
+
+                if ($rows->funcao == "P"){
+                    $funcao = "Presidente";
+                }
+                else if($rows->funcao == "E"){
+                    $funcao = "Membro Externo";
+                }
+                else {
+                    $funcao = "Membro Interno";
+                }
+                 $pdf->WriteHTML('
+
+                    <div style="float: right;
+                                width: 50%;">
+                                Assinatura:............................................................
+                    </div>
+
+                    <div style="float: left;
+                                width: 50%;
+                                text-align:left;
+                                margin-bottom:3%;">
+                            '.$rows->membro_nome.'
+                    </div>
+
+                ');
+             }
+
+                 $pdf->WriteHTML('
+
+                    <div style="float: left;
+                                width: 60%;
+                                margin-top:3%;">
+                                ____________________________________________________ <br>
+
+                                Secretaria
+                    </div>
+
+                    <div style="text-align:right"> <h4>Manaus, '.date("d", strtotime($model->data)).' de '.$arrayMes[$mes].' de '.date("Y", strtotime($model->data)).'</h4> </div>
+
+                ');
+
+    
+
+    $pdfcode = $pdf->output();
+    fwrite($arqPDF,$pdfcode);
+    fclose($arqPDF);
+}
+
+
 
     public function actionAtapdf($idDefesa, $aluno_id){
 
@@ -553,7 +693,7 @@ class DefesaController extends Controller
                     <p style = "font-weight: bold;">
                         DADOS DA DEFESA:
                     </p>
-                    <table style =" margin-bottom:40px">
+                    <table style =" margin-bottom:20px;">
                         <tr>
                             <td colspan="4"> Título: '.$model->titulo.' </td>
                         </tr>
@@ -567,6 +707,19 @@ class DefesaController extends Controller
 
                         </tr>
                     </table>
+                    <table style =" margin-bottom:60px; width:100%;">
+                    <tr>
+                        <td>
+                            <h4> Avaliação da Banca Examinadora </h4>
+                        </td>
+
+                        <td align="right">
+                            <h4> Conceito: _______________________ </h4>
+                        </td>
+                    </tr>
+                    </table>
+
+
 
                 ');
 
@@ -732,7 +885,6 @@ class DefesaController extends Controller
 
              $mes = date("m",strtotime($model->data));
 
-             var_dump($mes);
 
              $pdf->WriteHTML('
                     <br><br>
