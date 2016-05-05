@@ -93,6 +93,17 @@ class DefesaController extends Controller
         ]);
     }
 
+    public function actionPendentes()
+    {
+        $searchModel = new DefesaSearch();
+        $dataProvider = $searchModel->searchPendentes(Yii::$app->request->queryParams);
+
+        return $this->render('pendentes', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     public function actionLembretependencia($idDefesa, $aluno_id){
         
         $model = $this->findModel($idDefesa, $aluno_id);
