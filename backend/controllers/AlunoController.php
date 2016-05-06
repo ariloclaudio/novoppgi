@@ -77,11 +77,14 @@ class AlunoController extends Controller
 
         $linhaPesquisa = new LinhaPesquisa();
         $linhaPesquisa = $linhaPesquisa->getLinhaPesquisaNome($model->area);
-
-
+        
         if ($linhaPesquisa != null){
             $model->area = $linhaPesquisa->nome;
         }
+
+        $orientador = User::findOne($model->orientador);
+        if ($orientador != null)
+            $model->orientador= $orientador->nome;
 
         return $this->render('view', [
             'model' => $model,
@@ -165,6 +168,10 @@ class AlunoController extends Controller
         if ($linhaPesquisa != null){
             $model->area = $linhaPesquisa->nome;
         }
+        
+        $orientador = User::findOne($model->orientador);
+        if ($orientador != null)
+            $model->orientador= $orientador->nome;
         
         return $this->render('view_orientado', [
             'model' =>  $model,

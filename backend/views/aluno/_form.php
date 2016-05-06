@@ -18,7 +18,9 @@ $ufs = ["AC" => "AC", "AL" => "AL", "AM" => "AM", "AP" => "AP", "BA" => "BA", "C
 "PB" => "PB", "PE" => "PE", "PI" => "PI", "PR" => "PR", "RJ" => "RJ", "RN" => "RN", "RO" => "RO",
 "RR" => "RR", "RS" => "RS", "SC" => "SC", "SE" => "SE", "SP" => "SP", "TO" => "TO"];
 
+$statusAluno = [0 => 'Aluno Corrente',1 => 'Aluno Egresso',2 => 'Aluno Desistente',3 => 'Aluno Desligado',4 => 'Aluno Jubilado',5 => 'Aluno com Matrícula Trancada'];
 $financiadoresbolsa = ['CAPES' => 'CAPES', 'FAPEAM' => 'FAPEAM', 'CNPQ' => 'CNPQ'];
+$sedes = ['RR' => 'Boa Vista/RR', 'AM' => 'Manaus/AM', 'AC' => 'Rio Branco/AC'];
 
 ?>
 
@@ -29,186 +31,105 @@ $financiadoresbolsa = ['CAPES' => 'CAPES', 'FAPEAM' => 'FAPEAM', 'CNPQ' => 'CNPQ
   
     <?php $form = ActiveForm::begin(); ?>
     
-    <input type="hidden" id = "form_bolsista" value = '<?= $model->bolsista?>'/>
+        <input type="hidden" id = "form_bolsista" value = '<?= $model->bolsista?>'/>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>Dados Pessoais</b></h3>
+            </div>
+            <div class="panel-body">
+                <?= $form->field($model, 'nome' , ['options' => ['class' => 'col-md-5']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Nome Completo:</b>"); ?>
+                <?= $form->field($model, 'email' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Email:</b>"); ?>
+                <?= 
+                $form->field($model, 'datanascimento', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+                    'language' => Yii::$app->language,
+                    'options' => ['placeholder' => 'Selecione a Data de Nascimento...',],
+                    'pluginOptions' => [
+                        'format' => 'yyyy-mm-dd',
+                        'todayHighlight' => true
+                    ]
+                ])->label("<font color='#FF0000'>*</font> <b>Data de Nascimento:</b>"); ?>
+                <?= $form->field($model, 'endereco' , ['options' => ['class' => 'col-md-5']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Endereço:</b>");         ?>
+                <?= $form->field($model, 'bairro' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Bairro:</b>");    ?>
 
-    <?php
-
-    echo $divRow;
-
-        echo $form->field($model, 'nome' , ['options' => ['class' => 'col-md-6']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Nome:</b>");
-
-        echo $form->field($model, 'datanascimento', ['options' => ['class' => 'col-md-2']])->widget(MaskedInput::className(), ['clientOptions' => 
-            ['alias' =>  'date']])->label("<font color='#FF0000'>*</font> <b>Data de Nascimento:</b>");
-
-        echo $form->field($model, 'sexo', ['options' => ['class' => 'col-md-2']])->radioList(['M' => 'Masculino', 'F' => 'Feminino'])->label("<font color='#FF0000'>*</font> <b>Sexo:</b>");
-
-    echo $divFechar;
-
-    echo $divRow;
-
-        echo $form->field($model, 'cep', ['options' => ['class' => 'col-md-2']])->widget(MaskedInput::className(), [
-    'mask' => '99999-999'])->label("<font color='#FF0000'>*</font> <b>CEP:</b>");
-
-        echo $form->field($model, 'uf', ['options' => ['class' => 'col-md-2']])->dropDownList($ufs, ['prompt' => 'Selecione UF..'])->label("<font color='#FF0000'>*</font> <b>Estado:</b>");
-
-        echo $form->field($model, 'cidade' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Cidade:</b>");
-
-        echo $form->field($model, 'bairro' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Bairro:</b>");
-
-    echo $divFechar;
-
-    echo $divRow;
-
-        echo $form->field($model, 'endereco' , ['options' => ['class' => 'col-md-6']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Endereço:</b>");        
-
-        echo $form->field($model, 'email' , ['options' => ['class' => 'col-md-4']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Email:</b>");
-
-    echo $divFechar;
-
-    echo $divRow;        
-
-        echo $form->field($model, 'nacionalidade', ['options' => ['class' => 'col-md-12']])->radioList(['1' => 'Brasileira', '2' => 'Estrangeira'])->label("<font color='#FF0000'>*</font> <b>Nacionalidade:</b>"); ?>
-
-        <div id="divEstrangeiro" style='display: none;'>
-            <p align="justify" class="col-md-12"><b>Estes campos são obrigatórios para candidatos com nacionalidade Estrangeira</b></p>
-            
-            <?= $form->field($model, 'pais', ['options' => ['class' => 'col-md-4']])->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>País:</b>") ?>
+                <?= $form->field($model, 'cidade' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Cidade:</b>");        ?>
+                
+                <?= $form->field($model, 'cep', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+    'mask' => '99999-999'])->label("<font color='#FF0000'>*</font> <b>CEP:</b>"); ?>
+                <?= $form->field($model, 'uf', ['options' => ['class' => 'col-md-2']])->dropDownList($ufs, ['prompt' => 'Selecione UF..'])->label("<font color='#FF0000'>*</font> <b>Estado:</b>"); ?>
+                <?= $form->field($model, 'sexo', ['options' => ['class' => 'col-md-3']])->radioList(['M' => 'Masculino', 'F' => 'Feminino'])->label("<font color='#FF0000'>*</font> <b>Sexo:</b>"); ?>
+                <?= $form->field($model, 'cpf', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+                    'mask' => '999.999.999-99'])->label("<font color='#FF0000'>*</font> <div style='display:inline;' id = 'corCPF'><b>CPF:</b> </div>") ?> 
+                <?= $form->field($model, 'cursograd' , ['options' => ['class' => 'col-md-5']])->textInput(['maxlength' => true])->label(" <div style='display:inline;' id = 'corCPF'><b>Curso da Graduação:</b> </div>"); ?>
+                <?= $form->field($model, 'instituicaograd' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label(" <div style='display:inline;' id = 'corCPF'><b>Instituição onde cursou a Graduação:</b> </div>");?>
+                <?= $form->field($model, 'egressograd' , ['options' => ['class' => 'col-md-3']] )->textInput()->label(" <div style='display:inline;' id = 'corCPF'><b>Ano de Formatura na Graduação:</b> </div>"); ?>
+                    
+                <?= $form->field($model, 'telresidencial', ['options' => ['class' => 'col-md-3']])->widget(\yii\widgets\MaskedInput::className(), [
+                'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Telefone Principal:</b>"); ?>
+                <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
+                'mask' => '(99) 99999-9999'])->label("Telefone Alternativo:");?>
+            </div>
         </div>
-        <div id="divBrasileiro" style="display: none;">
-            <p align="justify" class="col-md-12"><b>Estes campos são obrigatórios para candidatos com nacionalidade Brasileira</b></p>
-            <?= $form->field($model, 'cpf', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
-        'mask' => '999.999.999-99'])->label("<font color='#FF0000'>*</font> <div style='display:inline;' id = 'corCPF'><b>CPF:</b> </div>") ?>   
-            <div id = "errocpf" style="color:#a94442; display:none;"> CPF é campo obrigatório para brasileiros </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>Dados do Aluno</b></h3>
+            </div>
+            <div class="panel-body">
+                <?= $form->field($model, 'matricula' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Matricula:</b>");?>
+                <?= $form->field($model, 'sede', ['options' => ['class' => 'col-md-2']])->dropDownList($sedes, ['prompt' => 'Sede..'])->label("<font color='#FF0000'>*</font> <b>Sede:</b>"); ?>
+                <?= $form->field($model, 'curso', ['options' => ['class' => 'col-md-3']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso:</b>");?>
+                
+                <?= $form->field($model, 'orientador', ['options' => ['class' => 'col-md-3']])->widget(Select2::classname(), [
+                    'data' => $orientadores,
+                    'options' => ['placeholder' => 'Selecione um orientador ...'],
+                    'pluginOptions' => [
+                    'allowClear' => true
+                    ],
+                ])->label("<font color='#FF0000'>*</font> <b>Orientador:</b>"); ?>              
+                <?= $form->field($model, 'area' , ['options' => ['class' => 'col-md-5']] )->dropDownlist($linhasPesquisas, ['prompt' => 'Selecione uma Linha de Pesquisa'])->label("<font color='#FF0000'>*</font> <b>Linha de Pesquisa:</b>");?>
+                <?= $form->field($model, 'regime', ['options' => ['class' => 'col-md-3']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>");?>
+
+                <?= $form->field($model, 'dataingresso', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+                    'language' => Yii::$app->language,
+                    'pluginOptions' => [
+                    'format' => 'yyyy-mm-dd',
+                    'todayHighlight' => true]
+                ])->label("<font color='#FF0000'>*</font> Data de Ingresso:");?>
+
+
+                <?= $form->field($model, 'status', ['options' => ['class' => 'col-md-3']])->dropDownList($statusAluno, ['prompt' => 'Selecione o status..'])->label("<font color='#FF0000'>*</font> <b>Status Corrente:</b>"); ?>
+                <?= $form->field($model, 'bolsista' , ['options' => ['class' => 'col-md-2']] )->widget(SwitchInput::classname(), [
+                    'pluginOptions' => [
+                        'onText' => 'Sim',
+                        'offText' => 'Não',
+                ]])->label("Bolsista?"); ?>
+                
+                <div id='divAgencia' style='display: none;'>
+                    <?= $form->field($model, 'financiadorbolsa' , ['options' => ['class' => 'col-md-3']]  )->dropDownlist($financiadoresbolsa, ['prompt' => 'Selecione um Financiador'])->label("<font color='#FF0000'>*</font> Financiador da Bolsa: "); ?>
+                    <?= $form->field($model, 'dataimplementacaobolsa', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+                        'language' => Yii::$app->language,
+                        'pluginOptions' => [
+                        'format' => 'yyyy-mm-dd',
+                        'todayHighlight' => true]
+                    ])->label("<font color='#FF0000'>*</font> Início da Vigência:");?>
+                </div>
+            </div>
         </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><b>Exame de Proficiência</b></h3>
+            </div>
+            <div class="panel-body">
     
-    <?php
-    echo $divFechar;
-
-    echo $divRow;
-
-        echo $form->field($model, 'telresidencial', ['options' => ['class' => 'col-md-3']])->widget(\yii\widgets\MaskedInput::className(), [
-            'mask' => '(99) 99999-9999'])->label("<font color='#FF0000'>*</font> <b>Telefone Principal:</b>");
-
-        echo $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-3']])->widget(MaskedInput::className(), [
-            'mask' => '(99) 99999-9999'])->label("Telefone Alternativo:");
-
-    echo $divFechar;
-
-    echo $divRow;
-
-        echo $form->field($model, 'regime', ['options' => ['class' => 'col-md-3']])->radioList(['1' => 'Integral', '2' => 'Parcial'])->label("<font color='#FF0000'>*</font> <b>Regime de Dedicação:</b>");
-
-        echo $form->field($model, 'bolsista' , ['options' => ['class' => 'col-md-2']] )->widget(SwitchInput::classname(), [
-            'pluginOptions' => [
-                'onText' => 'Sim',
-                'offText' => 'Não',
-        ]])->label("Bolsista?");
-
-    echo $divFechar;
-
-    echo $divRow;
-
-        echo "<div id='divAgencia' style='display: none;'>";
-        echo $form->field($model, 'agencia' , ['options' => ['class' => 'col-md-3']]  )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> Qual Agência:");
-        echo $form->field($model, 'financiadorbolsa' , ['options' => ['class' => 'col-md-4']]  )->dropDownlist($financiadoresbolsa, ['prompt' => 'Selecione um Financiador'])->label("<font color='#FF0000'>*</font> Financiador da Bolsa: ");
-
-        echo $form->field($model, 'dataimplementacaobolsa', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
-            'language' => Yii::$app->language,
-            'pluginOptions' => [
-                'format' => 'dd-mm-yyyy',
-                'todayHighlight' => true
-            ]
-        ])->label("<font color='#FF0000'>*</font> Início da Vigência:");
-
-        echo "</div>";
-    echo $divFechar;
-        //echo $form->field($model, 'status')->textInput();
-
-    /*
-
-    echo $form->field($model, 'idiomaExameProf')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'conceitoExameProf')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'dataExameProf')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'tituloQual2')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'dataQual2')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'conceitoQual2')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'tituloTese')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'dataTese')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'conceitoTese')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'horarioQual2')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'localQual2')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'resumoQual2')->textarea(['rows' => 6]);
-
-    echo $form->field($model, 'horarioTese')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'localTese')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'resumoTese')->textarea(['rows' => 6]);
-
-    echo $form->field($model, 'tituloQual1')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'numDefesa')->textInput();
-
-    echo $form->field($model, 'dataQual1')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'examinadorQual1')->textInput(['maxlength' => true]);
-
-    echo $form->field($model, 'conceitoQual1')->textInput(['maxlength' => true]);
-*/
-
-    echo $divRow;
-
-        echo $form->field($model, 'cursograd' , ['options' => ['class' => 'col-md-3']])->textInput(['maxlength' => true]);
-
-        echo $form->field($model, 'instituicaograd' , ['options' => ['class' => 'col-md-4']] )->textInput(['maxlength' => true]);
-
-        echo $form->field($model, 'egressograd' , ['options' => ['class' => 'col-md-2']] )->textInput();
-
-    echo $divFechar;
-
-    echo $divRow;
-
-        echo $form->field($model, 'matricula' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Matricula:</b>");
-
-        echo $form->field($model, 'orientador', ['options' => ['class' => 'col-md-4']])->widget(Select2::classname(), [
-            'data' => $orientadores,
-            'options' => ['placeholder' => 'Selecione um orientador ...'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ])->label("<font color='#FF0000'>*</font> <b>Orientador:</b>");
-
-    echo $form->field($model, 'dataingresso', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
-        'language' => Yii::$app->language,
-        'pluginOptions' => [
-            'format' => 'dd-mm-yyyy',
-            'todayHighlight' => true
-        ]
-    ])->label("<font color='#FF0000'>*</font> Data de Ingresso:");
-
-    echo $divFechar;
-
-    echo $divRow;
-
-    echo $form->field($model, 'curso', ['options' => ['class' => 'col-md-3']])->radioList(['1' => 'Mestrado', '2' => 'Doutorado'])->label("<font color='#FF0000'>*</font> <b>Curso:</b>");
-
-    echo $form->field($model, 'area' , ['options' => ['class' => 'col-md-4']] )->dropDownlist($linhasPesquisas, ['prompt' => 'Selecione uma Linha de Pesquisa'])->label("<font color='#FF0000'>*</font> <b>Linha de Pesquisa:</b>");
-
-    echo $divFechar;
-
-   ?>
-
+                <?= $form->field($model, 'idiomaExameProf' , ['options' => ['class' => 'col-md-5']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Idioma:</b>");?>
+                <?= $form->field($model, 'conceitoExameProf' , ['options' => ['class' => 'col-md-3']] )->textInput(['maxlength' => true])->label("<font color='#FF0000'>*</font> <b>Conceito obtido:</b>");?>
+                <?= $form->field($model, 'dataExameProf', ['options' => ['class' => 'col-md-3']])->widget(DatePicker::classname(), [
+                    'language' => Yii::$app->language,
+                    'pluginOptions' => [
+                    'format' => 'yyyy-mm-dd',
+                    'todayHighlight' => true]
+                ])->label("<font color='#FF0000'>*</font> Data do Exame:");?>
+            </div>
+        </div>
     <div class="form-group">
         <?= Html::submitButton('Salvar', ['class' => 'btn btn-primary']); ?>
     </div>

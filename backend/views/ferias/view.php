@@ -13,8 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="ferias-view">
 
     <p>
-        <?= Html::a('Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Excluir', ['delete', 'id' => $model->id], [
+        <?= Html::a('<span class="glyphicon glyphicon-edit"></span> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-remove-sign"></span> Excluir', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                      'attribute' => 'tipo',
                      'format'=>'raw',
-                     'value' => $model->tipo == 1 ? 'Oficial' : 'Usufruto'
+                     'value' => $model->tipo == 1 ? 'Usufruto' : 'Oficial',
                 ],
             [
                 'label' => 'Data Início',

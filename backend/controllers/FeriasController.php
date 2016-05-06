@@ -71,8 +71,8 @@ class FeriasController extends Controller
         $model = new Ferias();
         $todosAnosFerias = $model->anosFerias($idUser);
 
-        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,1);
-        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,2);
+        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,1);
+        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,2);
 
 
 
@@ -112,9 +112,8 @@ class FeriasController extends Controller
        
         $todosAnosFerias = $model->anosFerias($idUser);
 
-        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,1);
-        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,2);
-
+        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,1);
+        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,2);
 
 
         $searchModel = new FeriasSearch();
@@ -152,8 +151,8 @@ class FeriasController extends Controller
         $model = new Ferias();
         $todosAnosFerias = $model->anosFerias(null);
 
-        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,1);
-        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,2);
+        $qtd_usufruto_ferias = $model->feriasAno($idUser,$ano,1);
+        $qtd_ferias_oficiais = $model->feriasAno($idUser,$ano,2);
 
 
 

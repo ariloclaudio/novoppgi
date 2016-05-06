@@ -21,40 +21,33 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="orientandos-index">
 
     <?= GridView::widget([
-      'dataProvider' => $dataProvider,
-      'columns' => [
-          ['class' => 'yii\grid\SerialColumn'],
-          'matricula',
-			'nome',
-			[   'label' => 'Status',
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'matricula',
+      'nome',
+      [   'label' => 'Status',
                 'attribute' => 'status',
+        'filter'=>array (0 => "Aluno Corrente",1 => "Aluno Egresso",2 => "Aluno Desistente",3 => "Aluno Desligado",4 => "Aluno Jubilado",5 => "Aluno com Matrícula Trancada"),
                 'value' => function ($model) {
-					$statusAluno = array (0 => "Aluno Corrente",1 => "Aluno Egresso",2 => "Aluno Desistente",3 => "Aluno Desligado",4 => "Aluno Jubilado",5 => "Aluno com Matrícula Trancada");
-					return $statusAluno[$model->status];
+          $statusAluno = array (0 => "Aluno Corrente",1 => "Aluno Egresso",2 => "Aluno Desistente",3 => "Aluno Desligado",4 => "Aluno Jubilado",5 => "Aluno com Matrícula Trancada");
+          return $statusAluno[$model->status];
                 },
             ],
-			[   'label' => 'Status',
-                'attribute' => 'status',
+      [   'label' => 'Curso',
+                'attribute' => 'curso',
+        'filter'=>array("1"=>"Mestrado","2"=>"Doutorado"),
                 'value' => function ($model) {
-					return $model->curso == 1 ? "Mestrado" : "Doutorado";
+          return $model->curso == 1 ? "Mestrado" : "Doutorado";
                 },
             ],
-			[   'label' => 'Linha de Pesquisa',
-                'attribute' => 'siglaLinhaPesquisa',
-                'format' => 'html',
-                'contentOptions' => function ($model){
-                  return ['style' => 'background-color: '.$model->corLinhaPesquisa];
-                },
-                'value' => function ($model){
-                  return " <span class='fa ". $model->icone ." fa-lg'/> ".$model->siglaLinhaPesquisa;
-                },
-      ],
-			 'email:email',
-			 'telresidencial',
+          'email:email',
+          'telresidencial',
             ['class' => 'yii\grid\ActionColumn',
-              'template'=> "{view}",
+              'template'=> "{view} {banca}",
                 'buttons'=>[
-				
+        
                   'view' => function ($url, $model) {  
 
                     return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['view_orientado', 'id' => $model->id], [

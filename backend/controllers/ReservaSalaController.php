@@ -30,7 +30,8 @@ class ReservaSalaController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                           return Yii::$app->user->identity->checarAcesso('secretaria') || Yii::$app->user->identity->checarAcesso('professor');
+                            return Yii::$app->user->identity->checarAcesso('coordenador') || Yii::$app->user->identity->checarAcesso('secretaria') ||
+                           Yii::$app->user->identity->checarAcesso('professor');
                         }
                     ],                    
                 ],
@@ -289,10 +290,6 @@ class ReservaSalaController extends Controller
                 return false;
         }
         return true;
-
-        $secretaria = "secretaria@icomp.ufam.edu.br";
-
-        JUtility::sendMail($secretaria, "Reserva de Sala", $dados[0]->email, $subject, $message, false, $secretaria, NULL);
     }
 
     /* Envio de mensagens para views

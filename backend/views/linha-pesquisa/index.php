@@ -21,17 +21,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'nome',
             'sigla',
-            [   'attribute' => 'icone',
-                'format' => 'html',
-                'value' => function ($model){
-                  return "<span class='fa ". $model->icone ." fa-lg'/> ";
-                }
-            ],
-            [   'label' => 'Cor',
+            [   'label' => 'Icone/Cor',
                 'attribute' => 'cor',
                 'contentOptions' => function ($model){
                   return ['style' => 'background-color: '.$model->cor];
                 },
+          'format' => 'html',
+               'value' => function ($model){
+                  return "<span class='fa ". $model->icone ." fa-lg'/> ";
+                }
+
             ],
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{view} {delete} {update}',

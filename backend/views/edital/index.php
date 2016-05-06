@@ -13,6 +13,7 @@ BootboxAsset::registerWithOverride($this);
 
 $this->title = 'Editais';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="edital-index">
 
@@ -91,8 +92,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{download} {view} {delete} {update}',
                 'buttons'=>[
-                  'download' => function ($url, $model) {     
-                    return Html::a('<span class="glyphicon glyphicon-download"></span>', 'editais/'.$model->documento, [
+                  'download' => function ($url, $model) { 
+                    return Html::a('<span class="glyphicon glyphicon-download"></span>', 'editais/aaa'.$model->documento, [
                             'target' => '_blank','title' => Yii::t('yii', 'Download do Edital'),
                     ]);
                   },

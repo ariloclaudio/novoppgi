@@ -28,6 +28,7 @@ if (Yii::$app->controller->action->id === 'login') {
     ?>
     <?php $this->beginPage() ?>
     <!DOCTYPE html>
+    <link rel="shortcut icon" href="<?php echo Yii::$app->request->baseUrl; ?>/favicon.ico" type="image/x-icon" />
     <html lang="<?= Yii::$app->language ?>">
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>

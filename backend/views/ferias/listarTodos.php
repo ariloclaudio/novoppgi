@@ -71,13 +71,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Férias Oficiais' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->id, $_GET["ano"] , 1 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 2 );
                  },
             ],
             [
                 'label' => 'Usufruto de Férias' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->id, $_GET["ano"] , 2 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 1 );
                  },
             ],
             ['class' => 'yii\grid\ActionColumn',
@@ -120,13 +120,13 @@ $this->params['breadcrumbs'][] = $this->title;
            [
                 'label' => 'Férias Oficiais' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->id, $_GET["ano"] , 1 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 2 );
                  },
             ],
             [
                 'label' => 'Usufruto de Férias' ,
                  'value' => function ($model){
-                            return $model->feriasAno($model->id, $_GET["ano"] , 2 );
+                            return $model->feriasAno($model->id, $_GET["ano"] , 1 );
                  },
             ],
             ['class' => 'yii\grid\ActionColumn',

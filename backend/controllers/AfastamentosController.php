@@ -54,8 +54,8 @@ class AfastamentosController extends Controller
      */
     public function actionIndex($id = NULL)
     {
-		$searchModel = new AfastamentosSearch();
-		$dataProvider = $searchModel->search();
+        $searchModel = new AfastamentosSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -72,7 +72,7 @@ class AfastamentosController extends Controller
     {
 
         $model = $this->findModel($id);
-		
+        
         return $this->render('view', [
             'model' => $model,
         ]);
@@ -86,28 +86,28 @@ class AfastamentosController extends Controller
     public function actionCreate()
     {
         $model = new Afastamentos();
-		
-		$model->idusuario = Yii::$app->user->identity->id;
-		$usuario = User::findIdentity($model->idusuario);
-		$model->nomeusuario= $usuario->nome;
-		$model->emailusuario= $usuario->email;
-		
-		if ($model->load(Yii::$app->request->post())){
-			if($model->save()){            
-				try{
+        
+        $model->idusuario = Yii::$app->user->identity->id;
+        $usuario = User::findIdentity($model->idusuario);
+        $model->nomeusuario= $usuario->nome;
+        $model->emailusuario= $usuario->email;
+        
+        if ($model->load(Yii::$app->request->post())){
+            if($model->save()){            
+                try{
                     $this->enviarSolicitacaoAfastamento($model);
-					$this->mensagens('success', 'Salvo com sucesso', 'Os dados de sua solicitação de afastamento foram enviados ao Diretor do IComp com sucesso.');
-					return $this->redirect(['view', 'id' => $model->id]);
-				}catch(Exception $e){
+                    $this->mensagens('success', 'Salvo com sucesso', 'Os dados de sua solicitação de afastamento foram enviados ao Diretor do IComp com sucesso.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }catch(Exception $e){
                     $this->mensagens('danger', 'Erro ao Enviar a Solicitação', 'Contate o Administrador do Sistema');   
                 }
-			}
-       		 else
-            		$this->mensagens('danger', 'Erro ao salvar a solicitação', 'Ocorreu um erro ao salvar as informações da solicitação de afastamento. 
-                    		Verifique os campos e tente novamente');
-		}
-		return $this->render('create', ['model' => $model,]);
-		
+            }
+             else
+                    $this->mensagens('danger', 'Erro ao salvar a solicitação', 'Ocorreu um erro ao salvar as informações da solicitação de afastamento. 
+                            Verifique os campos e tente novamente');
+        }
+        return $this->render('create', ['model' => $model,]);
+        
     }
 
     /**
@@ -122,29 +122,29 @@ class AfastamentosController extends Controller
 
         return $this->redirect(['index']);
     }
-	
+    
     function actionPrint($id) {
 
-	$model = $this->findModel($id);
+    $model = $this->findModel($id);
        $idUsuario = Yii::$app->user->identity->id;
 
 
        $pdf = new mPDF('utf-8','A4','','','15','15','42','30');
 
     
-	if ($model->tipo == 1){
-		$tipo = 'Nacional';
-	}
-	else{
-		$tipo = 'Internacional';
-	}
+    if ($model->tipo == 1){
+        $tipo = 'Nacional';
+    }
+    else{
+        $tipo = 'Internacional';
+    }
 
         $pdf->SetHTMLHeader('
                 <table style="vertical-align: bottom; font-family: serif; font-size: 8pt; color: #000000; font-weight: bold; font-style: italic;">
                     <tr>
-                        <td width="20%" align="center" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "../web/img/logo-brasil.jpg" height="90px" width="90px"> </td>
+                        <td width="20%" align="center" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/logo-brasil.jpg" height="90px" width="90px"> </td>
                         <td width="60%" align="center" style="font-family: serif;font-weight: bold; font-size: 135%;">  PODER EXECUTIVO <br> UNIVERSIDADE FEDERAL DO AMAZONAS <br> INSTITUTO DE COMPUTAÇÃO <br> PROGRAMA DE PÓS-GRADUAÇÃO EM INFORMÁTICA </td>
-                        <td width="20%" align="center" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "../web/img/ufam.jpg" height="90px" width="70px"> </td>
+                        <td width="20%" align="center" style="font-family: serif;font-weight: bold; font-size: 175%;"> <img src = "img/ufam.jpg" height="90px" width="70px"> </td>
                     </tr>
                 </table>
                 <hr>
@@ -164,45 +164,45 @@ class AfastamentosController extends Controller
                 </table>
         ');
 
- 	$pdf->WriteHTML(' <br>
+    $pdf->WriteHTML(' <br>
                     <table style= "margin-top:0px;" width="100%;"> 
                     <tr>
                         <td style="text-align:right;">
                             <b> SOLICITAÇÃO DE AFASTAMENTO TEMPORÁRIO </b>
                         </td>   
                         <td align="right" width="35%">
-                            <b>Hora: '.date("H:i", $model->dataenvio).'</b> <br> <b> Data: '.date("d/m/Y", $model->dataenvio).'</b>
+                            <b>Hora: '.date("H:i", $model->dataenvio).'</b> <br> <b> Data: '.date("d/m/Y", strtotime($model->dataenvio)).'</b>
                         </td>                        
                     </tr>
                     </table>
                     <table width="100%" style="border-top: solid 1px; ">
                     <tr>
                         <td colspan="2" style= "height:35px;">
-                            O(A) professor(a) <b>'.$model->nomeusuario.'</b> estará fastado de suas atividades presenciais na UFAM no período de <b>'.date("d/m/Y", $model->datasaida).'</b> a <b>'.date("d/m/Y", $model->dataretorno).'</b>.
+                            O(A) professor(a) <b>'.$model->nomeusuario.'</b> estará fastado de suas atividades presenciais na UFAM no período de <b>'.date("d/m/Y", strtotime($model->datasaida)).'</b> a <b>'.date("d/m/Y", strtotime($model->dataretorno)).'</b>.
                         </td>
                     </tr>
-					<tr><td colspan="2"><br></td><tr>
+                    <tr><td colspan="2"><br></td><tr>
                     <tr>
                         <td colspan="2" style="width:100%">
                             O motivo deste afastamento: <b>'. $model->justificativa.'</b>.
                         </td>   
                     </tr>
-					<tr><td colspan="2"><br></td><tr>
+                    <tr><td colspan="2"><br></td><tr>
                     <tr>
                         <td colspan="2" style="width:100%">
                             Para reposição de suas aulas, o(a) professor(a) fez o seguinte planejamento:<br>
-							'.$model->reposicao.'.
+                            '.$model->reposicao.'.
                         </td>   
-					</tr>
-					<tr><td colspan="2"><br></td><tr>
-					<tr>
+                    </tr>
+                    <tr><td colspan="2"><br></td><tr>
+                    <tr>
                         <td colspan="2" style="width:100%">
                             Os dados desse funcionário estão descritos a seguir:
                         </td>   
-					</tr>
-					
+                    </tr>
+                    
                     <tr>
-						<td style="width:50%">
+                        <td style="width:50%">
                             <b>Funcionário:</b> '.$model->nomeusuario.'
                         </td> 
                         <td style="width:50%">
@@ -219,43 +219,43 @@ class AfastamentosController extends Controller
                     </tr>
                     <tr>
                         <td>
-                            <b>Data de Saída: </b>'.date("d/m/Y", $model->datasaida).'
+                            <b>Data de Saída: </b>'.date("d/m/Y", strtotime($model->datasaida)).'
                         </td>
 
                         <td>
-                            <b>Data de Retorno: </b>'.date("d/m/Y", $model->dataretorno).'
+                            <b>Data de Retorno: </b>'.date("d/m/Y", strtotime($model->dataretorno)).'
                         </td>
                     </tr>
-					<tr><td colspan="2"><br></td><tr>
-					<tr><td colspan="2"><br></td><tr>
-					<tr><td colspan="2"><br></td><tr>
+                    <tr><td colspan="2"><br></td><tr>
+                    <tr><td colspan="2"><br></td><tr>
+                    <tr><td colspan="2"><br></td><tr>
                     </table>');
        
 
   
-		$pdf->WriteHTML('
+        $pdf->WriteHTML('
 
         <table width="100%" border = "0"> 
 
                     <tr>
                         <td align="center">__________________________________________________</td>
-					</tr>
-					<tr>
-						<td align="center"><b>Prof. Dr. Ruiter Braga Caldas</b></td>
-					</tr>
-					<tr>
-						<td align="center">Diretor do Instituto de Computação - IComp</td>
+                    </tr>
+                    <tr>
+                        <td align="center"><b>Prof. Dr. Ruiter Braga Caldas</b></td>
+                    </tr>
+                    <tr>
+                        <td align="center">Diretor do Instituto de Computação - IComp</td>
                     </tr>
 
                 </table>
-		');
-		
+        ');
+        
                 
-		$pdf->Output('');
+        $pdf->Output('');
 
-		$pdfcode = $pdf->output();
-	}	
-	
+        $pdfcode = $pdf->output();
+    }   
+    
     public function enviarSolicitacaoAfastamento($model){
 
         $tipoViagem = array (1 => "Nacional",2 => "Internacional");
@@ -264,25 +264,25 @@ class AfastamentosController extends Controller
 
         $mime_boundary = "<<<--==-->>>";
         $message = '';
-	    // message
-			
-	    $message .= "O(A) professor(a) ".$model->nomeusuario." enviou uma solicitacao de afastamento temporário do IComp.\r\n\n";
-	    $message .= "Nome: ".$model->nomeusuario."\r\n";
-	    $message .= "E-mail: ".$model->emailusuario."\r\n";
-	    $message .= "Local: ".utf8_decode($model->local)."\r\n";
-	    $message .= "Tipo de Viagem: ".$tipoViagem[$model->tipo]."\r\n";
-	    $message .= "Data de Saída: ".$model->datasaida."\r\n";
-	    $message .= "Data de Retorno: ".$model->dataretorno."\r\n";
-	    $message .= "Justificativa: ".utf8_decode($model->justificativa)."\r\n";
-	    $message .= "Data e Hora do envio: ".date("d/m/Y H:i:s", $model->dataenvio)."\r\n";
+        // message
+            
+        $message .= "O(A) professor(a) ".$model->nomeusuario." enviou uma solicitacao de afastamento temporário do IComp.\r\n\n";
+        $message .= "Nome: ".$model->nomeusuario."\r\n";
+        $message .= "E-mail: ".$model->emailusuario."\r\n";
+        $message .= "Local: ".utf8_decode($model->local)."\r\n";
+        $message .= "Tipo de Viagem: ".$tipoViagem[$model->tipo]."\r\n";
+        $message .= "Data de Saída: ".$model->datasaida."\r\n";
+        $message .= "Data de Retorno: ".$model->dataretorno."\r\n";
+        $message .= "Justificativa: ".utf8_decode($model->justificativa)."\r\n";
+        $message .= "Data e Hora do envio: ".date("d/m/Y H:i:s", $model->dataenvio)."\r\n";
 
-	    $chefe = "arilo@icomp.ufam.edu.br";
-	    $secretaria = "secretaria@icomp.ufam.edu.br";
-       	    
- 	    $email[] = $chefe;
-	    $email[] = $secretaria;
+        $chefe = "arilo@icomp.ufam.edu.br";
+        $secretaria = "secretaria@icomp.ufam.edu.br";
+            
+        $email[] = $chefe;
+        $email[] = $secretaria;
 
-			
+            
         $message .= $mime_boundary."\r\n";
 
         try{
@@ -293,14 +293,14 @@ class AfastamentosController extends Controller
                 ->setTextBody($message)
                 ->send();
         }catch(Exception $e){
-                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Solicitações de Afastamento Temporário.
+                $this->mensagens('warning', 'Erro ao enviar Email(s)', 'Ocorreu um Erro ao Enviar as Solicitações de Cartas de Recomendação.
                     Tente novamente ou contate o adminstrador do sistema');
-				return false;
+                return false;
         }
-		return true;
-    }	
+        return true;
+    }   
 
-	
+    
     /**
      * Finds the Afastamentos model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

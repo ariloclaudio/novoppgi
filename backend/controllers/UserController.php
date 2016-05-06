@@ -11,6 +11,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\IntegrityException;
 use yii\base\Exception;
+use app\models\UploadLattesForm;
+use yii\web\UploadedFile;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -30,7 +32,7 @@ class UserController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                               return Yii::$app->user->identity->checarAcesso('administrador');
+                          return (Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('secretaria'));
                         }
                     ],
                     [   'actions' => ['perfil'],
@@ -140,6 +142,29 @@ class UserController extends Controller
         }  
 
         return $this->redirect(['index']);
+    }
+
+
+    /**
+     * Uploads Lattes.
+     * @return mixed
+     */
+    public function actionLattes()
+    {
+        $model = new UploadLattesForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->lattesFile = UploadedFile::getInstance($model, 'lattesFile');
+            if ($model->upload(Yii::$app->user->identity->id)) {
+                // file is uploaded successfully
+        $this->mensagens('success', 'Sucesso', 'Upload realizado com sucesso.');
+        //return $this->redirect(['lattes');
+            }
+        }
+
+    //$this->mensagens('success', 'Sucesso', 'Upload vai ser realizado com sucesso.');
+
+    return $this->render('lattes', ['model' => $model]);
     }
 
     /**

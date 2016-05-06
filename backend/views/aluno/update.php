@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="aluno-update">
 
-<?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', 'javascript:window.history.go(-1)', ['class' => 'btn btn-warning']) ?>
+	<p><?= Html::a('<span class="glyphicon glyphicon-arrow-left"></span> Voltar', ['aluno/index'], ['class' => 'btn btn-warning']) ?></p>
 
     <?= $this->render('_form', [
         'model' => $model,

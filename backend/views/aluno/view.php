@@ -31,12 +31,41 @@ $exameProficienciaAluno = array(null => "Não Avaliado", 0 => 'Reprovado',1 => '
         <?= Html::a('<span class="fa fa-file"></span> Exame de Proeficiência', ['aluno/exame', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
     </p>
 
-    <?= DetailView::widget([
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><b>Dados Pessoais</b></h3>
+        </div>
+        <div class="panel-body">
+        <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'nome',
+            'email:email',
+            [
+                     'attribute' => 'curso',
+                     'label'=> 'Endereço',
+                     'value' => $model->endereco. ", Bairro ".$model->bairro.", Cidade ".$model->cidade. "-".$model->uf. ", CEP ".$model->cep
+            ],
+            'cpf',
+            'telresidencial',
+            'telcelular',
+            'cursograd',
+            'instituicaograd',
+            'egressograd',
+        ],
+        ]) ?>           
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><b>Dados do Aluno</b></h3>
+        </div>
+        <div class="panel-body">
+        <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
            'matricula',
-            'nome',
-            'email:email',
+            'orientador',
             [
                      'attribute' => 'area',
                      'label'=> 'Linha de Pesquisa',
@@ -47,22 +76,9 @@ $exameProficienciaAluno = array(null => "Não Avaliado", 0 => 'Reprovado',1 => '
                      'value' => $model->curso == 1 ? 'Mestrado' : 'Doutorado'
                 ],
             [
-                     'attribute' => 'status',
+                     'attribute' => 'bolsista',
                      'format'=>'raw',
-                     'value' => $statusAluno[$model->status] 
-                ],
-            'cpf',
-            'telresidencial',
-            'telcelular',
-            [
-                'attribute' => 'bolsista',
-                'format'=>'raw',
-                'value' => $model->bolsista == 1 ? 'SIM: '.$model->agencia : 'NÃO'
-            ],
-            [
-                'attribute' => 'financiadorbolsa',
-                'format'=>'raw',
-                'visible' => $model->bolsista == 1,
+                     'value' => $model->bolsista == 1 ? 'SIM: '.$model->financiadorbolsa.' implementada em '.date("d/m/Y", strtotime($model->dataimplementacaobolsa)) : 'NÃO'
             ],
             [   'label' => 'Status',
                 'attribute' => 'status',
@@ -71,18 +87,31 @@ $exameProficienciaAluno = array(null => "Não Avaliado", 0 => 'Reprovado',1 => '
             [
                 'label' => 'Data de Ingresso',
                 'attribute' => 'dataingresso',
-                'value' => date("d-m-Y", strtotime($model->dataingresso)),
+                'value' => date("d/m/Y", strtotime($model->dataingresso)),
 
             ],
-            'idiomaExameProf',
-            [
-            'attribute' => 'conceitoExameProf',
-            'value' => $exameProficienciaAluno[$model->conceitoExameProf],
-            ]
-            ,
-            'dataExameProf',
-            'orientador1.nome',          
         ],
-    ]) ?>
+        ]) ?>           
+        </div>
+    </div>
+        <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><b>Exame de Proficiência</b></h3>
+        </div>
+        <div class="panel-body">
+        <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'idiomaExameProf',
+            'conceitoExameProf',
+            [
+                'label' => 'Data do Exame de Proficiência',
+                'attribute' => 'dataExameProf',
+                'value' => date("d/m/Y", strtotime($model->dataExameProf)),
 
+            ],
+        ], 
+        ]) ?>           
+        </div>
+    </div>
 </div>

@@ -72,7 +72,7 @@ $perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><b>Dados Pessoais</b></h3>
+                        <h3 class="panel-title"><b>Dados Pessoais<b></h3>
                     </div>
                     <div class="panel-body">
                         <?= $form->field($model, 'endereco')->textInput(['maxlength' => true])->label("<b>Endereço:</b>") ?>
@@ -85,7 +85,7 @@ $perfis = ['1' => 'Administrador', '2' => 'Coordenador', '3' => 'Secretaria', '4
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><b>Dados Profissionais</b></h3>
+                        <h3 class="panel-title"><b>Dados Profissionais<b></h3>
                     </div>
                     <div class="panel-body">
                         <?= $form->field($model, 'siape', ['options' => ['class' => 'col-md-6']])->textInput(['maxlength' => true])->label("<b>SIAPE:</b>") ?>

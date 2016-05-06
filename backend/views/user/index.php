@@ -19,21 +19,22 @@ $this->title = 'Usuários';
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             'nome',
             'username',
             'email:email',
-            [   'label' => 'Telefones',
-                'format' => 'html',
+    [   'label' => 'Telefones',
+      'format' => 'html',
                 'attribute' => 'telcelular',
-                'value' => function ($model){
+      'value' => function ($model){
                   $imagens = '      ';
-                  if($model->telcelular) $imagens = "<i class='fa fa-mobile fa-lg' title='".$model->telcelular."' aria-hidden='true'></i>". $imagens;
-                  if($model->telresidencial) $imagens = $imagens . "<i class='fa fa-phone fa-lg' title='".$model->telresidencial."' aria-hidden='true'></i>";
-                  return $imagens;
+          if($model->telcelular) $imagens = "<i class='fa fa-mobile fa-lg' title='".$model->telcelular."' aria-hidden='true'></i>". $imagens;
+          if($model->telresidencial) $imagens = $imagens . "<i class='fa fa-phone fa-lg' title='".$model->telresidencial."' aria-hidden='true'></i>";
+          return $imagens;
                 }
             ],
-            'perfis',
+      'perfis',
             ['class' => 'yii\grid\ActionColumn',
               'template'=>'{view} {delete} {update}',
                 'buttons'=>[

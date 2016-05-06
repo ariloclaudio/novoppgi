@@ -224,7 +224,7 @@ class CandidatosController extends Controller
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
 
-        if($model->resultado === 0 || $model->resultado === 1 ){
+        if($model->resultado === 1 || $model->resultado === 2 ){
             $this->mensagens('danger', 'Candidato Reprovado', 'Este Candidato já foi Avaliado');
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
@@ -312,7 +312,7 @@ class CandidatosController extends Controller
          $model_aluno->status  = $model_candidato->status;
          $model_aluno->bolsista  = $model_candidato->solicitabolsa;
 
-         $model_candidato->resultado = 1;
+         $model_candidato->resultado = 2;
 
          //mudança de atributos
          $model_aluno->area  = $model_candidato->idLinhaPesquisa;
@@ -345,12 +345,12 @@ class CandidatosController extends Controller
         $cartas_respondidas = new Recomendacoes();
         $cartas_respondidas = $cartas_respondidas->getCartasRespondidas($id);
 
-        if($model->resultado === 0 || $model->resultado === 1){
+        if($model->resultado === 1 || $model->resultado === 2){
             $this->mensagens('danger', 'Candidato Avaliado', 'Este Candidato já foi Avaliado');
             return $this->redirect(['candidatos/index','id'=>$idEdital]);
         }
 
-            $model->resultado = 0;
+            $model->resultado = 1;
 
             if($model->save(false)){
                 $this->mensagens('success', 'Candidato Reprovado', 'Candidato Reprovado com sucesso.');

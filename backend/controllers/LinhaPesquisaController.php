@@ -27,7 +27,7 @@ class LinhaPesquisaController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                               return Yii::$app->user->identity->checarAcesso('administrador');
+                               return Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('coordenador'));
                         }
                     ],
                 ],

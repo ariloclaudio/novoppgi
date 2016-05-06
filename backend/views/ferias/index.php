@@ -110,12 +110,12 @@ $this->params['breadcrumbs'][] = $this->title;
             "attribute" =>'tipo',
             "value" => function ($model){
 
-            	if($model->tipo == 1){
-            		return "Oficial";
-            	}
-            	else{
-            		return "Usufruto";
-            	}
+              if($model->tipo == 1){
+                return "Usufruto";
+              }
+              else{
+                return "Oficial";
+              }
 
             },
 

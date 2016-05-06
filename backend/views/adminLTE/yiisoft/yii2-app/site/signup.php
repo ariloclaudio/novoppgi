@@ -46,43 +46,31 @@ $this->title = 'Cadastro';
                             'onText' => 'Sim',
                             'offText' => 'Não',
                     ]]) ?>
-                    <?= $form->field($model, 'coordenador', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::classname(), [
+            <?= $form->field($model, 'coordenador', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::classname(), [
                         'pluginOptions' => [
                             'onText' => 'Sim',
                             'offText' => 'Não',
                     ]]) ?>
-                    <?= $form->field($model, 'secretaria', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::classname(), [
+            <?= $form->field($model, 'secretaria', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::classname(), [
                         'pluginOptions' => [
                             'onText' => 'Sim',
                             'offText' => 'Não',
                     ]])?>
-                    <?= $form->field($model, 'professor', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::classname(), [
+            <?= $form->field($model, 'professor', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::classname(), [
                         'pluginOptions' => [
                             'onText' => 'Sim',
                             'offText' => 'Não',
                     ]])?>
-                    <?= $form->field($model, 'administrador', ['options' => ['class' => 'col-md-3']])->widget(SwitchInput::classname(), [
-                        'pluginOptions' => [
-                            'onText' => 'Sim',
-                            'offText' => 'Não',
-                    ]]) ?>
                 </div>
 
-                <!--<div class = "row">                 
-                    <?= $form->field($model, 'aluno', ['options' => ['class' => 'col-md-5']])->widget(SwitchInput::classname(), [
-                        'pluginOptions' => [
-                            'onText' => 'Sim',
-                            'offText' => 'Não',
-                    ]]) ?>
-                </div>-->
-                    </div>
+            </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><b>Dados Pessoais</b></h3>
+                        <h3 class="panel-title"><b>Dados Pessoais<b></h3>
                     </div>
                     <div class="panel-body">
-                        <?= $form->field($model, 'endereco', ['options' => ['class' => 'col-md-12']])->textInput(['maxlength' => true])->label("<b>Endereço:</b>") ?>
+                        <?= $form->field($model, 'endereco')->textInput(['maxlength' => true])->label("<b>Endereço:</b>") ?>
                         <?= $form->field($model, 'telresidencial', ['options' => ['class' => 'col-md-6']])->widget(\yii\widgets\MaskedInput::className(), [
                             'mask' => '(99) 99999-9999'])->label("<b>Telefone Residencial:</b>") ?>
                         <?= $form->field($model, 'telcelular', ['options' => ['class' => 'col-md-6']])->widget(MaskedInput::className(), [
@@ -123,3 +111,4 @@ $this->title = 'Cadastro';
         </div>
     </div>
 </div>
+

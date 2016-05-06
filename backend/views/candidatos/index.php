@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Breadcrumbs;
 use xj\bootbox\BootboxAsset;
 use yii\bootstrap\Collapse;
+use app\models\LinhaPesquisa;
 
 BootboxAsset::register($this);
 BootboxAsset::registerWithOverride($this);
@@ -40,11 +41,13 @@ function goBack() {
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+   'filterModel' => $searchModel,
+
             'rowOptions'=> function($model){
-                    if($model->resultado === 1) {
+                    if($model->resultado === 2) {
                         return ['class' => 'info'];
                     }
-                    else if($model->resultado === 0) {
+                    else if($model->resultado === 1) {
                         return ['class' => 'danger'];
                     }
                     else if($model->cartas_respondidas < 2 && $model->carta_recomendacao == 1){
@@ -79,12 +82,14 @@ function goBack() {
              ],
             [   'label' => 'Curso Desejado',
                 'attribute' => 'cursodesejado',
+      'filter'=>array("1"=>"Mestrado","2"=>"Doutorado"),
                 'value' => function ($model) {
                      return $model->cursodesejado == 1 ? 'Mestrado' : 'Doutorado';
                 },
             ],
             [   'label' => 'Linha Pesquisa',
                 'attribute' => 'siglaLinhaPesquisa',
+      'filter' => Html::activeDropDownList($searchModel, 'siglaLinhaPesquisa', \yii\helpers\ArrayHelper::map(LinhaPesquisa::find()->asArray()->all(), 'id', 'sigla'),['class'=>'form-control','prompt' => 'Selecione a Linha']),
                 'contentOptions' => function ($model){
                   return ['style' => 'background-color: '.$model->linhaPesquisa->cor];
                 },
@@ -95,13 +100,15 @@ function goBack() {
             ],
             [   'label' => 'Fase',
                 'attribute' => 'fase',
+      'filter'=>array("0"=>"Não Julgado","1"=>"Reprovado","2"=>"Aprovado"),
+
                 'format' => 'html',
                 'value' => function ($model) {
 
-                    if($model->resultado === 1){
+                    if($model->resultado === 2){
                         return "<span class='fa fa-thumbs-up' /> Aprovado";
                     }
-                    else if($model->resultado === 0){
+                    else if($model->resultado === 1){
 
                         return "<span class='fa fa-thumbs-down'/> Reprovado";
                     }
@@ -162,12 +169,12 @@ echo Collapse::widget([
     'items' => [
         // equivalent to the above
         [
-            'label' => 'Inscrições Em Andamento',
+            'label' => 'Inscrições em Andamento: '. $dataProvider2->totalcount,
             'content' => GridView::widget([
             'dataProvider' => $dataProvider2,
             'emptyText' => '-',
             'rowOptions'=> ['class' => 'warning'],
-        'columns' => [
+            'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             [   'label' => 'Nº de Inscrição',
