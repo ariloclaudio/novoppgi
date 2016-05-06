@@ -28,13 +28,10 @@ $(document).ready( function() {
     });
 
     $('input[name="Aluno[bolsista]"]').on('switchChange.bootstrapSwitch', function (data, state) {
-        if (state){
+        if (state)
             $('#divAgencia').css('display', 'block');
-            $('#form_bolsista').val('1');
-        }else{
+        else
             $('#divAgencia').css('display', 'none');
-            $('#form_bolsista').val('');
-        }
     });
 
     $('#aluno-nacionalidade').click(function(){
@@ -47,12 +44,36 @@ $(document).ready( function() {
             $('#divBrasileiro').css('display', 'none');
         }
    });
-
-    $("#lancarconceito").click(function(){
-        
+   
+   $('input[name="User[secretaria]"]').on('switchChange.bootstrapSwitch', function (data, state) {
+        if (state)
+            $('#divSecretaria').css('display', 'block');
+        else
+            $('#divSecretaria').css('display', 'none');
     });
-
+	
+	$('input[name="User[professor]"]').on('switchChange.bootstrapSwitch', function (data, state) {
+        if (state)
+            $('#divProfessor').css('display', 'block');
+        else
+            $('#divProfessor').css('display', 'none');
+    });
+	
+	$('input[name="SignupForm[secretaria]"]').on('switchChange.bootstrapSwitch', function (data, state) {
+        if (state)
+            $('#divSecretaria').css('display', 'block');
+        else
+            $('#divSecretaria').css('display', 'none');
+    });
+	
+	$('input[name="SignupForm[professor]"]').on('switchChange.bootstrapSwitch', function (data, state) {
+        if (state)
+            $('#divProfessor').css('display', 'block');
+        else
+            $('#divProfessor').css('display', 'none');
+    });
 });
+
 
 
 $( window ).load(function(){
@@ -77,9 +98,4 @@ $( window ).load(function(){
     if ($("#form_bolsista").val() == '1') {
         $('#divAgencia').css('display', 'block');
     }
-
 });
-
-
-
-
