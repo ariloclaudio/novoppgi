@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
 use app\models\User;
 use app\models\Aluno;
 use app\models\UserSearch;
@@ -35,7 +36,7 @@ class UserController extends Controller
                           return (Yii::$app->user->identity->checarAcesso('administrador') || Yii::$app->user->identity->checarAcesso('secretaria'));
                         }
                     ],
-                    [   'actions' => ['perfil'],
+                    [   'actions' => ['perfil', 'lattes'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

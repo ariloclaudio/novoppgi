@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Aluno;
+use yii\filters\AccessControl;
 use common\models\User;
 use common\models\LinhaPesquisa;
 use app\models\AlunoSearch;
@@ -26,10 +27,29 @@ class AlunoController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'exame', 'create', 'view_orientando', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['orientandos'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity->checarAcesso('professor');
+                        }
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'deletesecretaria' => ['POST'],
                 ],
             ],
         ];

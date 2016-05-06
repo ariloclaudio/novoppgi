@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\MembrosBanca;
+use yii\filters\AccessControl;
 use app\models\MembrosBancaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -20,10 +21,23 @@ class MembrosBancaController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity->checarAcesso('secretaria');
+                        }
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'deletesecretaria' => ['POST'],
                 ],
             ],
         ];

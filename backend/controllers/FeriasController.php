@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use app\models\Ferias;
+use yii\filters\AccessControl;
 use app\models\Professor;
 use app\models\Funcionario;
 use common\models\User;
@@ -23,6 +24,18 @@ class FeriasController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return (Yii::$app->user->identity->checarAcesso('professor') || Yii::$app->user->identity->checarAcesso('secretaria'));
+                        }
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -187,7 +200,7 @@ class FeriasController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($ano)
     {
 
         $model = new Ferias();
