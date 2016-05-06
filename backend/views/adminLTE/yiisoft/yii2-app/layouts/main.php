@@ -62,6 +62,7 @@ if (Yii::$app->controller->action->id === 'login') {
         ) ?>
 
     </div>
+    <?= Yii::$app->request->baseUrl; ?>
 
     <?php $this->endBody() ?>
     </body>

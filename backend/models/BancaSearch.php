@@ -41,7 +41,7 @@ class BancaSearch extends Banca
      */
     public function search($params,$idBanca)
     {
-        $query = Banca::find()->select("j17_banca_has_membrosbanca.membrosbanca_id , j17_membrosbanca.nome as membro_nome, j17_membrosbanca.filiacao as membro_filiacao ")->where("banca_id = ".$idBanca)
+        $query = Banca::find()->select("j17_banca_has_membrosbanca.* , j17_membrosbanca.nome as membro_nome, j17_membrosbanca.filiacao as membro_filiacao ")->where("banca_id = ".$idBanca)
             ->innerJoin("j17_membrosbanca","j17_membrosbanca.id = j17_banca_has_membrosbanca.membrosbanca_id");
 
         // add conditions that should always apply here

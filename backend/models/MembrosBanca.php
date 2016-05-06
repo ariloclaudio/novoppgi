@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yiibr\brvalidator\CpfValidator;
 
 /**
  * This is the model class for table "j17_membrosbanca".
@@ -16,7 +17,7 @@ use Yii;
  * @property string $dataCadastro
  * @property integer $idProfessor
  */
-class MembrosBanca extends \yii\db\ActiveRecord
+class Membrosbanca extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -37,7 +38,7 @@ class MembrosBanca extends \yii\db\ActiveRecord
             [['idProfessor'], 'integer'],
             [['nome', 'email', 'filiacao'], 'string', 'max' => 100],
             [['telefone'], 'string', 'max' => 20],
-            [['cpf'], 'string', 'max' => 15],
+            [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
         ];
     }
 
@@ -47,13 +48,12 @@ class MembrosBanca extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
             'nome' => 'Nome',
-            'email' => 'Email',
-            'filiacao' => 'Filiacao',
+            'email' => 'E-mail',
+            'filiacao' => 'Filiacão',
             'telefone' => 'Telefone',
-            'cpf' => 'Cpf',
-            'dataCadastro' => 'Data Cadastro',
+            'cpf' => 'CPF',
+            'dataCadastro' => 'Data de Cadastro',
             'idProfessor' => 'Id Professor',
         ];
     }

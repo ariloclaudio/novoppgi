@@ -10,6 +10,7 @@ class Aluno extends \yii\db\ActiveRecord
 {
     public $siglaLinhaPesquisa;
     public $corLinhaPesquisa;
+    public $nomeOrientador;
     public $icone;
     public $username;
     /**
@@ -26,33 +27,28 @@ class Aluno extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['nome', 'email', 'senha', 'curso', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'agencia', 'pais', 'resumoQual2', 'resumoTese'], 'required'],
-            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'dataingresso', 'curso', 'area', 'nacionalidade'], 'required'],
-            [['agencia', 'financiadorbolsa', 'dataimplementacaobolsa'], 'required', 'when' => function ($model) { return $model->bolsista; }, 'whenClient' => "function (attribute, value) {
+            [['nome', 'email', 'curso', 'cpf', 'cep', 'endereco', 'datanascimento', 'sexo', 'uf', 'cidade', 'bairro', 'telresidencial', 'regime', 'matricula', 'orientador', 'dataingresso', 'curso', 'area'], 'required'],
+            [['financiadorbolsa', 'dataimplementacaobolsa'], 'required', 'when' => function ($model) { return $model->bolsista; }, 'whenClient' => "function (attribute, value) {
                     return $('#form_bolsista').val() == '1';
                 }"],
-            [['area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
-            [['resumoQual2', 'resumoTese'], 'string'],
-            [['nome', 'examinadorQual1'], 'string', 'max' => 60],
+            [['area', 'curso', 'regime', 'status', 'egressograd', 'idUser', 'orientador'], 'integer'],
+            [['nome'], 'string', 'max' => 60],
             [['email'],'email'],
             [['cidade'], 'string', 'max' => 40],
             [['senha'], 'string', 'max' => 255],
-            [['matricula', 'estadocivil'], 'string', 'max' => 15],
+            [['matricula'], 'string', 'max' => 15],
             [['endereco'], 'string', 'max' => 160],
             [['bairro'], 'string', 'max' => 50],
             [['uf'], 'string', 'max' => 5],
-            [['cep', 'conceitoExameProf', 'conceitoQual2', 'conceitoTese', 'conceitoQual1'], 'string', 'max' => 9],
-            [['datanascimento', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'dataExameProf', 'dataQual2', 'dataTese', 'horarioQual2', 'horarioTese', 'dataQual1'], 'string', 'max' => 10],
+            [['cep', 'conceitoExameProf'], 'string', 'max' => 9],
+            [['datanascimento', 'dataExameProf'], 'string', 'max' => 10],
             [['sexo'], 'string', 'max' => 1],
             [['cpf'], CpfValidator::className(), 'message' => 'CPF Inválido'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Já existe usuário cadastrado com esse CPF'],
-            [['telresidencial', 'telcomercial', 'telcelular'], 'string', 'max' => 18],
+            [['telresidencial', 'telcelular'], 'string', 'max' => 18],
             [['bolsista'], 'string', 'max' => 3],
-            [['agencia', 'pais'], 'string', 'max' => 30],
             [['financiadorbolsa'], 'string', 'max' => 45],
             [['idiomaExameProf'], 'string', 'max' => 20],
-            [['tituloQual2', 'tituloTese', 'tituloQual1'], 'string', 'max' => 180],
-            [['localQual2', 'localTese', 'cursograd', 'instituicaograd'], 'string', 'max' => 100],
+            [['cursograd', 'instituicaograd'], 'string', 'max' => 100],
             [['sede'], 'string', 'max' => 2],
             [['dataingresso', 'dataimplementacaobolsa'],'safe'],
         ];
@@ -77,48 +73,26 @@ class Aluno extends \yii\db\ActiveRecord
             'cep' => 'CEP',
             'datanascimento' => 'Data de Nascimento',
             'sexo' => 'Sexo',
-            'nacionalidade' => 'Nacionalidade',
             'cpf' => 'CPF',
             'rg' => 'RG',
             'telresidencial' => 'Telefone Principal',
             'telcelular' => 'Telefone Alternativo',
             'regime' => 'Regime',
             'bolsista' => 'Bolsista',
-            'agencia' => 'Agência',
-            'pais' => 'País',
             'status' => 'Status',
             'dataingresso' => 'Data de Ingresso',
             'idiomaExameProf' => 'Idioma do Exame de Proficiência',
             'conceitoExameProf' => 'Conceito do Exame de Proficiência',
             'dataExameProf' => 'Data do Exame de Proficiência',
-            'tituloQual2' => 'Titulo Qual2',
-            'dataQual2' => 'Data Qual2',
-            'conceitoQual2' => 'Conceito Qual2',
-            'tituloTese' => 'Titulo Tese',
-            'dataTese' => 'Data Tese',
-            'conceitoTese' => 'Conceito Tese',
-            'horarioQual2' => 'Horario Qual2',
-            'localQual2' => 'Local Qual2',
-            'resumoQual2' => 'Resumo Qual2',
-            'horarioTese' => 'Horario Tese',
-            'localTese' => 'Local Tese',
-            'resumoTese' => 'Resumo Tese',
-            'tituloQual1' => 'Titulo Qual1',
-            'numDefesa' => 'Num Defesa',
-            'dataQual1' => 'Data Qual1',
-            'examinadorQual1' => 'Examinador Qual1',
-            'conceitoQual1' => 'Conceito Qual1',
             'cursograd' => 'Curso da Graduação',
             'instituicaograd' => 'Instituicão da Graduação',
-            'egressograd' => 'Egresso Graduação',
-            'dataformaturagrad' => 'Data da Formatura',
+            'egressograd' => 'Ano de Egresso',
             'orientador' => 'Orientador',
             'anoconclusao' => 'Ano de Conclusão',
             'sede' => 'Sede',
             'financiadorbolsa' => 'Financiador da Bolsa',
             'dataimplementacaobolsa' => 'Início da Vigência',
             'orientador1.nome' => 'Orientador',
-
         ];
     }
 

@@ -39,23 +39,25 @@ class AfastamentosSearch extends Afastamentos
      *
      * @return ActiveDataProvider
      */
-    public function search()
+    public function search($params)
     {
         $idUsuario = Yii::$app->user->identity->id;
-		
+        
         if(Yii::$app->user->identity->checarAcesso('secretaria')){
-			$query = Afastamentos::find()->select("id, dataenvio, datasaida, dataretorno, idusuario, nomeusuario, tipo, local, justificativa");
-					}
-		else if (Yii::$app->user->identity->checarAcesso('professor')){
-			$query = Afastamentos::find()->select("id, dataenvio, datasaida, dataretorno, idusuario, nomeusuario, tipo, local, justificativa")
-			->where('idusuario = '.$idUsuario);
-		}
-		
+            $query = Afastamentos::find()->select("id, dataenvio, datasaida, dataretorno, idusuario, nomeusuario, tipo, local, justificativa")->orderBy(['dataenvio'=>SORT_DESC]);
+        }
+        else if (Yii::$app->user->identity->checarAcesso('professor')){
+            $query = Afastamentos::find()->select("id, dataenvio, datasaida, dataretorno, idusuario, nomeusuario, tipo, local, justificativa")
+            ->where('idusuario = '.$idUsuario)->orderBy(['dataenvio'=>SORT_DESC]);
+        }
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-		
-		if (!$this->validate()) {
+        
+        $this->load($params);
+        
+        if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
@@ -64,14 +66,15 @@ class AfastamentosSearch extends Afastamentos
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'datasaida' => $this->datasaida,
-            'dataretorno' => $this->dataretorno,
-            'dataenvio' => $this->dataenvio,
             'tipo' => $this->tipo,
-            'local' => $this->local,
+            'dataretorno' => $this->dataretorno,
 
         ]);
-
+        $query->andFilterWhere(['like', 'datasaida', $this->datasaida])
+            //->andFilterWhere(['=', 'dataretorno', $this->dataretorno])
+            ->andFilterWhere(['like', 'nomeusuario', $this->nomeusuario])
+            ->andFilterWhere(['like', 'dataenvio', $this->dataenvio])
+            ->andFilterWhere(['like', 'local', $this->local]);
          return $dataProvider;
     }
 

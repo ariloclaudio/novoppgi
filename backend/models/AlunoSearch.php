@@ -18,8 +18,8 @@ class AlunoSearch extends Aluno
     public function rules()
     {
         return [
-            [['id', 'area', 'curso', 'nacionalidade', 'regime', 'status', 'numDefesa', 'egressograd', 'idUser', 'orientador'], 'integer'],
-            [['nome', 'email', 'senha', 'matricula', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'datanascimento', 'sexo', 'estadocivil', 'cpf', 'rg', 'orgaoexpeditor', 'dataexpedicao', 'telresidencial', 'telcomercial', 'telcelular', 'bolsista', 'agencia', 'pais', 'dataingresso', 'idiomaExameProf', 'conceitoExameProf', 'dataExameProf', 'tituloQual2', 'dataQual2', 'conceitoQual2', 'tituloTese', 'dataTese', 'conceitoTese', 'horarioQual2', 'localQual2', 'resumoQual2', 'horarioTese', 'localTese', 'resumoTese', 'tituloQual1', 'dataQual1', 'examinadorQual1', 'conceitoQual1', 'cursograd', 'instituicaograd', 'dataformaturagrad', 'anoconclusao', 'sede'], 'safe'],
+            [['id', 'area', 'curso',  'regime', 'status', 'egressograd', 'idUser', 'orientador'], 'integer'],
+            [['nome', 'email', 'senha', 'matricula', 'endereco', 'bairro', 'cidade', 'uf', 'cep', 'siglaLinhaPesquisa', 'nomeOrientador', 'datanascimento', 'sexo', 'cpf', 'telresidencial', 'telcelular', 'bolsista', 'dataingresso', 'idiomaExameProf', 'conceitoExameProf', 'dataExameProf', 'cursograd', 'instituicaograd', 'anoconclusao', 'sede'], 'safe'],
         ];
     }
 
@@ -45,18 +45,19 @@ class AlunoSearch extends Aluno
         $idUsuario = Yii::$app->user->identity->id;
        
         if(Yii::$app->user->identity->checarAcesso('secretaria')){
-           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.icone as icone, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")->where(['status' => 0]);
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.icone as icone, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_user.nome as nomeOrientador, j17_aluno.*")
+        ->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")->leftJoin("j17_user","j17_aluno.orientador = j17_user.id");
 
+       }
+       else if (Yii::$app->user->identity->checarAcesso('professor')){
+           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")
+           ->where('orientador = '.$idUsuario);
+       }
             if(!isset ($params['sort'])){
                $query = $query->orderBy('nome');
             }
 
 
-       }
-       else if (Yii::$app->user->identity->checarAcesso('professor')){
-           $query = Aluno::find()->select("j17_linhaspesquisa.sigla as siglaLinhaPesquisa, j17_linhaspesquisa.cor as corLinhaPesquisa, j17_aluno.*")->leftJoin("j17_linhaspesquisa","j17_aluno.area = j17_linhaspesquisa.id")
-           ->where(['orientador' => $idUsuario, 'status' => 0]);
-       }
 
         // add conditions that should always apply here
 
@@ -64,7 +65,7 @@ class AlunoSearch extends Aluno
             'query' => $query,
         ]);
 
-        //$this->load($params);
+        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -81,23 +82,26 @@ class AlunoSearch extends Aluno
             'asc' => ['siglaLinhaPesquisa' => SORT_ASC],
             'desc' => ['siglaLinhaPesquisa' => SORT_DESC],
         ];
+    $dataProvider->sort->attributes['nomeOrientador'] = [
+            'asc' => ['nomeOrientador' => SORT_ASC],
+            'desc' => ['nomeOrientador' => SORT_DESC],
+        ];
+
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'area' => $this->area,
             'curso' => $this->curso,
-            'nacionalidade' => $this->nacionalidade,
             'regime' => $this->regime,
-            'status' => $this->status,
-            'numDefesa' => $this->numDefesa,
+            'j17_aluno.status' => $this->status,
+            'area' => $this->siglaLinhaPesquisa,
             'egressograd' => $this->egressograd,
             'idUser' => $this->idUser,
             'orientador' => $this->orientador,
             'anoconclusao' => $this->anoconclusao,
         ]);
 
-        $query->andFilterWhere(['like', 'nome', $this->nome])
+        $query->andFilterWhere(['like', 'j17_aluno.nome', $this->nome])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'senha', $this->senha])
             ->andFilterWhere(['like', 'matricula', $this->matricula])
@@ -108,40 +112,17 @@ class AlunoSearch extends Aluno
             ->andFilterWhere(['like', 'cep', $this->cep])
             ->andFilterWhere(['like', 'datanascimento', $this->datanascimento])
             ->andFilterWhere(['like', 'sexo', $this->sexo])
-            ->andFilterWhere(['like', 'estadocivil', $this->estadocivil])
             ->andFilterWhere(['like', 'cpf', $this->cpf])
-            ->andFilterWhere(['like', 'rg', $this->rg])
-            ->andFilterWhere(['like', 'orgaoexpeditor', $this->orgaoexpeditor])
-            ->andFilterWhere(['like', 'dataexpedicao', $this->dataexpedicao])
+            ->andFilterWhere(['like', 'j17_user.nome', $this->nomeOrientador])
             ->andFilterWhere(['like', 'telresidencial', $this->telresidencial])
-            ->andFilterWhere(['like', 'telcomercial', $this->telcomercial])
             ->andFilterWhere(['like', 'telcelular', $this->telcelular])
             ->andFilterWhere(['like', 'bolsista', $this->bolsista])
-            ->andFilterWhere(['like', 'agencia', $this->agencia])
-            ->andFilterWhere(['like', 'pais', $this->pais])
-            ->andFilterWhere(['like', 'dataingresso', $this->dataingresso])
+            ->andFilterWhere(['like', 'j17_aluno.dataingresso', $this->dataingresso])
             ->andFilterWhere(['like', 'idiomaExameProf', $this->idiomaExameProf])
             ->andFilterWhere(['like', 'conceitoExameProf', $this->conceitoExameProf])
             ->andFilterWhere(['like', 'dataExameProf', $this->dataExameProf])
-            ->andFilterWhere(['like', 'tituloQual2', $this->tituloQual2])
-            ->andFilterWhere(['like', 'dataQual2', $this->dataQual2])
-            ->andFilterWhere(['like', 'conceitoQual2', $this->conceitoQual2])
-            ->andFilterWhere(['like', 'tituloTese', $this->tituloTese])
-            ->andFilterWhere(['like', 'dataTese', $this->dataTese])
-            ->andFilterWhere(['like', 'conceitoTese', $this->conceitoTese])
-            ->andFilterWhere(['like', 'horarioQual2', $this->horarioQual2])
-            ->andFilterWhere(['like', 'localQual2', $this->localQual2])
-            ->andFilterWhere(['like', 'resumoQual2', $this->resumoQual2])
-            ->andFilterWhere(['like', 'horarioTese', $this->horarioTese])
-            ->andFilterWhere(['like', 'localTese', $this->localTese])
-            ->andFilterWhere(['like', 'resumoTese', $this->resumoTese])
-            ->andFilterWhere(['like', 'tituloQual1', $this->tituloQual1])
-            ->andFilterWhere(['like', 'dataQual1', $this->dataQual1])
-            ->andFilterWhere(['like', 'examinadorQual1', $this->examinadorQual1])
-            ->andFilterWhere(['like', 'conceitoQual1', $this->conceitoQual1])
             ->andFilterWhere(['like', 'cursograd', $this->cursograd])
             ->andFilterWhere(['like', 'instituicaograd', $this->instituicaograd])
-            ->andFilterWhere(['like', 'dataformaturagrad', $this->dataformaturagrad])
             ->andFilterWhere(['like', 'sede', $this->sede]);
 
         return $dataProvider;
@@ -180,10 +161,8 @@ class AlunoSearch extends Aluno
             'id' => $this->id,
             'area' => $this->area,
             'curso' => $this->curso,
-            'nacionalidade' => $this->nacionalidade,
             'regime' => $this->regime,
             'status' => $this->status,
-            'numDefesa' => $this->numDefesa,
             'egressograd' => $this->egressograd,
             'idUser' => $this->idUser,
             'orientador' => $this->orientador,
@@ -201,40 +180,16 @@ class AlunoSearch extends Aluno
             ->andFilterWhere(['like', 'cep', $this->cep])
             ->andFilterWhere(['like', 'datanascimento', $this->datanascimento])
             ->andFilterWhere(['like', 'sexo', $this->sexo])
-            ->andFilterWhere(['like', 'estadocivil', $this->estadocivil])
             ->andFilterWhere(['like', 'cpf', $this->cpf])
-            ->andFilterWhere(['like', 'rg', $this->rg])
-            ->andFilterWhere(['like', 'orgaoexpeditor', $this->orgaoexpeditor])
-            ->andFilterWhere(['like', 'dataexpedicao', $this->dataexpedicao])
             ->andFilterWhere(['like', 'telresidencial', $this->telresidencial])
-            ->andFilterWhere(['like', 'telcomercial', $this->telcomercial])
             ->andFilterWhere(['like', 'telcelular', $this->telcelular])
             ->andFilterWhere(['like', 'bolsista', $this->bolsista])
-            ->andFilterWhere(['like', 'agencia', $this->agencia])
-            ->andFilterWhere(['like', 'pais', $this->pais])
             ->andFilterWhere(['like', 'dataingresso', $this->dataingresso])
             ->andFilterWhere(['like', 'idiomaExameProf', $this->idiomaExameProf])
             ->andFilterWhere(['like', 'conceitoExameProf', $this->conceitoExameProf])
             ->andFilterWhere(['like', 'dataExameProf', $this->dataExameProf])
-            ->andFilterWhere(['like', 'tituloQual2', $this->tituloQual2])
-            ->andFilterWhere(['like', 'dataQual2', $this->dataQual2])
-            ->andFilterWhere(['like', 'conceitoQual2', $this->conceitoQual2])
-            ->andFilterWhere(['like', 'tituloTese', $this->tituloTese])
-            ->andFilterWhere(['like', 'dataTese', $this->dataTese])
-            ->andFilterWhere(['like', 'conceitoTese', $this->conceitoTese])
-            ->andFilterWhere(['like', 'horarioQual2', $this->horarioQual2])
-            ->andFilterWhere(['like', 'localQual2', $this->localQual2])
-            ->andFilterWhere(['like', 'resumoQual2', $this->resumoQual2])
-            ->andFilterWhere(['like', 'horarioTese', $this->horarioTese])
-            ->andFilterWhere(['like', 'localTese', $this->localTese])
-            ->andFilterWhere(['like', 'resumoTese', $this->resumoTese])
-            ->andFilterWhere(['like', 'tituloQual1', $this->tituloQual1])
-            ->andFilterWhere(['like', 'dataQual1', $this->dataQual1])
-            ->andFilterWhere(['like', 'examinadorQual1', $this->examinadorQual1])
-            ->andFilterWhere(['like', 'conceitoQual1', $this->conceitoQual1])
             ->andFilterWhere(['like', 'cursograd', $this->cursograd])
             ->andFilterWhere(['like', 'instituicaograd', $this->instituicaograd])
-            ->andFilterWhere(['like', 'dataformaturagrad', $this->dataformaturagrad])
             ->andFilterWhere(['like', 'sede', $this->sede]);
 
         return $dataProvider;

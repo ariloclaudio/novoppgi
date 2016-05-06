@@ -43,7 +43,7 @@ class SearchEdital extends Edital
      */
     public function search($params)
     {
-        $query = Edital::find()->select(['datainicio', 'datafim', 'numero', 'vagas_mestrado', '(vagas_mestrado + cotas_mestrado) as vagasmestrado', 'vagas_doutorado', '(vagas_doutorado + cotas_doutorado) as vagasdoutorado', 'cotas_mestrado', 'cotas_doutorado' ,'idEdital' ,'COUNT(idEdital) as quantidadeinscritos','COUNT(idEdital) as quantidadeinscritosfinalizados'])->leftJoin("j17_candidatos","idEdital = numero")->where(['j17_edital.status' => '10'])->groupBy('numero');
+        $query = Edital::find()->select(['datainicio', 'datafim', 'numero', 'vagas_mestrado', '(vagas_mestrado + cotas_mestrado) as vagasmestrado', 'vagas_doutorado', '(vagas_doutorado + cotas_doutorado) as vagasdoutorado', 'cotas_mestrado', 'cotas_doutorado' ,'idEdital' ,'COUNT(idEdital) as quantidadeinscritos','COUNT(idEdital) as quantidadeinscritosfinalizados', 'documento'])->leftJoin("j17_candidatos","idEdital = numero")->where(['j17_edital.status' => '10'])->groupBy('numero');
 
         if(!isset ($params['sort'])){
            $query = $query->orderBy('datacriacao DESC');

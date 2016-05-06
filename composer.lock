@@ -123,16 +123,16 @@
         },
         {
             "name": "bower-asset/fontawesome",
-            "version": "v4.6.1",
+            "version": "v4.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "6535013c330e801ecf0b23c437865a7fb344486d"
+                "reference": "e7cc59d666ed0826656f695afad7c56e95eb6513"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/6535013c330e801ecf0b23c437865a7fb344486d",
-                "reference": "6535013c330e801ecf0b23c437865a7fb344486d",
+                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/e7cc59d666ed0826656f695afad7c56e95eb6513",
+                "reference": "e7cc59d666ed0826656f695afad7c56e95eb6513",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -160,16 +160,16 @@
         },
         {
             "name": "bower-asset/fullcalendar",
-            "version": "v2.7.0",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fullcalendar/fullcalendar.git",
-                "reference": "27547a3a9671692a77fe0a3221b2af5a0be12618"
+                "reference": "237bd4da83f38ba678fd5272c44b7a2ad13ccdc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/27547a3a9671692a77fe0a3221b2af5a0be12618",
-                "reference": "27547a3a9671692a77fe0a3221b2af5a0be12618",
+                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/237bd4da83f38ba678fd5272c44b7a2ad13ccdc5",
+                "reference": "237bd4da83f38ba678fd5272c44b7a2ad13ccdc5",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
                 "bower-asset/bootstrap": "~3.2.0",
                 "bower-asset/jasmine-fixture": "~1.2.0",
                 "bower-asset/jasmine-jquery": "~2.0.3",
-                "bower-asset/jquery-mockjax": "~1.5.4",
+                "bower-asset/jquery-mockjax": "~2.1.1",
                 "bower-asset/jquery-simulate": "~1.0.1",
                 "bower-asset/jquery-ui": ">=1.11.1",
                 "bower-asset/moment-timezone": "~0.2.1"
@@ -201,10 +201,9 @@
                     "!/CONTRIBUTING.*"
                 ]
             },
-            "license": {
-                "type": "MIT",
-                "url": "https://github.com/fullcalendar/fullcalendar/blob/master/LICENSE.txt"
-            },
+            "license": [
+                "MIT"
+            ],
             "description": "Full-sized drag & drop event calendar",
             "keywords": [
                 "calendar",
@@ -2246,12 +2245,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "bf40b5635c09e09eaad9c48bcb245ca4a6961401"
+                "reference": "68f50da0fdd6cb0146d17d6bde20b76e0e57e7fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/bf40b5635c09e09eaad9c48bcb245ca4a6961401",
-                "reference": "bf40b5635c09e09eaad9c48bcb245ca4a6961401",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/68f50da0fdd6cb0146d17d6bde20b76e0e57e7fb",
+                "reference": "68f50da0fdd6cb0146d17d6bde20b76e0e57e7fb",
                 "shasum": ""
             },
             "require": {
@@ -2291,7 +2290,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-04-30 13:52:30"
+            "time": "2016-05-01 08:46:16"
         },
         {
             "name": "xj/yii2-bootbox-widget",
@@ -2386,12 +2385,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "8629491d238e6f06ba00486abeef33cd501e8147"
+                "reference": "b084245111230f6f2066f9d48a77855184fb8bf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/8629491d238e6f06ba00486abeef33cd501e8147",
-                "reference": "8629491d238e6f06ba00486abeef33cd501e8147",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/b084245111230f6f2066f9d48a77855184fb8bf3",
+                "reference": "b084245111230f6f2066f9d48a77855184fb8bf3",
                 "shasum": ""
             },
             "require": {
@@ -2472,7 +2471,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2016-04-30 18:05:33"
+            "time": "2016-05-05 12:32:46"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2706,12 +2705,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "123a68ff806be726d92e7db49eed3f36c881f099"
+                "reference": "120198f907231348a29cbcb362ec4d41ea22c1dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/123a68ff806be726d92e7db49eed3f36c881f099",
-                "reference": "123a68ff806be726d92e7db49eed3f36c881f099",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/120198f907231348a29cbcb362ec4d41ea22c1dc",
+                "reference": "120198f907231348a29cbcb362ec4d41ea22c1dc",
                 "shasum": ""
             },
             "require": {
@@ -2748,7 +2747,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2016-04-29 12:42:00"
+            "time": "2016-05-02 21:13:20"
         },
         {
             "name": "phpspec/php-diff",

@@ -8,6 +8,7 @@ class User extends \yii\db\ActiveRecord
 {
     public $password;
     public $password_repeat;
+    public $lattesUpload;
 
 
 
@@ -32,6 +33,7 @@ class User extends \yii\db\ActiveRecord
                 return $('#user-password').val() != '';}"],
             [['status', 'idLattes', 'idRH'], 'integer'],
             ['password', 'string', 'min' => 6],
+            [['lattesUpload'], 'file', 'extensions' => 'xml'],
             [['username'], CpfValidator::className(), 'message' => 'CPF Inválido'],
             [['visualizacao_candidatos', 'visualizacao_candidatos_finalizados', 'visualizacao_cartas_respondidas'], 'safe'],
             [['nome', 'username', 'password_hash', 'password_reset_token', 'email', 'endereco'], 'string', 'max' => 255],
@@ -87,6 +89,7 @@ class User extends \yii\db\ActiveRecord
             'idLattes' => 'Código do Currículo Lattes',
             'idRH' => 'Nº de Contrato no RH',
             'alias' => 'Tag para página',
+            'lattesUpload' => 'Xml Lattes',
         ];
     }
 

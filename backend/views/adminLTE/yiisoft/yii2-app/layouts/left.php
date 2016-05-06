@@ -5,8 +5,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="img/
-                    <?php 
+                <img src="img/<?php 
                         if(Yii::$app->user->identity->administrador) echo "administrador"; 
                         else if(Yii::$app->user->identity->coordenador) echo "coordenador"; 
                         else if(Yii::$app->user->identity->professor) echo "professor"; 

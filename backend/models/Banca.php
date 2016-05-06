@@ -17,7 +17,6 @@ class Banca extends \yii\db\ActiveRecord
 
     public $membro_nome;
     public $membro_filiacao;
-    //public $membrosbanca_id;
 
     /**
      * @inheritdoc
@@ -35,7 +34,7 @@ class Banca extends \yii\db\ActiveRecord
         return [
             [['membrosbanca_id'], 'required'],
             [['membrosbanca_id'], 'integer'],
-            [['funcao','membro_nome','membro_filiacao'], 'string'],
+            [['funcao'], 'string'],
             [['passagem'], 'string', 'max' => 1],
         ];
     }
